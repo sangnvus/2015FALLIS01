@@ -1,0 +1,54 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:GoogleTileSource="clr-namespace:Demo_App_15092015v4"
+    xmlns:MSPCMCore="clr-namespace:Microsoft.Phone.Controls.Maps.Core;assembly=Microsoft.Phone.Controls.Maps"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
+    xmlns:Microsoft_Phone_Controls_Maps="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps" 
+    x:Class="Demo_App_15092015v4.Maps"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Text="Demo App 15092015v4" Style="{StaticResource PhoneTextNormalStyle}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid>
+
+                <Microsoft_Phone_Controls_Maps:Map Name="googlemap" Margin="0,60,0,0" CopyrightVisibility="Collapsed" LogoVisibility="Collapsed" ScaleVisibility="Visible" CredentialsProvider="ApBXPZf5IR94SLXE8nh5FYsb5WHKrH1XPY7428-EqQudseivcWhCROIJvGmtnkAV">
+                    <Microsoft_Phone_Controls_Maps:Map.Mode>
+                        <MSPCMCore:MercatorMode/>
+                    </Microsoft_Phone_Controls_Maps:Map.Mode>
+                    <Microsoft_Phone_Controls_Maps:MapTileLayer Name="street" Margin="0,44,0,0">
+                        <Microsoft_Phone_Controls_Maps:MapTileLayer.TileSources>
+                            <GoogleTileSource:GoogleTile TileTypes="Street"/>
+                        </Microsoft_Phone_Controls_Maps:MapTileLayer.TileSources>
+                    </Microsoft_Phone_Controls_Maps:MapTileLayer>
+                </Microsoft_Phone_Controls_Maps:Map>
+
+
+                <StackPanel HorizontalAlignment="Left" Margin="8,0,0,153" Orientation="Vertical" Width="56" VerticalAlignment="Bottom"/>
+
+            </Grid>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>
