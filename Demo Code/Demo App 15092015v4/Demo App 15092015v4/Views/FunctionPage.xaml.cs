@@ -36,10 +36,13 @@ namespace Demo_App_15092015v4
         {
             NavigationService.Navigate(new Uri("/Views/SignUpPage.xaml", UriKind.Relative));
         }
+<<<<<<< HEAD
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Demo_Call_WebService1.xaml", UriKind.Relative));
         }
+=======
+>>>>>>> 8cb4a5fc0f0fbe698df4b934e6bda39f9e807da4
     }
 }
