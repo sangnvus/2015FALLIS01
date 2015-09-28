@@ -57,6 +57,7 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
+<<<<<<< HEAD
             <Button Content="Call Webservice" HorizontalAlignment="Left" Margin="120,390,0,0" VerticalAlignment="Top" Click="Button_Click_4">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
@@ -64,6 +65,8 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </Button>
+=======
+>>>>>>> 8cb4a5fc0f0fbe698df4b934e6bda39f9e807da4
 
         </Grid>
     </Grid>
