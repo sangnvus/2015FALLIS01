@@ -19,3 +19,24 @@ H:\Lap trinh Windows phone\Demo code\updatemaps\updatemaps\obj\Debug\updatemaps.
 H:\Lap trinh Windows phone\Demo code\updatemaps\updatemaps\obj\Debug\XapCacheFile.xml
 H:\Lap trinh Windows phone\Demo code\updatemaps\updatemaps\Bin\Debug\Newtonsoft.Json.dll
 H:\Lap trinh Windows phone\Demo code\updatemaps\updatemaps\Bin\Debug\Newtonsoft.Json.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Assets\ApplicationIcon.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Assets\Tiles\IconicTileSmall.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\updatemaps.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\updatemaps.pdb
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\AppManifest.xaml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Properties\WMAppManifest.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\updatemaps_Debug_AnyCPU.xap
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Newtonsoft.Json.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\Bin\Debug\Newtonsoft.Json.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\App.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\MainPage.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\updatemaps.g.resources
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\updatemaps.Resources.AppResources.resources
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\updatemaps.csproj.GenerateResource.Cache
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\updatemaps.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\updatemaps.pdb
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\updatemaps\updatemaps\obj\Debug\XapCacheFile.xml

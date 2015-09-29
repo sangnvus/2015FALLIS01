@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Phone.Maps.Controls;
 using Newtonsoft.Json;
+using Microsoft.Phone.Maps.Services;
 
 namespace updatemaps
 {
@@ -21,6 +22,10 @@ namespace updatemaps
     {
         //Khai báo đối tượng lưu lại tọa độ
         SaveCoordinate MasterPosition = new SaveCoordinate();
+
+        //Khai báo biến dùng cho kẻ đường
+        RouteQuery MyQuery = null;
+        GeocodeQuery Mygeocodequery = null;
 
         // Constructor
         public MainPage()
