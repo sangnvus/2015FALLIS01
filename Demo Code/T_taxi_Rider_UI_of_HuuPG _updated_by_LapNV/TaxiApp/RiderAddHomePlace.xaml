@@ -1,0 +1,83 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="TaxiApp.RiderAddHomePlace"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Images/Root/img_AppSettingsBackground.jpg"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,27,12,0">
+            <Grid.Background>
+                <ImageBrush Stretch="Fill"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="89*"/>
+                <ColumnDefinition Width="337*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txt_Address" HorizontalAlignment="Left" Height="72" Margin="0,10,0,0" TextWrapping="Wrap" Text="Số 118 Nguyễn Khánh Toàn" VerticalAlignment="Top" Width="456" Grid.ColumnSpan="3" Foreground="{StaticResource myColor_Textbox_Description_Text}" Padding="{StaticResource myTextbox_Left_Padding60}" MouseEnter="txt_Address_MouseEnter"/>
+            <Button x:Name="btn_Save" Content="Lưu lại" Margin="0,226,0,392" FontSize="22" Grid.ColumnSpan="3">
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource myColor_Button_Blues}"/>
+                </Button.Background>
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="Gainsboro" Opacity="0.2"/>
+                </Button.BorderBrush>
+            </Button>
+            <TextBlock x:Name="txb_HomePlace" HorizontalAlignment="Left" Margin="76,-14,0,0" TextWrapping="Wrap" Text="Nhà Riêng" VerticalAlignment="Top" Grid.Column="2" Width="122" FontSize="25" d:IsHidden="True"/>
+            <TextBlock x:Name="txb_Save" HorizontalAlignment="Left" Margin="279,-19,0,0" TextWrapping="Wrap" Text="Lưu" VerticalAlignment="Top" RenderTransformOrigin="2.746,0.535" Grid.Column="2" Width="45" FontSize="25" d:IsHidden="True"/>
+            <TextBlock x:Name="txb_Return" HorizontalAlignment="Left" Margin="10,-40,0,0" TextWrapping="Wrap" Text="Quay Lại" VerticalAlignment="Top" Grid.ColumnSpan="2" Tap="txb_Tap_Return" FontSize="25" d:IsHidden="True"/>
+            <TextBox x:Name="txt_State" HorizontalAlignment="Left" Height="72" Margin="0,82,0,0" TextWrapping="Wrap" Text="Cầu Giấy" VerticalAlignment="Top" Width="456" Grid.ColumnSpan="3" Foreground="{StaticResource myColor_Textbox_Description_Text}" Padding="{StaticResource myTextbox_Left_Padding60}" MouseEnter="txt_State_MouseEnter"/>
+            <TextBox x:Name="txt_City" HorizontalAlignment="Left" Height="72" Margin="0,154,0,0" TextWrapping="Wrap" Text="Hà Nội" VerticalAlignment="Top" Width="456" Grid.ColumnSpan="3" Foreground="{StaticResource myColor_Textbox_Description_Text}" Padding="{StaticResource myTextbox_Left_Padding60}" MouseEnter="txt_City_MouseEnter"/>
+            <Image x:Name="img_AddressIcon" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="48" Margin="12,22,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_Address.jpg"/>
+            <Image x:Name="img_AddressIcon_Copy" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="48" Margin="12,94,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_Address.jpg"/>
+            <Image x:Name="img_AddressIcon_Copy1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="48" Margin="12,166,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_Address.jpg"/>
+        </Grid>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Root/img_AppNavbar.png" Grid.RowSpan="2"/>
+        <TextBlock x:Name="tbl_AddHomePlace" HorizontalAlignment="Center" Margin="156.507,10,156.493,0" TextWrapping="Wrap" Text="NHÀ RIÊNG" VerticalAlignment="Top" FontSize="24"/>
+
+    </Grid>
+
+</phone:PhoneApplicationPage>

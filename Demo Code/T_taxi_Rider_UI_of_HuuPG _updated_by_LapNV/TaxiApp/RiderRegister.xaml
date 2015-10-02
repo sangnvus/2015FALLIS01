@@ -1,0 +1,89 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="TaxiApp.RiderRegister"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Images/Root/img_AppSettingsBackground.jpg"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,100.3,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="37*"/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txt_Email" Margin="0,-45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="fuhl@fpt.edu.vn" Padding="{StaticResource myTextbox_Left_Padding60}" Foreground="{StaticResource myColor_Textbox_Description_Text}" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" MouseEnter="txt_Email_MouseEnter"/>
+            <PasswordBox x:Name="pwb_Password" Margin="0,27,0,0" VerticalAlignment="Top" FontSize="22" GotFocus="pwb_GotFocus" Password="123456789" Grid.ColumnSpan="2" Padding="{StaticResource myTextbox_Left_Padding60}" Height="72">
+                <PasswordBox.Foreground>
+                    <SolidColorBrush Color="Black" Opacity="0.2"/>
+                </PasswordBox.Foreground>
+            </PasswordBox>
+            <PasswordBox x:Name="pwb_PasswordAgain" Margin="0,98,0,0" VerticalAlignment="Top" FontSize="22" Grid.ColumnSpan="2" Padding="{StaticResource myTextbox_Left_Padding60}" Foreground="{StaticResource myColor_Textbox_Description_Text}" Height="72" Password="123456789"/>
+            <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,219,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="Pham Gia" Grid.ColumnSpan="2" Padding="{StaticResource myTextbox_Left_Padding60}" Foreground="{StaticResource myColor_Textbox_Description_Text}" Height="72" MouseEnter="txt_FirstAndMiddleName_MouseEnter"/>
+            <TextBox x:Name="txt_Name" Margin="0,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="Huu" Grid.ColumnSpan="2" Padding="{StaticResource myTextbox_Left_Padding60}" Foreground="{StaticResource myColor_Textbox_Description_Text}" Height="72" MouseEnter="txt_Name_MouseEnter"/>
+            <TextBox x:Name="txt_PhoneNumber" Margin="0,355,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="1234567890" Grid.ColumnSpan="2" Padding="{StaticResource myTextbox_Left_Padding60}" Foreground="{StaticResource myColor_Textbox_Description_Text}" Height="72" MouseEnter="txt_PhoneNumber_MouseEnter"/>
+            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,423,0,0" VerticalAlignment="Top" Height="72" Width="456" Click="btn_Click_Register" Grid.ColumnSpan="2">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource myColor_Button_Borders}" Opacity="0.2"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource myColor_Button_Blue}"/>
+                </Button.Background>
+            </Button>
+            <TextBlock x:Name="txb_RegisterPayment" HorizontalAlignment="Center" Margin="0,0,0,10" TextWrapping="Wrap" Text="Đăng ký thanh toán" VerticalAlignment="Bottom" Width="185" Tap="txb_Tap_RegisterPayment" Height="38" FontSize="{StaticResource myText_Beside_Text}" TextDecorations="Underline" Grid.ColumnSpan="2"/>
+            <Image x:Name="img_PageBreak" HorizontalAlignment="Center" Height="36" Margin="0,175,0,0" VerticalAlignment="Top" Width="363" Source="/Images/Root/img_BreakPage.png" Grid.Column="1"/>
+            <Image x:Name="img_UserId" HorizontalAlignment="Left" Height="48" Margin="0,-33,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_UseID.jpg" Grid.Column="1"/>
+            <Image x:Name="imgUserPassword" HorizontalAlignment="Left" Height="48" Margin="0,39,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_UserPassword.jpg" Grid.Column="1"/>
+            <Image x:Name="imgUserPasswordAgain" HorizontalAlignment="Left" Height="48" Margin="0,110,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_UserPassword.jpg" Grid.Column="1"/>
+            <Image x:Name="imgUserProfile1" HorizontalAlignment="Left" Height="48" Margin="0,231,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_UserProfile.jpg" Grid.Column="1"/>
+            <Image x:Name="imgUserProfile2" HorizontalAlignment="Left" Height="48" Margin="0,299,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icon/icon_UserProfile.jpg" Grid.Column="1"/>
+            <Image x:Name="imgPhoneNumber" HorizontalAlignment="Left" Height="48" Margin="0,367,0,0" VerticalAlignment="Top" Width="48" Source="/icon_PhoneNumber.jpg" Grid.Column="1"/>
+
+        </Grid>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Root/img_AppNavbar.png" Grid.RowSpan="2"/>
+        <TextBlock x:Name="tbl_Signup" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="ĐĂNG KÝ TÀI KHOẢN" VerticalAlignment="Top" FontSize="24" Width="230"/>
+
+    </Grid>
+
+</phone:PhoneApplicationPage>
