@@ -90,6 +90,58 @@ H:\Lap trinh Windows phone\Demo code\Demo App 15092015v4\Demo App 15092015v4\obj
 H:\Lap trinh Windows phone\Demo code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.dll
 H:\Lap trinh Windows phone\Demo code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.pdb
 H:\Lap trinh Windows phone\Demo code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\XapCacheFile.xml
+<<<<<<< HEAD
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\ApplicationIcon.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\Tiles\IconicTileSmall.png
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Demo App 15092015v4.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Demo App 15092015v4.pdb
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\AppManifest.xaml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Properties\WMAppManifest.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Demo_App_15092015v4_Debug_AnyCPU.xap
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Microsoft.Expression.Interactions.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Microsoft.Phone.Controls.Maps.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\System.Windows.Interactivity.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\de\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\en\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\es\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\fr\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\it\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\ja\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\ko\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\ru\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\zh-Hans\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\zh-Hant\Microsoft.Expression.Interactions.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\de\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\en\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\es\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\fr\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\it\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\ja\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\ko\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\ru\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\App.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\MainPage.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\Maps.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\FunctionPage.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\TutorialPage.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\LinkInfo.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\LoginPage.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\SignUpPage.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\UserDetails.g.cs
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.g.resources
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo_App_15092015v4.Resources.AppResources.resources
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.csproj.GenerateResource.Cache
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.pdb
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\XapCacheFile.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\Github\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Views\Demo_Call_WebService1.g.cs
+=======
 C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\ApplicationIcon.png
 C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
 C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
@@ -140,3 +192,4 @@ C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\Demo App 15092015v4\D
 C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.dll
 C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\Demo App 15092015v4.pdb
 C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\Demo App 15092015v4\Demo App 15092015v4\obj\Debug\XapCacheFile.xml
+>>>>>>> 8cb4a5fc0f0fbe698df4b934e6bda39f9e807da4

@@ -97,6 +97,12 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+<<<<<<< HEAD
+    <Compile Include="Views\Demo_Call_WebService1.xaml.cs">
+      <DependentUpon>Demo_Call_WebService1.xaml</DependentUpon>
+    </Compile>
+=======
+>>>>>>> 8cb4a5fc0f0fbe698df4b934e6bda39f9e807da4
     <Compile Include="Views\Maps.xaml.cs">
       <DependentUpon>Maps.xaml</DependentUpon>
     </Compile>
@@ -136,6 +142,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+<<<<<<< HEAD
+    <Page Include="Views\Demo_Call_WebService1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+=======
+>>>>>>> 8cb4a5fc0f0fbe698df4b934e6bda39f9e807da4
     <Page Include="Views\Maps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -209,7 +222,13 @@
     <Reference Include="Microsoft.Phone.Controls.Maps, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
+<<<<<<< HEAD
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+=======
   <ItemGroup />
+>>>>>>> 8cb4a5fc0f0fbe698df4b934e6bda39f9e807da4
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
