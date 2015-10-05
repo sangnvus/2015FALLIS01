@@ -18,3 +18,23 @@ C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\ToastNotificationClient
 C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\ToastNotificationClient\ToastNotificationClient\obj\Debug\ToastNotificationClient.pdb
 C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\ToastNotificationClient\ToastNotificationClient\obj\Debug\XapCacheFile.xml
 C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\ToastNotificationClient\ToastNotificationClient\obj\Debug\Page2.g.cs
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\Assets\ApplicationIcon.png
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\Assets\Tiles\FlipCycleTileLarge.png
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\Assets\Tiles\FlipCycleTileMedium.png
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\Assets\Tiles\FlipCycleTileSmall.png
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\Assets\Tiles\IconicTileMediumLarge.png
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\Assets\Tiles\IconicTileSmall.png
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\ToastNotificationClient.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\ToastNotificationClient.pdb
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\AppManifest.xaml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\Properties\WMAppManifest.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\Bin\Debug\ToastNotificationClient_Debug_AnyCPU.xap
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\App.g.cs
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\MainPage.g.cs
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\Page2.g.cs
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\ToastNotificationClient.g.resources
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\ToastNotificationClient.Resources.AppResources.resources
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\ToastNotificationClient.csproj.GenerateResource.Cache
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\ToastNotificationClient.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\ToastNotificationClient.pdb
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\ToastNotificationClient\ToastNotificationClient\obj\Debug\XapCacheFile.xml
