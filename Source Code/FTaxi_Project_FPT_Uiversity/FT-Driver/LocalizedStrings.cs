@@ -1,6 +1,6 @@
-﻿using FTaxi_Project_FPT_Uiversity.Resources;
+﻿using FT_Driver.Resources;
 
-namespace FTaxi_Project_FPT_Uiversity
+namespace FT_Driver
 {
     /// <summary>
     /// Provides access to string resources.

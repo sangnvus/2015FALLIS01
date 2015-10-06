@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0CA73AE7-3162-40D1-BD8C-846366FA6A23}</ProjectGuid>
+    <ProjectGuid>{45107505-46EF-436D-85D8-1979E95515BF}</ProjectGuid>
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FTaxi_Project_FPT_Uiversity</RootNamespace>
-    <AssemblyName>FTaxi_Project_FPT_Uiversity</AssemblyName>
+    <RootNamespace>FT_Driver</RootNamespace>
+    <AssemblyName>FT-Driver</AssemblyName>
     <TargetFrameworkIdentifier>WindowsPhone</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -19,9 +19,9 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>FTaxi_Project_FPT_Uiversity_$(Configuration)_$(Platform).xap</XapFilename>
+    <XapFilename>FT_Driver_$(Configuration)_$(Platform).xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-    <SilverlightAppEntry>FTaxi_Project_FPT_Uiversity.App</SilverlightAppEntry>
+    <SilverlightAppEntry>FT_Driver.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
@@ -147,12 +147,12 @@
     <Content Include="Images\Icons\icon_Email.jpg" />
     <Content Include="Images\Icons\icon_PhoneNumber.jpg" />
     <Content Include="Images\Icons\icon_UseID.jpg" />
+    <Content Include="Images\Icons\icon_UseID.png" />
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
-    <Content Include="Images\Logos\img_Ftaxi_Square_Logo.jpg" />
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
+    <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
     <Content Include="Images\Others\img_AppNavbar.png" />
-    <Content Include="img_FtaxiLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">

@@ -7,9 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using FTaxi_Project_FPT_Uiversity.Resources;
+using FT_Driver.Resources;
 
-namespace FTaxi_Project_FPT_Uiversity
+namespace FT_Driver
 {
     public partial class MainPage : PhoneApplicationPage
     {

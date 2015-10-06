@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{0ca73ae7-3162-40d1-bd8c-846366fa6a23}" Title="FTaxi_Project_FPT_Uiversity" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="FTaxi_Project_FPT_Uiversity author" Description="Sample description" Publisher="FTaxi_Project_FPT_Uiversity" PublisherID="{9c4ea64e-13e8-4a6d-86e0-f273623a6339}">
-    <IconPath IsRelative="true" IsResource="false">img_FtaxiLogo.png</IconPath>
+  <App xmlns="" ProductID="{45107505-46ef-436d-85d8-1979e95515bf}" Title="FT_Driver" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="FT_Driver author" Description="Sample description" Publisher="FT_Driver" PublisherID="{2575aefc-c8c8-4657-937e-933368be0d66}">
+    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
@@ -14,12 +14,12 @@
       <DefaultTask Name="_default" NavigationPage="MainPage.xaml" />
     </Tasks>
     <Tokens>
-      <PrimaryToken TokenID="FTaxi_Project_FPT_UiversityToken" TaskName="_default">
+      <PrimaryToken TokenID="FT_DriverToken" TaskName="_default">
         <TemplateFlip>
           <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
-          <Title>FTaxi_Project_FPT_Uiversity</Title>
+          <Title>FT_Driver</Title>
           <BackContent>
           </BackContent>
           <BackBackgroundImageURI>

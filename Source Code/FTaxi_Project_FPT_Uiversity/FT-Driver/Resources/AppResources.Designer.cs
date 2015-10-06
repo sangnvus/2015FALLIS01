@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FTaxi_Project_FPT_Uiversity.Resources
+namespace FT_Driver.Resources
 {
     using System;
 
@@ -45,7 +45,7 @@ namespace FTaxi_Project_FPT_Uiversity.Resources
             {
                 if (object.ReferenceEquals(resourceMan, null))
                 {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FTaxi_Project_FPT_Uiversity.Resources.AppResources", typeof(AppResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FT_Driver.Resources.AppResources", typeof(AppResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
