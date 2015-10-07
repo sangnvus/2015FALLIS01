@@ -153,6 +153,7 @@
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
     <Content Include="Images\Others\img_AppNavbar.png" />
+    <Content Include="Images\Others\img_PageContentBreak.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.resx">
