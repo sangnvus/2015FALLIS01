@@ -94,6 +94,7 @@ namespace TaxiApp
         private void txb_Account_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             txt_Account.Text = String.Empty; //Xóa text khi chọn vào
+            txt_Account.Foreground = new SolidColorBrush(Colors.Black);
         }
 
         private void txb_Password_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)

@@ -66,7 +66,11 @@
             <Grid.Background>
                 <ImageBrush Stretch="Fill"/>
             </Grid.Background>
-            <TextBox x:Name="txt_Account" Margin="0,277,0,419" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Padding="{StaticResource myTextbox_Left_Padding60}" InputScope="EmailUserName" MouseEnter="txb_Account_MouseEnter" FontSize="{StaticResource myTextbox_Text_Inner}" Foreground="{StaticResource myColor_Textbox_Description_Text}"/>
+            <TextBox x:Name="txt_Account" Margin="0,277,0,419" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Padding="{StaticResource myTextbox_Left_Padding60}" InputScope="EmailUserName" MouseEnter="txb_Account_MouseEnter" FontSize="{StaticResource myTextbox_Text_Inner}" BorderBrush="#BFFFFFFF">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="#FFC3C3C3"/>
+                </TextBox.Foreground>
+            </TextBox>
             <TextBlock x:Name="txt_ChangePassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource myText_Beside_Text}" TextDecorations="Underline" HorizontalAlignment="Center" MouseEnter="txb_ChangePassword_MouseEnter"/>
             <PasswordBox x:Name="pwb_Password" HorizontalAlignment="Left" Margin="0,349,0,0" VerticalAlignment="Top" Width="456" Password="12345678" Foreground="#FFC3C3C3" Padding="60,2,2,2" MouseEnter="txb_Password_MouseEnter" FontSize="25"/>
             <Image x:Name="img_TNetLogo" HorizontalAlignment="Center" Height="123" VerticalAlignment="Top" Width="307" Source="/Images/Icon/icon_T_NetTaxi_Small.png" Margin="0,80,0,0"/>

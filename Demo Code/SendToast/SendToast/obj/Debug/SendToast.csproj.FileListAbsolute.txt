@@ -29,3 +29,38 @@ C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\SendToast\SendToast\bin
 C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\SendToast\SendToast\bin\Microsoft.AspNet.FriendlyUrls.xml
 C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\SendToast\SendToast\obj\Debug\SendToast.dll
 C:\Users\Hoan Pham\Documents\Visual Studio 2013\Projects\SendToast\SendToast\obj\Debug\SendToast.pdb
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\SendToast.dll.config
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\SendToast.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\SendToast.pdb
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\AspNet.ScriptManager.jQuery.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\AspNet.ScriptManager.jQuery.UI.Combined.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.AspNet.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.Core.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.Consumer.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.SqlServer.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.FriendlyUrls.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.Membership.OpenAuth.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Net.Http.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Net.Http.WebRequest.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Web.Providers.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Net.Http.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Net.Http.WebRequest.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.SqlServer.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Web.Providers.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.Core.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.Consumer.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.AspNet.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.Membership.OpenAuth.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.FriendlyUrls.xml
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.csprojResolveAssemblyReference.cache
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.dll
+C:\Users\huuph_000\Documents\GitHub\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.pdb

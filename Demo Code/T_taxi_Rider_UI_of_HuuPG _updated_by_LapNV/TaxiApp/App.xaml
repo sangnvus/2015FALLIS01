@@ -20,6 +20,7 @@
         <System:Double x:Key="myButton_FontSize">22</System:Double>
         <Color x:Key="myColor_Button_Blues">#FF2E9FFF</Color>
         <System:Double x:Key="myText_Beside_Text">21</System:Double>
+        <SolidColorBrush x:Key="mytextbox_TextColor_Befor" Color="{StaticResource myClolor_Textbox_InnerText}"/>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
