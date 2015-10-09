@@ -35,44 +35,34 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Images/Root/img_AppSettingsBackground.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="TaxiApp" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" HorizontalAlignment="Center"/>
-        </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" Grid.Column="1">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,100.3,12,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="143*"/>
-                <ColumnDefinition Width="313*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="37*"/>
+                <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-
-            <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Tài khoản" VerticalAlignment="Top" FontSize="22" Height="29" Width="92"/>
-            <TextBox x:Name="txt_Email" Height="68" Margin="0,39,1,0" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" FontSize="22" Width="312" GotFocus="txt_GotFocus" />
-            <TextBlock HorizontalAlignment="Left" Margin="-1,58,0,0" TextWrapping="Wrap" Text="Email :" VerticalAlignment="Top" FontSize="22" Height="29" Width="69"/>
-            <TextBox x:Name="txt_Password" Margin="0,96,1,0" Grid.Column="1" VerticalAlignment="Top" FontSize="22" Height="68" Width="312" GotFocus="txt_GotFocus" />
-            <TextBlock HorizontalAlignment="Left" Margin="0,117,0,0" TextWrapping="Wrap" Text="Mật khẩu :" VerticalAlignment="Top" FontSize="22" Height="29" Width="108"/>
-            <TextBox x:Name="txt_PasswordAgain" Margin="1,154,0,0" Grid.Column="1" VerticalAlignment="Top" FontSize="22" Height="68" Width="312"/>
-            <TextBlock HorizontalAlignment="Left" Margin="-1,169,0,0" TextWrapping="Wrap" Text="Xác nhận mật khẩu :" VerticalAlignment="Top" FontSize="20" Width="187" Grid.ColumnSpan="2" Height="27"/>
-            <TextBlock HorizontalAlignment="Left" Margin="10,227,0,0" TextWrapping="Wrap" Text="Thông tin cá nhân" VerticalAlignment="Top" FontSize="22" Grid.ColumnSpan="2" Height="29" Width="186"/>
-            <TextBlock HorizontalAlignment="Left" Margin="0,275,0,0" TextWrapping="Wrap" Text="Họ và tên đệm :" VerticalAlignment="Top" FontSize="22" Grid.ColumnSpan="2" Height="29" Width="159"/>
-            <TextBox x:Name="txt_FirstAndMiddleName" Height="68" Margin="0,256,1,0" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" FontSize="22" Width="312" GotFocus="txt_GotFocus" Text="Pham Gia"/>
-            <TextBlock HorizontalAlignment="Left" Margin="0,336,0,0" TextWrapping="Wrap" Text="Tên :" VerticalAlignment="Top" FontSize="22" Height="29" Width="50"/>
-            <TextBox x:Name="txt_Name" Height="68" Margin="0,317,1,0" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" FontSize="22" Width="312" GotFocus="txt_GotFocus" Text="Huu"/>
-            <TextBlock HorizontalAlignment="Left" Margin="-1,443,0,0" TextWrapping="Wrap" Text="Số ĐT :" VerticalAlignment="Top" FontSize="22" Height="29" Width="80"/>
-            <TextBox x:Name="txt_PhoneNumber" InputScope="Number" Height="68" Margin="0,424,1,0" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" FontSize="22" Width="312" GotFocus="txt_GotFocus" />
-            <Button x:Name="btn_Cancel" Content="Hủy bỏ" HorizontalAlignment="Left" Margin="0,558,0,0" VerticalAlignment="Top" Height="72" Width="125" Tap="btn_Tap_Cancel"/>
-            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="178,558,0,0" VerticalAlignment="Top" Grid.Column="1" Height="72" Width="135" Click="btn_Click_Register"/>
-            <TextBlock x:Name="tbl_RegisterPayment" Grid.Column="1" HorizontalAlignment="Left" Margin="81,497,0,0" TextWrapping="Wrap" Text="Đăng ký thanh toán" VerticalAlignment="Top" Width="222" Tap="txb_Tap_RegisterPayment" Height="38" FontSize="25"/>
-            <TextBlock x:Name="tbl_Alert_PhoneNumber" Grid.Column="1" Margin="165,411,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" Height="30" Foreground="#FFFD0000" HorizontalAlignment="Left" FontWeight="Bold"/>
-
+            <TextBox x:Name="txt_Email" Margin="0,-45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="fuhl@fpt.edu.vn" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" MouseEnter="txt_Email_MouseEnter"/>
+            <TextBox x:Name="txt_Password" Margin="0,27,0,0" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus"  Grid.ColumnSpan="2" Height="72" />
+            <TextBox x:Name="txt_PasswordAgain" Margin="0,98,0,0" VerticalAlignment="Top" FontSize="22" Grid.ColumnSpan="2"  Height="72" />
+            <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,219,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="Pham Gia" Grid.ColumnSpan="2" Height="72" MouseEnter="txt_FirstAndMiddleName_MouseEnter"/>
+            <TextBox x:Name="txt_Name" Margin="0,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="Huu" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_Name_MouseEnter"/>
+            <TextBox x:Name="txt_PhoneNumber" Margin="0,355,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="1234567890" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_PhoneNumber_MouseEnter"/>
+            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,423,0,0" VerticalAlignment="Top" Height="72" Width="456" Click="btn_Click_Register" Grid.ColumnSpan="2" />
+            
         </Grid>
+        <TextBlock x:Name="tbl_Signup" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="ĐĂNG KÝ TÀI KHOẢN" VerticalAlignment="Top" FontSize="24" Width="230"/>
 
     </Grid>
 

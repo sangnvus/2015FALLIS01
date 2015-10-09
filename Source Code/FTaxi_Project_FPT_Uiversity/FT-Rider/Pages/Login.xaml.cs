@@ -50,10 +50,7 @@ namespace FT_Rider.Pages
             }
         }
 
-        private void tbl_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Pages/RiderRegister.xaml", UriKind.Relative));
-        }
+        
 
         private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -92,6 +89,16 @@ namespace FT_Rider.Pages
                 MessageBox.Show("Xin vui lòng nhập tài khoản và mật khẩu");
             }    
            
+        }
+
+        private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderRegister.xaml", UriKind.Relative));
+        }
+
+        private void tbl_Tap_LostPassword(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderLostPassword.xaml", UriKind.Relative));
         }
     }
 }

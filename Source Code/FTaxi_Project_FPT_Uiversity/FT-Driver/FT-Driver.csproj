@@ -97,6 +97,21 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DriverAddHomePlace.xaml.cs">
+      <DependentUpon>DriverAddHomePlace.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverAddWorkPlace.xaml.cs">
+      <DependentUpon>DriverAddWorkPlace.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverChangePassword.xaml.cs">
+      <DependentUpon>DriverChangePassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverProfile.xaml.cs">
+      <DependentUpon>DriverProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -112,6 +127,26 @@
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverAddHomePlace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverAddWorkPlace.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverChangePassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverProfile.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +206,6 @@
   <ItemGroup>
     <Folder Include="Classes\" />
     <Folder Include="DataFiles\" />
-    <Folder Include="Pages\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />

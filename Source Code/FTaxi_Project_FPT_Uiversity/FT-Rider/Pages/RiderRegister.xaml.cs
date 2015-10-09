@@ -99,8 +99,6 @@ namespace FT_Rider.Pages
         }
 
 
-       
-
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
@@ -198,7 +196,25 @@ namespace FT_Rider.Pages
             }
         }
 
-        
+        private void txt_Email_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_Email.Text = String.Empty;
+        }
+
+        private void txt_FirstAndMiddleName_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_FirstAndMiddleName.Text = String.Empty;
+        }
+
+        private void txt_Name_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_Name.Text = String.Empty;
+        }
+
+        private void txt_PhoneNumber_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_PhoneNumber.Text = String.Empty;
+        }
 
         
     }
