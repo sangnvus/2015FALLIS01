@@ -110,6 +110,9 @@
     <Compile Include="Pages\RiderChangePassword.xaml.cs">
       <DependentUpon>RiderChangePassword.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\RiderLostPassword.xaml.cs">
+      <DependentUpon>RiderLostPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\RiderProfile.xaml.cs">
       <DependentUpon>RiderProfile.xaml</DependentUpon>
     </Compile>
@@ -150,6 +153,10 @@
     <Page Include="Pages\RiderChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\RiderLostPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\RiderProfile.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -22,6 +22,11 @@ namespace FT_Driver
             //BuildLocalizedApplicationBar();
         }
 
+        private void btn_Tap_Go(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+        }
+
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
         //{

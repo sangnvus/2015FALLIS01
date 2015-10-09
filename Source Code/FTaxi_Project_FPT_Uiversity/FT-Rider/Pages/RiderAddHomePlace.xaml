@@ -47,17 +47,11 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="89*"/>
-                <ColumnDefinition Width="337*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="tbl_HomePlace" HorizontalAlignment="Left" Margin="76,-40,0,0" TextWrapping="Wrap" Text="Nhà Riêng" VerticalAlignment="Top" Grid.Column="2" Width="122" FontSize="25"/>
-            <TextBlock x:Name="tbl_Save" HorizontalAlignment="Left" Margin="279,-40,0,0" TextWrapping="Wrap" Text="Lưu" VerticalAlignment="Top" RenderTransformOrigin="2.746,0.535" Grid.Column="2" Width="45" FontSize="25"/>
-            <TextBlock x:Name="tbl_Address" HorizontalAlignment="Left" Margin="11.037,38,0,0" TextWrapping="Wrap" Text="Địa Chỉ" VerticalAlignment="Top" Grid.Column="1"/>
-            <TextBlock x:Name="tbl_City" HorizontalAlignment="Left" Margin="10,96,0,0" TextWrapping="Wrap" Text="Thành Phố" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-            <TextBox x:Name="txt_Address" HorizontalAlignment="Left" Height="72" Margin="0,13,-12,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="349" Grid.Column="2"/>
-            <TextBox x:Name="txt_City" HorizontalAlignment="Left" Height="72" Margin="0,71,-12,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="349" Grid.Column="2"/>
+            <TextBlock x:Name="tbl_HomePlace" HorizontalAlignment="Left" Margin="152,-41,0,0" TextWrapping="Wrap" Text="Nhà riêng" VerticalAlignment="Top" Width="144" FontSize="25"/>
+            <TextBox x:Name="txt_Address" HorizontalAlignment="Left" Height="72" Margin="0,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="446"/>
+            <TextBox x:Name="txt_City" HorizontalAlignment="Left" Height="72" Margin="0,157,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="446"/>
+            <Button x:Name="btn_Save" Content="Lưu lại" HorizontalAlignment="Left" Margin="0,259,0,0" VerticalAlignment="Top" Width="446"/>
+            <TextBox x:Name="txt_State" HorizontalAlignment="Left" Height="72" Margin="0,85,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="446"/>
         </Grid>
 
     </Grid>

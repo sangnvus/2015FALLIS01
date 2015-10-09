@@ -52,8 +52,8 @@
             <Button x:Name="tbn_Login" Content="Đăng nhập" Margin="10,217,10,337" Tap="tbn_Tap_Login"/>
             <TextBox x:Name="txt_Account" Margin="10,56,10,506" TextWrapping="Wrap" Text="abc@gmail.com"/>
             <TextBox x:Name="txt_Password" Margin="10,133,10,429" TextWrapping="Wrap" Text="123456" InputScope="Password"/>
-            <TextBlock x:Name="tbl_ChangePassword" Margin="161,312,146,0" TextWrapping="Wrap" Text="Đổi mật khẩu" VerticalAlignment="Top" FontSize="25"/>
-            <TextBlock x:Name="tbl_Register" HorizontalAlignment="Left" Margin="10,312,0,0" TextWrapping="Wrap" Text="Đăng ký" VerticalAlignment="Top" FontSize="25" Tap="tbl_Tap_Register"/>
+            <TextBlock x:Name="tbl_LostPassword" Margin="138,572,127,0" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Top" FontSize="25" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword"/>
+            <Button x:Name="tbn_Register" HorizontalAlignment="Left" Margin="10,297,0,0"   VerticalAlignment="Top" FontSize="25" Width="436" Height="80" Content="Đăng ký" Tap="tbn_Tap_Register" />
 
         </Grid>
     </Grid>
