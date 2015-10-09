@@ -2,7 +2,7 @@
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
   <App xmlns="" ProductID="{f184d3ec-3e1d-4f8e-9630-727921eded83}" Title="FT_Rider" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="FT_Rider author" Description="Sample description" Publisher="FT_Rider" PublisherID="{987ea105-f8fb-4540-88ca-b1cdff252c4b}">
-    <IconPath IsRelative="true" IsResource="false">img_FtaxiLogo.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
       <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
