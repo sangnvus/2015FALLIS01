@@ -1,0 +1,100 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="FT_Rider.Pages.RiderProfile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Name="lpkItemTemplate">
+            <TextBlock Text="{Binding Country}" />
+        </DataTemplate>
+        <DataTemplate x:Name="lpkFullItemTemplate">
+            <TextBlock Text="{Binding Country}" Style="{StaticResource PhoneTextTitle2Style}"/>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.RowSpan="2">
+            <TextBlock HorizontalAlignment="Left" Margin="204,10,0,0" TextWrapping="Wrap" Text="Hồ Sơ" VerticalAlignment="Top" FontSize="25"/>
+            <Image x:Name="img_Avatar" Source="/Images/avatar.png" Margin="10,56,316,554" RenderTransformOrigin="0.436,0.065" >
+                <Image.OpacityMask>
+                    <RadialGradientBrush GradientOrigin="0.5,0.5"
+            Center="0.5,0.5"
+            RadiusX="0.5"
+            RadiusY="0.5">
+                        <!-- These Gradient Stop colors are only changing the
+            alpha values so the image fades out toward the edges. -->
+                        <GradientStop Color="#ffffffff" Offset="0.5" />
+                        <GradientStop Color="#00ffffff" Offset="0.8" />
+                    </RadialGradientBrush>
+                </Image.OpacityMask>
+            </Image>
+            <toolkit:ListPicker FullModeItemTemplate="{Binding lpkFullItemTemplate}" ItemTemplate="{Binding lpkItemTemplate}"
+                                x:Name="lpk_Language" Margin="132,357,22,295"/>
+
+            <StackPanel x:Name="StckUserDetailsUI" Margin="-10,0,22,10">
+                <Grid Height="356" Margin="66,0,-2,0">
+
+                    <TextBox x:Name="txt_Email" Text="{Binding Email}" HorizontalAlignment="Left" Height="72" Margin="65,238,-12,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="351" IsReadOnly="True"/>
+                    <TextBox x:Name="txt_Name" Text="{Binding Name}" HorizontalAlignment="Left" Height="72" Margin="115,137,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" IsReadOnly="True"/>
+                    <TextBox x:Name="txt_PhoneNumber" Text="{Binding PhoneNumber}" HorizontalAlignment="Left" Height="72" Margin="65,296,-12,-12" TextWrapping="Wrap" VerticalAlignment="Top" Width="351" IsReadOnly="True"/>
+                    <TextBox x:Name="txt_FirstAndMiddleName" Text="{Binding FirstAndMiddleName}" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="115,65,0,0" IsReadOnly="True"/>
+                </Grid>
+
+            </StackPanel>
+            <Button x:Name="tbn_Logout" Content="Đăng xuất" Margin="10,686,10,0" VerticalAlignment="Top"  Tap="tbn__Tap_Logout"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,500,0,0" TextWrapping="Wrap" Text="Địa điểm thường dùng" VerticalAlignment="Top" Width="237" Height="43"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,214,0,0" TextWrapping="Wrap" Text="Tài khoản" VerticalAlignment="Top"/>
+            <Button x:Name="tbn_AddHomePlace" Content="Thêm nhà riêng" HorizontalAlignment="Left" Margin="10,543,0,0" VerticalAlignment="Top" Width="470" Tap="tbn__Tap_AddHomePlace"/>
+            <Button x:Name="tbn_AddWorkPlace" Content="Thêm nơi làm việc" HorizontalAlignment="Left" Margin="10,592,0,0" VerticalAlignment="Top" Width="470" Tap="tbn__Tap_AddWorkPlace"/>
+            <TextBlock HorizontalAlignment="Left" Margin="5,269,0,0" TextWrapping="Wrap" Text="Email : " VerticalAlignment="Top" Width="83" FontSize="22"/>
+            <TextBlock HorizontalAlignment="Left" Margin="5,323,0,0" TextWrapping="Wrap" Text="Số ĐT : " VerticalAlignment="Top" Width="83" FontSize="22"/>
+            <TextBlock HorizontalAlignment="Left" Margin="5,372,0,0" TextWrapping="Wrap" Text="Ngôn Ngữ : " VerticalAlignment="Top" Width="120" FontSize="22"/>
+            <TextBlock x:Name="tbl_ChangePassword" HorizontalAlignment="Left" Margin="5,427,0,0" TextWrapping="Wrap" Text="Đổi mật khẩu" VerticalAlignment="Top" FontSize="25" Tap="tbl_Tap_ChangePassword"/>
+            <TextBlock x:Name="tbl_Edit" HorizontalAlignment="Left" Margin="403,10,0,0" TextWrapping="Wrap" Text="Sửa" VerticalAlignment="Top" FontSize="25" Width="55"/>
+
+
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>
