@@ -36,26 +36,37 @@
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Images/BackgroundImages/img_AppBackground.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="TaxiApp" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" HorizontalAlignment="Center"/>
-        </StackPanel>
-
-        <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button x:Name="tbn_Login" Content="Đăng nhập" Margin="10,217,10,337" Tap="tbn_Tap_Login"/>
-            <TextBox x:Name="txt_Account" Margin="10,56,10,506" TextWrapping="Wrap" Text="abc@gmail.com"/>
-            <TextBox x:Name="txt_Password" Margin="10,133,10,429" TextWrapping="Wrap" Text="123456" InputScope="Password"/>
-            <TextBlock x:Name="tbl_ChangePassword" Margin="161,312,146,0" TextWrapping="Wrap" Text="Đổi mật khẩu" VerticalAlignment="Top" FontSize="25"/>
-            <TextBlock x:Name="tbl_Register" HorizontalAlignment="Left" Margin="10,312,0,0" TextWrapping="Wrap" Text="Đăng ký" VerticalAlignment="Top" FontSize="25" Tap="tbl_Tap_Register"/>
+            <Button x:Name="tbn_Login" Content="Đăng nhập" Margin="10,384,10,0" Tap="tbn_Tap_Login" Height="72" VerticalAlignment="Top" FontSize="22" Background="#FF2E9FFF">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="0.2"/>
+                </Button.BorderBrush>
+            </Button>
+            <TextBox x:Name="txt_Account" Margin="10,240,10,0" TextWrapping="Wrap" Text="abc@gmail.com" Height="72" VerticalAlignment="Top" Padding="60,2,2,2" Foreground="#FFCFCFCF"/>
+            <TextBox x:Name="txt_Password" Margin="10,312,10,0" TextWrapping="Wrap" Text="123456" InputScope="Password" Height="72" VerticalAlignment="Top" Padding="60,2,2,2" Foreground="#FFCFCFCF"/>
+            <TextBlock x:Name="tbl_LostPassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="22" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/>
+            <Button x:Name="tbn_Register" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="22" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" Background="#FFE28C01" >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="0.2"/>
+                </Button.BorderBrush>
+            </Button>
+            <Image x:Name="img_FTaxiLogo" Source="/Images/Logos/img_Ftaxi_logo.png" Margin="0,60,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="129" Width="329"/>
+            <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="48" Margin="22,252,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UseID.jpg"/>
+            <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="48" Margin="22,324,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UserPassword.jpg"/>
 
         </Grid>
+
+        <!--ContentPanel - place additional content here-->
     </Grid>
 
 </phone:PhoneApplicationPage>
