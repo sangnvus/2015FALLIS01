@@ -99,11 +99,11 @@ namespace FT_Rider.Pages
         }
 
 
-        private void txt_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = (TextBox)sender;
-            tb.BorderBrush = new SolidColorBrush(Colors.LightGray);
-        }
+        //private void txt_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    TextBox tb = (TextBox)sender;
+        //    tb.BorderBrush = new SolidColorBrush(Colors.LightGray);
+        //}
 
         private void btn_Click_Register(object sender, RoutedEventArgs e)
         {
@@ -215,7 +215,6 @@ namespace FT_Rider.Pages
         {
             txt_PhoneNumber.Text = String.Empty;
         }
-
         
     }
 }

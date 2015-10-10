@@ -181,6 +181,7 @@
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
     <Content Include="Images\Icons\icon_Address.jpg" />
     <Content Include="Images\Icons\icon_Email.jpg" />
+    <Content Include="Images\Icons\icon_NewUserPassword.jpg" />
     <Content Include="Images\Icons\icon_PhoneNumber.jpg" />
     <Content Include="Images\Icons\icon_UseID.jpg" />
     <Content Include="Images\Icons\icon_UseID.png" />

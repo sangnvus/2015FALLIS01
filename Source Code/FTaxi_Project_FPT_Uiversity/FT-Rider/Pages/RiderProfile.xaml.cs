@@ -55,7 +55,7 @@ namespace FT_Rider.Pages
 
         
 
-        private void tbn__Tap_Logout(object sender, System.Windows.Input.GestureEventArgs e)
+        private void btn__Tap_Logout(object sender, System.Windows.Input.GestureEventArgs e)
         {
             LogOut();
         }
@@ -98,21 +98,21 @@ namespace FT_Rider.Pages
 
             
         }
-        private void tbn__Tap_AddHomePlace(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Pages/RiderAddHomePlace.xaml", UriKind.Relative));
-        }
 
-        private void tbn__Tap_AddWorkPlace(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Pages/RiderAddWorkPlace.xaml", UriKind.Relative));
-        }
-
-       
 
         private void tbl_Tap_ChangePassword(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/RiderChangePassword.xaml", UriKind.Relative));
+        }
+
+        private void img_EditIcon_HomeAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderAddHomePlace.xaml", UriKind.Relative));
+        }
+
+        private void img_EditIcon_OfficeAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderAddWorkPlace.xaml", UriKind.Relative));
         }
 
 

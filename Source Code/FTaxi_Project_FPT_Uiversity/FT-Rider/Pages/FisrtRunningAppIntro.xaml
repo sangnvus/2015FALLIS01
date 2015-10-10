@@ -14,7 +14,10 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/BackgroundImages/img_HomePageBackground.jpg" Stretch="Fill"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -24,6 +27,20 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Image x:Name="img_FTaxiLogo" HorizontalAlignment="Center" Height="60" Margin="156,28,156,0" VerticalAlignment="Top" Width="144" Source="/Images/Logos/img_Ftaxi_logo.png"/>
+            <Ellipse x:Name="el_Page1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="182,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="204,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page3" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="226,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page4" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="249,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page5" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="271,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Button x:Name="btn_Go" Content="BỎ QUA ĐỂ BẮT ĐẦU" HorizontalAlignment="Center" Margin="0,687,0,0" VerticalAlignment="Top" Tap="btn_Go_Tap" Width="456" FontSize="{StaticResource Button_FontSize}" FontWeight="Medium">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="0.2"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </Button.Background>
+            </Button>
 
         </Grid>
     </Grid>

@@ -43,27 +43,53 @@
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource LayoutRoot_Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28"/>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Margin="12,10,12,0" Grid.RowSpan="2">
-            <TextBlock HorizontalAlignment="Left" Margin="10,28,0,0" TextWrapping="Wrap" Text="Thông tin thanh toán" VerticalAlignment="Top" FontSize="22"/>
-            <TextBox x:Name="txt_CardNumber" HorizontalAlignment="Left" Height="72" Margin="-10,87,0,0" TextWrapping="Wrap" Text="1234 5678 9012 3456" VerticalAlignment="Top" Width="456" />
+        <Grid x:Name="ContentPanel" Margin="12,0" Grid.Row="1">
+            <TextBox x:Name="txt_CardNumber" HorizontalAlignment="Left" Height="72" Margin="0,50,0,0" TextWrapping="Wrap" Text="1234 5678 9012 3456" VerticalAlignment="Top" Width="456" Background="White" Padding="60,2,2,2" Tap="txt_CardNumber_Tap" >
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
+                </TextBox.BorderBrush>
+            </TextBox>
             <toolkit:ListPicker  FullModeItemTemplate="{Binding lpkFullItemTemplate}" ItemTemplate="{Binding lpkItemTemplate}"
-                                x:Name="lpk_Month" Margin="138,166,228,252"/>
+                                x:Name="lpk_Month" Margin="148,141,218,277"/>
             <toolkit:ListPicker  FullModeItemTemplate="{Binding lpkFullItemTemplate}" ItemTemplate="{Binding lpkItemTemplate}"
-                                x:Name="lpk_Year" Margin="244,166,122,252"/>
-            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="10,387,0,0" VerticalAlignment="Top" Width="436"/>
-            <TextBlock HorizontalAlignment="Left" Margin="-5,183,0,0" TextWrapping="Wrap" Text="Ngày quá hạn :" VerticalAlignment="Top"/>
-            <TextBox x:Name="txt_Postal" HorizontalAlignment="Left" Height="72" Margin="339,164,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="107" Text="Postal"/>
+                                x:Name="lpk_Year" Margin="254,141,112,277"/>
+            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,251,0,0" VerticalAlignment="Top" Width="456" FontSize="{StaticResource Button_FontSize}">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="0.2"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </Button.Background>
+            </Button>
+            <TextBlock HorizontalAlignment="Left" Margin="148,122,0,0" TextWrapping="Wrap" Text="Ngày quá hạn :" VerticalAlignment="Top" FontSize="18">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="White" Opacity="0.8"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBox x:Name="txt_Postal" HorizontalAlignment="Left" Height="78" Margin="349,137,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="107" Text="CCV" Padding="15,2,2,2" Background="White" Tap="txt_Postal_Tap">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="#BFFFFFFF" Opacity="0.2"/>
+                </TextBox.BorderBrush>
+            </TextBox>
+            <Image HorizontalAlignment="Left" Height="42" Margin="15,65,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_VisaCard.jpg"/>
         </Grid>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
+        <TextBlock x:Name="tbl_Payment" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="THÔNG TIN THANH TOÁN" VerticalAlignment="Top" FontSize="24" Width="289"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

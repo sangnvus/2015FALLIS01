@@ -100,5 +100,12 @@ namespace FT_Rider.Pages
         {
             NavigationService.Navigate(new Uri("/Pages/RiderLostPassword.xaml", UriKind.Relative));
         }
+
+        private void txt_Account_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            txt_Account.Text = String.Empty;
+            txt_Account.Foreground = new SolidColorBrush(Colors.Black);            
+        }
+
     }
 }

@@ -1,13 +1,29 @@
 ﻿<Application
-    x:Class="FT_Rider.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone">
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" xmlns:System="clr-namespace:System;assembly=mscorlib"
+    x:Class="FT_Rider.App"
+    >
 
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:FT_Rider" x:Key="LocalizedStrings"/>
+        <Color x:Key="Button_BackgroundColor_Blue">#FF2E9FFF</Color>
+        <System:Double x:Key="Button_BorderOpacity_20">0.2</System:Double>
+        <Color x:Key="Button_BackgroundColor_Orange">#FFE28C01</Color>
+        <System:Double x:Key="Textbox_FontSize">23</System:Double>
+        <System:Double x:Key="Button_FontSize">22</System:Double>
+        <System:Double x:Key="Text_LinkTextFontSize">22</System:Double>
+        <Color x:Key="Textbox_TextColor">#B9B9B9</Color>
+        <ImageBrush x:Key="LayoutRoot_Background" Stretch="Fill" ImageSource="/Images/BackgroundImages/img_AppSettingsBackground.jpg"/>
+        <Thickness x:Key="Layout_FirstItemMargin">0,50,0,0</Thickness>
+        <System:Double x:Key="Layout_TextSize">21</System:Double>
+        <Thickness x:Key="TextBox_TextPadingLeft">60,2,2,2</Thickness>
+        <Color x:Key="Textbox_BackgroundColor">#F6F6F6</Color>
+        <Color x:Key="Textbox_BorderColor_Cyan">#FF81D7FF</Color>
+        <System:Double x:Key="Textbox_BorderOpacity_20">0.2</System:Double>
+        <Color x:Key="Rectang_StrokeColor">#FF7E7E7E</Color>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

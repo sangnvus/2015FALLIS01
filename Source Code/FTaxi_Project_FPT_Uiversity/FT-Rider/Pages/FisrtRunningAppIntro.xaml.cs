@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Windows.Media;
+using System.Windows.Input;
 
 namespace FT_Rider.Pages
 {
@@ -15,6 +17,11 @@ namespace FT_Rider.Pages
         public FisrtRunningAppIntro()
         {
             InitializeComponent();
+        }
+
+        private void btn_Go_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Windows.Media;
 
 namespace FT_Rider.Pages
 {
@@ -27,6 +28,18 @@ namespace FT_Rider.Pages
             this.lpk_Month.ItemsSource = Month;
             this.lpk_Year.ItemsSource = Year;
             
+        }
+
+        private void txt_CardNumber_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            txt_CardNumber.Text = String.Empty;
+            txt_CardNumber.Foreground = new SolidColorBrush(Colors.Black);
+        }
+
+        private void txt_Postal_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            txt_Postal.Text = String.Empty;
+            txt_Postal.Foreground = new SolidColorBrush(Colors.Black);
         }
 
      

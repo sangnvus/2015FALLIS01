@@ -13,6 +13,9 @@
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+    <phone:PhoneApplicationPage.Resources>
+        <Color x:Key="Textbox_BorderColor">#FF81D7FF</Color>
+    </phone:PhoneApplicationPage.Resources>
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
             <toolkit:NavigationInTransition.Backward>
@@ -35,10 +38,7 @@
     </toolkit:TransitionService.NavigationOutTransition>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot">
-        <Grid.Background>
-            <ImageBrush Stretch="Fill" ImageSource="/Images/Root/img_AppSettingsBackground.jpg"/>
-        </Grid.Background>
+    <Grid x:Name="LayoutRoot" Background="{StaticResource LayoutRoot_Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -47,22 +47,94 @@
         <!--TitlePanel contains the name of the application and page title-->
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,100.3,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="37*"/>
                 <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txt_Email" Margin="0,-45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="fuhl@fpt.edu.vn" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" MouseEnter="txt_Email_MouseEnter"/>
-            <TextBox x:Name="txt_Password" Margin="0,27,0,0" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus"  Grid.ColumnSpan="2" Height="72" />
-            <TextBox x:Name="txt_PasswordAgain" Margin="0,98,0,0" VerticalAlignment="Top" FontSize="22" Grid.ColumnSpan="2"  Height="72" />
-            <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,219,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="Pham Gia" Grid.ColumnSpan="2" Height="72" MouseEnter="txt_FirstAndMiddleName_MouseEnter"/>
-            <TextBox x:Name="txt_Name" Margin="0,287,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="Huu" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_Name_MouseEnter"/>
-            <TextBox x:Name="txt_PhoneNumber" Margin="0,355,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="22" GotFocus="txt_GotFocus" Text="1234567890" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_PhoneNumber_MouseEnter"/>
-            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,423,0,0" VerticalAlignment="Top" Height="72" Width="456" Click="btn_Click_Register" Grid.ColumnSpan="2" />
-            
+            <TextBox x:Name="txt_Email" Margin="{StaticResource Layout_FirstItemMargin}" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="fuhl@fpt.edu.vn" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" MouseEnter="txt_Email_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}" Background="White">
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
+                </TextBox.BorderBrush>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBox x:Name="txt_Password" Margin="0,108,0,0" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}"  Grid.ColumnSpan="2" Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="Password" Text="********" >
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
+                </TextBox.Background>
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
+                </TextBox.BorderBrush>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBox x:Name="txt_PasswordAgain" Margin="0,165,0,0" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" Text="********" >
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
+                </TextBox.Background>
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
+                </TextBox.BorderBrush>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,280,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="Pham Gia" Grid.ColumnSpan="2" Height="72" MouseEnter="txt_FirstAndMiddleName_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}">
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
+                </TextBox.Background>
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
+                </TextBox.BorderBrush>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBox x:Name="txt_Name" Margin="0,338,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="Huu" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_Name_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}">
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
+                </TextBox.Background>
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
+                </TextBox.BorderBrush>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBox x:Name="txt_PhoneNumber" Margin="0,394,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="0988707727" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_PhoneNumber_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}">
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
+                </TextBox.Background>
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
+                </TextBox.BorderBrush>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,466,0,0" VerticalAlignment="Top" Height="72" Width="456" Click="btn_Click_Register" Grid.ColumnSpan="2" FontSize="{StaticResource Button_FontSize}" >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </Button.Background>
+            </Button>
+            <Image x:Name="img_PageBreak" HorizontalAlignment="Center" Margin="0,237,10,0" VerticalAlignment="Top" Source="/Images/Others/img_PageContentBreak.png" Height="43" Grid.Column="1"/>
+            <Image x:Name="img_UserIDIcon" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,65,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
+            <Image x:Name="img_UserPasswordIcon" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,123,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
+            <Image x:Name="img_UserPasswordIcon_Copy" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,180,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
+            <Image x:Name="img_UserName" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,295,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserProfile.jpg"/>
+            <Image x:Name="img_UserName_Copy" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,353,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserProfile.jpg"/>
+            <Image x:Name="img_PhoneNumber" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,409,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_PhoneNumber.jpg"/>
+
         </Grid>
-        <TextBlock x:Name="tbl_Signup" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="ĐĂNG KÝ TÀI KHOẢN" VerticalAlignment="Top" FontSize="24" Width="230"/>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
+        <TextBlock x:Name="tbl_Register" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="ĐĂNG KÝ TÀI KHOẢN" VerticalAlignment="Top" FontSize="24" Width="232"/>
 
     </Grid>
 
