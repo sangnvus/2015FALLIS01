@@ -1,0 +1,2 @@
+Map service Application ID:5fcbf5e6-e6d0-48d7-a69d-8699df1b5318
+Map service Authentication Token:I5nG-B7z5bxyTGww1PApXA
