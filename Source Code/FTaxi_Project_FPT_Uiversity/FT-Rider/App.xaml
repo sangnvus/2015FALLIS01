@@ -15,6 +15,7 @@
         <System:Double x:Key="Textbox_FontSize">23</System:Double>
         <System:Double x:Key="Button_FontSize">22</System:Double>
         <System:Double x:Key="Text_LinkTextFontSize">22</System:Double>
+<<<<<<< HEAD
         <Color x:Key="Textbox_TextColor">#B9B9B9</Color>
         <ImageBrush x:Key="LayoutRoot_Background" Stretch="Fill" ImageSource="/Images/BackgroundImages/img_AppSettingsBackground.jpg"/>
         <Thickness x:Key="Layout_FirstItemMargin">0,50,0,0</Thickness>
@@ -24,6 +25,8 @@
         <Color x:Key="Textbox_BorderColor_Cyan">#FF81D7FF</Color>
         <System:Double x:Key="Textbox_BorderOpacity_20">0.2</System:Double>
         <Color x:Key="Rectang_StrokeColor">#FF7E7E7E</Color>
+=======
+>>>>>>> 5aa2b247c2beac7e665a077e44d54b9d1c96f437
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
