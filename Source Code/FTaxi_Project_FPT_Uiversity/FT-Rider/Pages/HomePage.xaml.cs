@@ -85,7 +85,7 @@ namespace FT_Rider.Pages
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("Location is disabled in phone settings or capabilities are not checked.");
+                MessageBox.Show("Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.");
             }
             catch (Exception ex)
             {
