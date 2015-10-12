@@ -41,6 +41,33 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
+            <phone:Pivot HorizontalAlignment="Center" Height="597" Margin="37,85,36,0" Title="" VerticalAlignment="Top" Width="383">
+                <phone:PivotItem x:Name="pvi_Tut1" CacheMode="{x:Null}" Header="" Margin="-159,10,-160,-489">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="469" VerticalAlignment="Top" Width="333" Source="/Images/FirstPage/img_FirstPageTut1.png"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut2" Header="" Margin="-178,-8,-181,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="539" VerticalAlignment="Top" Width="347" Source="/Images/FirstPage/img_FirstPageTut2.png" Margin="10,10,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut3" Header="" Margin="-178,-11,-183,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="525" VerticalAlignment="Top" Width="352" Source="/Images/FirstPage/img_FirstPageTut3.png" Margin="10,27,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut4" Header="" Margin="-181,-12,-178,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="523" VerticalAlignment="Top" Width="341" Source="/Images/FirstPage/img_FirstPageTut4.png" Margin="22,33,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut5" Header="" Margin="-180,-9,-179,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="524" VerticalAlignment="Top" Width="335" Source="/Images/FirstPage/img_FirstPageTut5.png" Margin="22,20,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+            </phone:Pivot>
 
         </Grid>
     </Grid>

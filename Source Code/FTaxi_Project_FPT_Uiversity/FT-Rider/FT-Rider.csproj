@@ -215,6 +215,11 @@
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
+    <Content Include="Images\FirstPage\img_FirstPageTut1.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut2.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />
     <Content Include="Images\Icons\icon_AddressOffice.jpg" />
     <Content Include="Images\Icons\icon_Edit.jpg" />
