@@ -72,9 +72,9 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <Image x:Name="img_AddressIcon" HorizontalAlignment="Left" Height="48" Margin="12,62,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_AddressOffice.jpg"/>
-            <Image x:Name="img_AddressIcon_Copy" HorizontalAlignment="Left" Height="48" Margin="12,122,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_AddressOffice.jpg"/>
-            <Image x:Name="img_AddressIcon_Copy1" HorizontalAlignment="Left" Height="48" Margin="12,182,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_AddressOffice.jpg"/>
+            <Image x:Name="img_AddressIcon" HorizontalAlignment="Left" Height="48" Margin="12,62,0,0" VerticalAlignment="Top" Width="48" />
+            <Image x:Name="img_AddressIcon_Copy" HorizontalAlignment="Left" Height="48" Margin="12,122,0,0" VerticalAlignment="Top" Width="48" />
+            <Image x:Name="img_AddressIcon_Copy1" HorizontalAlignment="Left" Height="48" Margin="12,182,0,0" VerticalAlignment="Top" Width="48" />
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbl_AddWorkPlace" HorizontalAlignment="Center" Margin="178.161,10,176.839,0" TextWrapping="Wrap" Text="CÔNG TY" VerticalAlignment="Top" FontSize="24"/>

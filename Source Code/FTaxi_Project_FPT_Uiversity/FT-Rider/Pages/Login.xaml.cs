@@ -104,12 +104,9 @@ namespace FT_Rider.Pages
         private void txt_Account_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             txt_Account.Text = String.Empty;
-<<<<<<< HEAD
             txt_Account.Foreground = new SolidColorBrush(Colors.Black);            
-=======
             txt_Account.Foreground = new SolidColorBrush(Colors.Black);
             txt_Account.BorderBrush.Opacity = 20;
->>>>>>> 5aa2b247c2beac7e665a077e44d54b9d1c96f437
         }
 
     }

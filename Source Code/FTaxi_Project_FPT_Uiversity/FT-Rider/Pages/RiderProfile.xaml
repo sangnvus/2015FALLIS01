@@ -117,7 +117,7 @@
             <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">
                 <Grid Height="430">
                     <toolkit:ListPicker FullModeItemTemplate="{Binding lpkFullItemTemplate}"
-                		x:Name="lpk_Language" Margin="84,316,0,-71" Background="{x:Null}" BorderBrush="{x:Null}" DisplayMemberPath=""/>
+                		x:Name="lpk_Language" Margin="84,305,0,-60" Background="{x:Null}" BorderBrush="{x:Null}" DisplayMemberPath=""/>
                     <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,79,0,0" Source="/Images/Others/img_DemoAvatar2.jpg">
                         <Image.Clip>
                             <EllipseGeometry

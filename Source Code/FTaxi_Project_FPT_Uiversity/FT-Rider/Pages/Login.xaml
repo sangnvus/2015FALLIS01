@@ -58,8 +58,7 @@
                     <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
                 </Button.BorderBrush>
             </Button>
-<<<<<<< HEAD
-            <TextBox x:Name="txt_Account" Margin="10,240,10,0" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" FontSize="{StaticResource Textbox_FontSize}" Tap="txt_Account_Tap" InputScope="EmailUserName">
+           <TextBox x:Name="txt_Account" Margin="10,240,10,0" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" FontSize="{StaticResource Textbox_FontSize}" Tap="txt_Account_Tap" InputScope="EmailUserName">
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
                 </TextBox.BorderBrush>
@@ -79,32 +78,27 @@
                 </TextBox.Background>
             </TextBox>
             <TextBlock x:Name="tbl_LostPassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource Text_LinkTextFontSize}" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/>
-            <Button x:Name="tbn_Register" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize}" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" >
-=======
-            <TextBox x:Name="txt_Account" Margin="10,240,10,0" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Height="72" VerticalAlignment="Top" Padding="60,2,2,2" Foreground="#FFCFCFCF" FontSize="{StaticResource Textbox_FontSize}" Tap="txt_Account_Tap" InputScope="EmailUserName"/>
-            <TextBox x:Name="txt_Password" Margin="10,312,10,0" TextWrapping="Wrap" Text="*********" InputScope="Password" Height="72" VerticalAlignment="Top" Padding="60,2,2,2" Foreground="#FFCFCFCF" FontSize="23"/>
-            <TextBlock x:Name="tbl_LostPassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource Text_LinkTextFontSize}" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/>
+            <!--Button x:Name="tbn_Register1" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize}" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" /-->
+            <!--TextBox x:Name="txt_Account1" Margin="10,240,10,0" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Height="72" VerticalAlignment="Top" Padding="60,2,2,2" Foreground="#FFCFCFCF" FontSize="{StaticResource Textbox_FontSize}" Tap="txt_Account_Tap" InputScope="EmailUserName"/-->
+            <!--TextBox x:Name="txt_Password1" Margin="10,312,10,0" TextWrapping="Wrap" Text="*********" InputScope="Password" Height="72" VerticalAlignment="Top" Padding="60,2,2,2" Foreground="#FFCFCFCF" FontSize="23"/-->
+            <!--TextBlock x:Name="tbl_LostPassword1" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource Text_LinkTextFontSize}" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/-->
             <Button x:Name="tbn_Register" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="22" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" >
->>>>>>> 5aa2b247c2beac7e665a077e44d54b9d1c96f437
-                <Button.Background>
-                    <SolidColorBrush Color="#FFE28C01"/>
-                </Button.Background>
-                <Button.BorderBrush>
-                    <SolidColorBrush Color="White" Opacity="0.2"/>
-                </Button.BorderBrush>
+                 <Button.Background>
+                  <SolidColorBrush Color="#FFE28C01"/>
+                 </Button.Background>
+                 <Button.BorderBrush>
+                   <SolidColorBrush Color="White" Opacity="0.2"/>
+                  </Button.BorderBrush>
             </Button>
             <Image x:Name="img_FTaxiLogo" Source="/Images/Logos/img_Ftaxi_logo.png" Margin="0,60,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="130" Width="330"/>
-<<<<<<< HEAD
+
             <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="42" Margin="25,255,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
-            <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="42" Margin="25,327,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserPassword.jpg"/>
-=======
-            <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="48" Margin="22,252,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UseID.jpg"/>
-            <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="48" Margin="22,324,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UserPassword.jpg"/>
->>>>>>> 5aa2b247c2beac7e665a077e44d54b9d1c96f437
-
+                <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="42" Margin="25,327,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserPassword.jpg"/>
+                <!--Image x:Name="img_UserIdIcon1" HorizontalAlignment="Left" Height="48" Margin="22,252,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UseID.jpg"/-->
+            <!--Image x:Name="img_PasswordIcon1" HorizontalAlignment="Left" Height="48" Margin="22,324,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UserPassword.jpg"/-->
         </Grid>
-
-        <!--ContentPanel - place additional content here-->
+   
+    <!--ContentPanel - place additional content here-->
     </Grid>
 
 </phone:PhoneApplicationPage>
