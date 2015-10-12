@@ -94,7 +94,8 @@
 
             <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="42" Margin="25,255,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
                 <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="42" Margin="25,327,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserPassword.jpg"/>
-                <!--Image x:Name="img_UserIdIcon1" HorizontalAlignment="Left" Height="48" Margin="22,252,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UseID.jpg"/-->
+            <Button Content="View Maps" HorizontalAlignment="Center" Margin="0,599,0,0" VerticalAlignment="Top" Tap="Button_Tap"/>
+            <!--Image x:Name="img_UserIdIcon1" HorizontalAlignment="Left" Height="48" Margin="22,252,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UseID.jpg"/-->
             <!--Image x:Name="img_PasswordIcon1" HorizontalAlignment="Left" Height="48" Margin="22,324,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UserPassword.jpg"/-->
         </Grid>
    

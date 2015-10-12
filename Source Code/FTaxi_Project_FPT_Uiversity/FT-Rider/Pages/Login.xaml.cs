@@ -109,5 +109,10 @@ namespace FT_Rider.Pages
             txt_Account.BorderBrush.Opacity = 20;
         }
 
+        private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+        }
+
     }
 }
