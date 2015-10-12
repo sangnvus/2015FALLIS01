@@ -41,7 +41,7 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
-            <phone:Pivot HorizontalAlignment="Center" Height="597" Margin="37,85,36,0" Title="" VerticalAlignment="Top" Width="383">
+            <phone:Pivot x:Name="pvi_Tut" HorizontalAlignment="Center" Height="597" Margin="37,85,36,0" Title="" VerticalAlignment="Top" Width="383" SelectionChanged="pvi_Tut_SelectionChanged">
                 <phone:PivotItem x:Name="pvi_Tut1" CacheMode="{x:Null}" Header="" Margin="-159,10,-160,-489">
                     <Grid>
                         <Image HorizontalAlignment="Left" Height="469" VerticalAlignment="Top" Width="333" Source="/Images/FirstPage/img_FirstPageTut1.png"/>
