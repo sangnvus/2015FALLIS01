@@ -24,8 +24,9 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
-            <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" Margin="0,0,-11,0" Width="467" Loaded="map_RiderMap_Loaded"/>
-            <TextBox x:Name="txt_AddressInput" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,80,0" TextInput="txt_AddressInput_TextInput"/>
+            <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="768" Margin="-14,0,-11,0" Width="481" Loaded="map_RiderMap_Loaded"/>
+            <Rectangle Fill="#FF9C9C9C" Height="37" Margin="-14,731,-14,0" Stroke="Black" VerticalAlignment="Top" HorizontalAlignment="Left" Width="484" Opacity="0.5"/>
+            <TextBox x:Name="txt_AddressInput" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Margin="0,0,80,0" TextInput="txt_AddressInput_TextInput" BorderBrush="#BFAEAEAE"/>
             <Button x:Name="btn_Route" Content="GO" HorizontalAlignment="Left" Margin="364,0,-11,0" VerticalAlignment="Top" Width="103" Tap="btn_Route_Tap">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
@@ -34,6 +35,8 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
+            <TextBlock x:Name="tbl_DistanceBlock" HorizontalAlignment="Left" Margin="0,735,0,0" TextWrapping="Wrap" Text="Distance:" VerticalAlignment="Top" Width="88" Foreground="Black"/>
+            <TextBlock x:Name="tbl_Distance" HorizontalAlignment="Left" Margin="93,735,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" Foreground="Black"/>
 
         </Grid>
     </Grid>

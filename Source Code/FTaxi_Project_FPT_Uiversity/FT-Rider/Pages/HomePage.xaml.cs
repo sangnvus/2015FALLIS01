@@ -35,11 +35,15 @@ namespace FT_Rider.Pages
         VibrateController VibrateController = VibrateController.Default;
 
 
+        //For Distance
+        Double distanceMeter;
+
+
 
         public HomePage()
         {
             InitializeComponent();
-            this.GetMyPosition();
+            this.GetMyPosition();            
         }
 
         public async void GetMyPosition()
@@ -138,6 +142,9 @@ namespace FT_Rider.Pages
                 }
 
                 MyQuery.Dispose();
+                //get Distance
+                distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
+                tbl_Distance.Text = distanceMeter.ToString() + "m";
             }
         }
 
@@ -156,6 +163,24 @@ namespace FT_Rider.Pages
                 this.GetCoordinates(txt_AddressInput.Text);
             }
             
+        }
+
+        //Get Distance from Your Position to Distance
+        public static double GetTotalDistance(IEnumerable<GeoCoordinate> coordinates)
+        {
+            double result = 0;
+
+            if (coordinates.Count() > 1)
+            {
+                GeoCoordinate previous = coordinates.First();
+
+                foreach (var current in coordinates)
+                {
+                    result += previous.GetDistanceTo(current);
+                }
+            }
+
+            return result;
         }
 
         private void txt_AddressInput_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
