@@ -144,7 +144,7 @@ namespace FT_Rider.Pages
                 MyQuery.Dispose();
                 //get Distance
                 distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
-                tbl_Distance.Text = distanceMeter.ToString() + "m";
+                tbl_Distance.Text = distanceMeter.ToString() + " m";
             }
         }
 

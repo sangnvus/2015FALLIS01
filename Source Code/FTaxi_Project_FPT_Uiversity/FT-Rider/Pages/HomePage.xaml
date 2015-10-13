@@ -36,7 +36,7 @@
                 </Button.Background>
             </Button>
             <TextBlock x:Name="tbl_DistanceBlock" HorizontalAlignment="Left" Margin="0,735,0,0" TextWrapping="Wrap" Text="Distance:" VerticalAlignment="Top" Width="88" Foreground="Black"/>
-            <TextBlock x:Name="tbl_Distance" HorizontalAlignment="Left" Margin="93,735,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" Foreground="Black"/>
+            <TextBlock x:Name="tbl_Distance" HorizontalAlignment="Left" Margin="93,735,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="151" Foreground="Black" Text="0 m"/>
 
         </Grid>
     </Grid>
