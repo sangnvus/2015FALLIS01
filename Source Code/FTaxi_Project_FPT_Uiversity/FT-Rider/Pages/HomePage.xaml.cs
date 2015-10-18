@@ -14,6 +14,7 @@ using Windows.Devices.Geolocation;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Devices;
+using System.Windows.Media.Imaging;
 
 namespace FT_Rider.Pages
 {
@@ -144,26 +145,9 @@ namespace FT_Rider.Pages
                 MyQuery.Dispose();
                 //get Distance
                 distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
-                tbl_Distance.Text = distanceMeter.ToString() + " m";
             }
         }
 
-        private void btn_Route_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            VibrateController.Start(TimeSpan.FromSeconds(0.1));
-            String inputText = txt_AddressInput.Text.Trim();
-            String errStr = "";
-            if (inputText.Equals(""))
-            {
-                errStr += "Vui lòng nhập địa chỉ điểm đích";
-                MessageBox.Show(errStr);
-            }
-            else
-            {
-                this.GetCoordinates(txt_AddressInput.Text);
-            }
-            
-        }
 
         //Get Distance from Your Position to Distance
         public static double GetTotalDistance(IEnumerable<GeoCoordinate> coordinates)
@@ -183,17 +167,13 @@ namespace FT_Rider.Pages
             return result;
         }
 
-        private void txt_AddressInput_TextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
-        {
-            txt_AddressInput.Text = String.Empty;
-            txt_AddressInput.Foreground = new SolidColorBrush(Colors.Black);
-        }
 
         private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
         {
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
+
     }
     public static class GeoCoordinateConvert
     {
