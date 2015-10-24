@@ -15,25 +15,55 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Canvas x:Name="canvas" Height="768" Width="480" ManipulationCompleted="canvas_ManipulationCompleted" ManipulationDelta="canvas_ManipulationDelta" ManipulationStarted="canvas_ManipulationStarted" Background="Black">
+        <!--For Open Menu-->
+        <Canvas.Resources>
+            <Storyboard x:Name="moveAnimation">
+                <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True" />
+            </Storyboard>
+        </Canvas.Resources>
+        <!--LayoutRoot is the root grid where all page content is placed-->
+        <Canvas x:Name="LayoutRoot" Height="768" Width="900" Canvas.Left="-420" CacheMode="BitmapCache">
+            <Grid x:Name="grv_Menu" Height="768" Canvas.Left="1" Canvas.Top="1" Width="420">
+                <Border x:Name="bd_Menu" BorderThickness="1" Margin="0,-1,0,0">
+                    <Border.BorderBrush>
+                        <SolidColorBrush Color="{StaticResource Menu_BackgroundColor_BlackGray}"/>
+                    </Border.BorderBrush>
+                    <Border.Background>
+                        <SolidColorBrush Color="{StaticResource Menu_BackgroundColor_BlackGray}"/>
+                    </Border.Background>
+                </Border>
+                <TextBlock x:Name="tbl_Menu1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 1" VerticalAlignment="Top" Height="35" Width="192" Margin="60,25,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Menu2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 2" VerticalAlignment="Top" Height="35" Width="192" Margin="60,75,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Menu3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 3" VerticalAlignment="Top" Height="35" Width="192" Margin="60,125,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Menu4" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 4" VerticalAlignment="Top" Height="35" Width="192" Margin="60,175,0,0" FontSize="22"/>
+                <Image Margin="10,25,375,708" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                <Image Margin="10,75,375,658" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                <Image Margin="10,125,375,608" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                <Image Margin="10,175,375,558" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+            </Grid>
+            <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
+                <Grid x:Name="grv_navbar" Margin="0,0,0,712">
+                    <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Margin="0,0,0,-0.2"/>
+                    <Image x:Name="img_FtaxiLogo" HorizontalAlignment="Center" Height="41" Margin="187,5,186,0" VerticalAlignment="Top" Width="107" Source="/Images/Logos/img_Ftaxi_logo_whileBG.png"/>
+                    <Button x:Name="btn_OpenMenu" Content="" HorizontalAlignment="Left" Margin="-11,-15,0,0" VerticalAlignment="Top" Width="86" BorderBrush="{x:Null}" Height="83" Click="btn_OpenMenu_Click">
+                        <Button.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="/Images/Icons/icon-OpenMenu.png"/>
+                        </Button.Background>
+                    </Button>
+                </Grid>
+                <Grid x:Name="grv_Map" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
+                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded"/>
+                    <Grid x:Name="grv_CarsBar" HorizontalAlignment="Left" Height="76" VerticalAlignment="Top" Width="480" Margin="0,636,0,0">
+                        <Image x:Name="img_CarBar_Background" HorizontalAlignment="Left" Height="76" VerticalAlignment="Top" Width="480" Source="/Images/CarsBar/img_Carbar_background.png"/>
+                        <Image x:Name="img_CarBar_SavingCar" Height="65" Width="160" HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Saving_NotSelected.png"/>
+                        <Image x:Name="img_CarBar_EconomyCar" Height="65" Width="160" HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Economy_Selected.png" Margin="160,0,0,0"/>
+                        <Image x:Name="img_CarBar_LuxuryCar" Height="65" Width="160" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Luxury_NotSelected.png" Margin="0"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Canvas>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-            <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="716" Margin="-14,-17,-11,0" Width="481" Loaded="map_RiderMap_Loaded"/>
-
-        </Grid>
-        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
-        <Image x:Name="img_FtaxiLogo" HorizontalAlignment="Center" Height="41" Margin="0,5,0,0" VerticalAlignment="Top" Width="107" Source="/Images/Logos/img_Ftaxi_logo_whileBG.png"/>
-        <Button x:Name="btn_OpenMenu" Content="" HorizontalAlignment="Left" Margin="-11,-15,0,0" VerticalAlignment="Top" Width="86" BorderBrush="{x:Null}" Height="83">
-            <Button.Background>
-                <ImageBrush Stretch="Fill" ImageSource="/Images/Icons/icon-OpenMenu.png"/>
-            </Button.Background>
-        </Button>
-    </Grid>
+    </Canvas>
 
 </phone:PhoneApplicationPage>

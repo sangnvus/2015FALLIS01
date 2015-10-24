@@ -215,6 +215,13 @@
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
+    <Content Include="Images\CarsBar\img_Carbar_background.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Luxury_NotSelected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Luxury_Selected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Saving_NotSelected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Saving_Selected.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut1.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut2.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
@@ -264,6 +271,7 @@
     <Folder Include="DataFiles\" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>

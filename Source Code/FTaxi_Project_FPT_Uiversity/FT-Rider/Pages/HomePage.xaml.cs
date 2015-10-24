@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Devices;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
+using FT_Rider.Resources;
 
 namespace FT_Rider.Pages
 {
@@ -39,11 +41,19 @@ namespace FT_Rider.Pages
         //For Distance
         Double distanceMeter;
 
+        //For menu
+        double initialPosition;
+        bool _viewMoved = false;
 
 
         public HomePage()
         {
             InitializeComponent();
+
+            //to localize the ApplicationBar
+            //VisualStateManager.GoToState(this, "Normal", false);
+            //BuildLocalizedApplicationBar();
+            
             this.GetMyPosition();            
         }
 
@@ -174,6 +184,69 @@ namespace FT_Rider.Pages
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
 
+        private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+            var left = Canvas.GetLeft(LayoutRoot);
+            if (left > -100)
+            {
+                MoveViewWindow(-420);
+            }
+            else
+            {
+                MoveViewWindow(0);
+            }
+        }
+        void MoveViewWindow(double left)
+        {
+            _viewMoved = true;
+            ((Storyboard)canvas.Resources["moveAnimation"]).SkipToFill();
+            ((DoubleAnimation)((Storyboard)canvas.Resources["moveAnimation"]).Children[0]).To = left;
+            ((Storyboard)canvas.Resources["moveAnimation"]).Begin();
+        }
+
+
+        private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
+        {
+            if (e.DeltaManipulation.Translation.X != 0)
+                Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
+        }
+
+        private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
+        {
+            _viewMoved = false;
+            initialPosition = Canvas.GetLeft(LayoutRoot);
+        }
+
+        private void canvas_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
+        {
+            var left = Canvas.GetLeft(LayoutRoot);
+            if (_viewMoved)
+                return;
+            if (Math.Abs(initialPosition - left) < 100)
+            {
+                //bouncing back
+                MoveViewWindow(initialPosition);
+                return;
+            }
+            //change of state
+            if (initialPosition - left > 0)
+            {
+                //slide to the left
+                if (initialPosition > -420)
+                    MoveViewWindow(-420);
+                else
+                    MoveViewWindow(-840);
+            }
+            else
+            {
+                //slide to the right
+                if (initialPosition < -420)
+                    MoveViewWindow(-420);
+                else
+                    MoveViewWindow(0);
+            }
+        }
     }
     public static class GeoCoordinateConvert
     {
