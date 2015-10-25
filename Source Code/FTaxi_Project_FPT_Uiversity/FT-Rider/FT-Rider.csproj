@@ -93,6 +93,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\DemoTaxi.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -255,6 +256,10 @@
     <Content Include="Images\Others\img_DemoAvatar.jpg" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Vertical_Down.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Vertical_Up.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />

@@ -45,16 +45,23 @@ namespace FT_Rider.Pages
         double initialPosition;
         bool _viewMoved = false;
 
+        //for show taxi layer
+        MapLayer myTaxiLayer = new MapLayer();
+
 
         public HomePage()
         {
             InitializeComponent();
 
-            //to localize the ApplicationBar
-            //VisualStateManager.GoToState(this, "Normal", false);
-            //BuildLocalizedApplicationBar();
-            
-            this.GetMyPosition();            
+            //get My Position
+            this.GetMyPosition();   
+         
+            //Get taxi demo
+            this.getTaxiPosition(47.678603, -122.134643);
+            this.getTaxiPosition(47.678574, -122.127626);
+            this.getTaxiPosition(47.676291, -122.134407);
+            //Show taxi point to maps
+            map_RiderMap.Layers.Add(myTaxiLayer);
         }
 
         public async void GetMyPosition()
@@ -70,10 +77,10 @@ namespace FT_Rider.Pages
             //Show maker
             // Create a small circle to mark the current location.
             Ellipse myCircle = new Ellipse();
-            myCircle.Fill = new SolidColorBrush(Colors.Blue);
-            myCircle.Height = 15;
-            myCircle.Width = 15;
-            myCircle.Opacity = 30;
+            myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
+            myCircle.Height = 13;
+            myCircle.Width = 13;
+            myCircle.Opacity = 50;
             // Create a MapOverlay to contain the circle.
             MapOverlay myLocationOverlay = new MapOverlay();
             myLocationOverlay.Content = myCircle;
@@ -171,6 +178,33 @@ namespace FT_Rider.Pages
             }
 
             return result;
+        }
+
+        //Get Taxi Position
+        public void getTaxiPosition(double lat, double lng)
+        {
+            GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
+            // Create a small circle to mark the current location.
+            Ellipse myCircle = new Ellipse();
+            myCircle.Fill = new SolidColorBrush(Colors.Red);
+            myCircle.Height = 10;
+            myCircle.Width = 10;
+            myCircle.Opacity = 50;
+
+            //Create taxi icon on map
+            Image taxiIcon = new Image();
+            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon_Horizontal_Right.png", UriKind.Relative));
+
+
+            // Create a MapOverlay to contain the circle.
+            MapOverlay myTaxiOvelay = new MapOverlay();
+            //myTaxiOvelay.Content = myCircle;
+            myTaxiOvelay.Content = taxiIcon;
+            myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
+            myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
+
+            //Add to Map's Layer
+            myTaxiLayer.Add(myTaxiOvelay);
         }
 
         //For open menu
