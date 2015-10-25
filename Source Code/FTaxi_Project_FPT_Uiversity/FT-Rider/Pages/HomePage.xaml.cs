@@ -89,8 +89,6 @@ namespace FT_Rider.Pages
         private async void GetCoordinates(String addressInput)
         {
             MyGeolocator.DesiredAccuracyInMeters = 5;
-
-
             try
             {
                 MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
@@ -108,7 +106,6 @@ namespace FT_Rider.Pages
                 MessageBox.Show(ex.Message);
             }
 
-
             Mygeocodequery = new GeocodeQuery();
             Mygeocodequery.SearchTerm = addressInput;
             Mygeocodequery.GeoCoordinate = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude);
@@ -116,7 +113,6 @@ namespace FT_Rider.Pages
 
             Mygeocodequery.QueryCompleted += Mygeocodequery_QueryCompleted;
             Mygeocodequery.QueryAsync();
-
         }
 
 
@@ -177,13 +173,7 @@ namespace FT_Rider.Pages
             return result;
         }
 
-
-        private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
-            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
-        }
-
+        //For open menu
         private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
         {
 
@@ -246,6 +236,41 @@ namespace FT_Rider.Pages
                 else
                     MoveViewWindow(0);
             }
+            //End For open menu
+        }
+
+        //Maps api key
+        private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
+            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
+        }
+
+        //Change Car
+        private void img_CarBar_SavingCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_Selected.png", UriKind.Relative));
+            img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
+            img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
+        }
+
+        private void img_CarBar_EconomyCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
+            img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_Selected.png", UriKind.Relative));
+            img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
+        }
+
+        private void img_CarBar_LuxuryCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
+            img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
+            img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_Selected.png", UriKind.Relative));
+        }
+
+        private void img_CallTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MessageBox.Show("This function is being improved");
         }
     }
     public static class GeoCoordinateConvert
