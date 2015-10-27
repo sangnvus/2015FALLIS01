@@ -106,14 +106,7 @@ namespace FT_Rider.Pages
         //}
 
         private void btn_Click_Register(object sender, RoutedEventArgs e)
-        {
-            //Email Validation
-            //if (!Regex.IsMatch(txt_Email.Text.Trim(), @"^[A-Za-z_][a-zA-Z0-9_\s]*$"))
-            //{
-            //    MessageBox.Show("Invalid Email");
-            //}
-
-            //Password length Validation
+        {          
             if (txt_Password.Text.Length < 6)
             {
                 MessageBox.Show("Độ dài mật khẩu ít nhất 6 ký tự!");
@@ -199,21 +192,43 @@ namespace FT_Rider.Pages
         private void txt_Email_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             txt_Email.Text = String.Empty;
+            txt_Email.Foreground = new SolidColorBrush(Colors.Black);
+            txt_Email.BorderBrush.Opacity = 20;
         }
 
         private void txt_FirstAndMiddleName_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             txt_FirstAndMiddleName.Text = String.Empty;
+            txt_FirstAndMiddleName.Foreground = new SolidColorBrush(Colors.Black);
+            txt_FirstAndMiddleName.BorderBrush.Opacity = 20;
         }
 
         private void txt_Name_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             txt_Name.Text = String.Empty;
+            txt_Name.Foreground = new SolidColorBrush(Colors.Black);
+            txt_Name.BorderBrush.Opacity = 20;
         }
 
         private void txt_PhoneNumber_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
             txt_PhoneNumber.Text = String.Empty;
+            txt_PhoneNumber.Foreground = new SolidColorBrush(Colors.Black);
+            txt_PhoneNumber.BorderBrush.Opacity = 20;
+        }
+
+        private void txt_Password_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_Password.Text = String.Empty;
+            txt_Password.Foreground = new SolidColorBrush(Colors.Black);
+            txt_Password.BorderBrush.Opacity = 20;
+        }
+
+        private void txt_PasswordAgain_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_PasswordAgain.Text = String.Empty;
+            txt_PasswordAgain.Foreground = new SolidColorBrush(Colors.Black);
+            txt_PasswordAgain.BorderBrush.Opacity = 20;
         }
         
     }

@@ -69,13 +69,17 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <TextBox x:Name="txt_Password" Margin="10,312,10,0" TextWrapping="Wrap" Text="*********" InputScope="Password" Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" Foreground="#FFCFCFCF" FontSize="23">
+            <TextBox x:Name="txt_Password" Margin="10,312,10,0" TextWrapping="Wrap" Text="******" InputScope="Password" Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" FontSize="23" Tap="txt_Password_Tap" GotFocus="txt_Password_GotFocus" >
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
                 </TextBox.BorderBrush>
                 <TextBox.Background>
-                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
+                    <SolidColorBrush Color="{StaticResource textbox_backgroundColor}"/>
                 </TextBox.Background>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                </TextBox.Foreground>
+                
             </TextBox>
             <TextBlock x:Name="tbl_LostPassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource Text_LinkTextFontSize}" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/>
             <!--Button x:Name="tbn_Register1" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize}" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" /-->

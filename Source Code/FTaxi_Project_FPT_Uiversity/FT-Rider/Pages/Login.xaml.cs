@@ -105,13 +105,27 @@ namespace FT_Rider.Pages
         {
             txt_Account.Text = String.Empty;
             txt_Account.Foreground = new SolidColorBrush(Colors.Black);            
-            txt_Account.Foreground = new SolidColorBrush(Colors.Black);
             txt_Account.BorderBrush.Opacity = 20;
         }
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+        }
+        private void txt_Password_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            txt_Password.Text = String.Empty;
+            txt_Password.Foreground = new SolidColorBrush(Colors.Black);
+            txt_Password.BorderBrush.Opacity = 20;
+            
+        }
+
+        private void txt_Password_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox txt = (TextBox)sender;
+            txt.Text = string.Empty;
+            txt.GotFocus -= txt_Password_GotFocus;
+
         }
 
     }
