@@ -22,6 +22,8 @@ namespace FT_Rider.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
+        //Demo Git Update
+
         //For Store Points
         List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
 
