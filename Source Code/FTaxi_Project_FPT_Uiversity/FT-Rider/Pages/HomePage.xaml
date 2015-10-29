@@ -58,7 +58,7 @@
                         <ColumnDefinition Width="356*"/>
                         <ColumnDefinition Width="125*"/>
                     </Grid.ColumnDefinitions>
-                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="649" Width="480" Loaded="map_RiderMap_Loaded" Grid.ColumnSpan="2"/>
+                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.ColumnSpan="2"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
                     <TextBox x:Name="tb_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top">
@@ -83,7 +83,7 @@
                         <Image x:Name="img_CarBar_Background" HorizontalAlignment="Left" Height="76" VerticalAlignment="Top" Width="480" Source="/Images/CarsBar/img_Carbar_background.png" Grid.ColumnSpan="2"/>
                         <Image x:Name="img_CarBar_SavingCar" Height="65" Width="160" HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Saving_NotSelected.png" Tap="img_CarBar_SavingCar_Tap"/>
                         <Image x:Name="img_CarBar_EconomyCar" Height="65" Width="160" HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Economy_Selected.png" Margin="160,0,0,0" Tap="img_CarBar_EconomyCar_Tap" Grid.ColumnSpan="2"/>
-                        <Image x:Name="img_CarBar_LuxuryCar" Height="65" Width="160" HorizontalAlignment="Right" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Luxury_NotSelected.png" Margin="0" Tap="img_CarBar_LuxuryCar_Tap" Grid.Column="1"/>
+                        <Image x:Name="img_CarBar_LuxuryCar" Height="65" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Luxury_NotSelected.png" Tap="img_CarBar_LuxuryCar_Tap" Grid.Column="1" HorizontalAlignment="Right" Width="160"/>
                     </Grid>
                 </Grid>
             </Grid>
