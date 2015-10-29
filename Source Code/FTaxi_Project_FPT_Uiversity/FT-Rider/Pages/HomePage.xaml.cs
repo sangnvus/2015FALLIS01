@@ -22,8 +22,6 @@ namespace FT_Rider.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
-        //Demo Git Update
-
         //For Store Points
         List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
 
@@ -47,7 +45,7 @@ namespace FT_Rider.Pages
         double initialPosition;
         bool _viewMoved = false;
 
-        //for show taxi layer
+        //For show taxi layer
         MapLayer myTaxiLayer = new MapLayer();
 
 
@@ -56,12 +54,13 @@ namespace FT_Rider.Pages
             InitializeComponent();
 
             //get My Position
-            this.GetMyPosition();   
-         
+            this.GetMyPosition();
+
             //Get taxi demo
             this.getTaxiPosition(47.678603, -122.134643);
             this.getTaxiPosition(47.678574, -122.127626);
             this.getTaxiPosition(47.676291, -122.134407);
+
             //Show taxi point to maps
             map_RiderMap.Layers.Add(myTaxiLayer);
         }
@@ -192,16 +191,32 @@ namespace FT_Rider.Pages
             myCircle.Height = 10;
             myCircle.Width = 10;
             myCircle.Opacity = 50;
+         
 
             //Create taxi icon on map
             Image taxiIcon = new Image();
             taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon_Horizontal_Right.png", UriKind.Relative));
+            
+            //Add a tapped event
+            taxiIcon.Tap += taxiIcon_Tap;
+
+            //Create Name label
+            TextBlock taxiName = new TextBlock();
+            taxiName.Text = "ACB Taxi";
+            taxiName.FontSize = 10;
+
+            //Create Grid to store a taxi with Name
+            Grid taxiGrid = new Grid();
+            taxiGrid.RowDefinitions.Add(new RowDefinition());
+            taxiGrid.SetValue(Grid.RowProperty, 2);
+            taxiGrid.Children.Add(taxiIcon);
+            taxiGrid.Children.Add(taxiName);
 
 
             // Create a MapOverlay to contain the circle.
             MapOverlay myTaxiOvelay = new MapOverlay();
             //myTaxiOvelay.Content = myCircle;
-            myTaxiOvelay.Content = taxiIcon;
+            myTaxiOvelay.Content = taxiGrid;
             myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
             myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
 
@@ -209,7 +224,19 @@ namespace FT_Rider.Pages
             myTaxiLayer.Add(myTaxiOvelay);
         }
 
-        //For open menu
+        //Tapped event
+        void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Hide Step 01
+            this.grv_Step01.Visibility = Visibility.Collapsed;
+            
+        }
+
+
+
+
+
+        //========================= BEGIN For open menu =========================//
         private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
         {
 
@@ -272,43 +299,53 @@ namespace FT_Rider.Pages
                 else
                     MoveViewWindow(0);
             }
-            //End For open menu
         }
+        //========================= END For open menu =========================//
 
-        //Maps api key
+
+
+
+
+        //========================= BEGIN Map API key =========================//
         private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
         {
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
+        //========================= END Map API key =========================//
 
-        //Change Car
+
+
+
+        //========================= BEGIN Taxi type bar =========================//
         private void img_CarBar_SavingCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_Selected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
         }
-
         private void img_CarBar_EconomyCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_Selected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
         }
-
         private void img_CarBar_LuxuryCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_Selected.png", UriKind.Relative));
         }
+        //========================= END Taxi type bar =========================//
+
 
         private void img_CallTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             MessageBox.Show("This function is being improved");
         }
     }
+
+    //========================= BEGIN GeoCoordinateConvert Function =========================//
     public static class GeoCoordinateConvert
     {
         public static GeoCoordinate ConvertGeocoordinate(Geocoordinate geocoordinate)
@@ -324,6 +361,6 @@ namespace FT_Rider.Pages
                 geocoordinate.Heading ?? Double.NaN
                 );
         }
-
     }
+    //========================= END GeoCoordinateConvert Function =========================//
 }
