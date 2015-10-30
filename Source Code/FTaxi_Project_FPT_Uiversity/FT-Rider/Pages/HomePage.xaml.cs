@@ -195,7 +195,7 @@ namespace FT_Rider.Pages
 
             //Create taxi icon on map
             Image taxiIcon = new Image();
-            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon_Horizontal_Right.png", UriKind.Relative));
+            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
             
             //Add a tapped event
             taxiIcon.Tap += taxiIcon_Tap;
@@ -204,7 +204,7 @@ namespace FT_Rider.Pages
             TextBlock taxiName = new TextBlock();
             taxiName.HorizontalAlignment = HorizontalAlignment.Center;
             taxiName.Text = "ACB Taxi";
-            taxiName.FontSize = 13;
+            taxiName.FontSize = 12;
             taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
 
             //Create Stack Panel to group icon, taxi name, ...            
