@@ -151,6 +151,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\Others\Thumbs.db" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -180,6 +181,11 @@
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
+    <Content Include="Images\FirstPage\img_FirstPageTut1.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut2.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
+    <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />
     <Content Include="Images\Icons\icon_Email.jpg" />
     <Content Include="Images\Icons\icon_NewUserPassword.jpg" />
@@ -189,8 +195,11 @@
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
+    <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
     <Content Include="Images\Others\img_AppNavbar.png" />
+    <Content Include="Images\Others\img_DemoAvatar.jpg" />
+    <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
