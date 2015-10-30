@@ -58,7 +58,7 @@
                         <ColumnDefinition Width="356*"/>
                         <ColumnDefinition Width="125*"/>
                     </Grid.ColumnDefinitions>
-                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="648" Width="480" Loaded="map_RiderMap_Loaded" Grid.ColumnSpan="2"/>
+                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.ColumnSpan="2"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
                     <TextBox x:Name="tb_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top">
@@ -85,6 +85,35 @@
                         <Image x:Name="img_CarBar_EconomyCar" Height="65" Width="160" HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Economy_Selected.png" Margin="160,0,0,0" Tap="img_CarBar_EconomyCar_Tap" Grid.ColumnSpan="2"/>
                         <Image x:Name="img_CarBar_LuxuryCar" Height="65" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Luxury_NotSelected.png" Tap="img_CarBar_LuxuryCar_Tap" Grid.Column="1" HorizontalAlignment="Right" Width="160"/>
                     </Grid>
+                </Grid>
+                <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom" d:IsHidden="True">
+                    <Image x:Name="img_RequestTaxiBackground" Height="491" VerticalAlignment="Bottom" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png"/>
+                    <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,391,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
+                    <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg"/>
+                    <TextBlock x:Name="tbl_PickupAddress" HorizontalAlignment="Left" Margin="15,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="455">
+                    	<Run Text="P1705 Tòa nhà HH2 Bắc Hà"/>
+                    	<LineBreak/>
+                    	<Run Text="Lê Văn Lương"/>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_DestinationAddress" HorizontalAlignment="Left" Margin="15,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="455">
+                    	<Run Text="Tòa nhà FPT Cầu Giấy, Duy Tân, Dịch Vọng Hậu"/>
+                    	<LineBreak/>
+                    	<Run Text="Cầu Giấy"/>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_EstimatedCost" HorizontalAlignment="Left" Margin="349,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="37" Width="121">
+                    	<Run FontWeight="Bold" FontSize="30" Text="48.000 "/>
+                    	<Run Text="đ"/>
+                    </TextBlock>
+                    <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DemoAvatar2.jpg" Margin="10,309,0,0">
+                        <Image.Clip>
+                            <EllipseGeometry
+                    			Center="50,50"
+                    			RadiusX="45"
+                    			RadiusY="45" />
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock x:Name="tbl_RiderName" HorizontalAlignment="Left" Margin="10,405,0,0" TextWrapping="Wrap" Text="Apolong" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>
+                    <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Left" Margin="422,361,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </Grid>
         </Canvas>
