@@ -1,0 +1,75 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="FT_Driver.Pages.FisrtRunningAppIntro"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/BackgroundImages/img_HomePageBackground.jpg" Stretch="Fill"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Image x:Name="img_FTaxiLogo" HorizontalAlignment="Center" Height="60" Margin="156,28,156,0" VerticalAlignment="Top" Width="144" Source="/Images/Logos/img_Ftaxi_logo.png"/>
+            <Ellipse x:Name="el_Page1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="182,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page2" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="204,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page3" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="226,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page4" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="249,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Ellipse x:Name="el_Page5" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="271,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+            <Button x:Name="btn_Go" Content="BỎ QUA ĐỂ BẮT ĐẦU" HorizontalAlignment="Center" Margin="0,687,0,0" VerticalAlignment="Top" Tap="btn_Go_Tap" Width="456" FontSize="{StaticResource Button_FontSize}" FontWeight="Medium">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="0.2"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </Button.Background>
+            </Button>
+            <phone:Pivot x:Name="pvi_Tut" HorizontalAlignment="Center" Height="597" Margin="37,85,36,0" Title="" VerticalAlignment="Top" Width="383" SelectionChanged="pvi_Tut_SelectionChanged">
+                <phone:PivotItem x:Name="pvi_Tut1" CacheMode="{x:Null}" Header="" Margin="-159,10,-160,-489">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="469" VerticalAlignment="Top" Width="333" Source="/Images/FirstPage/img_FirstPageTut1.png"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut2" Header="" Margin="-178,-8,-181,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="539" VerticalAlignment="Top" Width="347" Source="/Images/FirstPage/img_FirstPageTut2.png" Margin="10,10,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut3" Header="" Margin="-178,-11,-183,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="525" VerticalAlignment="Top" Width="352" Source="/Images/FirstPage/img_FirstPageTut3.png" Margin="10,27,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut4" Header="" Margin="-181,-12,-178,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="523" VerticalAlignment="Top" Width="341" Source="/Images/FirstPage/img_FirstPageTut4.png" Margin="22,33,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+                <phone:PivotItem x:Name="pvi_Tut5" Header="" Margin="-180,-9,-179,-587">
+                    <Grid>
+                        <Image HorizontalAlignment="Left" Height="524" VerticalAlignment="Top" Width="335" Source="/Images/FirstPage/img_FirstPageTut5.png" Margin="22,20,0,0"/>
+                    </Grid>
+                </phone:PivotItem>
+            </phone:Pivot>
+
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>
