@@ -229,6 +229,9 @@
     <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
+    <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiGridBackground.png" />
     <Content Include="Images\Icons\icon-OpenMenu.png" />
     <Content Include="Images\Icons\icon-OpenMenu_OnTab.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />

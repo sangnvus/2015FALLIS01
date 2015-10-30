@@ -63,6 +63,10 @@ namespace FT_Rider.Pages
 
             //Show taxi point to maps
             map_RiderMap.Layers.Add(myTaxiLayer);
+
+            //hide all step sceen
+            this.grv_Step02.Visibility = Visibility.Collapsed;
+           
         }
 
         public async void GetMyPosition()
@@ -191,12 +195,12 @@ namespace FT_Rider.Pages
             myCircle.Height = 10;
             myCircle.Width = 10;
             myCircle.Opacity = 50;
-         
+
 
             //Create taxi icon on map
             Image taxiIcon = new Image();
             taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
-            
+
             //Add a tapped event
             taxiIcon.Tap += taxiIcon_Tap;
 
@@ -209,7 +213,7 @@ namespace FT_Rider.Pages
 
             //Create Stack Panel to group icon, taxi name, ...            
             Rectangle taxiNameBackground = new Rectangle();
-            taxiNameBackground.Height = 20 ;
+            taxiNameBackground.Height = 18;
             taxiNameBackground.Width = taxiName.ToString().Length + 20;
             taxiNameBackground.RadiusX = 9;
             taxiNameBackground.RadiusY = 7;
@@ -244,7 +248,9 @@ namespace FT_Rider.Pages
         {
             //Hide Step 01
             this.grv_Step01.Visibility = Visibility.Collapsed;
-            
+
+            //Show Step 02
+            this.grv_Step02.Visibility = Visibility.Visible;
         }
 
 
@@ -320,18 +326,6 @@ namespace FT_Rider.Pages
 
 
 
-
-        //========================= BEGIN Map API key =========================//
-        private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
-            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
-        }
-        //========================= END Map API key =========================//
-
-
-
-
         //========================= BEGIN Taxi type bar =========================//
         private void img_CarBar_SavingCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -354,11 +348,35 @@ namespace FT_Rider.Pages
         //========================= END Taxi type bar =========================//
 
 
+
+
+
+        //========================= BEGIN Car type bar chose =========================//
         private void img_CallTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            MessageBox.Show("This function is being improved");
+            this.grv_Step01.Visibility = Visibility.Collapsed;
+            this.grv_Step02.Visibility = Visibility.Visible;
         }
+        //========================= END Car type bar chose =========================//
+
+
+
+        //========================= BEGIN Map API key =========================//
+        private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
+            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
+        }
+        //========================= END Map API key =========================//
+
+
     }
+
+
+
+
+
+
 
     //========================= BEGIN GeoCoordinateConvert Function =========================//
     public static class GeoCoordinateConvert
