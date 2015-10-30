@@ -246,6 +246,7 @@
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
     <Content Include="Images\Icons\icon_VisaCard.jpg" />
+    <Content Include="Images\Icons\img_MyPositionIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
     <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Email.png" />

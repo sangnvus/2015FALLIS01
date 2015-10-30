@@ -80,21 +80,27 @@ namespace FT_Rider.Pages
             this.map_RiderMap.Center = MyGeoCoordinate;
             this.map_RiderMap.ZoomLevel = 16;
 
+
             //Show maker
-            // Create a small circle to mark the current location.
-            Ellipse myCircle = new Ellipse();
-            myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
-            myCircle.Height = 13;
-            myCircle.Width = 13;
-            myCircle.Opacity = 50;
+
+            // Create a small Point to mark the current location.
+            Image myPositionIcon = new Image();
+            myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_MyPositionIcon.png", UriKind.Relative));
+            myPositionIcon.Height = 35;
+            myPositionIcon.Width = 25;
+
             // Create a MapOverlay to contain the circle.
             MapOverlay myLocationOverlay = new MapOverlay();
-            myLocationOverlay.Content = myCircle;
-            myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+            myLocationOverlay.Content = myPositionIcon;
+
+            //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
+            myLocationOverlay.PositionOrigin = new Point(0.9, 0.9); 
             myLocationOverlay.GeoCoordinate = MyGeoCoordinate;
+
             // Create a MapLayer to contain the MapOverlay.
             MapLayer myLocationLayer = new MapLayer();
             myLocationLayer.Add(myLocationOverlay);
+
             // Add the MapLayer to the Map.
             map_RiderMap.Layers.Add(myLocationLayer);
         }
