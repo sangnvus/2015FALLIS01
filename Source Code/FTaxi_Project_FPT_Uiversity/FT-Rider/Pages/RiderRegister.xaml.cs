@@ -189,33 +189,7 @@ namespace FT_Rider.Pages
             }
         }
 
-        private void txt_Email_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            txt_Email.Text = String.Empty;
-            txt_Email.Foreground = new SolidColorBrush(Colors.Black);
-            txt_Email.BorderBrush.Opacity = 20;
-        }
-
-        private void txt_FirstAndMiddleName_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            txt_FirstAndMiddleName.Text = String.Empty;
-            txt_FirstAndMiddleName.Foreground = new SolidColorBrush(Colors.Black);
-            txt_FirstAndMiddleName.BorderBrush.Opacity = 20;
-        }
-
-        private void txt_Name_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            txt_Name.Text = String.Empty;
-            txt_Name.Foreground = new SolidColorBrush(Colors.Black);
-            txt_Name.BorderBrush.Opacity = 20;
-        }
-
-        private void txt_PhoneNumber_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            txt_PhoneNumber.Text = String.Empty;
-            txt_PhoneNumber.Foreground = new SolidColorBrush(Colors.Black);
-            txt_PhoneNumber.BorderBrush.Opacity = 20;
-        }
+       
 
         private void txt_Password_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -229,6 +203,93 @@ namespace FT_Rider.Pages
             txt_PasswordAgain.Text = String.Empty;
             txt_PasswordAgain.Foreground = new SolidColorBrush(Colors.Black);
             txt_PasswordAgain.BorderBrush.Opacity = 20;
+        }
+
+        private void txt_Email_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Email.Text == "abc@gmail.com")
+            {
+                txt_Email.Text = "";
+                SolidColorBrush Brush1 = new SolidColorBrush();
+                Brush1.Color = Colors.Black;
+                txt_Email.Foreground = Brush1;
+            }
+        }
+
+        private void txt_Email_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Email.Text == String.Empty)
+            {
+                txt_Email.Text = "abc@gmail.com";
+                SolidColorBrush Brush2 = new SolidColorBrush();
+                Brush2.Color = Colors.Gray;
+                txt_Email.Foreground = Brush2;
+            }
+        }
+
+        private void txt_FirstAndMiddleName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_FirstAndMiddleName.Text == "Họ và tên đệm")
+            {
+                txt_FirstAndMiddleName.Text = "";
+                SolidColorBrush Brush1 = new SolidColorBrush();
+                Brush1.Color = Colors.Black;
+                txt_FirstAndMiddleName.Foreground = Brush1;
+            }
+        }
+
+        private void txt_FirstAndMiddleName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if(txt_FirstAndMiddleName.Text == String.Empty){
+                txt_FirstAndMiddleName.Text = "Họ và tên đệm";
+                SolidColorBrush Brush2 = new SolidColorBrush();
+                Brush2.Color = Colors.Gray;
+                txt_FirstAndMiddleName.Foreground = Brush2;
+            }
+        }
+
+        private void txt_Name_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Name.Text == "Tên")
+            {
+                txt_Name.Text = "";
+                SolidColorBrush Brush1 = new SolidColorBrush();
+                Brush1.Color = Colors.Black;
+                txt_Name.Foreground = Brush1;
+            }
+        }
+
+        private void txt_Name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Name.Text == String.Empty)
+            {
+                txt_Name.Text = "Tên";
+                SolidColorBrush Brush2 = new SolidColorBrush();
+                Brush2.Color = Colors.Gray;
+                txt_Name.Foreground = Brush2;
+            }
+        }
+
+        private void txt_PhoneNumber_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_PhoneNumber.Text == "0123456789")
+            {
+                txt_PhoneNumber.Text = "";
+                SolidColorBrush Brush1 = new SolidColorBrush();
+                Brush1.Color = Colors.Black;
+                txt_PhoneNumber.Foreground = Brush1;
+            }
+        }
+
+        private void txt_PhoneNumber_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txt_PhoneNumber.Text == String.Empty)
+            {
+                txt_PhoneNumber.Text = "0123456789";
+                SolidColorBrush Brush2 = new SolidColorBrush();
+                Brush2.Color = Colors.Gray;
+                txt_PhoneNumber.Foreground = Brush2;
+            }
         }
         
     }

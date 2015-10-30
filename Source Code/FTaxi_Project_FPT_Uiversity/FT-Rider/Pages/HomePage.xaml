@@ -34,10 +34,10 @@
                     </Border.Background>
                     <Canvas/>
                 </Border>
-                <TextBlock x:Name="tbl_Menu1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 1" VerticalAlignment="Top" Height="35" Width="192" Margin="60,25,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Menu2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 2" VerticalAlignment="Top" Height="35" Width="192" Margin="60,75,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Menu3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 3" VerticalAlignment="Top" Height="35" Width="192" Margin="60,125,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Menu4" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Menu 4" VerticalAlignment="Top" Height="35" Width="192" Margin="60,175,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Menu1" Text="Gọi xe" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,25,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Menu2" Text="Thông tin" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,75,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Menu3" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,125,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Menu4" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,175,0,0" FontSize="22"/>
                 <Image Margin="10,25,375,708" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
                 <Image Margin="10,75,375,658" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
                 <Image Margin="10,125,375,608" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>

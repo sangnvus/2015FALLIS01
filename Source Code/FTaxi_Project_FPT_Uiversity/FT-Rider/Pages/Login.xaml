@@ -58,7 +58,7 @@
                     <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
                 </Button.BorderBrush>
             </Button>
-           <TextBox x:Name="txt_Account" Margin="10,240,10,0" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" FontSize="{StaticResource Textbox_FontSize}" Tap="txt_Account_Tap" InputScope="EmailUserName">
+            <TextBox x:Name="txt_Account" Text="abc@gmail.com" Margin="10,240,10,0" TextWrapping="Wrap" Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" FontSize="{StaticResource Textbox_FontSize}"  GotFocus="txt_Account_GotFocus" LostFocus="txt_Account_LostFocus" InputScope="EmailUserName">
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
                 </TextBox.BorderBrush>

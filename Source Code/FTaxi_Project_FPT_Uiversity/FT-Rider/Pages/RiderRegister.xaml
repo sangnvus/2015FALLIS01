@@ -53,7 +53,7 @@
                 <ColumnDefinition Width="37*"/>
                 <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txt_Email" Margin="{StaticResource Layout_FirstItemMargin}" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="fuhl@fpt.edu.vn" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" MouseEnter="txt_Email_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}" Background="White" InputScope="EmailUserName">
+            <TextBox x:Name="txt_Email" Margin="{StaticResource Layout_FirstItemMargin}" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="abc@gmail.com" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" Padding="{StaticResource TextBox_TextPadingLeft}" Background="White" InputScope="EmailUserName" GotFocus="txt_Email_GotFocus">
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
                 </TextBox.BorderBrush>
@@ -83,7 +83,7 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,280,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="Họ và tên đệm" Grid.ColumnSpan="2" Height="72" MouseEnter="txt_FirstAndMiddleName_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}">
+            <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,280,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="Họ và tên đệm" Grid.ColumnSpan="2" Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_FirstAndMiddleName_GotFocus" LostFocus="txt_FirstAndMiddleName_LostFocus">
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
@@ -94,7 +94,7 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <TextBox x:Name="txt_Name" Margin="0,338,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="Tên" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_Name_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}">
+            <TextBox x:Name="txt_Name" Margin="0,338,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="Tên" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_Name_GotFocus" LostFocus="txt_Name_LostFocus">
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
@@ -105,7 +105,7 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <TextBox x:Name="txt_PhoneNumber" Margin="0,394,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="0123456789" Grid.ColumnSpan="2"  Height="72" MouseEnter="txt_PhoneNumber_MouseEnter" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="Number">
+            <TextBox x:Name="txt_PhoneNumber" Margin="0,394,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="0123456789" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="Number" GotFocus="txt_PhoneNumber_GotFocus" TextChanged="txt_PhoneNumber_TextChanged">
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>

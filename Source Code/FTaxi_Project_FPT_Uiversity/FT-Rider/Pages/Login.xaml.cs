@@ -101,12 +101,7 @@ namespace FT_Rider.Pages
             NavigationService.Navigate(new Uri("/Pages/RiderLostPassword.xaml", UriKind.Relative));
         }
 
-        private void txt_Account_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            txt_Account.Text = String.Empty;
-            txt_Account.Foreground = new SolidColorBrush(Colors.Black);            
-            txt_Account.BorderBrush.Opacity = 20;
-        }
+        
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -126,6 +121,28 @@ namespace FT_Rider.Pages
             txt.Text = string.Empty;
             txt.GotFocus -= txt_Password_GotFocus;
 
+        }
+
+        private void txt_Account_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Account.Text == "abc@gmail.com")
+            {
+                txt_Account.Text = "";
+                SolidColorBrush Brush1 = new SolidColorBrush();
+                Brush1.Color = Colors.Black;
+                txt_Account.Foreground = Brush1;
+            }
+        }
+
+        private void txt_Account_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Account.Text == String.Empty)
+            {
+                txt_Account.Text = "abc@gmail.com";
+                SolidColorBrush Brush2 = new SolidColorBrush();
+                Brush2.Color = Colors.Gray;
+                txt_Account.Foreground = Brush2;
+            }
         }
 
     }
