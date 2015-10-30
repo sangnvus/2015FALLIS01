@@ -66,6 +66,7 @@ namespace FT_Rider.Pages
 
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;
+            this.grv_Step03.Visibility = Visibility.Collapsed;
            
         }
 

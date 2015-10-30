@@ -91,29 +91,35 @@
                     <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,391,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg"/>
                     <TextBlock x:Name="tbl_PickupAddress" HorizontalAlignment="Left" Margin="15,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="455">
-                    	<Run Text="P1705 Tòa nhà HH2 Bắc Hà"/>
-                    	<LineBreak/>
-                    	<Run Text="Lê Văn Lương"/>
+                		<Run Text="P1705 Tòa nhà HH2 Bắc Hà"/>
+                		<LineBreak/>
+                		<Run Text="Lê Văn Lương"/>
                     </TextBlock>
                     <TextBlock x:Name="tbl_DestinationAddress" HorizontalAlignment="Left" Margin="15,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="455">
-                    	<Run Text="Tòa nhà FPT Cầu Giấy, Duy Tân, Dịch Vọng Hậu"/>
-                    	<LineBreak/>
-                    	<Run Text="Cầu Giấy"/>
+                		<Run Text="Tòa nhà FPT Cầu Giấy, Duy Tân, Dịch Vọng Hậu"/>
+                		<LineBreak/>
+                		<Run Text="Cầu Giấy"/>
                     </TextBlock>
-                    <TextBlock x:Name="tbl_EstimatedCost" HorizontalAlignment="Left" Margin="349,256,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="37" Width="121">
-                    	<Run FontWeight="Bold" FontSize="30" Text="48.000 "/>
-                    	<Run Text="đ"/>
+                    <TextBlock x:Name="tbl_EstimatedCost" HorizontalAlignment="Left" Margin="349,255,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="37" Width="121">
+                		<Run FontWeight="Bold" FontSize="30" Text="48.000 "/>
+                		<Run Text="đ"/>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_PromoteCode" HorizontalAlignment="Left" Margin="349,314,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="37" Width="121" TextAlignment="Right">
+                		<Run FontSize="30" Text="KM1758"/>
                     </TextBlock>
                     <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DemoAvatar2.jpg" Margin="10,309,0,0">
                         <Image.Clip>
                             <EllipseGeometry
-                    			Center="50,50"
-                    			RadiusX="45"
-                    			RadiusY="45" />
+                				Center="50,50"
+                				RadiusX="45"
+                				RadiusY="45" />
                         </Image.Clip>
                     </Image>
                     <TextBlock x:Name="tbl_RiderName" HorizontalAlignment="Left" Margin="10,405,0,0" TextWrapping="Wrap" Text="Apolong" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>
                     <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Left" Margin="422,361,0,0" VerticalAlignment="Top"/>
+                </Grid>
+                <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
+                    <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_/img_CallCenter.jpg"/>
                 </Grid>
             </Grid>
         </Canvas>
