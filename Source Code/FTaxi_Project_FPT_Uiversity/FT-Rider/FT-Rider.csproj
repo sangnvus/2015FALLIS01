@@ -229,6 +229,10 @@
     <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
+    <Content Include="Images\Grid_NoCarYet\img_CallCenter.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiGridBackground.png" />
     <Content Include="Images\Icons\icon-OpenMenu.png" />
     <Content Include="Images\Icons\icon-OpenMenu_OnTab.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />
@@ -242,6 +246,7 @@
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
     <Content Include="Images\Icons\icon_VisaCard.jpg" />
+    <Content Include="Images\Icons\img_MyPositionIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
     <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Email.png" />
@@ -256,6 +261,7 @@
     <Content Include="Images\Others\img_DemoAvatar.jpg" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
+    <Content Include="Images\Taxis\img_CarIcon.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />
     <Content Include="Images\Taxis\img_CarIcon_Vertical_Down.png" />
