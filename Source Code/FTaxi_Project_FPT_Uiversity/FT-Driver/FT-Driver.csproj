@@ -93,6 +93,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -106,8 +107,8 @@
     <Compile Include="Pages\DriverChangePassword.xaml.cs">
       <DependentUpon>DriverChangePassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DriverProfile.xaml.cs">
-      <DependentUpon>DriverProfile.xaml</DependentUpon>
+    <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
+      <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -137,12 +138,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\DriverChangePassword.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\DriverProfile.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Pages\FisrtRunningAppIntro.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Login.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -205,7 +206,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Classes\" />
     <Folder Include="DataFiles\" />
   </ItemGroup>
   <ItemGroup>
