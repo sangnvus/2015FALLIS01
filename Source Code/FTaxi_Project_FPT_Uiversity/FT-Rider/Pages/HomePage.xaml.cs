@@ -73,7 +73,7 @@ namespace FT_Rider.Pages
             GeoCoordinate MyGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(MyGeocoordinate);
             MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
             this.map_RiderMap.Center = MyGeoCoordinate;
-            this.map_RiderMap.ZoomLevel = 15;
+            this.map_RiderMap.ZoomLevel = 16;
 
             //Show maker
             // Create a small circle to mark the current location.
@@ -200,23 +200,38 @@ namespace FT_Rider.Pages
             //Add a tapped event
             taxiIcon.Tap += taxiIcon_Tap;
 
-            //Create Name label
+            //Create Taxi Name 
             TextBlock taxiName = new TextBlock();
+            taxiName.HorizontalAlignment = HorizontalAlignment.Center;
             taxiName.Text = "ACB Taxi";
-            taxiName.FontSize = 10;
+            taxiName.FontSize = 13;
+            taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
 
-            //Create Grid to store a taxi with Name
-            Grid taxiGrid = new Grid();
-            taxiGrid.RowDefinitions.Add(new RowDefinition());
-            taxiGrid.SetValue(Grid.RowProperty, 2);
-            taxiGrid.Children.Add(taxiIcon);
-            taxiGrid.Children.Add(taxiName);
+            //Create Stack Panel to group icon, taxi name, ...            
+            Rectangle taxiNameBackground = new Rectangle();
+            taxiNameBackground.Height = 20 ;
+            taxiNameBackground.Width = taxiName.ToString().Length + 20;
+            taxiNameBackground.RadiusX = 9;
+            taxiNameBackground.RadiusY = 7;
+            //taxiNameBackground.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)171, (byte)171, (byte)171)); //RBG color for #ababab
+            taxiNameBackground.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)213, (byte)235, (byte)255)); //RBG color for #d5ebff
 
+            Grid taxiNameGrid = new Grid();
+            taxiNameGrid.Margin = new Thickness(0, 4, 0, 4); //Margin Top and Bottom 4px
+            taxiNameGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            taxiNameGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            taxiNameGrid.Children.Add(taxiNameBackground);
+            taxiNameGrid.Children.Add(taxiName);
+
+            StackPanel taxiStackPanel = new StackPanel();
+            //taxiStackPanel.Margin  = new Thickness(5, 0, 5, 0);
+            taxiStackPanel.Children.Add(taxiIcon);
+            taxiStackPanel.Children.Add(taxiNameGrid);
 
             // Create a MapOverlay to contain the circle.
             MapOverlay myTaxiOvelay = new MapOverlay();
             //myTaxiOvelay.Content = myCircle;
-            myTaxiOvelay.Content = taxiGrid;
+            myTaxiOvelay.Content = taxiStackPanel;
             myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
             myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
 

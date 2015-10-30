@@ -58,7 +58,7 @@
                         <ColumnDefinition Width="356*"/>
                         <ColumnDefinition Width="125*"/>
                     </Grid.ColumnDefinitions>
-                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.ColumnSpan="2"/>
+                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="648" Width="480" Loaded="map_RiderMap_Loaded" Grid.ColumnSpan="2"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
                     <TextBox x:Name="tb_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top">
