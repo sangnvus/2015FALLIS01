@@ -55,7 +55,7 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
                 <Button.BorderBrush>
-                    <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
+                    <SolidColorBrush Color="White" Opacity="{StaticResource ButtonBorderOpacity_20}"/>
                 </Button.BorderBrush>
             </Button>
             <TextBox x:Name="txt_Account" InputScope="EmailUserName" Text="Xin mời nhập Email tại đây" Margin="10,240,10,0" Height="72" Foreground="Gray" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}"  GotFocus="txt_Account_GotFocus" LostFocus="txt_Account_LostFocus"  FontSize="19" />

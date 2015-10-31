@@ -98,12 +98,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DriverAddHomePlace.xaml.cs">
-      <DependentUpon>DriverAddHomePlace.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\DriverAddWorkPlace.xaml.cs">
-      <DependentUpon>DriverAddWorkPlace.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\DriverChangePassword.xaml.cs">
       <DependentUpon>DriverChangePassword.xaml</DependentUpon>
     </Compile>
@@ -112,6 +106,15 @@
     </Compile>
     <Compile Include="Pages\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverProfile.xaml.cs">
+      <DependentUpon>DriverProfile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverAddWorkPlace.xaml.cs">
+      <DependentUpon>DriverAddWorkPlace.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverAddHomePlace.xaml.cs">
+      <DependentUpon>DriverAddHomePlace.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
@@ -129,14 +132,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\DriverAddHomePlace.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\DriverAddWorkPlace.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\DriverChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,8 +144,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\DriverProfile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DriverAddWorkPlace.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DriverAddHomePlace.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\Icons\PNG\Thumbs.db" />
     <None Include="Images\Others\Thumbs.db" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -187,13 +195,23 @@
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />
+    <Content Include="Images\Icons\icon_Edit.jpg" />
     <Content Include="Images\Icons\icon_Email.jpg" />
+    <Content Include="Images\Icons\icon_language.png" />
+    <Content Include="Images\Icons\icon_money.png" />
     <Content Include="Images\Icons\icon_NewUserPassword.jpg" />
     <Content Include="Images\Icons\icon_PhoneNumber.jpg" />
     <Content Include="Images\Icons\icon_UseID.jpg" />
     <Content Include="Images\Icons\icon_UseID.png" />
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
+    <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_Email.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_NewUserPassword.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_PhoneNumber.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />

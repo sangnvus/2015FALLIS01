@@ -5,14 +5,18 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+    <phone:PhoneApplicationPage.Resources>
+        <Thickness x:Key="textbox_Padding_60">60,2,2,2</Thickness>
+    </phone:PhoneApplicationPage.Resources>
+
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -35,30 +39,64 @@
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush Stretch="Fill" ImageSource="/Images/BackgroundImages/img_AppSettingsBackground.jpg"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28"/>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30*"/>
-                <ColumnDefinition Width="89*"/>
-                <ColumnDefinition Width="337*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock x:Name="tbl_HomePlace" HorizontalAlignment="Left" Margin="76,-40,0,0" TextWrapping="Wrap" Text="Nhà Riêng" VerticalAlignment="Top" Grid.Column="2" Width="122" FontSize="25"/>
-            <TextBlock x:Name="tbl_Save" HorizontalAlignment="Left" Margin="279,-40,0,0" TextWrapping="Wrap" Text="Lưu" VerticalAlignment="Top" RenderTransformOrigin="2.746,0.535" Grid.Column="2" Width="45" FontSize="25"/>
-            <TextBlock x:Name="tbl_Address" HorizontalAlignment="Left" Margin="11.037,38,0,0" TextWrapping="Wrap" Text="Địa Chỉ" VerticalAlignment="Top" Grid.Column="1"/>
-            <TextBlock x:Name="tbl_City" HorizontalAlignment="Left" Margin="10,96,0,0" TextWrapping="Wrap" Text="Thành Phố" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-            <TextBox x:Name="txt_Address" HorizontalAlignment="Left" Height="72" Margin="0,13,-12,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="349" Grid.Column="2"/>
-            <TextBox x:Name="txt_City" HorizontalAlignment="Left" Height="72" Margin="0,71,-12,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="349" Grid.Column="2"/>
+            <TextBox x:Name="txt_Address" HorizontalAlignment="Center" Height="72" Margin="{StaticResource LayoutFirstItemMargin}" TextWrapping="Wrap" Text="118/8/1 Nguyễn Khánh Toàn" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Background="White" Tap="txt_Address_Tap">
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Opacity="0.2" Color="{StaticResource TextboxBorderColor_Cyan}"/>
+                </TextBox.BorderBrush>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource TextBoxTextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBox x:Name="txt_City" HorizontalAlignment="Center" Height="72" Margin="0,164,0,0" TextWrapping="Wrap" Text="Hà Nội" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Tap="txt_City_Tap">
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource TextboxBorderColor_Cyan}" Opacity="0.2"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource TextboxBackgroudColor}"/>
+                </TextBox.Background>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource TextBoxTextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <Button x:Name="btn_Save" Content="Lưu lại" HorizontalAlignment="Center" Margin="0,236,0,0" VerticalAlignment="Top" Width="456" Foreground="White" FontSize="{StaticResource Button_FontSize}">
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="0.2"/>
+                </Button.BorderBrush>
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource ButtonBackgroundColor_Blue}"/>
+                </Button.Background>
+            </Button>
+            <TextBox x:Name="txt_State" HorizontalAlignment="Center" Height="72" Margin="0,107,0,0" TextWrapping="Wrap" Text="Cầu Giấy" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Tap="txt_State_Tap">
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource TextboxBorderColor_Cyan}" Opacity="0.2"/>
+                </TextBox.BorderBrush>
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource TextboxBackgroudColor}"/>
+                </TextBox.Background>
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource TextBoxTextColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <Image x:Name="img_TextboxIcon" HorizontalAlignment="Left" Height="42" Margin="15,65,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
+            <Image x:Name="img_TextboxIcon_Copy" HorizontalAlignment="Left" Height="42" Margin="15,122,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
+            <Image x:Name="img_TextboxIcon_Copy1" HorizontalAlignment="Left" Height="42" Margin="15,179,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
         </Grid>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
+        <TextBlock x:Name="tbl_AddHomePlace" HorizontalAlignment="Center" Margin="177.834,10,177.166,0" TextWrapping="Wrap" Text="NHÀ RIÊNG" VerticalAlignment="Top" FontSize="24"/>
+
     </Grid>
 
 </phone:PhoneApplicationPage>
