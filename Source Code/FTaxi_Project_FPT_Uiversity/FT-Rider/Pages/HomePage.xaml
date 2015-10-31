@@ -54,14 +54,10 @@
                     </Button>
                 </Grid>
                 <Grid x:Name="grv_Map" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="356*"/>
-                        <ColumnDefinition Width="125*"/>
-                    </Grid.ColumnDefinitions>
-                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.ColumnSpan="2"/>
+                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <TextBox x:Name="tb_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top">
+                    <TextBox x:Name="tb_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" TextInputStart="tb_InputAddress_TextInputStart" KeyDown="tb_InputAddress_KeyDown">
                         <TextBox.Foreground>
                             <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                         </TextBox.Foreground>
@@ -119,7 +115,7 @@
                     <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Left" Margin="422,361,0,0" VerticalAlignment="Top"/>
                 </Grid>
                 <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
-                    <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_/img_CallCenter.jpg"/>
+                    <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg" d:IsHidden="True"/>
                 </Grid>
             </Grid>
         </Canvas>

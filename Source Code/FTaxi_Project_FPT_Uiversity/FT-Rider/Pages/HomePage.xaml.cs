@@ -56,7 +56,7 @@ namespace FT_Rider.Pages
             //get My Position
             this.GetMyPosition();
 
-            //Get taxi demo
+            //HardCode Taxi position
             this.getTaxiPosition(47.678603, -122.134643);
             this.getTaxiPosition(47.678574, -122.127626);
             this.getTaxiPosition(47.676291, -122.134407);
@@ -77,7 +77,8 @@ namespace FT_Rider.Pages
             Geocoordinate MyGeocoordinate = MyGeoPosition.Coordinate;
             GeoCoordinate MyGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(MyGeocoordinate);
             MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-            this.map_RiderMap.Center = MyGeoCoordinate;
+            //Adjust map on the phone screen - 0.001500 to move up the map
+            this.map_RiderMap.Center = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude - 0.001500, MyGeoPosition.Coordinate.Longitude);
             this.map_RiderMap.ZoomLevel = 16;
 
 
@@ -375,6 +376,24 @@ namespace FT_Rider.Pages
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
         //========================= END Map API key =========================//
+
+        private void tb_InputAddress_TextInputStart(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            tb_InputAddress.Text = String.Empty;
+        }
+
+        private void tb_InputAddress_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            //check if input is "Enter" key
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                string destinationAddress;
+                destinationAddress = tb_InputAddress.Text;
+                this.GetCoordinates(destinationAddress);
+
+            }
+        }
+       
 
 
     }
