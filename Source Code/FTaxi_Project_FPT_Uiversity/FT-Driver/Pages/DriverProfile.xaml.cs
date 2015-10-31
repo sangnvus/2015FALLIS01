@@ -14,6 +14,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using FT_Driver.Classes;
+using ListPickerDemo;
 
 
 
@@ -26,13 +27,17 @@ namespace FT_Driver.Pages
         IsolatedStorageFile ISOFile = IsolatedStorageFile.GetUserStoreForApplication();
         UserData ObjUserData = new UserData();
 
-        String[] Languages = { "Tiếng Việt", " Tiếng Anh" };
+        
         public DriverProfile()
         {
             
             
             InitializeComponent();
-            this.lpk_Language.ItemsSource = Languages;
+            lpk_Language.SetValue(Microsoft.Phone.Controls.ListPicker.ItemCountThresholdProperty, 3);
+            List<Language> source = new List<Language>();
+            source.Add(new Language() { Name = "Việt Nam", Logo = "VN" });
+            source.Add(new Language() { Name = "English", Logo = "EN" });
+            this.lpk_Language.ItemsSource = source;
           
 
             this.Loaded += DriverProfile_Loaded;

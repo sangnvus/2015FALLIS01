@@ -49,6 +49,23 @@
             <RowDefinition Height="768"/>
         </Grid.RowDefinitions>
 
+        <Grid.Resources>
+            <DataTemplate x:Name="PickerItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="#FF2E9FFF" Width="34" Height="34">
+                        <TextBlock Text="{Binding Logo}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="{Binding Name}" Margin="35 0 0 0"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Name="PickerFullModeItemTemplate">
+                <StackPanel Orientation="Horizontal" Margin="16 21 0 20">
+                    <TextBlock Text="{Binding Name}" Margin="16 0 0 0" FontSize="43" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+                    <TextBlock Text="language: "/>
+                    <TextBlock Text="{Binding Logo}" Foreground="Green"/>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
         <!--TitlePanel contains the name of the application and page title-->
 
 
@@ -112,8 +129,8 @@
             <Image x:Name="img_EditIcon_OfficeAddress" HorizontalAlignment="Left" Height="100" Margin="422,244,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_OfficeAddress_Tap"/>
             <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">
                 <Grid Height="430">
-                    <toolkit:ListPicker FullModeItemTemplate="{Binding lpkFullItemTemplate}"
-                		x:Name="lpk_Language" Margin="74,369,10,-124" Background="{x:Null}" BorderBrush="{x:Null}" DisplayMemberPath="" Foreground="Black"/>
+                    <toolkit:ListPicker FullModeItemTemplate="{StaticResource PickerFullModeItemTemplate}"
+                		x:Name="lpk_Language" Margin="0,376,10,-124" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black" ItemTemplate="{StaticResource PickerItemTemplate}"/>
                     <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,79,0,0" Source="/Images/Others/img_DemoAvatar2.jpg">
                         <Image.Clip>
                             <EllipseGeometry
@@ -135,7 +152,6 @@
             <Image x:Name="img_UserFName_Copy2" HorizontalAlignment="Left" Height="50" Margin="0,134,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Address.png"/>
             <Image x:Name="img_UserFName_Copy3" HorizontalAlignment="Left" Height="50" Margin="0,256,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
             <Image x:Name="icon_money" HorizontalAlignment="Left" Height="40" Margin="10,266,0,0" Grid.Row="1" VerticalAlignment="Top" Width="40" Source="/Images/Icons/icon_money.png" Grid.RowSpan="2"/>
-            <Image x:Name="icon_language" HorizontalAlignment="Left" Height="40" Margin="10,41,0,0" Grid.Row="2" VerticalAlignment="Top" Width="40" Source="/Images/Icons/icon_language.png" RenderTransformOrigin="0.7,2.15"/>
 
 
         </Grid>
