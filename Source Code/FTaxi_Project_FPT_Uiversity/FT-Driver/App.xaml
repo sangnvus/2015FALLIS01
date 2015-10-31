@@ -20,6 +20,8 @@
         <Color x:Key="TextboxBorderColor_Cyan">#FF81D7FF</Color>
         <Color x:Key="TextboxBackgroudColor">#FFF6F6F6</Color>
         <System:Double x:Key="TextboxOpacity_20">0.2</System:Double>
+        <System:Double x:Key="TextboxTextPayment">20</System:Double>
+        <TextAlignment x:Key="TextboxTextRight">Right</TextAlignment>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

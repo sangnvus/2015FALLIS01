@@ -203,12 +203,14 @@
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />
+    <Content Include="Images\Icons\icon_Customer.png" />
     <Content Include="Images\Icons\icon_Edit.jpg" />
     <Content Include="Images\Icons\icon_Email.jpg" />
     <Content Include="Images\Icons\icon_language.png" />
     <Content Include="Images\Icons\icon_money.png" />
     <Content Include="Images\Icons\icon_NewUserPassword.jpg" />
     <Content Include="Images\Icons\icon_PhoneNumber.jpg" />
+    <Content Include="Images\Icons\icon_stop.png" />
     <Content Include="Images\Icons\icon_UseID.jpg" />
     <Content Include="Images\Icons\icon_UseID.png" />
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
@@ -220,6 +222,7 @@
     <Content Include="Images\Icons\PNG\iconPNG_PhoneNumber.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
+    <Content Include="Images\Icons\icon_start.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
