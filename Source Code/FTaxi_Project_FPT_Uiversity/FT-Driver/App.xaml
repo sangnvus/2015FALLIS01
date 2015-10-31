@@ -19,6 +19,7 @@
         <System:Double x:Key="FontSizeTextboxText">23</System:Double>
         <Color x:Key="TextboxBorderColor_Cyan">#FF81D7FF</Color>
         <Color x:Key="TextboxBackgroudColor">#FFF6F6F6</Color>
+        <System:Double x:Key="TextboxOpacity_20">0.2</System:Double>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

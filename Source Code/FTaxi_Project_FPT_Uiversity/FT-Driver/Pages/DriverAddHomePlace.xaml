@@ -71,7 +71,7 @@
                     <SolidColorBrush Color="{StaticResource TextBoxTextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <Button x:Name="btn_Save" Content="Lưu lại" HorizontalAlignment="Center" Margin="0,236,0,0" VerticalAlignment="Top" Width="456" Foreground="White" FontSize="{StaticResource Button_FontSize}">
+            <Button x:Name="btn_Save" Content="Lưu lại" HorizontalAlignment="Center" Margin="0,236,0,0" VerticalAlignment="Top" Width="456" Foreground="White" FontSize="{StaticResource FontSizeTextboxText}">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="0.2"/>
                 </Button.BorderBrush>

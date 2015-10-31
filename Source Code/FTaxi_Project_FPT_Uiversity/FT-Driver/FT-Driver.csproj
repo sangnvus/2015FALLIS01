@@ -99,11 +99,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\DriverChangePassword.xaml.cs">
-      <DependentUpon>DriverChangePassword.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HomePayment.xaml.cs">
+      <DependentUpon>HomePayment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -116,6 +116,9 @@
     </Compile>
     <Compile Include="Pages\DriverAddHomePlace.xaml.cs">
       <DependentUpon>DriverAddHomePlace.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverChangePassword.xaml.cs">
+      <DependentUpon>DriverChangePassword.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
@@ -133,13 +136,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\DriverChangePassword.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\FisrtRunningAppIntro.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\HomePayment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Login.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -154,6 +157,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\DriverAddHomePlace.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\DriverChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

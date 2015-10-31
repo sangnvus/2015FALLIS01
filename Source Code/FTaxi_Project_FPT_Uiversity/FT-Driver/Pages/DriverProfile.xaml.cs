@@ -35,7 +35,7 @@ namespace FT_Driver.Pages
             InitializeComponent();
             lpk_Language.SetValue(Microsoft.Phone.Controls.ListPicker.ItemCountThresholdProperty, 3);
             List<Language> source = new List<Language>();
-            source.Add(new Language() { Name = "Việt Nam", Logo = "VN" });
+            source.Add(new Language() { Name = "Tiếng Việt", Logo = "VI" });
             source.Add(new Language() { Name = "English", Logo = "EN" });
             this.lpk_Language.ItemsSource = source;
           
