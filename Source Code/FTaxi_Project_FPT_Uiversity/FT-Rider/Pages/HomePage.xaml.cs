@@ -377,6 +377,24 @@ namespace FT_Rider.Pages
         }
         //========================= END Map API key =========================//
 
+        private void tb_InputAddress_TextInputStart(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            tb_InputAddress.Text = String.Empty;
+        }
+
+        private void tb_InputAddress_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            //check if input is "Enter" key
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                string destinationAddress;
+                destinationAddress = tb_InputAddress.Text;
+                this.GetCoordinates(destinationAddress);
+
+            }
+        }
+       
+
 
     }
 
