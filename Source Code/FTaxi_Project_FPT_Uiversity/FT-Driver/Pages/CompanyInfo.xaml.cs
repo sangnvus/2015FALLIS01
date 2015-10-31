@@ -10,9 +10,9 @@ using Microsoft.Phone.Shell;
 
 namespace FT_Driver.Pages
 {
-    public partial class DriverAddWorkPlace : PhoneApplicationPage
+    public partial class CompanyInfo : PhoneApplicationPage
     {
-        public DriverAddWorkPlace()
+        public CompanyInfo()
         {
             InitializeComponent();
         }

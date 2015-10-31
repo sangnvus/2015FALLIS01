@@ -26,6 +26,7 @@
         <System:Double x:Key="Textbox_BorderOpacity_20">0.2</System:Double>
         <Color x:Key="Rectang_StrokeColor">#FF7E7E7E</Color>
         <Color x:Key="Menu_BackgroundColor_BlackGray">#FF31363E</Color>
+        <System:Double x:Key="ButtonBorderOpacity_20">0.2</System:Double>
 
     </Application.Resources>
 
