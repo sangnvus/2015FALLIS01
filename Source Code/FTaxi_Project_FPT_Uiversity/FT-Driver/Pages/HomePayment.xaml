@@ -129,7 +129,7 @@
             <TextBox HorizontalAlignment="Left" Height="63" Margin="59,202,-7,0" Grid.Row="1" TextWrapping="Wrap" Text="Tòa nhà Detech, Cầu Giấy" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Width="428" FontSize="{StaticResource TextboxTextPayment}"/>
             <TextBlock HorizontalAlignment="Left" Margin="74,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="THÔNG TIN ĐƯỜNG ĐI KHÁCH HÀNG" VerticalAlignment="Top" Width="398" Foreground="#FF9B0E0E" FontWeight="Bold"/>
             <TextBlock HorizontalAlignment="Left" Margin="153,277,0,0" Grid.Row="1" TextWrapping="Wrap" Text="THANH TOÁN" Foreground="#FF9B0E0E" FontWeight="Bold" VerticalAlignment="Top"/>
-            <Button Content="Thanh Toán" HorizontalAlignment="Left" Margin="-4,272,0,0" Grid.Row="2" VerticalAlignment="Top" Height="75" Width="484">
+            <Button x:Name="btn_Payment" Content="Thanh Toán" HorizontalAlignment="Left" Margin="-4,272,0,0" Grid.Row="2" VerticalAlignment="Top" Height="75" Width="484" Tap="btn_Payment_Tap" >
                 <Button.Background>
                     <SolidColorBrush Color="{StaticResource ButtonBackgroundColor_Blue}"/>
                 </Button.Background>

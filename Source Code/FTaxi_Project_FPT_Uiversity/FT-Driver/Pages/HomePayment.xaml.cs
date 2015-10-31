@@ -16,5 +16,12 @@ namespace FT_Driver.Pages
         {
             InitializeComponent();
         }
+
+        
+
+        private void btn_Payment_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MessageBox.Show("Thanh toán thành công!");
+        }
     }
 }

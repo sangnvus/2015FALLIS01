@@ -5,31 +5,125 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
 
+
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Name="lpkItemTemplate">
+            <TextBlock Text="{Binding Country}" />
+        </DataTemplate>
+        <DataTemplate x:Name="lpkFullItemTemplate">
+            <TextBlock Text="{Binding Country}" Style="{StaticResource PhoneTextTitle2Style}"/>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="{StaticResource LayoutRootBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="768"/>
         </Grid.RowDefinitions>
 
+        <Grid.Resources>
+            <DataTemplate x:Name="PickerItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="#FF2E9FFF" Width="34" Height="34">
+                        <TextBlock Text="{Binding Logo}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="{Binding Name}" Margin="35 0 0 0"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Name="PickerFullModeItemTemplate">
+                <StackPanel Orientation="Horizontal" Margin="16 21 0 20">
+                    <TextBlock Text="{Binding Name}" Margin="16 0 0 0" FontSize="43" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+                    <TextBlock Text="language: "/>
+                    <TextBlock Text="{Binding Logo}" Foreground="Green"/>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60*"/>
+                <RowDefinition Height="361"/>
+                <RowDefinition Height="347*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="panel_name" Margin="0,37,-7,73" Opacity="0.7" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="White"/>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Rectangle x:Name="panel_moreInfor" Margin="-4,24,-3,70" Opacity="0.7" Grid.Row="2">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#FFF4F4F5"/>
+                </Rectangle.Fill>
+                <Rectangle.Stroke>
+                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Height="60" Width="120"/>
+            <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="722" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">
+                <Grid Height="328"/>
+
+
+            </StackPanel>
+            <Rectangle x:Name="line3_Copy" HorizontalAlignment="Left" Height="1" Margin="74,270,0,0" VerticalAlignment="Top" Width="396" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="THÔNG TIN CÔNG TY" VerticalAlignment="Top" Width="398" Foreground="#FF9B0E0E" FontWeight="Bold"/>
+            <TextBlock HorizontalAlignment="Left" Margin="0,324,0,0" Grid.Row="1" TextWrapping="Wrap" Text="PHƯƠNG TIỆN" Foreground="#FF9B0E0E" FontWeight="Bold" VerticalAlignment="Top"/>
+            <Image HorizontalAlignment="Left" Height="100" Margin="408,95,-28,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>
+            <Image HorizontalAlignment="Left" Height="73" Margin="144,42,0,0" Grid.Row="1" VerticalAlignment="Top" Width="180" Source="/Images/Logos/img_Ftaxi_logo.png"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,124,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Địa chỉ: Đại học FPT - Hòa Lạc - Thạch Thất - Hà Nội" Foreground="Black" FontWeight="Bold" FontSize="17" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,168,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Mã Bưu Điện: 012345678910" Foreground="Black" FontWeight="Bold" FontSize="17" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,210,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Số điện thoại: 04.345.6789" Foreground="Black" FontWeight="Bold" FontSize="17" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,252,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Mã số VAT: 12345678910" Foreground="Black" FontWeight="Bold" FontSize="17" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,38,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Loại xe: KIA MORNING" Foreground="Black" FontWeight="Bold" FontSize="25" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,99,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Sản xuất: 2007" Foreground="Black" FontWeight="Bold" FontSize="25" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="17,166,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Biển số: 29A1- 1234" Foreground="Black" FontWeight="Bold" FontSize="25" VerticalAlignment="Top"/>
+            
+            <TextBlock HorizontalAlignment="Left" Margin="17,230,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Đăng kiểm: 11/2015" Foreground="Black" FontWeight="Bold" FontSize="25" VerticalAlignment="Top"/>
+
 
         </Grid>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
+        <TextBlock x:Name="tbl_Profile" HorizontalAlignment="Center" Margin="113,10,90,0" TextWrapping="Wrap" Text="THÔNG TIN CÔNG TY" VerticalAlignment="Top" FontSize="24" Width="277"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

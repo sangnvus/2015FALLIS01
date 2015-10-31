@@ -99,6 +99,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CompanyInfo.xaml.cs">
+      <DependentUpon>CompanyInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
     </Compile>
@@ -110,9 +113,6 @@
     </Compile>
     <Compile Include="Pages\DriverProfile.xaml.cs">
       <DependentUpon>DriverProfile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\DriverAddWorkPlace.xaml.cs">
-      <DependentUpon>DriverAddWorkPlace.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DriverAddHomePlace.xaml.cs">
       <DependentUpon>DriverAddHomePlace.xaml</DependentUpon>
@@ -136,6 +136,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\CompanyInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\FisrtRunningAppIntro.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -149,10 +153,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\DriverProfile.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\DriverAddWorkPlace.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

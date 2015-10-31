@@ -117,7 +117,7 @@ namespace FT_Driver.Pages
 
         private void img_EditIcon_OfficeAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/DriverAddWorkPlace.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Pages/CompanyInfo.xaml", UriKind.Relative));
         }
 
 
