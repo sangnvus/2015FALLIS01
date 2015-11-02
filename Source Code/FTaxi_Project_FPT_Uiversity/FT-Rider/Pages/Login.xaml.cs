@@ -101,12 +101,29 @@ namespace FT_Rider.Pages
             NavigationService.Navigate(new Uri("/Pages/RiderLostPassword.xaml", UriKind.Relative));
         }
 
-      
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
         }
+        private void txt_Password_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            txt_Password.Text = String.Empty;
+            txt_Password.Foreground = new SolidColorBrush(Colors.Black);
+            txt_Password.BorderBrush.Opacity = 20;
+            
+        }
+
+        private void txt_Password_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox txt = (TextBox)sender;
+            txt.Text = string.Empty;
+            txt.GotFocus -= txt_Password_GotFocus;
+
+        }
+
+        
+       
 
         private void txt_Account_GotFocus(object sender, RoutedEventArgs e)
         {

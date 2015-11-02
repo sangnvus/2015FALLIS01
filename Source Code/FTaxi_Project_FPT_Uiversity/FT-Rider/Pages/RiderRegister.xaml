@@ -54,6 +54,7 @@
                 <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="txt_Email" Margin="{StaticResource Layout_FirstItemMargin}" VerticalAlignment="Top" FontSize="19" Text="Điền Email mới tại đây" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" Padding="{StaticResource TextBox_TextPadingLeft}" Background="White" GotFocus="txt_Email_GotFocus" LostFocus="txt_Email_LostFocus">
+
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
                 </TextBox.BorderBrush>
@@ -61,7 +62,11 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
+
+            
+
             <TextBox x:Name="txt_Password" IsHitTestVisible="False" Margin="0,108,0,0" VerticalAlignment="Top" FontSize="19"  Grid.ColumnSpan="2" Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" Text="Điền mật khẩu mới tại đây" >
+
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
@@ -72,8 +77,12 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
+
+            
+
             <PasswordBox x:Name="Password" LostFocus="PwLostFocus" Opacity="0" GotFocus="PwGotFocus" Margin="0,108,0,0" VerticalAlignment="Top" FontSize="19"  Grid.ColumnSpan="2" Height="72" Padding="{StaticResource TextBox_TextPadingLeft}"/>
-            <TextBox x:Name="txt_PasswordAgain" Margin="0,165,0,0" VerticalAlignment="Top" FontSize="19" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" Text="Điền lại mật khẩu mới tại đây">
+            <TextBox x:Name="txt_PasswordAgain" Margin="0,165,0,0" VerticalAlignment="Top" FontSize="19" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" Text="Điền lại mật khẩu mới tại đây" GotFocus="txt_PasswordAgain_GotFocus">
+
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
@@ -84,8 +93,11 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <PasswordBox x:Name="PasswordAgain" LostFocus="PwAgainLostFocus" Opacity="0" GotFocus="PwAgainGotFocus"  Margin="0,165,0,0" VerticalAlignment="Top" FontSize="19" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}"/>
+
+               
+                    <PasswordBox x:Name="PasswordAgain" LostFocus="PwAgainLostFocus" Opacity="0" GotFocus="PwAgainGotFocus"  Margin="0,165,0,0" VerticalAlignment="Top" FontSize="19" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}"/>
             <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,280,0,0" VerticalAlignment="Top" FontSize="19" Text="Họ" Grid.ColumnSpan="2" Height="72"  Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_FirstAndMiddleName_GotFocus" LostFocus="txt_FirstAndMiddleName_LostFocus" >
+
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
@@ -96,7 +108,11 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
+
+           
+
             <TextBox x:Name="txt_Name" Margin="0,338,0,0" VerticalAlignment="Top"  Text="Tên" Grid.ColumnSpan="2"  Height="72" FontSize="19" Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_Name_GotFocus" LostFocus="txt_Name_LostFocus">
+
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
@@ -107,7 +123,11 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
+
+           
+
             <TextBox x:Name="txt_PhoneNumber" Margin="0,394,0,0" VerticalAlignment="Top" FontSize="19" Text="Số điện thoại" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="Digits" GotFocus="txt_PhoneNumber_GotFocus" LostFocus="txt_PhoneNumber_LostFocus">
+
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>

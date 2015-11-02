@@ -99,21 +99,9 @@ namespace FT_Rider.Pages
         }
 
 
-        //private void txt_GotFocus(object sender, RoutedEventArgs e)
-        //{
-        //    TextBox tb = (TextBox)sender;
-        //    tb.BorderBrush = new SolidColorBrush(Colors.LightGray);
-        //}
 
         private void btn_Click_Register(object sender, RoutedEventArgs e)
-        {
-            //Email Validation
-            //if (!Regex.IsMatch(txt_Email.Text.Trim(), @"^[A-Za-z_][a-zA-Z0-9_\s]*$"))
-            //{
-            //    MessageBox.Show("Invalid Email");
-            //}
-
-            //Password length Validation
+        {          
             if (txt_Password.Text.Length < 6)
             {
                 MessageBox.Show("Độ dài mật khẩu ít nhất 6 ký tự!");
@@ -197,6 +185,21 @@ namespace FT_Rider.Pages
         }
 
 
+
+        private void txt_Password_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_Password.Text = String.Empty;
+            txt_Password.Foreground = new SolidColorBrush(Colors.Black);
+            txt_Password.BorderBrush.Opacity = 20;
+        }
+
+        private void txt_PasswordAgain_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            txt_PasswordAgain.Text = String.Empty;
+            txt_PasswordAgain.Foreground = new SolidColorBrush(Colors.Black);
+            txt_PasswordAgain.BorderBrush.Opacity = 20;
+        }
+
         private void txt_FirstAndMiddleName_GotFocus(object sender, RoutedEventArgs e)
         {
             if (txt_FirstAndMiddleName.Text == "Họ")
@@ -210,7 +213,7 @@ namespace FT_Rider.Pages
 
         private void txt_FirstAndMiddleName_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (txt_FirstAndMiddleName.Text == String.Empty)
+              if (txt_FirstAndMiddleName.Text == String.Empty)
             {
                 txt_FirstAndMiddleName.Text = "Họ";
                 SolidColorBrush Brush4 = new SolidColorBrush();
@@ -232,7 +235,7 @@ namespace FT_Rider.Pages
 
         private void txt_Email_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (txt_Email.Text == String.Empty)
+             if (txt_Email.Text == String.Empty)
             {
                 txt_Email.Text = "Điền Email mới tại đây";
                 SolidColorBrush Brush4 = new SolidColorBrush();
@@ -241,13 +244,9 @@ namespace FT_Rider.Pages
             }
         }
 
-   
-
-   
-
         private void txt_PasswordAgain_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txt_PasswordAgain.Text == "Điền lại mật khẩu mới tại đây")
+             if (txt_PasswordAgain.Text == "Điền lại mật khẩu mới tại đây")
             {
                 txt_PasswordAgain.Text = "";
                 SolidColorBrush Brush3 = new SolidColorBrush();
@@ -256,7 +255,8 @@ namespace FT_Rider.Pages
             }
         }
 
-        private void txt_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
+        
+          private void txt_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
         {
             if (txt_PasswordAgain.Text == String.Empty)
             {
@@ -330,7 +330,6 @@ namespace FT_Rider.Pages
 
 
 
-
         private void PwAgainLostFocus(object sender, RoutedEventArgs e)
         {
             CheckPasswordAgainWatermark();
@@ -348,5 +347,12 @@ namespace FT_Rider.Pages
             txt_PasswordAgain.Opacity = 0;
             PasswordAgain.Opacity = 100;
         }
+
+        
+
+   
+
+        
+      
     }
 }
