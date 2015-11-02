@@ -99,11 +99,6 @@ namespace FT_Rider.Pages
         }
 
 
-        //private void txt_GotFocus(object sender, RoutedEventArgs e)
-        //{
-        //    TextBox tb = (TextBox)sender;
-        //    tb.BorderBrush = new SolidColorBrush(Colors.LightGray);
-        //}
 
         private void btn_Click_Register(object sender, RoutedEventArgs e)
         {          
@@ -281,7 +276,8 @@ namespace FT_Rider.Pages
             }
         }
 
-        private void txt_PhoneNumber_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void txt_PhoneNumber_LostFocus(object sender, RoutedEventArgs e)
         {
             if (txt_PhoneNumber.Text == String.Empty)
             {
@@ -291,6 +287,8 @@ namespace FT_Rider.Pages
                 txt_PhoneNumber.Foreground = Brush2;
             }
         }
+
+        
         
     }
 }

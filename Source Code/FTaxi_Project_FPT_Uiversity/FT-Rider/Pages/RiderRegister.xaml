@@ -53,7 +53,10 @@
                 <ColumnDefinition Width="37*"/>
                 <ColumnDefinition Width="0*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txt_Email" Margin="{StaticResource Layout_FirstItemMargin}" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="abc@gmail.com" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" Padding="{StaticResource TextBox_TextPadingLeft}" Background="White" InputScope="EmailUserName" GotFocus="txt_Email_GotFocus">
+            <TextBox x:Name="txt_Email" Margin="{StaticResource Layout_FirstItemMargin}" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="abc@gmail.com" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="EmailUserName" GotFocus="txt_Email_GotFocus" LostFocus="txt_Email_LostFocus">
+                <TextBox.Background>
+                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
+                </TextBox.Background>
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
                 </TextBox.BorderBrush>
@@ -105,7 +108,7 @@
                     <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <TextBox x:Name="txt_PhoneNumber" Margin="0,394,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="0123456789" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="Number" GotFocus="txt_PhoneNumber_GotFocus" TextChanged="txt_PhoneNumber_TextChanged">
+            <TextBox x:Name="txt_PhoneNumber" Margin="0,394,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{StaticResource Textbox_FontSize}" Text="0123456789" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="Number" GotFocus="txt_PhoneNumber_GotFocus" TextChanged="txt_PhoneNumber_TextChanged" LostFocus="txt_PhoneNumber_LostFocus">
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
