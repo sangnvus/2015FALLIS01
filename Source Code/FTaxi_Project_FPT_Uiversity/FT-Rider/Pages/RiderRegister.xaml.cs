@@ -184,8 +184,7 @@ namespace FT_Rider.Pages
             }
         }
 
-<<<<<<< HEAD
-       
+
 
         private void txt_Password_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
@@ -201,28 +200,6 @@ namespace FT_Rider.Pages
             txt_PasswordAgain.BorderBrush.Opacity = 20;
         }
 
-        private void txt_Email_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_Email.Text == "abc@gmail.com")
-            {
-                txt_Email.Text = "";
-                SolidColorBrush Brush1 = new SolidColorBrush();
-                Brush1.Color = Colors.Black;
-                txt_Email.Foreground = Brush1;
-            }
-        }
-
-        private void txt_Email_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_Email.Text == String.Empty)
-            {
-                txt_Email.Text = "abc@gmail.com";
-                SolidColorBrush Brush2 = new SolidColorBrush();
-                Brush2.Color = Colors.Gray;
-                txt_Email.Foreground = Brush2;
-            }
-=======
-
         private void txt_FirstAndMiddleName_GotFocus(object sender, RoutedEventArgs e)
         {
             if (txt_FirstAndMiddleName.Text == "Họ")
@@ -236,7 +213,7 @@ namespace FT_Rider.Pages
 
         private void txt_FirstAndMiddleName_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (txt_FirstAndMiddleName.Text == String.Empty)
+              if (txt_FirstAndMiddleName.Text == String.Empty)
             {
                 txt_FirstAndMiddleName.Text = "Họ";
                 SolidColorBrush Brush4 = new SolidColorBrush();
@@ -258,7 +235,7 @@ namespace FT_Rider.Pages
 
         private void txt_Email_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (txt_Email.Text == String.Empty)
+             if (txt_Email.Text == String.Empty)
             {
                 txt_Email.Text = "Điền Email mới tại đây";
                 SolidColorBrush Brush4 = new SolidColorBrush();
@@ -267,13 +244,9 @@ namespace FT_Rider.Pages
             }
         }
 
-   
-
-   
-
         private void txt_PasswordAgain_GotFocus(object sender, RoutedEventArgs e)
         {
-            if (txt_PasswordAgain.Text == "Điền lại mật khẩu mới tại đây")
+             if (txt_PasswordAgain.Text == "Điền lại mật khẩu mới tại đây")
             {
                 txt_PasswordAgain.Text = "";
                 SolidColorBrush Brush3 = new SolidColorBrush();
@@ -282,7 +255,8 @@ namespace FT_Rider.Pages
             }
         }
 
-        private void txt_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
+        
+          private void txt_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
         {
             if (txt_PasswordAgain.Text == String.Empty)
             {
@@ -347,7 +321,6 @@ namespace FT_Rider.Pages
             var passwordEmpty = string.IsNullOrEmpty(Password.Password);
             txt_Password.Opacity = passwordEmpty ? 100 : 0;
             Password.Opacity = passwordEmpty ? 0 : 100;
->>>>>>> 54c8d6d0386a33f8de8639c98035836830ac6e34
         }
         private void PwGotFocus(object sender, RoutedEventArgs e)
         {
@@ -356,77 +329,6 @@ namespace FT_Rider.Pages
         }
 
 
-
-<<<<<<< HEAD
-        private void txt_FirstAndMiddleName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_FirstAndMiddleName.Text == "Họ và tên đệm")
-            {
-                txt_FirstAndMiddleName.Text = "";
-                SolidColorBrush Brush1 = new SolidColorBrush();
-                Brush1.Color = Colors.Black;
-                txt_FirstAndMiddleName.Foreground = Brush1;
-            }
-        }
-
-        private void txt_FirstAndMiddleName_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if(txt_FirstAndMiddleName.Text == String.Empty){
-                txt_FirstAndMiddleName.Text = "Họ và tên đệm";
-                SolidColorBrush Brush2 = new SolidColorBrush();
-                Brush2.Color = Colors.Gray;
-                txt_FirstAndMiddleName.Foreground = Brush2;
-            }
-        }
-
-        private void txt_Name_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_Name.Text == "Tên")
-            {
-                txt_Name.Text = "";
-                SolidColorBrush Brush1 = new SolidColorBrush();
-                Brush1.Color = Colors.Black;
-                txt_Name.Foreground = Brush1;
-            }
-        }
-
-        private void txt_Name_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_Name.Text == String.Empty)
-            {
-                txt_Name.Text = "Tên";
-                SolidColorBrush Brush2 = new SolidColorBrush();
-                Brush2.Color = Colors.Gray;
-                txt_Name.Foreground = Brush2;
-            }
-        }
-
-        private void txt_PhoneNumber_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_PhoneNumber.Text == "0123456789")
-            {
-                txt_PhoneNumber.Text = "";
-                SolidColorBrush Brush1 = new SolidColorBrush();
-                Brush1.Color = Colors.Black;
-                txt_PhoneNumber.Foreground = Brush1;
-            }
-        }
-
-
-        private void txt_PhoneNumber_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_PhoneNumber.Text == String.Empty)
-            {
-                txt_PhoneNumber.Text = "0123456789";
-                SolidColorBrush Brush2 = new SolidColorBrush();
-                Brush2.Color = Colors.Gray;
-                txt_PhoneNumber.Foreground = Brush2;
-            }
-        }
-
-        
-        
-=======
 
         private void PwAgainLostFocus(object sender, RoutedEventArgs e)
         {
@@ -445,6 +347,12 @@ namespace FT_Rider.Pages
             txt_PasswordAgain.Opacity = 0;
             PasswordAgain.Opacity = 100;
         }
->>>>>>> 54c8d6d0386a33f8de8639c98035836830ac6e34
+
+        
+
+   
+
+        
+      
     }
 }
