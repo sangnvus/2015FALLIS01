@@ -56,7 +56,7 @@ namespace FT_Rider.Pages
             //get My Position
             this.GetMyPosition();
 
-            //Get taxi demo
+            //HardCode Taxi position
             this.getTaxiPosition(47.678603, -122.134643);
             this.getTaxiPosition(47.678574, -122.127626);
             this.getTaxiPosition(47.676291, -122.134407);
@@ -66,9 +66,13 @@ namespace FT_Rider.Pages
 
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;
+            this.grv_Step03.Visibility = Visibility.Collapsed;
            
         }
 
+
+
+        //========================= BEGIN get current Position =========================//
         public async void GetMyPosition()
         {
             //get position
@@ -76,37 +80,47 @@ namespace FT_Rider.Pages
             Geocoordinate MyGeocoordinate = MyGeoPosition.Coordinate;
             GeoCoordinate MyGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(MyGeocoordinate);
             MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-            this.map_RiderMap.Center = MyGeoCoordinate;
+            //Adjust map on the phone screen - 0.001500 to move up the map
+            this.map_RiderMap.Center = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude - 0.001500, MyGeoPosition.Coordinate.Longitude);
             this.map_RiderMap.ZoomLevel = 16;
 
+
             //Show maker
-            // Create a small circle to mark the current location.
-            Ellipse myCircle = new Ellipse();
-            myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
-            myCircle.Height = 13;
-            myCircle.Width = 13;
-            myCircle.Opacity = 50;
+
+            // Create a small Point to mark the current location.
+            Image myPositionIcon = new Image();
+            myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_MyPositionIcon.png", UriKind.Relative));
+            myPositionIcon.Height = 35;
+            myPositionIcon.Width = 25;
+
             // Create a MapOverlay to contain the circle.
             MapOverlay myLocationOverlay = new MapOverlay();
-            myLocationOverlay.Content = myCircle;
-            myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+            myLocationOverlay.Content = myPositionIcon;
+
+            //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
+            myLocationOverlay.PositionOrigin = new Point(0.9, 0.9); 
             myLocationOverlay.GeoCoordinate = MyGeoCoordinate;
+
             // Create a MapLayer to contain the MapOverlay.
             MapLayer myLocationLayer = new MapLayer();
             myLocationLayer.Add(myLocationOverlay);
+
             // Add the MapLayer to the Map.
             map_RiderMap.Layers.Add(myLocationLayer);
         }
+        //========================= END get current Position =========================//
 
-        private async void GetCoordinates(String addressInput)
+
+
+        //========================= BEGIN route Direction on Map =========================//
+        private async void GetCoordinates(String destinationAddressInput)
         {
             MyGeolocator.DesiredAccuracyInMeters = 5;
             try
             {
+                //Set Position point
                 MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
                 MyCoordinates.Add(new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude));
-                this.map_RiderMap.Center = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude);
-                this.map_RiderMap.ZoomLevel = 15;
             }
             catch (UnauthorizedAccessException)
             {
@@ -119,7 +133,7 @@ namespace FT_Rider.Pages
             }
 
             Mygeocodequery = new GeocodeQuery();
-            Mygeocodequery.SearchTerm = addressInput;
+            Mygeocodequery.SearchTerm = destinationAddressInput;
             Mygeocodequery.GeoCoordinate = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude);
 
 
@@ -149,25 +163,53 @@ namespace FT_Rider.Pages
             {
                 Route MyRoute = e.Result;
                 MapRoute MyMapRoute = new MapRoute(MyRoute);
+                //Makeup for router
+                MyMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
+                //MyMapRoute.OutlineColor = Color.FromArgb(255, (byte)71, (byte)142, (byte)246); // aRGB for #478ef6
                 map_RiderMap.AddRoute(MyMapRoute);
-
-                List<string> RouteList = new List<string>();
-                foreach (RouteLeg leg in MyRoute.Legs)
-                {
-                    foreach (RouteManeuver maneuver in leg.Maneuvers)
-                    {
-                        RouteList.Add(maneuver.InstructionText);
-                    }
-                }
-
                 MyQuery.Dispose();
-                //get Distance
+
+                //get Coordinate of Destination Point
+                double destinationLatitude = MyCoordinates[MyCoordinates.Count-1].Latitude;
+                double destinationLongtitude = MyCoordinates[MyCoordinates.Count-1].Longitude;
+
+                //Set Map Center
+                this.map_RiderMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
+
+                // Create a small Point to mark the current location.
+                Image myPositionIcon = new Image();
+                myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_DestinationPoint.png", UriKind.Relative));
+                myPositionIcon.Height = 35;
+                myPositionIcon.Width = 29;
+
+                // Create a MapOverlay to contain the circle.
+                MapOverlay myLocationOverlay = new MapOverlay();
+                myLocationOverlay.Content = myPositionIcon;
+
+                //MapOverlay PositionOrigin to 0.3, 0.9 MapOverlay will align it's center towards the GeoCoordinate
+                myLocationOverlay.PositionOrigin = new Point(0.3, 0.9);
+                myLocationOverlay.GeoCoordinate = new GeoCoordinate(destinationLatitude, destinationLongtitude);
+
+                // Create a MapLayer to contain the MapOverlay.
+                MapLayer myLocationLayer = new MapLayer();
+                myLocationLayer.Add(myLocationOverlay);
+
+                // Add the MapLayer to the Map.
+                map_RiderMap.Layers.Add(myLocationLayer);
+
+
+
+                //Calculate Distance
                 distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
             }
         }
+        //========================= END route Direction on Map =========================//
 
 
-        //Get Distance from Your Position to Distance
+
+
+
+        //========================= BEGIN calculate Distance =========================//
         public static double GetTotalDistance(IEnumerable<GeoCoordinate> coordinates)
         {
             double result = 0;
@@ -184,18 +226,16 @@ namespace FT_Rider.Pages
 
             return result;
         }
+        //========================= END calculate Distance =========================//
 
-        //Get Taxi Position
+
+
+
+
+        //========================= BEGIN show and Design UI 3 taxi near current position =========================//
         public void getTaxiPosition(double lat, double lng)
         {
             GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
-            // Create a small circle to mark the current location.
-            Ellipse myCircle = new Ellipse();
-            myCircle.Fill = new SolidColorBrush(Colors.Red);
-            myCircle.Height = 10;
-            myCircle.Width = 10;
-            myCircle.Opacity = 50;
-
 
             //Create taxi icon on map
             Image taxiIcon = new Image();
@@ -242,7 +282,7 @@ namespace FT_Rider.Pages
             //Add to Map's Layer
             myTaxiLayer.Add(myTaxiOvelay);
         }
-
+        
         //Tapped event
         void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -252,7 +292,7 @@ namespace FT_Rider.Pages
             //Show Step 02
             this.grv_Step02.Visibility = Visibility.Visible;
         }
-
+        //========================= END show and Design UI 3 taxi near current position =========================//
 
 
 
@@ -370,9 +410,29 @@ namespace FT_Rider.Pages
         //========================= END Map API key =========================//
 
 
+        private void tb_InputAddress_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            //check if input is "Enter" key
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                string destinationAddress;
+                destinationAddress = txt_InputAddress.Text;
+                this.GetCoordinates(destinationAddress);
+                //Hide keyboard
+                this.Focus();
+            }
+        }
+
+        private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (txt_InputAddress.Text == "Địa chỉ đón")
+            {
+                txt_InputAddress.Text = string.Empty;
+                txt_InputAddress.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+
     }
-
-
 
 
 

@@ -229,6 +229,7 @@
     <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
+    <Content Include="Images\Grid_NoCarYet\img_CallCenter.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiGridBackground.png" />
@@ -245,6 +246,8 @@
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
     <Content Include="Images\Icons\icon_VisaCard.jpg" />
+    <Content Include="Images\Icons\img_DestinationPoint.png" />
+    <Content Include="Images\Icons\img_MyPositionIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
     <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Email.png" />

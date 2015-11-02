@@ -44,7 +44,10 @@
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="{StaticResource LayoutRoot_Background}">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Images/BackgroundImages/img_AppSettingsBackground.jpg" Stretch="Fill"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="768"/>
         </Grid.RowDefinitions>

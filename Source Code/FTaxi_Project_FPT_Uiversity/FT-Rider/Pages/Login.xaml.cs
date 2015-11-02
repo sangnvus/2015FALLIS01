@@ -54,12 +54,12 @@ namespace FT_Rider.Pages
 
         private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_Account.Text != "" && txt_Password.Text != "")
+            if (txt_Account.Text != "" && Password.ToString() != "")
             {
                 int Temp = 0;
                 foreach (var UserLogin in ObjUserDataList)
                 {
-                    if (txt_Account.Text == UserLogin.Email && txt_Password.Text == UserLogin.Password)
+                    if (txt_Account.Text == UserLogin.Email && Password.ToString() == UserLogin.Password)
                     {
                         Temp = 1;
                         var Settings = IsolatedStorageSettings.ApplicationSettings;
@@ -101,7 +101,11 @@ namespace FT_Rider.Pages
             NavigationService.Navigate(new Uri("/Pages/RiderLostPassword.xaml", UriKind.Relative));
         }
 
+<<<<<<< HEAD
         
+=======
+      
+>>>>>>> 54c8d6d0386a33f8de8639c98035836830ac6e34
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -143,6 +147,52 @@ namespace FT_Rider.Pages
                 Brush2.Color = Colors.Gray;
                 txt_Account.Foreground = Brush2;
             }
+        }
+
+        private void txt_Account_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Account.Text == "Xin mời nhập Email tại đây")
+            {
+                txt_Account.Text = "";
+                SolidColorBrush Brush1 = new SolidColorBrush();
+                Brush1.Color = Colors.Black;
+                txt_Account.Foreground = Brush1;
+            }
+        }
+
+        private void txt_Account_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_Account.Text == String.Empty)
+            {
+                txt_Account.Text = "Xin mời nhập Email tại đây";
+                SolidColorBrush Brush2 = new SolidColorBrush();
+                Brush2.Color = Colors.Gray
+                    ;
+                txt_Account.Foreground = Brush2;
+            }
+        }
+
+     
+
+      
+
+
+        private void PasswordLostFocus(object sender, RoutedEventArgs e)
+        {
+            CheckPasswordWatermark();
+        }
+
+        public void CheckPasswordWatermark()
+        {
+            var passwordEmpty = string.IsNullOrEmpty(Password.Password);
+            txt_Password.Opacity = passwordEmpty ? 100 : 0;
+            Password.Opacity = passwordEmpty ? 0 : 100;
+        }
+       
+        private void PasswordGotFocus(object sender, RoutedEventArgs e)
+        {
+            txt_Password.Opacity = 0;
+            Password.Opacity = 100;
         }
 
     }
