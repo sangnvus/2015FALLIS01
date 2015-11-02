@@ -57,7 +57,7 @@
                     <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <TextBox x:Name="tb_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" TextInputStart="tb_InputAddress_TextInputStart" KeyDown="tb_InputAddress_KeyDown">
+                    <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap">
                         <TextBox.Foreground>
                             <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                         </TextBox.Foreground>
