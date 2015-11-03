@@ -161,6 +161,7 @@ namespace FT_Rider.Pages
         {
             if (e.Error == null)
             {
+                
                 Route MyRoute = e.Result;
                 MapRoute MyMapRoute = new MapRoute(MyRoute);
                 //Makeup for router
@@ -416,7 +417,7 @@ namespace FT_Rider.Pages
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 string destinationAddress;
-                destinationAddress = txt_InputAddress.Text;
+                destinationAddress = txt_InputAddress.Text;                
                 this.GetCoordinates(destinationAddress);
                 //Hide keyboard
                 this.Focus();
