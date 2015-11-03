@@ -86,7 +86,7 @@
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
-            <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="5,344,0,0" VerticalAlignment="Top"  Tap="btn__Tap_Logout" Grid.Row="2" HorizontalAlignment="Left" Width="475" Background="#FFDC1D51" FontSize="{StaticResource Textbox_FontSize}">
+            <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="5,332,0,0" VerticalAlignment="Top"  Tap="btn__Tap_Logout" Grid.Row="2" HorizontalAlignment="Left" Width="475" Background="#FFDC1D51" FontSize="{StaticResource Textbox_FontSize}" Height="83">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="0.2"/>
                 </Button.BorderBrush>
