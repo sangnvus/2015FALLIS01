@@ -140,6 +140,7 @@
             <Image x:Name="img_UserFName_Copy1" HorizontalAlignment="Left" Height="50" Margin="5,193,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_PhoneNumber.png"/>
             <Image x:Name="img_UserFName_Copy2" HorizontalAlignment="Left" Height="50" Margin="5,53,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Address.png"/>
             <Image x:Name="img_UserFName_Copy3" HorizontalAlignment="Left" Height="50" Margin="5,154,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
+            <Image x:Name="img_UserFName_Copy4" HorizontalAlignment="Left" Height="50" Margin="5,248,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Language.png" Grid.RowSpan="2"/>
 
 
         </Grid>

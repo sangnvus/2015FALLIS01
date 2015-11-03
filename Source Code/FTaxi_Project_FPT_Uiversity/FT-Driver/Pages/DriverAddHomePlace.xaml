@@ -76,7 +76,7 @@
                     <SolidColorBrush Color="White" Opacity="0.2"/>
                 </Button.BorderBrush>
                 <Button.Background>
-                    <SolidColorBrush Color="{StaticResource ButtonBackgroundColor_Blue}"/>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
             <TextBox x:Name="txt_State" HorizontalAlignment="Center" Height="72" Margin="0,107,0,0" TextWrapping="Wrap" Text="Cầu Giấy" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Tap="txt_State_Tap">
