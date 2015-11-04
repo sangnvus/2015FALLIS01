@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using FT_Rider.Classes;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Telerik.Windows.Controls.PhoneTextBox;
 
 
 namespace FT_Rider.Pages
@@ -25,6 +26,12 @@ namespace FT_Rider.Pages
         public RiderRegister()
         {
             InitializeComponent();
+            this.rad_Email.DataContext = new Data { Name = "Email" };
+            this.rad_Password.DataContext = new Data { Name = "Mật khẩu" };
+            this.rad_PasswordAgain.DataContext = new Data { Name = "Nhập lại mật khẩu" };
+            this.rad_Name.DataContext = new Data { Name = "Tên" };
+            this.rad_FirstAndMiddleName.DataContext = new Data { Name = "Họ" };
+            this.rad_PhoneNumber.DataContext = new Data { Name = "Số điện thoại" };
             this.Loaded += RiderRegister_Loaded;
         }
 
@@ -88,271 +95,208 @@ namespace FT_Rider.Pages
             return result;
         }
 
-        private void txb_Tap_RegisterPayment(object sender, System.Windows.Input.GestureEventArgs e)
+
+
+
+
+
+
+
+
+
+
+
+        //void txt_Email_LostFocus(object sender, RoutedEventArgs e)
+        //{
+
+        //    bool isValid = Validate(txt_Email.Text);
+        //    if (Regex.IsMatch(txt_Email.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
+        //    {
+        //        txt_Email.ChangeValidationState(ValidationState.Valid, "");
+        //    }
+        //    else
+        //    {
+        //        txt_Email.ChangeValidationState(ValidationState.Invalid, "Nhập lại Email");
+        //    }
+        //}
+
+        private bool ValidateEmail()
         {
-            NavigationService.Navigate(new Uri("/Pages/RiderRegisterpayment.xaml", UriKind.Relative));
-        }
-
-        private void btn_Tap_Cancel(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
-        }
-
-
-
-        private void btn_Click_Register(object sender, RoutedEventArgs e)
-        {          
-            if (txt_Password.Text.Length < 6)
+            if (Regex.IsMatch(rad_Email.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
             {
-                MessageBox.Show("Độ dài mật khẩu ít nhất 6 ký tự!");
-            }
-             else if (txt_PasswordAgain.Text.Length < 6)
-             {
-                 MessageBox.Show("Độ dài mật khẩu nhập lại ít nhất 6 ký tự!");
-             }
-             else if (!Password.ToString().Equals(PasswordAgain.ToString()))
-             {
-                 MessageBox.Show("Mật khẩu và mật khẩu nhập lại chưa chính xác");
-             }
-                  
-            else if (txt_FirstAndMiddleName.Text == "")
-            {
-                MessageBox.Show("Vui lòng nhập họ và tên đệm!");
-            }
-
-            else if (txt_Name.Text == "")
-            {
-                MessageBox.Show("Vui lòng nhập tên!");
-            }
-
-            //Phone Number Length Validation
-            else if (txt_PhoneNumber.Text.Length != 10)
-            {
-                MessageBox.Show("Số Đt không hợp lệ ");
-            }
-
-            //EmailID validation
-            else if (!Regex.IsMatch(txt_Email.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
-            {
-                MessageBox.Show("Email không hợp lệ");
-            }
-
-           //After validation success ,store user detials in isolated storage
-            else if (txt_Email.Text != "" && Password.ToString() != "" && txt_Name.Text != "" && txt_FirstAndMiddleName.Text != "" && txt_PhoneNumber.Text != "")
-            {
-                UserData ObjUserData = new UserData();
-                ObjUserData.Email = txt_Email.Text;
-                ObjUserData.Password = Password.ToString();
-                ObjUserData.FirstAndMiddleName = txt_FirstAndMiddleName.Text;
-                ObjUserData.Name = txt_Name.Text;
-                ObjUserData.PhoneNumber = txt_PhoneNumber.Text;
-                int Temp = 0;
-                foreach (var UserLogin in ObjUserDataList)
-                {
-                    if (ObjUserData.Email == UserLogin.Email)
-                    {
-                        Temp = 1;
-                    }
-                }
-                //Checking existing user names in local DB
-                if (Temp == 0)
-                {
-                    ObjUserDataList.Add(ObjUserData);
-                    if (ISOFile.FileExists("RegistrationDetails"))
-                    {
-                        ISOFile.DeleteFile("RegistrationDetails");
-                    }
-                    using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("RegistrationDetails", FileMode.Create))
-                    {
-                        DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
-
-                        serializer.WriteObject(fileStream, ObjUserDataList);
-
-                    }
-                    MessageBox.Show("Đăng ký thành công");
-                    NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
-                }
-                else
-                {
-                    MessageBox.Show("Xin lỗi, email bị trùng");
-                }
-
+                rad_Email.ChangeValidationState(ValidationState.Valid, "");
+                return true;
             }
             else
             {
-                MessageBox.Show("Vui lòng nhập thông tin");
+                rad_Email.ChangeValidationState(ValidationState.Invalid, "Nhập lại Email");
+                return false;
             }
         }
 
 
-
-        private void txt_Password_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private bool ValidatePassword()
         {
-            txt_Password.Text = String.Empty;
-            txt_Password.Foreground = new SolidColorBrush(Colors.Black);
-            txt_Password.BorderBrush.Opacity = 20;
-        }
-
-        private void txt_PasswordAgain_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
-        {
-            txt_PasswordAgain.Text = String.Empty;
-            txt_PasswordAgain.Foreground = new SolidColorBrush(Colors.Black);
-            txt_PasswordAgain.BorderBrush.Opacity = 20;
-        }
-
-        private void txt_FirstAndMiddleName_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_FirstAndMiddleName.Text == "Họ")
+            var passwordEmpty = string.IsNullOrEmpty(rad_Password.Password);
+            //tbPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
+            //pbPassword.Opacity = passwordEmpty ? 0 : 100;
+            if (passwordEmpty || rad_Password.Password.Length < 6)
             {
-                txt_FirstAndMiddleName.Text = "";
-                SolidColorBrush Brush3 = new SolidColorBrush();
-                Brush3.Color = Colors.Black;
-                txt_FirstAndMiddleName.Foreground = Brush3;
-            }
-        }
 
-        private void txt_FirstAndMiddleName_LostFocus(object sender, RoutedEventArgs e)
-        {
-              if (txt_FirstAndMiddleName.Text == String.Empty)
+                rad_Password.ChangeValidationState(ValidationState.Invalid, "Vui lòng nhập mật khẩu");
+                return false;
+            }
+            else
             {
-                txt_FirstAndMiddleName.Text = "Họ";
-                SolidColorBrush Brush4 = new SolidColorBrush();
-                Brush4.Color = Colors.Gray;
-                txt_FirstAndMiddleName.Foreground = Brush4;
+                rad_Password.ChangeValidationState(ValidationState.Valid, "");
+                return true;
             }
         }
 
-        private void txt_Email_GotFocus(object sender, RoutedEventArgs e)
+        private bool ValidateVerifyPassword()
         {
-            if (txt_Email.Text == "Điền Email mới tại đây")
+            var passwordEmpty = string.IsNullOrEmpty(rad_PasswordAgain.Password);
+            //tbVerifyPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
+            //pbVerifyPassword.Opacity = passwordEmpty ? 0 : 100;
+            if (passwordEmpty || rad_PasswordAgain.Password.Length < 6)
             {
-                txt_Email.Text = "";
-                SolidColorBrush Brush3 = new SolidColorBrush();
-                Brush3.Color = Colors.Black;
-                txt_Email.Foreground = Brush3;
-            }
-        }
 
-        private void txt_Email_LostFocus(object sender, RoutedEventArgs e)
-        {
-             if (txt_Email.Text == String.Empty)
+                rad_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu ít nhất 6 kí tự !");
+                return false;
+            }
+            else if (!rad_PasswordAgain.Password.Equals(rad_Password.Password))
             {
-                txt_Email.Text = "Điền Email mới tại đây";
-                SolidColorBrush Brush4 = new SolidColorBrush();
-                Brush4.Color = Colors.Gray;
-                txt_Email.Foreground = Brush4;
+                rad_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu không trùng nhau !");
+                return false;
             }
-        }
 
-        private void txt_PasswordAgain_GotFocus(object sender, RoutedEventArgs e)
-        {
-             if (txt_PasswordAgain.Text == "Điền lại mật khẩu mới tại đây")
+            else
             {
-                txt_PasswordAgain.Text = "";
-                SolidColorBrush Brush3 = new SolidColorBrush();
-                Brush3.Color = Colors.Black;
-                txt_PasswordAgain.Foreground = Brush3;
+
+                rad_PasswordAgain.ChangeValidationState(ValidationState.Valid, "");
+                return true;
             }
         }
 
-        
-          private void txt_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
+        private bool ValidateName()
         {
-            if (txt_PasswordAgain.Text == String.Empty)
+            var NameEmpty = string.IsNullOrEmpty(rad_Name.Text);
+            if (NameEmpty)
             {
-                txt_PasswordAgain.Text = "Điền lại mật khẩu mới tại đây";
-                SolidColorBrush Brush4 = new SolidColorBrush();
-                Brush4.Color = Colors.Gray;
-                txt_PasswordAgain.Foreground = Brush4;
+                rad_Name.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập tên");
+                return false;
             }
-        }
-
-        private void txt_Name_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_Name.Text == "Tên")
+            else
             {
-                txt_Name.Text = "";
-                SolidColorBrush Brush3 = new SolidColorBrush();
-                Brush3.Color = Colors.Black;
-                txt_Name.Foreground = Brush3;
+                rad_Name.ChangeValidationState(ValidationState.Valid, "");
+                return true;
             }
         }
 
-        private void txt_Name_LostFocus(object sender, RoutedEventArgs e)
+        private bool ValidateFirstAndMiddleName()
         {
-            if (txt_Name.Text == String.Empty)
+            var FirstAndMiddleNameEmpty = string.IsNullOrEmpty(rad_FirstAndMiddleName.Text);
+            if (FirstAndMiddleNameEmpty)
             {
-                txt_Name.Text = "Tên";
-                SolidColorBrush Brush4 = new SolidColorBrush();
-                Brush4.Color = Colors.Gray;
-                txt_Name.Foreground = Brush4;
+                rad_FirstAndMiddleName.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập họ và tên đệm");
+                return false;
             }
-        }
-
-
-        private void txt_PhoneNumber_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_PhoneNumber.Text == "Số điện thoại")
+            else
             {
-                txt_PhoneNumber.Text = "";
-                SolidColorBrush Brush3 = new SolidColorBrush();
-                Brush3.Color = Colors.Black;
-                txt_PhoneNumber.Foreground = Brush3;
+                rad_FirstAndMiddleName.ChangeValidationState(ValidationState.Valid, "");
+                return true;
             }
         }
 
-        private void txt_PhoneNumber_LostFocus(object sender, RoutedEventArgs e)
+
+        private bool ValidatePhoneNumber()
         {
-            if (txt_PhoneNumber.Text == String.Empty)
+            var PhoneNumberEmpty = string.IsNullOrEmpty(rad_PhoneNumber.Text);
+            if (PhoneNumberEmpty || rad_PhoneNumber.Text.Length != 10)
             {
-                txt_PhoneNumber.Text = "Số điện thoại";
-                SolidColorBrush Brush4 = new SolidColorBrush();
-                Brush4.Color = Colors.Gray;
-                txt_PhoneNumber.Foreground = Brush4;
+                rad_PhoneNumber.ChangeValidationState(ValidationState.Invalid, "Số điện thoại gồm 10 số");
+                return false;
+            }
+            else
+            {
+                rad_PhoneNumber.ChangeValidationState(ValidationState.Valid, "");
+                return true;
             }
         }
 
-        private void PwLostFocus(object sender, RoutedEventArgs e)
+
+
+        private void rad_Email_LostFocus(object sender, RoutedEventArgs e)
         {
-            CheckPasswordWatermark();
-        }
-        public void CheckPasswordWatermark()
-        {
-            var passwordEmpty = string.IsNullOrEmpty(Password.Password);
-            txt_Password.Opacity = passwordEmpty ? 100 : 0;
-            Password.Opacity = passwordEmpty ? 0 : 100;
-        }
-        private void PwGotFocus(object sender, RoutedEventArgs e)
-        {
-            txt_Password.Opacity = 0;
-            Password.Opacity = 100;
+            ValidateEmail();
         }
 
-
-
-        private void PwAgainLostFocus(object sender, RoutedEventArgs e)
+        private void rad_Password_LostFocus(object sender, RoutedEventArgs e)
         {
-            CheckPasswordAgainWatermark();
+            ValidatePassword();
         }
 
-        public void CheckPasswordAgainWatermark()
+        private void rad_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
         {
-            var passwordEmpty = string.IsNullOrEmpty(PasswordAgain.Password);
-            txt_PasswordAgain.Opacity = passwordEmpty ? 100 : 0;
-            PasswordAgain.Opacity = passwordEmpty ? 0 : 100;
-        }
-       
-        private void PwAgainGotFocus(object sender, RoutedEventArgs e)
-        {
-            txt_PasswordAgain.Opacity = 0;
-            PasswordAgain.Opacity = 100;
+            ValidateVerifyPassword();
         }
 
-        
+        private void rad_Name_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ValidateName();
+        }
+        private void rad_FirstAndMiddleName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ValidateFirstAndMiddleName();
+        }
+        private void rad_PhoneNumber_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ValidatePhoneNumber();
+        }
 
-   
 
-        
-      
+
+
+        private bool Validate(string text)
+        {
+            //Your validation logic
+            return false;
+        }
+
+
+
+        public class Data
+        {
+            public string Name { get; set; }
+        }
+
+
+        private void btn_Click_Register(object sender, RoutedEventArgs e)
+        {
+            if (ValidateEmail() && ValidatePassword() && ValidateVerifyPassword() && ValidateName() && ValidatePhoneNumber() && ValidateFirstAndMiddleName())
+            {
+                UserData ObjUserData = new UserData();
+                ObjUserData.Email = rad_Email.Text;
+                ObjUserData.Password = rad_Password.ToString();
+                ObjUserData.FirstAndMiddleName = rad_FirstAndMiddleName.Text;
+                ObjUserData.Name = rad_Name.Text;
+                ObjUserData.PhoneNumber = rad_PhoneNumber.Text;
+                ObjUserDataList.Add(ObjUserData);
+                if (ISOFile.FileExists("RegistrationDetails"))
+                {
+                    ISOFile.DeleteFile("RegistrationDetails");
+                }
+                using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("RegistrationDetails", FileMode.Create))
+                {
+                    DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
+
+                    serializer.WriteObject(fileStream, ObjUserDataList);
+
+                }
+                MessageBox.Show("Đăng ký thành công");
+                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+            }
+
+        }
     }
 }

@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using FT_Driver.Classes;
 using FT_Driver.Resources;
+using Telerik.Windows.Controls.PhoneTextBox;
 
 namespace FT_Driver.Pages
 {
@@ -25,8 +26,24 @@ namespace FT_Driver.Pages
         public Login()
         {
             InitializeComponent();
+            this.rad_Account.DataContext = new Data { Name = "Email" };
+            this.rad_Password.DataContext = new Data { Name = "Passsword" };
             this.Loaded += Login_Loaded;
         }
+
+        private bool Validate(string text)
+        {
+            //Your validation logic
+            return false;
+        }
+
+
+
+        public class Data
+        {
+            public string Name { get; set; }
+        }
+
 
         private void Login_Loaded(object sender, RoutedEventArgs e)
         {
@@ -50,72 +67,54 @@ namespace FT_Driver.Pages
             }
         }
 
-        
+
 
         private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative)); 
-           
+            if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            {
+                int Temp = 0;
+               
+                    if (rad_Account.Text == "admin@gmail.com" && rad_Password.Password == "admin")
+                    {
+                        Temp = 1;
+                        NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative));
+                    
+                }
+                if (Temp == 0)
+                {
+                    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
+                    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                }
+            }
+            else
+            {
+                rad_Password.ChangeValidationState(ValidationState.Invalid, "");
+                rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+            }
+
         }
 
-       
+        private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/DriverRegister.xaml", UriKind.Relative));
+        }
+
         private void tbl_Tap_LostPassword(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/DriverLostPassword.xaml", UriKind.Relative));
         }
 
-      
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
         }
 
-        private void txt_Account_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_Account.Text == "Xin mời nhập Email tại đây")
-            {
-                txt_Account.Text = "";
-                SolidColorBrush Brush1 = new SolidColorBrush();
-                Brush1.Color = Colors.Black;
-                txt_Account.Foreground = Brush1;
-            }
-        }
-
-        private void txt_Account_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (txt_Account.Text == String.Empty)
-            {
-                txt_Account.Text = "Xin mời nhập Email tại đây";
-                SolidColorBrush Brush2 = new SolidColorBrush();
-                Brush2.Color = Colors.Gray
-                    ;
-                txt_Account.Foreground = Brush2;
-            }
-        }
-
-     
-
-      
 
 
-        private void PasswordLostFocus(object sender, RoutedEventArgs e)
-        {
-            CheckPasswordWatermark();
-        }
 
-        public void CheckPasswordWatermark()
-        {
-            var passwordEmpty = string.IsNullOrEmpty(Password.Password);
-            txt_Password.Opacity = passwordEmpty ? 100 : 0;
-            Password.Opacity = passwordEmpty ? 0 : 100;
-        }
-       
-        private void PasswordGotFocus(object sender, RoutedEventArgs e)
-        {
-            txt_Password.Opacity = 0;
-            Password.Opacity = 100;
-        }
+
 
     }
 }

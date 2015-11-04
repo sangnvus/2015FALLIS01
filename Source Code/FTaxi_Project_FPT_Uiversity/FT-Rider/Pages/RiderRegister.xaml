@@ -8,6 +8,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:telerikPrimitives="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Primitives"
+    xmlns:telerikSlideView="clr-namespace:Telerik.Windows.Controls.SlideView;assembly=Telerik.Windows.Controls.Primitives"
+    xmlns:telerikData="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Data"
+    xmlns:telerikInput="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
+    xmlns:telerikDataVisualization="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.DataVisualization"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
@@ -45,100 +50,17 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="10,10,14,-10">
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="37*"/>
-                <ColumnDefinition Width="0*"/>
-            </Grid.ColumnDefinitions>
-            <TextBox x:Name="txt_Email" Margin="{StaticResource Layout_FirstItemMargin}" VerticalAlignment="Top" FontSize="19" Text="Điền Email mới tại đây" Height="72" HorizontalAlignment="Left" Width="456" Grid.ColumnSpan="2" Padding="{StaticResource TextBox_TextPadingLeft}" Background="White" GotFocus="txt_Email_GotFocus" LostFocus="txt_Email_LostFocus">
+            <telerikPrimitives:RadTextBox x:Name="rad_Email" Header="{Binding Name}" Margin="-5,0,-10,618" LostFocus="rad_Email_LostFocus" SelectionForeground="Black" Padding="60,2,2,2">
 
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
-                </TextBox.BorderBrush>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
-            </TextBox>
-
-            
-
-            <TextBox x:Name="txt_Password" IsHitTestVisible="False" Margin="0,108,0,0" VerticalAlignment="Top" FontSize="19"  Grid.ColumnSpan="2" Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" Text="Điền mật khẩu mới tại đây" >
-
-                <TextBox.Background>
-                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
-                </TextBox.Background>
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
-                </TextBox.BorderBrush>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
-            </TextBox>
-
-            
-
-            <PasswordBox x:Name="Password" LostFocus="PwLostFocus" Opacity="0" GotFocus="PwGotFocus" Margin="0,108,0,0" VerticalAlignment="Top" FontSize="19"  Grid.ColumnSpan="2" Height="72" Padding="{StaticResource TextBox_TextPadingLeft}"/>
-            <TextBox x:Name="txt_PasswordAgain" Margin="0,165,0,0" VerticalAlignment="Top" FontSize="19" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" Text="Điền lại mật khẩu mới tại đây" GotFocus="txt_PasswordAgain_GotFocus">
-
-                <TextBox.Background>
-                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
-                </TextBox.Background>
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
-                </TextBox.BorderBrush>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
-            </TextBox>
-
-               
-                    <PasswordBox x:Name="PasswordAgain" LostFocus="PwAgainLostFocus" Opacity="0" GotFocus="PwAgainGotFocus"  Margin="0,165,0,0" VerticalAlignment="Top" FontSize="19" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}"/>
-            <TextBox x:Name="txt_FirstAndMiddleName" Margin="0,280,0,0" VerticalAlignment="Top" FontSize="19" Text="Họ" Grid.ColumnSpan="2" Height="72"  Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_FirstAndMiddleName_GotFocus" LostFocus="txt_FirstAndMiddleName_LostFocus" >
-
-                <TextBox.Background>
-                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
-                </TextBox.Background>
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
-                </TextBox.BorderBrush>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
-            </TextBox>
-
-           
-
-            <TextBox x:Name="txt_Name" Margin="0,338,0,0" VerticalAlignment="Top"  Text="Tên" Grid.ColumnSpan="2"  Height="72" FontSize="19" Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_Name_GotFocus" LostFocus="txt_Name_LostFocus">
-
-                <TextBox.Background>
-                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
-                </TextBox.Background>
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
-                </TextBox.BorderBrush>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
-            </TextBox>
-
-           
-
-            <TextBox x:Name="txt_PhoneNumber" Margin="0,394,0,0" VerticalAlignment="Top" FontSize="19" Text="Số điện thoại" Grid.ColumnSpan="2"  Height="72" Padding="{StaticResource TextBox_TextPadingLeft}" InputScope="Digits" GotFocus="txt_PhoneNumber_GotFocus" LostFocus="txt_PhoneNumber_LostFocus">
-
-                <TextBox.Background>
-                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
-                </TextBox.Background>
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="{StaticResource Textbox_BorderOpacity_20}"/>
-                </TextBox.BorderBrush>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
-            </TextBox>
-            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,466,0,0" VerticalAlignment="Top" Height="72" Width="456" Click="btn_Click_Register" Grid.ColumnSpan="2" FontSize="{StaticResource Button_FontSize}" >
+            </telerikPrimitives:RadTextBox>
+            <telerikPrimitives:RadPasswordBox x:Name="rad_Password" Header="{Binding Name}" Margin="-5,88,-10,530" LostFocus="rad_Password_LostFocus"  Padding="60,2,2,2"/>
+            <telerikPrimitives:RadPasswordBox x:Name="rad_PasswordAgain" Header="{Binding Name}" Margin="-5,174,-10,444" LostFocus="rad_PasswordAgain_LostFocus"  Padding="60,2,2,2"/>
+            <telerikPrimitives:RadTextBox x:Name="rad_Name" Header="{Binding Name}" Margin="-5,295,-10,323" LostFocus="rad_Name_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
+            <telerikPrimitives:RadTextBox x:Name="rad_FirstAndMiddleName" Header="{Binding Name}" Margin="-5,385,-10,233" LostFocus="rad_FirstAndMiddleName_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
+            <telerikPrimitives:RadTextBox x:Name="rad_PhoneNumber" Header="{Binding Name}" Margin="-5,473,-10,145" LostFocus="rad_PhoneNumber_LostFocus" SelectionForeground="Black" Padding="60,2,2,2" InputScope="Digits"/>
+            <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,616,0,0" VerticalAlignment="Top" Height="72" Width="456"  FontSize="{StaticResource Button_FontSize}" Click="btn_Click_Register" >
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
                 </Button.BorderBrush>
@@ -146,15 +68,15 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
-            <Image x:Name="img_PageBreak" HorizontalAlignment="Center" Margin="0,237,10,0" VerticalAlignment="Top" Source="/Images/Others/img_PageContentBreak.png" Height="43" Grid.Column="1"/>
-            <Image x:Name="img_UserIDIcon" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,65,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
-            <Image x:Name="img_UserPasswordIcon" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,123,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
-            <Image x:Name="img_UserPasswordIcon_Copy" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,180,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
-            <Image x:Name="img_UserName" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,295,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserProfile.jpg"/>
-            <Image x:Name="img_UserName_Copy" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,353,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserProfile.jpg"/>
-            <Image x:Name="img_PhoneNumber" Grid.Column="1" HorizontalAlignment="Left" Height="42" Margin="3,409,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_PhoneNumber.jpg"/>
-
+            <Image x:Name="img_PageBreak" HorizontalAlignment="Center" Margin="0,282,22,0" VerticalAlignment="Top" Source="/Images/Others/img_PageContentBreak.png" Height="43"/>
+            <Image x:Name="img_UserIDIcon" HorizontalAlignment="Left" Height="42" Margin="10,49,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg" RenderTransformOrigin="0.786,-0.024"/>
+            <Image x:Name="img_UserPasswordIcon" HorizontalAlignment="Left" Height="42" Margin="10,137,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
+            <Image x:Name="img_UserPasswordIcon_Copy" HorizontalAlignment="Left" Height="42" Margin="10,222,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
+            <Image x:Name="img_UserName" HorizontalAlignment="Left" Height="42" Margin="10,344,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserProfile.jpg"/>
+            <Image x:Name="img_UserName_Copy" HorizontalAlignment="Left" Height="42" Margin="10,434,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserProfile.jpg"/>
+            <Image x:Name="img_PhoneNumber" HorizontalAlignment="Left" Height="42" Margin="10,523,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_PhoneNumber.jpg"/>
         </Grid>
+        <!--ContentPanel - place additional content here-->
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbl_Register" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="ĐĂNG KÝ TÀI KHOẢN" VerticalAlignment="Top" FontSize="24" Width="232"/>
 
