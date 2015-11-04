@@ -38,7 +38,7 @@
                     <SolidColorBrush Color="White" Opacity="0.2"/>
                 </Button.BorderBrush>
                 <Button.Background>
-                    <SolidColorBrush Color="{StaticResource ButtonBackgroundColor_Blue}"/>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
             <phone:Pivot x:Name="pvi_Tut" HorizontalAlignment="Center" Height="597" Margin="37,85,36,0" Title="" VerticalAlignment="Top" Width="383" SelectionChanged="pvi_Tut_SelectionChanged">

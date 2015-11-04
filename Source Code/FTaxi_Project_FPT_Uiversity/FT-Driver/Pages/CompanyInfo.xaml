@@ -84,7 +84,7 @@
                     <SolidColorBrush Color="White"/>
                 </Rectangle.Fill>
                 <Rectangle.Stroke>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
             <Rectangle x:Name="panel_moreInfor" Margin="-4,303,-3,212" Opacity="0.7" Grid.Row="1" Grid.RowSpan="2">
@@ -92,13 +92,13 @@
                     <SolidColorBrush Color="#FFF4F4F5"/>
                 </Rectangle.Fill>
                 <Rectangle.Stroke>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
             <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Height="60" Width="120"/>
             <Rectangle x:Name="line3_Copy" HorizontalAlignment="Left" Height="1" Margin="74,270,0,0" VerticalAlignment="Top" Width="396" Grid.Row="1">
                 <Rectangle.Fill>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}" Opacity="0.5"/>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                 </Rectangle.Fill>
             </Rectangle>
             <Image HorizontalAlignment="Center" Height="58" Margin="169,40,169,0" Grid.Row="1" VerticalAlignment="Top" Width="142" Source="/Images/Logos/img_Ftaxi_logo.png"/>
@@ -136,7 +136,7 @@
             	<Run Text="Đăng kiểm: "/>
             	<Run FontWeight="Normal" Text="11/2015"/>
             </TextBlock>
-            <Button x:Name="btn_Comeback" Content="Quay lại" HorizontalAlignment="Center" Margin="10,0,10,10" VerticalAlignment="Bottom" Width="460" Foreground="White" FontSize="{StaticResource FontSizeTextboxText}" Grid.Row="2">
+            <Button x:Name="btn_Comeback" Content="Quay lại" HorizontalAlignment="Center" Margin="10,0,10,10" VerticalAlignment="Bottom" Width="460" Foreground="White" FontSize="{StaticResource FontSizeTextboxText}" Grid.Row="2" Tap="btn_Tap_Comback">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="0.2"/>
                 </Button.BorderBrush>

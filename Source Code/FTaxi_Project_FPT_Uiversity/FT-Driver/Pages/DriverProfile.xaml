@@ -81,17 +81,17 @@
             </Grid.RowDefinitions>
             <Rectangle x:Name="panel_name" Margin="-4,8,-3,165" Opacity="0.7" Grid.Row="1" Fill="White">
                 <Rectangle.Stroke>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
             <Rectangle x:Name="panel_moreInfor" Margin="-4,142,-3,314" Grid.RowSpan="2" Opacity="0.7" Grid.Row="1" Fill="#FFF4F4F5">
                 <Rectangle.Stroke>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
             <Rectangle x:Name="panel_AddAddress" Margin="-4,124,-3,71" Opacity="0.7" Fill="#FFF4F4F5" Grid.Row="2">
                 <Rectangle.Stroke>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
             <TextBlock x:Name="tbl_ChangePassword" HorizontalAlignment="Center" Margin="157,374,186,0" TextWrapping="Wrap" Text="Đổi mật khẩu" VerticalAlignment="Top" FontSize="23" Tap="tbl_Tap_ChangePassword" Grid.Row="2" TextDecorations="Underline"/>
@@ -99,7 +99,7 @@
             <TextBlock x:Name="tbl_OfficeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Sô 14, Khu biệt thự 1&#xA;Hoàng Mai&#xA;Hà Nội" VerticalAlignment="Top" Margin="69,254,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
             <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Image x:Name="img_EditIcon_HomeAddress" HorizontalAlignment="Left" Height="100" Margin="422,134,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_HomeAddress_Tap"/>
-            <Image x:Name="img_EditIcon_OfficeAddress" HorizontalAlignment="Left" Height="100" Margin="422,244,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_OfficeAddress_Tap"/>
+            <Image x:Name="img_EditIcon_OfficeAddress" HorizontalAlignment="Left" Height="100" Margin="422,239,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_OfficeAddress_Tap"/>
             <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">
                 <Grid Height="430">
                     <toolkit:ListPicker FullModeItemTemplate="{StaticResource PickerFullModeItemTemplate}"

@@ -16,5 +16,10 @@ namespace FT_Driver.Pages
         {
             InitializeComponent();
         }
+
+        private void btn_Tap_Comback(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative));
+        }
     }
 }
