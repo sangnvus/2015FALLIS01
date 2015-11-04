@@ -251,6 +251,7 @@
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
     <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Email.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_Language.png" />
     <Content Include="Images\Icons\PNG\iconPNG_NewUserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_PhoneNumber.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />

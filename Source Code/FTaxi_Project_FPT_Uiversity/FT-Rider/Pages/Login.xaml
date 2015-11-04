@@ -64,11 +64,11 @@
             <TextBox x:Name="txt_Account" InputScope="EmailUserName" Text="Xin mời nhập Email tại đây" Margin="10,240,10,0" Height="72" Foreground="Gray" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}"  GotFocus="txt_Account_GotFocus" LostFocus="txt_Account_LostFocus"  FontSize="19" />
 
             <TextBox x:Name="txt_Password" Margin="10,312,10,0" TextWrapping="Wrap" Text="Xin mời nhập mật khẩu tại đây" Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" Foreground="Gray" FontSize="19"  />
-            <PasswordBox x:Name="Password" LostFocus="PasswordLostFocus" Opacity="0" GotFocus="PasswordGotFocus" Margin="10,312,10,0"  Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" Foreground="Gray" FontSize="19" />
+            <PasswordBox x:Name="pwd_Password" LostFocus="PasswordLostFocus" Opacity="0" GotFocus="PasswordGotFocus" Margin="10,312,10,0"  Height="72" VerticalAlignment="Top" Padding="{StaticResource TextBox_TextPadingLeft}" Foreground="Gray" FontSize="19" />
 
             <TextBlock x:Name="tbl_LostPassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource Text_LinkTextFontSize}" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/>
            
-            <Button x:Name="tbn_Register" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="22" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" >
+            <Button x:Name="btn_Register" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize}" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" >
                  <Button.Background>
                   <SolidColorBrush Color="#FFE28C01"/>
                  </Button.Background>

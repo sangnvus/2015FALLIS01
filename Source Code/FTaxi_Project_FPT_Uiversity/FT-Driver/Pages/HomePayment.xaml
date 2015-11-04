@@ -42,6 +42,7 @@
         <DataTemplate x:Name="lpkFullItemTemplate">
             <TextBlock Text="{Binding Country}" Style="{StaticResource PhoneTextTitle2Style}"/>
         </DataTemplate>
+        <Thickness x:Key="TextBox_TextPadingLeft">60,2,2,2</Thickness>
     </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="{StaticResource LayoutRootBackground}">
@@ -70,90 +71,138 @@
 
 
         <!--ContentPanel - place additional content here-->
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
+        <TextBlock x:Name="tbl_Profile" HorizontalAlignment="Center" Margin="113,10,90,0" TextWrapping="Wrap" Text="HÓA ĐƠN THANH TOÁN" VerticalAlignment="Top" FontSize="24" Width="277"/>
+
+
+        <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="60*"/>
                 <RowDefinition Height="361"/>
                 <RowDefinition Height="347*"/>
             </Grid.RowDefinitions>
-            <Rectangle x:Name="panel_name" Margin="0,42,-7,89" Opacity="0.7" Grid.Row="1">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="White"/>
-                </Rectangle.Fill>
+            <Rectangle x:Name="panel_name" Margin="-4,13,-3,116" Opacity="0.7" Grid.Row="1" Fill="White">
+                <Rectangle.Stroke>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Rectangle x:Name="panel_Pay" Margin="-3,268,-4,88" Opacity="0.7" Grid.Row="1" Grid.RowSpan="2" Fill="#FFF4F4F5">
                 <Rectangle.Stroke>
                     <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
-            <Rectangle x:Name="panel_moreInfor" Margin="-4,309,-3,10" Opacity="0.7" Grid.Row="1" Grid.RowSpan="2">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="#FFF4F4F5"/>
-                </Rectangle.Fill>
-                <Rectangle.Stroke>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}"/>
-                </Rectangle.Stroke>
-            </Rectangle>
-            <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top" Height="60" Width="120"/>
-            <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="722" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">
-                <Grid Height="328">
-                    <TextBox x:Name="txt_FirstAndMiddleName" Height="71" TextWrapping="Wrap"  VerticalAlignment="Top" Width="436" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="0,159,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextboxTextPaddingLeft}"/>
-                </Grid>
-
-
-            </StackPanel>
-            <Rectangle x:Name="line3_Copy1" HorizontalAlignment="Left" Height="1" Margin="74,102,0,0" VerticalAlignment="Top" Width="396" Grid.Row="1">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}" Opacity="0.5"/>
-                </Rectangle.Fill>
-            </Rectangle>
-            <Rectangle x:Name="line3_Copy2" HorizontalAlignment="Left" Height="1" Margin="76,152,0,0" VerticalAlignment="Top" Width="396" Grid.Row="1">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}" Opacity="0.5"/>
-                </Rectangle.Fill>
-            </Rectangle>
-            <Rectangle x:Name="line3_Copy3" HorizontalAlignment="Left" Height="1" Margin="74,202,0,0" VerticalAlignment="Top" Width="396" Grid.Row="1">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}" Opacity="0.5"/>
-                </Rectangle.Fill>
-            </Rectangle>
-            <Rectangle x:Name="line3_Copy" HorizontalAlignment="Left" Height="1" Margin="74,270,0,0" VerticalAlignment="Top" Width="396" Grid.Row="1">
-                <Rectangle.Fill>
-                    <SolidColorBrush Color="{StaticResource RectangStrokeColor}" Opacity="0.5"/>
-                </Rectangle.Fill>
-            </Rectangle>
-            <TextBox HorizontalAlignment="Left" Height="64" Margin="55,44,-3,0" Grid.Row="1" TextWrapping="Wrap" Text="Tạ Thiên Hưởng" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Width="428" FontSize="{StaticResource TextboxTextPayment}"/>
-            <TextBox HorizontalAlignment="Left" Height="64" Margin="55,89,-3,0" Grid.Row="1" TextWrapping="Wrap" Text="Chuyến đi: lần thứ nhất" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Width="428" FontSize="{StaticResource TextboxTextPayment}"/>
-            <TextBox HorizontalAlignment="Left" Height="64" Margin="55,144,-3,0" Grid.Row="1" TextWrapping="Wrap" Text="Ngõ 53, Quan Nhân, Nhân Chính" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Width="428" FontSize="{StaticResource TextboxTextPayment}"/>
-            <TextBox HorizontalAlignment="Left" Height="63" Margin="59,202,-7,0" Grid.Row="1" TextWrapping="Wrap" Text="Tòa nhà Detech, Cầu Giấy" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Top" Width="428" FontSize="{StaticResource TextboxTextPayment}"/>
-            <TextBlock HorizontalAlignment="Left" Margin="74,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="THÔNG TIN ĐƯỜNG ĐI KHÁCH HÀNG" VerticalAlignment="Top" Width="398" Foreground="#FF9B0E0E" FontWeight="Bold"/>
-            <TextBlock HorizontalAlignment="Left" Margin="153,277,0,0" Grid.Row="1" TextWrapping="Wrap" Text="THANH TOÁN" Foreground="#FF9B0E0E" FontWeight="Bold" VerticalAlignment="Top"/>
-            <Button x:Name="btn_Payment" Content="Thanh Toán" HorizontalAlignment="Left" Margin="-4,272,0,0" Grid.Row="2" VerticalAlignment="Top" Height="75" Width="484" Tap="btn_Payment_Tap" >
+            <TextBox x:Name="txt_Username" Text="Nguyễn Văn Lập" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,5,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Grid.Row="1"/>
+            <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,24,0,0" Source="/Images/Others/img_DemoAvatar2.jpg" Grid.Row="1">
+                <Image.Clip>
+                    <EllipseGeometry
+            			Center="50,50"
+            			RadiusX="45"
+            			RadiusY="45" />
+                </Image.Clip>
+            </Image>
+            <TextBox x:Name="txt_Count" Text="Lần đầu tiên" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,63,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Grid.Row="1"/>
+            <TextBox x:Name="txt_From" Text="18 Phạm Hùng, Từ Liêm" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="465" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,120,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Grid.Row="1" FontSize="23"/>
+            <TextBox x:Name="txt_To" Text="Detech, Tôn Thất Thuyết, Cầu Giấy" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="465" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,179,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Grid.Row="1" FontSize="23"/>
+            <TextBlock x:Name="tbl_Route" HorizontalAlignment="Left" Margin="10,285,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Quãng đường (km)" VerticalAlignment="Top" FontSize="23" Width="201">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBox x:Name="txt_Route" Text="23.00" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="214" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="266,264,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="2" Grid.Row="1" TextAlignment="Right" FontSize="25"/>
+            <TextBlock x:Name="tbl_Cost" HorizontalAlignment="Left" Margin="10,338,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Tổng phí (đ)" VerticalAlignment="Top" FontSize="23" Width="201" Grid.RowSpan="2">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBox x:Name="txt_Cost" Text="230.000" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="214" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="266,323,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="2" Grid.Row="1" TextAlignment="Right" FontSize="25" Grid.RowSpan="2" Foreground="#FFDE470E"/>
+            <TextBlock x:Name="tbl_Discount" HorizontalAlignment="Left" Margin="10,38,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Khuyến mại (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBox x:Name="txt_Discount" Text="50.000" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="214" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="266,17,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="2" Grid.Row="2" TextAlignment="Right" FontSize="25" Foreground="#FF52B425"/>
+            <TextBlock x:Name="tbl_TotalCost" HorizontalAlignment="Left" Margin="10,96,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Thanh toán (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBox x:Name="txt_TotalCost" Text="170.000" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="214" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="266,75,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="2" Grid.Row="2" TextAlignment="Right" FontSize="25">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBlock x:Name="tbl_PaymentType" HorizontalAlignment="Left" Margin="10,156,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Hình thức Thanh toán" VerticalAlignment="Top" FontSize="23" Width="222">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <TextBox x:Name="txt_PaymentType" Text="Tiền mặt" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="214" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="266,135,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="2" Grid.Row="2" TextAlignment="Right" FontSize="25">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="Black"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBlock x:Name="tbl_Paasword" HorizontalAlignment="Left" Margin="10,211,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Mật khẩu" VerticalAlignment="Top" FontSize="23" Width="201" FontWeight="Bold" Foreground="#FFEA3500"/>
+            <PasswordBox x:Name="pwd_Password" Margin="211,192,4,0" Grid.Row="2" VerticalAlignment="Top" BorderBrush="{x:Null}">
+                <PasswordBox.Background>
+                    <SolidColorBrush Color="#BFFFFFFF" Opacity="0.8"/>
+                </PasswordBox.Background>
+            </PasswordBox>
+            <Button x:Name="btn_Payment" Content="Thanh Toán" HorizontalAlignment="Left" Margin="0,272,-4,0" Grid.Row="2" VerticalAlignment="Top" Height="75" Width="484" Tap="btn_Payment_Tap" FontSize="23" >
+                <Button.BorderBrush>
+                    <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
+                </Button.BorderBrush>
                 <Button.Background>
-                    <SolidColorBrush Color="{StaticResource ButtonBackgroundColor_Blue}"/>
+                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
-            <TextBlock Foreground="#FF2E9FFF" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,339,0,0" Grid.Row="1" TextWrapping="Wrap" Text="Quãng Đường(KM)" VerticalAlignment="Top" Grid.RowSpan="2"/>
-            <TextBox HorizontalAlignment="Left" Height="72" Margin="207,309,-7,0" Grid.Row="1" TextWrapping="Wrap" Text="23.00" VerticalAlignment="Top" Width="280" Grid.RowSpan="2" TextAlignment="{StaticResource TextboxTextRight}"/>
-            <TextBox HorizontalAlignment="Left" Height="72" Margin="207,0,-7,0" Grid.Row="2" TextWrapping="Wrap" Text="230000" VerticalAlignment="Top" Width="280" TextAlignment="{StaticResource TextboxTextRight}"/>
-            <TextBox HorizontalAlignment="Left" Height="72" Margin="207,54,-7,0" Grid.Row="2" TextWrapping="Wrap" Text="50000" VerticalAlignment="Top" Width="280" TextAlignment="{StaticResource TextboxTextRight}"/>
-            <TextBox HorizontalAlignment="Left" Height="72" Margin="207,106,-7,0" Grid.Row="2" TextWrapping="Wrap" Text="170000" VerticalAlignment="Top" Width="280" TextAlignment="{StaticResource TextboxTextRight}"/>
-            <TextBox HorizontalAlignment="Left" Height="72" Margin="207,158,-7,0" Grid.Row="2" TextWrapping="Wrap" Text="Trực tiếp" VerticalAlignment="Top" Width="280" TextAlignment="{StaticResource TextboxTextRight}"/>
-            <PasswordBox HorizontalAlignment="Left" Height="72" Margin="207,208,-7,0" Grid.Row="2"  VerticalAlignment="Top" Width="280" />
-            <TextBlock Foreground="#FF2E9FFF" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,25,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Tổng phí(đ)" VerticalAlignment="Top"/>
-            <TextBlock Foreground="#FF2E9FFF" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,77,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Khuyến mại(đ)" VerticalAlignment="Top"/>
-            <TextBlock Foreground="#FF2E9FFF" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,131,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Thanh toán(đ)" VerticalAlignment="Top"/>
-            <TextBlock Foreground="#FF2E9FFF" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,181,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Hình thức thanh toán" VerticalAlignment="Top"/>
-            <TextBlock Foreground="Red" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,230,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Mật khẩu" VerticalAlignment="Top"/>
+            <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" Margin="82,73,0,0" VerticalAlignment="Top" Width="234" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy" HorizontalAlignment="Left" Height="1" Margin="82,130,0,0" VerticalAlignment="Top" Width="234" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy1" HorizontalAlignment="Left" Height="1" Margin="82,186,-3,0" VerticalAlignment="Top" Width="401" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Image x:Name="img_Username" HorizontalAlignment="Left" Height="50" Margin="9,21,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_UserProfile.png" Grid.Row="1"/>
+            <Image x:Name="img_Count" HorizontalAlignment="Left" Height="50" Margin="8,78,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_Count.png" Grid.Row="1"/>
+            <Image x:Name="img_From" HorizontalAlignment="Left" Height="50" Margin="10,133,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_FromIcon.png" Grid.Row="1"/>
+            <Image x:Name="img_To" HorizontalAlignment="Left" Height="50" Margin="10,188,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_ToIcon.png" Grid.Row="1"/>
+            <Rectangle x:Name="line1_Copy2" HorizontalAlignment="Left" Height="1" Margin="10,318,0,0" VerticalAlignment="Top" Width="460" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy3" HorizontalAlignment="Left" Height="1" Margin="10,15,0,0" VerticalAlignment="Top" Width="460" Grid.Row="2">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy4" HorizontalAlignment="Left" Height="1" Margin="10,72,0,0" VerticalAlignment="Top" Width="460" Grid.Row="2">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy5" HorizontalAlignment="Left" Height="1" Margin="10,131,0,0" VerticalAlignment="Top" Width="460" Grid.Row="2">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy6" HorizontalAlignment="Left" Height="1" Margin="8,190,0,0" VerticalAlignment="Top" Width="460" Grid.Row="2">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
 
 
         </Grid>
-        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
-        <Image Source="/Images/Icons/icon_Customer.png" Margin="10,104,428,598" RenderTransformOrigin="0.576,-0.095"/>
-        <Image Source="/Images/Icons/icon_start.png" Margin="10,193,428,479" RenderTransformOrigin="0.576,-0.095"/>
-        <Image Source="/Images/Icons/icon_stop.png" Margin="10,256,428,446" RenderTransformOrigin="0.576,-0.095"/>
-        <TextBlock x:Name="tbl_Profile" HorizontalAlignment="Center" Margin="113,10,90,0" TextWrapping="Wrap" Text="HÓA ĐƠN THANH TOÁN" VerticalAlignment="Top" FontSize="24" Width="277"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

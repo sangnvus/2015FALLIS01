@@ -9,9 +9,9 @@
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:FT_Driver" x:Key="LocalizedStrings"/>
-        <Color x:Key="ButtonBackgroundColor_Blue">#FF2E9FFF</Color>
+        <Color x:Key="Button_BackgroundColor_Blue">#FF2E9FFF</Color>
         <ImageBrush x:Key="LayoutRootBackground" Stretch="Fill" ImageSource="/Images/BackgroundImages/img_AppBackground.jpg"/>
-        <Color x:Key="RectangStrokeColor">#FF7E7E7E</Color>
+        <Color x:Key="Rectang_StrokeColor">#FF7E7E7E</Color>
         <Thickness x:Key="TextboxTextPaddingLeft">60,2,2,2</Thickness>
         <Thickness x:Key="LayoutFirstItemMargin">0,50,0,0</Thickness>
         <Color x:Key="TextBoxTextColor">#FFB9B9B9</Color>
@@ -22,6 +22,7 @@
         <System:Double x:Key="TextboxOpacity_20">0.2</System:Double>
         <System:Double x:Key="TextboxTextPayment">20</System:Double>
         <TextAlignment x:Key="TextboxTextRight">Right</TextAlignment>
+        <System:Double x:Key="Button_BorderOpacity_20">0.2</System:Double>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

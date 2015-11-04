@@ -54,12 +54,12 @@ namespace FT_Rider.Pages
 
         private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_Account.Text != "" && Password.ToString() != "")
+            if (txt_Account.Text != "" && pwd_Password.ToString() != "")
             {
                 int Temp = 0;
                 foreach (var UserLogin in ObjUserDataList)
                 {
-                    if (txt_Account.Text == UserLogin.Email && Password.ToString() == UserLogin.Password)
+                    if (txt_Account.Text == UserLogin.Email && pwd_Password.ToString() == UserLogin.Password)
                     {
                         Temp = 1;
                         var Settings = IsolatedStorageSettings.ApplicationSettings;
@@ -160,15 +160,15 @@ namespace FT_Rider.Pages
 
         public void CheckPasswordWatermark()
         {
-            var passwordEmpty = string.IsNullOrEmpty(Password.Password);
+            var passwordEmpty = string.IsNullOrEmpty(pwd_Password.Password);
             txt_Password.Opacity = passwordEmpty ? 100 : 0;
-            Password.Opacity = passwordEmpty ? 0 : 100;
+            pwd_Password.Opacity = passwordEmpty ? 0 : 100;
         }
        
         private void PasswordGotFocus(object sender, RoutedEventArgs e)
         {
             txt_Password.Opacity = 0;
-            Password.Opacity = 100;
+            pwd_Password.Opacity = 100;
         }
 
     }
