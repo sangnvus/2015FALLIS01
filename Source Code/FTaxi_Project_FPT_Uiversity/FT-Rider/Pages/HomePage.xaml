@@ -32,16 +32,91 @@
                     <Border.Background>
                         <SolidColorBrush Color="{StaticResource Menu_BackgroundColor_BlackGray}"/>
                     </Border.Background>
-                    <Canvas/>
                 </Border>
-                <TextBlock x:Name="tbl_Menu1" Text="Gọi xe" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,25,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Menu2" Text="Thông tin" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,75,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Menu3" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,125,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Menu4" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="60,175,0,0" FontSize="22"/>
-                <Image Margin="10,25,375,708" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
-                <Image Margin="10,75,375,658" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
-                <Image Margin="10,125,375,608" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
-                <Image Margin="10,175,375,558" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                <Image x:Name="img_MenuAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DemoAvatar2.jpg" Margin="50,20,0,0">
+                    <Image.Clip>
+                        <EllipseGeometry
+                			Center="50,50"
+                			RadiusX="45"
+                			RadiusY="45" />
+                    </Image.Clip>
+                </Image>
+                <TextBox x:Name="txt_FirstAndMiddleName" Text="Nguyễn Văn" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="220" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Background="{x:Null}" BorderBrush="{x:Null}" Padding="2" Margin="168,6,0,0" Foreground="White"/>
+                <TextBox x:Name="txt_Name" Text="Lập" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="220" BorderBrush="{x:Null}" Background="{x:Null}" Padding="2" Margin="168,58,0,0" Foreground="White"/>
+                <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,164,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,233,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,296,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_VipRider" Text="Khách hàng VIP" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,361,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_CompanyInfo" Text="Thông tin công ty" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,429,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,492,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,560,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,631,0,0" FontSize="22"/>
+                <Button Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize}">
+                    <Button.BorderBrush>
+                        <SolidColorBrush Color="White" Opacity="0.2"/>
+                    </Button.BorderBrush>
+                    <Button.Background>
+                        <SolidColorBrush Color="{StaticResource Button_Background_Color_Red}"/>
+                    </Button.Background>
+                </Button>
+                <Image x:Name="img_MenuIcon1" Margin="29,164,356,569" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png"/>
+                <Image x:Name="img_MenuIcon2" Margin="29,233,356,500" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png"/>
+                <Image x:Name="img_MenuIcon3" Margin="29,296,356,437" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
+                <Image x:Name="img_MenuIcon4" Margin="29,361,356,372" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png"/>
+                <Image x:Name="img_MenuIcon5" Margin="29,429,356,304" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
+                <Image x:Name="img_MenuIcon6" Margin="29,492,356,241" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png"/>
+                <Image x:Name="img_MenuIcon7" Margin="29,560,356,173" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
+                <Image x:Name="img_MenuIcon8" Margin="29,631,356,102" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
+                <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,137,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,216,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy1" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,282,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy2" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,346,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy3" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,411,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy4" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,478,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy5" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,544,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy6" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,478,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy7" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="370" Margin="50,613,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Rectangle x:Name="line1_Copy8" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,681,0,0">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
                 <Grid x:Name="grv_navbar" Margin="0,0,0,712">

@@ -94,6 +94,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\DemoTaxi.cs" />
+    <Compile Include="Classes\GeoCoordinateConvert.cs" />
+    <Compile Include="Classes\Taxi.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -256,6 +258,12 @@
     <Content Include="Images\Icons\PNG\iconPNG_PhoneNumber.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_About.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_Feedback.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_MyTrip.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_PromotionTrip.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_Support.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_VIP.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
@@ -293,19 +301,19 @@
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Data, Version=2013.2.718.3040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\Telerik.Windows.Controls.Data.dll</HintPath>
+      <HintPath>..\Reference\Telerik\Telerik.Windows.Controls.Data.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Input, Version=2013.2.718.3040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\Telerik.Windows.Controls.Input.dll</HintPath>
+      <HintPath>..\Reference\Telerik\Telerik.Windows.Controls.Input.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Primitives, Version=2013.2.718.3040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\Telerik.Windows.Controls.Primitives.dll</HintPath>
+      <HintPath>..\Reference\Telerik\Telerik.Windows.Controls.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Telerik.Windows.Core, Version=2013.2.718.3040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\Telerik.Windows.Core.dll</HintPath>
+      <HintPath>..\Reference\Telerik\Telerik.Windows.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
