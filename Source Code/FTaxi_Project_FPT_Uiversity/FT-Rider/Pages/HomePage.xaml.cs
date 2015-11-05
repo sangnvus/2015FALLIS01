@@ -17,6 +17,7 @@ using Microsoft.Devices;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using FT_Rider.Resources;
+using FT_Rider.Classes;
 
 namespace FT_Rider.Pages
 {
@@ -435,26 +436,4 @@ namespace FT_Rider.Pages
 
     }
 
-
-
-
-
-    //========================= BEGIN GeoCoordinateConvert Function =========================//
-    public static class GeoCoordinateConvert
-    {
-        public static GeoCoordinate ConvertGeocoordinate(Geocoordinate geocoordinate)
-        {
-            return new GeoCoordinate
-                (
-                geocoordinate.Latitude,
-                geocoordinate.Longitude,
-                geocoordinate.Altitude ?? Double.NaN,
-                geocoordinate.Accuracy,
-                geocoordinate.AltitudeAccuracy ?? Double.NaN,
-                geocoordinate.Speed ?? Double.NaN,
-                geocoordinate.Heading ?? Double.NaN
-                );
-        }
-    }
-    //========================= END GeoCoordinateConvert Function =========================//
 }
