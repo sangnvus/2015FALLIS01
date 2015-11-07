@@ -51,9 +51,6 @@ namespace FT_Rider.Pages
         //For show taxi layer
         MapLayer myTaxiLayer = new MapLayer();
 
-        //for auto complete
-        
-
 
         public HomePage()
         {
@@ -75,8 +72,8 @@ namespace FT_Rider.Pages
             this.grv_Step03.Visibility = Visibility.Collapsed;
 
             //auto complete
-            
-           
+
+
         }
 
 
@@ -107,7 +104,7 @@ namespace FT_Rider.Pages
             myLocationOverlay.Content = myPositionIcon;
 
             //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            myLocationOverlay.PositionOrigin = new Point(0.9, 0.9); 
+            myLocationOverlay.PositionOrigin = new Point(0.9, 0.9);
             myLocationOverlay.GeoCoordinate = MyGeoCoordinate;
 
             // Create a MapLayer to contain the MapOverlay.
@@ -170,7 +167,7 @@ namespace FT_Rider.Pages
         {
             if (e.Error == null)
             {
-                
+
                 Route MyRoute = e.Result;
                 MapRoute MyMapRoute = new MapRoute(MyRoute);
                 //Makeup for router
@@ -180,8 +177,8 @@ namespace FT_Rider.Pages
                 MyQuery.Dispose();
 
                 //get Coordinate of Destination Point
-                double destinationLatitude = MyCoordinates[MyCoordinates.Count-1].Latitude;
-                double destinationLongtitude = MyCoordinates[MyCoordinates.Count-1].Longitude;
+                double destinationLatitude = MyCoordinates[MyCoordinates.Count - 1].Latitude;
+                double destinationLongtitude = MyCoordinates[MyCoordinates.Count - 1].Longitude;
 
                 //Set Map Center
                 this.map_RiderMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
@@ -292,7 +289,7 @@ namespace FT_Rider.Pages
             //Add to Map's Layer
             myTaxiLayer.Add(myTaxiOvelay);
         }
-        
+
         //Tapped event
         void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -426,7 +423,7 @@ namespace FT_Rider.Pages
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 string destinationAddress;
-                destinationAddress = txt_InputAddress.Text;                
+                destinationAddress = txt_InputAddress.Text;
                 this.GetCoordinates(destinationAddress);
                 //Hide keyboard
                 this.Focus();
@@ -435,13 +432,17 @@ namespace FT_Rider.Pages
 
         private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_InputAddress.Text == "Địa chỉ đón")
+            //check if text is "Địa chỉ đón"
+            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
             {
                 txt_InputAddress.Text = string.Empty;
                 txt_InputAddress.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
 
+
+
+        //========================= BEGIN Auto Complete =========================//
         private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             string queryAddress = txt_InputAddress.Text;
@@ -474,9 +475,25 @@ namespace FT_Rider.Pages
             {
                 autoCompleteDataSource.Add(new AutoCompletePlaceList(obj.description.ToString()));
             }
-            
+
         }
 
+        private void lls_AutoComplete_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedPlace = ((AutoCompletePlaceList)(sender as LongListSelector).SelectedItem);
+            // If selected item is null, do nothing
+            if (lls_AutoComplete.SelectedItem == null)
+                return;
+            this.GetCoordinates(selectedPlace.Name.ToString());
+
+            //clear lls
+            lls_AutoComplete.Visibility = System.Windows.Visibility.Collapsed;
+            lls_AutoComplete.SelectedItem = null;
+        }
+        //========================= END Auto Complete =========================//
+
+
+        
     }
 
 }
