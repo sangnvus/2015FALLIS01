@@ -16,12 +16,13 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Canvas x:Name="canvas" Height="768" Width="480" ManipulationCompleted="canvas_ManipulationCompleted" ManipulationDelta="canvas_ManipulationDelta" ManipulationStarted="canvas_ManipulationStarted" Background="Black">
-        <!--For Open Menu-->
+
         <Canvas.Resources>
             <Storyboard x:Name="moveAnimation">
                 <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True" />
             </Storyboard>
         </Canvas.Resources>
+        <!--For Open Menu-->
         <!--LayoutRoot is the root grid where all page content is placed-->
         <Canvas x:Name="LayoutRoot" Height="768" Width="900" Canvas.Left="-420" CacheMode="BitmapCache">
             <Grid x:Name="grv_Menu" Height="768" Canvas.Left="1" Canvas.Top="1" Width="420">
@@ -128,11 +129,26 @@
                         </Button.Background>
                     </Button>
                 </Grid>
+
                 <Grid x:Name="grv_Map" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
                     <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded"/>
+                    <phone:LongListSelector x:Name="lls_AutoComplete" Margin="12,57,12,359" Width="{StaticResource Longlistselector_WidthSize}" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,15,10,15"/>
+                                    <Rectangle HorizontalAlignment="Center" Height="1" Width="456">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap">
+                    <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp">
                         <TextBox.Foreground>
                             <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
                         </TextBox.Foreground>

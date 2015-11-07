@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace FT_Rider.Pages
 {
@@ -49,6 +51,9 @@ namespace FT_Rider.Pages
         //For show taxi layer
         MapLayer myTaxiLayer = new MapLayer();
 
+        //for auto complete
+        
+
 
         public HomePage()
         {
@@ -68,6 +73,9 @@ namespace FT_Rider.Pages
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
+
+            //auto complete
+            
            
         }
 
@@ -432,6 +440,41 @@ namespace FT_Rider.Pages
                 txt_InputAddress.Text = string.Empty;
                 txt_InputAddress.Foreground = new SolidColorBrush(Colors.Black);
             }
+        }
+
+        private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            string queryAddress = txt_InputAddress.Text;
+            lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
+            loadAutoCompletePlace(queryAddress);
+
+        }
+
+        private void loadAutoCompletePlace(string inputAddress)
+        {
+            string URL = StaticVariables.queryAutocompleteRequestsBaseURI + StaticVariables.googleGeolocationAPIkey + "&input=" + inputAddress;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_DownloadStringCompleted);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+
+        private void proxy_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            //1. Convert Json String to an Object
+            GoogleAPIQueryAutoComplete places = new GoogleAPIQueryAutoComplete();
+            places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoComplete>(e.Result);
+            //2. Create Place list
+            ObservableCollection<AutoCompletePlaceList> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceList>();
+            lls_AutoComplete.ItemsSource = autoCompleteDataSource;
+            //3. Loop to list all item in object
+            foreach (var obj in places.predictions)
+            {
+                autoCompleteDataSource.Add(new AutoCompletePlaceList(obj.description.ToString()));
+            }
+            
         }
 
     }
