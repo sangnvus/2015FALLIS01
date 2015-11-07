@@ -152,21 +152,6 @@
                     </phone:LongListSelector>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <Rectangle x:Name="rt_inputAddressBg" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="460" Margin="10,10,0,0">
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="Black" Opacity="0.6"/>
-                        </Rectangle.Fill>
-                    </Rectangle>
-                    <Rectangle x:Name="line3" HorizontalAlignment="Left" Height="1" Margin="19,60,0,0" VerticalAlignment="Top" Width="396">
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="#FFA8A8A8"/>
-                        </Rectangle.Fill>
-                    </Rectangle>
-                    <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp" LostFocus="txt_InputAddress_LostFocus" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="25" FontWeight="Light" FontStretch="SemiCondensed" SelectionForeground="{x:Null}">
-                        <TextBox.Foreground>
-                            <SolidColorBrush Color="White"/>
-                        </TextBox.Foreground>
-                    </TextBox>
                     <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Left" Height="73" VerticalAlignment="Top" Width="470" Margin="10,563,0,0">
                         <Image x:Name="img_CallTaxi" HorizontalAlignment="Center" Height="49" VerticalAlignment="Center" Width="313" Source="/Images/Buttons/img_CallTaxiButton.png" Margin="0" Tap="img_CallTaxi_Tap"/>
                     </Grid>
@@ -179,6 +164,16 @@
                         <Image x:Name="img_CarBar_SavingCar" Height="65" Width="160" HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Saving_NotSelected.png" Tap="img_CarBar_SavingCar_Tap"/>
                         <Image x:Name="img_CarBar_EconomyCar" Height="65" Width="160" HorizontalAlignment="Left" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Economy_Selected.png" Margin="160,0,0,0" Tap="img_CarBar_EconomyCar_Tap" Grid.ColumnSpan="2"/>
                         <Image x:Name="img_CarBar_LuxuryCar" Height="65" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Luxury_NotSelected.png" Tap="img_CarBar_LuxuryCar_Tap" Grid.Column="1" HorizontalAlignment="Right" Width="160"/>
+                    </Grid>
+                    <Grid x:Name="grv_SearchBar" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="480">
+                        <Rectangle x:Name="rt_inputAddressBg" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="460" Margin="10,10,0,0">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="Black" Opacity="0.6"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle x:Name="line" HorizontalAlignment="Left" Height="1" Margin="19,60,0,0" VerticalAlignment="Top" Width="396" Fill="#FFA8A8A8"/>
+                        <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp" LostFocus="txt_InputAddress_LostFocus" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="25" FontWeight="Light" FontStretch="SemiCondensed" SelectionForeground="{x:Null}" GotFocus="txt_InputAddress_GotFocus" Foreground="White"/>
+                        <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="30" Margin="0,21,18,21" VerticalAlignment="Center" Width="30" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Opacity="0.5" Visibility="Collapsed" Tap="img_CloseIcon_Tap"/>
                     </Grid>
                 </Grid>
                 <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom" d:IsHidden="True">

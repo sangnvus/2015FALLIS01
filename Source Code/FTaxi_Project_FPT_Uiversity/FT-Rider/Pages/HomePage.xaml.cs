@@ -162,7 +162,7 @@ namespace FT_Rider.Pages
         {
             //if valid address input
             if (e.Error == null)
-            {  
+            {
                 Route MyRoute = e.Result;
                 MyMapRoute = new MapRoute(MyRoute);
                 //Makeup for router
@@ -327,8 +327,8 @@ namespace FT_Rider.Pages
 
         private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
-            if (e.DeltaManipulation.Translation.X != 0)
-                Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
+            //if (e.DeltaManipulation.Translation.X != 0)
+            //    Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
         }
 
         private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
@@ -406,6 +406,8 @@ namespace FT_Rider.Pages
 
 
 
+
+
         //========================= BEGIN Map API key =========================//
         private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
         {
@@ -415,43 +417,14 @@ namespace FT_Rider.Pages
         //========================= END Map API key =========================//
 
 
-        private void tb_InputAddress_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            //check if input is "Enter" key
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-                string destinationAddress;
-                destinationAddress = txt_InputAddress.Text;
-                this.GetCoordinates(destinationAddress);
-                //Hide keyboard
-                this.Focus();
-            }
-        }
-
-        private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //check if text is "Địa chỉ đón"
-            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
-            {
-                txt_InputAddress.Text = string.Empty;                
-            }
-            txt_InputAddress.Background = new SolidColorBrush(Colors.Transparent);
-        }
 
 
 
         //========================= BEGIN Auto Complete =========================//
-        private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            lls_AutoComplete.Visibility = System.Windows.Visibility.Visible;
-            string queryAddress = txt_InputAddress.Text;
-            lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
-            loadAutoCompletePlace(queryAddress);
-
-        }
-
+        //Parse JSON
         private void loadAutoCompletePlace(string inputAddress)
         {
+            //API URL
             string URL = StaticVariables.queryAutocompleteRequestsBaseURI + StaticVariables.googleGeolocationAPIkey + "&input=" + inputAddress;
 
             //Query Autocomplete Responses to a JSON String
@@ -477,38 +450,123 @@ namespace FT_Rider.Pages
 
         }
 
+        //LonglistSelector selection event
         private void lls_AutoComplete_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedPlace = ((AutoCompletePlaceList)(sender as LongListSelector).SelectedItem);
             // If selected item is null, do nothing
             if (lls_AutoComplete.SelectedItem == null)
                 return;
+            //else route direction
             this.GetCoordinates(selectedPlace.Name.ToString());
+            //and fill to address textbox on search bar
+            txt_InputAddress.Text = selectedPlace.Name.ToString();
+            setCursorAtLast(txt_InputAddress);
 
             //clear lls
             lls_AutoComplete.Visibility = System.Windows.Visibility.Collapsed;
             lls_AutoComplete.SelectedItem = null;
         }
 
+        //========================= END Auto Complete =========================//
+
+
+
+
+
+
+        //========================= BEGIN Search Bar EVENT =========================//
+        private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            lls_AutoComplete.Visibility = System.Windows.Visibility.Visible;
+            string queryAddress = txt_InputAddress.Text;
+            lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
+            //Call Auto Complete function
+            loadAutoCompletePlace(queryAddress);
+
+        }
+
+        private void tb_InputAddress_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            //check if input is "Enter" key
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                string destinationAddress;
+                destinationAddress = txt_InputAddress.Text;
+                this.GetCoordinates(destinationAddress);
+                //Hide keyboard
+                this.Focus();
+            }
+        }
+
+
+        private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //check if text is "Địa chỉ đón"
+            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
+            {
+                txt_InputAddress.Text = string.Empty;
+            }
+            txt_InputAddress.Background = new SolidColorBrush(Colors.Transparent);
+            //Show end of address
+            setCursorAtLast(txt_InputAddress);
+        }
+
+        private void img_CloseIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            txt_InputAddress.Text = string.Empty;
+            lls_AutoComplete.Visibility = Visibility.Collapsed;
+            img_CloseIcon.Visibility = Visibility.Collapsed;
+
+        }
+
+        //Textbox background focus transparent
+        private void txt_InputAddress_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+
+            img_CloseIcon.Visibility = Visibility.Visible;
+
+            //redisplay Auto complete when re focus
+            if (txt_InputAddress.Text != String.Empty && txt_InputAddress.Text != StaticVariables.destiationAddressDescription)
+            {
+                loadAutoCompletePlace(txt_InputAddress.Text);
+                lls_AutoComplete.Visibility = Visibility.Visible;
+            }
+            //Show end of address
+            setCursorAtLast(txt_InputAddress);
+        }
+
         private void txt_InputAddress_LostFocus(object sender, RoutedEventArgs e)
         {
             lls_AutoComplete.Visibility = Visibility.Collapsed;
+            img_CloseIcon.Visibility = Visibility.Collapsed;
             if (txt_InputAddress.Text == String.Empty)
             {
                 txt_InputAddress.Text = "Địa chỉ đón";
             }
+            //Show first of address
+            setCursorAtFirst(txt_InputAddress);
         }
-        //========================= END Auto Complete =========================//
 
-        private void checkTxtIsEmpty()
+        //Setting cursor at the end of any text of a textbox
+        private void setCursorAtLast(TextBox txtBox)
         {
-            string stringInput = txt_InputAddress.Text;
-            if (txt_InputAddress.ToString().Length == 0)
-            {
-                lls_AutoComplete.Visibility = Visibility.Collapsed;
-            }
+            txtBox.SelectionStart = txtBox.Text.Length; // add some logic if length is 0
+            txtBox.SelectionLength = 0;
         }
-        
+
+        //Setting cursor at the first of any text of a textbox
+        private void setCursorAtFirst(TextBox txtBox)
+        {
+            txtBox.SelectionStart = 0;
+            txtBox.SelectionLength = 0;
+        }
+        //========================= END Search Bar EVENT =========================//
+
     }
 
 }
