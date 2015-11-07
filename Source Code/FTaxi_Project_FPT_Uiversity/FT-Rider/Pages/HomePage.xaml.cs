@@ -36,6 +36,7 @@ namespace FT_Rider.Pages
         //For Router
         RouteQuery MyQuery = null;
         GeocodeQuery Mygeocodequery = null;
+        MapRoute MyMapRoute;
 
         //VibrateController
         VibrateController VibrateController = VibrateController.Default;
@@ -81,6 +82,7 @@ namespace FT_Rider.Pages
         //========================= BEGIN get current Position =========================//
         public async void GetMyPosition()
         {
+            //await new MessageDialog("Data Loaded!").ShowAsync();
             //get position
             MyGeoPosition = await MyGeolocator.GetGeopositionAsync();
             Geocoordinate MyGeocoordinate = MyGeoPosition.Coordinate;
@@ -92,7 +94,6 @@ namespace FT_Rider.Pages
 
 
             //Show maker
-
             // Create a small Point to mark the current location.
             Image myPositionIcon = new Image();
             myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_MyPositionIcon.png", UriKind.Relative));
@@ -166,13 +167,11 @@ namespace FT_Rider.Pages
         void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
         {
             if (e.Error == null)
-            {
-
+            {  
                 Route MyRoute = e.Result;
-                MapRoute MyMapRoute = new MapRoute(MyRoute);
+                MyMapRoute = new MapRoute(MyRoute);
                 //Makeup for router
                 MyMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
-                //MyMapRoute.OutlineColor = Color.FromArgb(255, (byte)71, (byte)142, (byte)246); // aRGB for #478ef6
                 map_RiderMap.AddRoute(MyMapRoute);
                 MyQuery.Dispose();
 
@@ -204,15 +203,11 @@ namespace FT_Rider.Pages
                 // Add the MapLayer to the Map.
                 map_RiderMap.Layers.Add(myLocationLayer);
 
-
-
                 //Calculate Distance
                 distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
             }
         }
         //========================= END route Direction on Map =========================//
-
-
 
 
 
@@ -300,7 +295,6 @@ namespace FT_Rider.Pages
             this.grv_Step02.Visibility = Visibility.Visible;
         }
         //========================= END show and Design UI 3 taxi near current position =========================//
-
 
 
 
@@ -445,6 +439,7 @@ namespace FT_Rider.Pages
         //========================= BEGIN Auto Complete =========================//
         private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            lls_AutoComplete.Visibility = System.Windows.Visibility.Visible;
             string queryAddress = txt_InputAddress.Text;
             lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
             loadAutoCompletePlace(queryAddress);
