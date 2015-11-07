@@ -131,8 +131,12 @@
                 </Grid>
 
                 <Grid x:Name="grv_Map" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0" Grid.Row="1">
-                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded"/>
-                    <phone:LongListSelector x:Name="lls_AutoComplete" Margin="12,57,12,349" Width="{StaticResource Longlistselector_WidthSize}" SelectionChanged="lls_AutoComplete_SelectionChanged">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="7*"/>
+                        <RowDefinition Height="82*"/>
+                    </Grid.RowDefinitions>
+                    <maps:Map x:Name="map_RiderMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2"/>
+                    <phone:LongListSelector x:Name="lls_AutoComplete" Margin="10,10,10,349" Width="{StaticResource Longlistselector_WidthSize}" SelectionChanged="lls_AutoComplete_SelectionChanged" Grid.Row="1">
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel VerticalAlignment="Center">
@@ -148,16 +152,20 @@
                     </phone:LongListSelector>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp">
+                    <Rectangle x:Name="rt_inputAddressBg" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="460" Margin="10,10,0,0">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="Black" Opacity="0.6"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line3" HorizontalAlignment="Left" Height="1" Margin="19,60,0,0" VerticalAlignment="Top" Width="396">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="#FFA8A8A8"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp" LostFocus="txt_InputAddress_LostFocus" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="25" FontWeight="Light" FontStretch="SemiCondensed" SelectionForeground="{x:Null}">
                         <TextBox.Foreground>
-                            <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                            <SolidColorBrush Color="White"/>
                         </TextBox.Foreground>
-                        <TextBox.BorderBrush>
-                            <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
-                        </TextBox.BorderBrush>
-                        <TextBox.Background>
-                            <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
-                        </TextBox.Background>
                     </TextBox>
                     <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Left" Height="73" VerticalAlignment="Top" Width="470" Margin="10,563,0,0">
                         <Image x:Name="img_CallTaxi" HorizontalAlignment="Center" Height="49" VerticalAlignment="Center" Width="313" Source="/Images/Buttons/img_CallTaxiButton.png" Margin="0" Tap="img_CallTaxi_Tap"/>

@@ -32,15 +32,16 @@ namespace FT_Rider.Pages
         Geolocator MyGeolocator = new Geolocator();
         Geoposition MyGeoPosition = null;
 
-
         //For Router
         RouteQuery MyQuery = null;
         GeocodeQuery Mygeocodequery = null;
         MapRoute MyMapRoute;
 
+        //For map layer
+        MapLayer riderMapLayer;
+
         //VibrateController
         VibrateController VibrateController = VibrateController.Default;
-
 
         //For Distance
         Double distanceMeter;
@@ -48,10 +49,6 @@ namespace FT_Rider.Pages
         //For menu
         double initialPosition;
         bool _viewMoved = false;
-
-        //For show taxi layer
-        MapLayer myTaxiLayer = new MapLayer();
-
 
         public HomePage()
         {
@@ -64,9 +61,6 @@ namespace FT_Rider.Pages
             this.getTaxiPosition(47.678603, -122.134643);
             this.getTaxiPosition(47.678574, -122.127626);
             this.getTaxiPosition(47.676291, -122.134407);
-
-            //Show taxi point to maps
-            map_RiderMap.Layers.Add(myTaxiLayer);
 
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;
@@ -109,11 +103,11 @@ namespace FT_Rider.Pages
             myLocationOverlay.GeoCoordinate = MyGeoCoordinate;
 
             // Create a MapLayer to contain the MapOverlay.
-            MapLayer myLocationLayer = new MapLayer();
-            myLocationLayer.Add(myLocationOverlay);
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(myLocationOverlay);
 
             // Add the MapLayer to the Map.
-            map_RiderMap.Layers.Add(myLocationLayer);
+            map_RiderMap.Layers.Add(riderMapLayer);
         }
         //========================= END get current Position =========================//
 
@@ -166,6 +160,7 @@ namespace FT_Rider.Pages
 
         void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
         {
+            //if valid address input
             if (e.Error == null)
             {  
                 Route MyRoute = e.Result;
@@ -197,14 +192,20 @@ namespace FT_Rider.Pages
                 myLocationOverlay.GeoCoordinate = new GeoCoordinate(destinationLatitude, destinationLongtitude);
 
                 // Create a MapLayer to contain the MapOverlay.
-                MapLayer myLocationLayer = new MapLayer();
-                myLocationLayer.Add(myLocationOverlay);
+                riderMapLayer = new MapLayer();
+                riderMapLayer.Add(myLocationOverlay);
 
                 // Add the MapLayer to the Map.
-                map_RiderMap.Layers.Add(myLocationLayer);
+                map_RiderMap.Layers.Add(riderMapLayer);
 
                 //Calculate Distance
                 distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
+            }
+            else
+            {
+                MessageBox.Show(StaticVariables.errInvalidAddress);
+                txt_InputAddress.Focus();
+                lls_AutoComplete.Visibility = Visibility.Visible;
             }
         }
         //========================= END route Direction on Map =========================//
@@ -282,7 +283,10 @@ namespace FT_Rider.Pages
             myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
 
             //Add to Map's Layer
-            myTaxiLayer.Add(myTaxiOvelay);
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(myTaxiOvelay);
+
+            map_RiderMap.Layers.Add(riderMapLayer);
         }
 
         //Tapped event
@@ -429,9 +433,9 @@ namespace FT_Rider.Pages
             //check if text is "Địa chỉ đón"
             if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
             {
-                txt_InputAddress.Text = string.Empty;
-                txt_InputAddress.Foreground = new SolidColorBrush(Colors.Black);
+                txt_InputAddress.Text = string.Empty;                
             }
+            txt_InputAddress.Background = new SolidColorBrush(Colors.Transparent);
         }
 
 
@@ -485,9 +489,25 @@ namespace FT_Rider.Pages
             lls_AutoComplete.Visibility = System.Windows.Visibility.Collapsed;
             lls_AutoComplete.SelectedItem = null;
         }
+
+        private void txt_InputAddress_LostFocus(object sender, RoutedEventArgs e)
+        {
+            lls_AutoComplete.Visibility = Visibility.Collapsed;
+            if (txt_InputAddress.Text == String.Empty)
+            {
+                txt_InputAddress.Text = "Địa chỉ đón";
+            }
+        }
         //========================= END Auto Complete =========================//
 
-
+        private void checkTxtIsEmpty()
+        {
+            string stringInput = txt_InputAddress.Text;
+            if (txt_InputAddress.ToString().Length == 0)
+            {
+                lls_AutoComplete.Visibility = Visibility.Collapsed;
+            }
+        }
         
     }
 
