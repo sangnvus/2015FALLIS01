@@ -67,7 +67,7 @@ namespace FT_Rider.Pages
             this.getTaxiPosition(47.676291, -122.134407);
 
             //hide all step sceen
-            this.grv_Step02.Visibility = Visibility.Collapsed;
+            this.grv_Step02.Visibility = Visibility.Collapsed;            
             this.grv_Step03.Visibility = Visibility.Collapsed;
 
             this.lls_AutoComplete.IsEnabled = false;            
@@ -582,11 +582,14 @@ namespace FT_Rider.Pages
             if (lls_AutoComplete.SelectedItem == null)
                 return;
             //else route direction
-            this.searchCoordinateFromAddress(selectedPlace.Name.ToString());
+            searchCoordinateFromAddress(selectedPlace.Name.ToString());
             //showMapRoute(21.031579, 105.779560);
             //and fill to address textbox on search bar
             txt_InputAddress.Text = selectedPlace.Name.ToString();
             setCursorAtLast(txt_InputAddress);
+
+            //vibrate phone
+            vibrateController.Start(TimeSpan.FromSeconds(0.5));
 
             //clear lls
             lls_AutoComplete.Visibility = System.Windows.Visibility.Collapsed;
@@ -671,6 +674,12 @@ namespace FT_Rider.Pages
                 loadAutoCompletePlace(txt_InputAddress.Text);
                 lls_AutoComplete.Visibility = Visibility.Visible;
             }
+
+            //hide close icon
+            if (txt_InputAddress.Text == String.Empty)
+            {
+                img_CloseIcon.Visibility = Visibility.Collapsed;
+            }
             //Show end of address
             setCursorAtLast(txt_InputAddress);
         }
@@ -701,6 +710,7 @@ namespace FT_Rider.Pages
             txtBox.SelectionStart = 0;
             txtBox.SelectionLength = 0;
         }
+
         //------ END Search Bar EVENT ------//
 
     }
