@@ -534,8 +534,9 @@ namespace FT_Rider.Pages
         //------ BEGIN Search Bar EVENT ------//
         private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
+            img_CloseIcon.Visibility = Visibility.Visible;
             lls_AutoComplete.IsEnabled = true;
-            lls_AutoComplete.Visibility = System.Windows.Visibility.Visible;
+            lls_AutoComplete.Visibility = Visibility.Visible;
             string queryAddress = txt_InputAddress.Text;
             lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
             //Call Auto Complete function
@@ -572,10 +573,11 @@ namespace FT_Rider.Pages
 
         private void img_CloseIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            txt_InputAddress.Text = string.Empty;
-            lls_AutoComplete.Visibility = Visibility.Collapsed;
-            img_CloseIcon.Visibility = Visibility.Collapsed;
-            lls_AutoComplete.IsEnabled = false;
+            txt_InputAddress.Text = String.Empty;
+            txt_InputAddress.Focus();
+            //lls_AutoComplete.Visibility = Visibility.Collapsed;
+            //img_CloseIcon.Visibility = Visibility.Collapsed;
+            //lls_AutoComplete.IsEnabled = false;
 
         }
 
@@ -588,6 +590,11 @@ namespace FT_Rider.Pages
             addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
 
             img_CloseIcon.Visibility = Visibility.Visible;
+
+            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
+            {
+                txt_InputAddress.Text = string.Empty;
+            }
 
             //redisplay Auto complete when re focus
             if (txt_InputAddress.Text != String.Empty && txt_InputAddress.Text != StaticVariables.destiationAddressDescription)
@@ -606,7 +613,7 @@ namespace FT_Rider.Pages
             img_CloseIcon.Visibility = Visibility.Collapsed;
             if (txt_InputAddress.Text == String.Empty)
             {
-                txt_InputAddress.Text = "Địa chỉ đón";
+                txt_InputAddress.Text = StaticVariables.destiationAddressDescription;
             }
             //Show first of address
             setCursorAtFirst(txt_InputAddress);
