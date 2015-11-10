@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class AutoCompletePlaceList
+    class AutoCompletePlace
     {
         private string _placeName;
 
@@ -16,7 +16,7 @@ namespace FT_Rider.Classes
             set { _placeName = value; }
         }
 
-        public AutoCompletePlaceList(string placeName)
+        public AutoCompletePlace(string placeName)
         {
             this.Name = placeName;
         }

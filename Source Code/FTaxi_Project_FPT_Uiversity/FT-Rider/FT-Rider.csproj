@@ -93,8 +93,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\AutoCompletePlaceList.cs" />
+    <Compile Include="Classes\AutoCompletePlace.cs" />
+    <Compile Include="Classes\BaseCoordinate.cs" />
     <Compile Include="Classes\GeoCoordinateConvert.cs" />
+    <Compile Include="Classes\GoogleAPIGeocoding.cs" />
     <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
     <Compile Include="Classes\StaticVariables.cs" />
     <Compile Include="Classes\UserData.cs" />
@@ -232,6 +234,7 @@
     <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
+    <Resource Include="Images\Gifs\img_GIF_Processing.gif" />
     <Content Include="Images\Grid_NoCarYet\img_CallCenter.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
@@ -272,6 +275,7 @@
     <Content Include="Images\Others\img_DemoAvatar.jpg" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
+    <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
     <Content Include="Images\Taxis\img_CarIcon.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />

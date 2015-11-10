@@ -26,20 +26,26 @@ namespace FT_Rider.Pages
     public partial class HomePage : PhoneApplicationPage
     {
         //For Store Points
-        List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
+        List<GeoCoordinate> riderCoordinates = new List<GeoCoordinate>();
+
+        //For Base Current Position Coordinates
+        GeoCoordinate riderCurrentPosition = null;
 
         //For Position
-        Geolocator MyGeolocator = new Geolocator();
-        Geoposition MyGeoPosition = null;
+        Geolocator riderGeolocator = new Geolocator();
+        Geoposition riderGeoPosition = null;
 
+        //For Router        
+        GeocodeQuery riderGeocodeQuery = null;
+        MapRoute riderMapRoute;
+        RouteQuery riderQuery = null;
+        Route riderRoute;
 
-        //For Router
-        RouteQuery MyQuery = null;
-        GeocodeQuery Mygeocodequery = null;
+        //For map layer
+        MapLayer riderMapLayer;                
 
         //VibrateController
-        VibrateController VibrateController = VibrateController.Default;
-
+        VibrateController vibrateController = VibrateController.Default;
 
         //For Distance
         Double distanceMeter;
@@ -48,54 +54,41 @@ namespace FT_Rider.Pages
         double initialPosition;
         bool _viewMoved = false;
 
-        //For show taxi layer
-        MapLayer myTaxiLayer = new MapLayer();
-
-        //for auto complete
-        
-
-
         public HomePage()
         {
             InitializeComponent();
 
             //get My Position
-            this.GetMyPosition();
+            this.SetMyPosition();
 
             //HardCode Taxi position
             this.getTaxiPosition(47.678603, -122.134643);
             this.getTaxiPosition(47.678574, -122.127626);
             this.getTaxiPosition(47.676291, -122.134407);
 
-            //Show taxi point to maps
-            map_RiderMap.Layers.Add(myTaxiLayer);
-
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
 
-            //auto complete
-            
-           
+            this.lls_AutoComplete.IsEnabled = false;            
+
         }
 
 
-
-        //========================= BEGIN get current Position =========================//
-        public async void GetMyPosition()
+        //------ BEGIN get current Position ------//
+        public async void SetMyPosition()
         {
+            //await new MessageDialog("Data Loaded!").ShowAsync();
             //get position
-            MyGeoPosition = await MyGeolocator.GetGeopositionAsync();
-            Geocoordinate MyGeocoordinate = MyGeoPosition.Coordinate;
+            riderGeoPosition = await riderGeolocator.GetGeopositionAsync();
+            Geocoordinate MyGeocoordinate = riderGeoPosition.Coordinate;
             GeoCoordinate MyGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(MyGeocoordinate);
-            MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+            riderGeoPosition = await riderGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
             //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_RiderMap.Center = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude - 0.001500, MyGeoPosition.Coordinate.Longitude);
+            this.map_RiderMap.Center = new GeoCoordinate(riderGeoPosition.Coordinate.Latitude - 0.001500, riderGeoPosition.Coordinate.Longitude);
             this.map_RiderMap.ZoomLevel = 16;
 
-
             //Show maker
-
             // Create a small Point to mark the current location.
             Image myPositionIcon = new Image();
             myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_MyPositionIcon.png", UriKind.Relative));
@@ -107,33 +100,36 @@ namespace FT_Rider.Pages
             myLocationOverlay.Content = myPositionIcon;
 
             //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            myLocationOverlay.PositionOrigin = new Point(0.9, 0.9); 
+            myLocationOverlay.PositionOrigin = new Point(0.9, 0.9);
             myLocationOverlay.GeoCoordinate = MyGeoCoordinate;
 
             // Create a MapLayer to contain the MapOverlay.
-            MapLayer myLocationLayer = new MapLayer();
-            myLocationLayer.Add(myLocationOverlay);
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(myLocationOverlay);
 
             // Add the MapLayer to the Map.
-            map_RiderMap.Layers.Add(myLocationLayer);
+            map_RiderMap.Layers.Add(riderMapLayer);
         }
-        //========================= END get current Position =========================//
+        //------ END get current Position ------//
 
 
 
-        //========================= BEGIN route Direction on Map =========================//
-        private async void GetCoordinates(String destinationAddressInput)
+        //------ BEGIN route Direction on Map ------//
+        private async void getMapRouteTo(double lat, double lng)
         {
-            MyGeolocator.DesiredAccuracyInMeters = 5;
+            //reset route
+            //map_RiderMap.Layers.Remove(riderMapLayer);
+            riderGeolocator.DesiredAccuracyInMeters = 5;
             try
             {
                 //Set Position point
-                MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-                MyCoordinates.Add(new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude));
+                riderGeoPosition = await riderGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+                riderCoordinates.Add(new GeoCoordinate(riderGeoPosition.Coordinate.Latitude, riderGeoPosition.Coordinate.Longitude));
             }
             catch (UnauthorizedAccessException)
             {
-                MessageBox.Show("Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.");
+                //Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.
+                MessageBox.Show(StaticVariables.errServiceIsOff);
             }
             catch (Exception ex)
             {
@@ -141,47 +137,63 @@ namespace FT_Rider.Pages
                 MessageBox.Show(ex.Message);
             }
 
-            Mygeocodequery = new GeocodeQuery();
-            Mygeocodequery.SearchTerm = destinationAddressInput;
-            Mygeocodequery.GeoCoordinate = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude);
+            riderGeocodeQuery = new GeocodeQuery();
+            riderGeocodeQuery.SearchTerm = lat.ToString().Replace(',', '.') + "," + lng.ToString().Replace(',', '.');
+            riderGeocodeQuery.GeoCoordinate = new GeoCoordinate(riderGeoPosition.Coordinate.Latitude, riderGeoPosition.Coordinate.Longitude);
 
 
-            Mygeocodequery.QueryCompleted += Mygeocodequery_QueryCompleted;
-            Mygeocodequery.QueryAsync();
+            riderGeocodeQuery.QueryCompleted += Mygeocodequery_QueryCompleted;
+            riderGeocodeQuery.QueryAsync();
         }
 
 
-        void Mygeocodequery_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)
+        private void Mygeocodequery_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)
         {
             if (e.Error == null)
             {
-                MyQuery = new RouteQuery();
-                MyCoordinates.Add(e.Result[0].GeoCoordinate);
-                MyQuery.Waypoints = MyCoordinates;
-                MyQuery.QueryCompleted += MyQuery_QueryCompleted;
-                MyQuery.QueryAsync();
-                Mygeocodequery.Dispose();
+                try
+                {
+                    riderQuery = new RouteQuery();
+                    riderCoordinates.Add(e.Result[0].GeoCoordinate);
+                    riderQuery.Waypoints = riderCoordinates;
+                    riderQuery.QueryCompleted += MyQuery_QueryCompleted;
+                    riderQuery.QueryAsync();
+                    riderGeocodeQuery.Dispose();
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show(StaticVariables.errInvalidAddress);
+                }
             }
         }
 
 
 
-        void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        private void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
         {
+            
+            //if valid address input
             if (e.Error == null)
             {
-                
-                Route MyRoute = e.Result;
-                MapRoute MyMapRoute = new MapRoute(MyRoute);
+                //remove route
+                if (riderMapRoute != null)
+                {
+                    map_RiderMap.RemoveRoute(riderMapRoute);
+                    riderMapRoute = null;
+                    riderRoute = null;
+                }
+
+                riderRoute = e.Result;
+                riderMapRoute = new MapRoute(riderRoute);
                 //Makeup for router
-                MyMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
-                //MyMapRoute.OutlineColor = Color.FromArgb(255, (byte)71, (byte)142, (byte)246); // aRGB for #478ef6
-                map_RiderMap.AddRoute(MyMapRoute);
-                MyQuery.Dispose();
+                riderMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
+                map_RiderMap.AddRoute(riderMapRoute);
+                riderQuery.Dispose();
 
                 //get Coordinate of Destination Point
-                double destinationLatitude = MyCoordinates[MyCoordinates.Count-1].Latitude;
-                double destinationLongtitude = MyCoordinates[MyCoordinates.Count-1].Longitude;
+                double destinationLatitude = riderCoordinates[riderCoordinates.Count - 1].Latitude;
+                double destinationLongtitude = riderCoordinates[riderCoordinates.Count - 1].Longitude;
 
                 //Set Map Center
                 this.map_RiderMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
@@ -201,26 +213,86 @@ namespace FT_Rider.Pages
                 myLocationOverlay.GeoCoordinate = new GeoCoordinate(destinationLatitude, destinationLongtitude);
 
                 // Create a MapLayer to contain the MapOverlay.
-                MapLayer myLocationLayer = new MapLayer();
-                myLocationLayer.Add(myLocationOverlay);
+                riderMapLayer = new MapLayer();
+                riderMapLayer.Add(myLocationOverlay);
 
                 // Add the MapLayer to the Map.
-                map_RiderMap.Layers.Add(myLocationLayer);
-
-
+                map_RiderMap.Layers.Add(riderMapLayer);
 
                 //Calculate Distance
-                distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
+                distanceMeter = Math.Round(GetTotalDistance(riderCoordinates), 0); //Round double in zero decimal places
+            }
+            else
+            {
+                MessageBox.Show(StaticVariables.errInvalidAddress);
+                txt_InputAddress.Focus();
+                lls_AutoComplete.IsEnabled = true;
+                lls_AutoComplete.Visibility = Visibility.Visible;
             }
         }
-        //========================= END route Direction on Map =========================//
+        //------ END route Direction on Map ------//
 
 
 
 
 
-        //========================= BEGIN calculate Distance =========================//
-        public static double GetTotalDistance(IEnumerable<GeoCoordinate> coordinates)
+
+
+
+
+
+        private void getRouteTo(GeoCoordinate myPosition, GeoCoordinate destination)
+        {
+            if (riderMapRoute != null)
+            {
+                map_RiderMap.RemoveRoute(riderMapRoute);
+                riderMapRoute = null;
+                riderQuery = null;
+            }
+            riderQuery = new RouteQuery()
+            {
+                TravelMode = TravelMode.Driving,
+                Waypoints = new List<GeoCoordinate>()
+            {
+                myPosition, 
+                destination
+            },
+                RouteOptimization = RouteOptimization.MinimizeTime
+            };
+            riderQuery.QueryCompleted += riderRouteQuery_QueryCompleted;
+            riderQuery.QueryAsync();
+        }
+        void riderRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        {
+            if (e.Error == null)
+            {
+                Route newRoute = e.Result;
+
+                riderMapRoute = new MapRoute(newRoute);
+                map_RiderMap.AddRoute(riderMapRoute);
+                riderQuery.Dispose();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //------ BEGIN calculate Distance ------//
+        private static double GetTotalDistance(IEnumerable<GeoCoordinate> coordinates)
         {
             double result = 0;
 
@@ -236,14 +308,14 @@ namespace FT_Rider.Pages
 
             return result;
         }
-        //========================= END calculate Distance =========================//
+        //------ END calculate Distance ------//
 
 
 
 
 
-        //========================= BEGIN show and Design UI 3 taxi near current position =========================//
-        public void getTaxiPosition(double lat, double lng)
+        //------ BEGIN show and Design UI 3 taxi near current position ------//
+        private void getTaxiPosition(double lat, double lng)
         {
             GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
 
@@ -290,11 +362,14 @@ namespace FT_Rider.Pages
             myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
 
             //Add to Map's Layer
-            myTaxiLayer.Add(myTaxiOvelay);
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(myTaxiOvelay);
+
+            map_RiderMap.Layers.Add(riderMapLayer);
         }
-        
+
         //Tapped event
-        void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //Hide Step 01
             this.grv_Step01.Visibility = Visibility.Collapsed;
@@ -302,12 +377,11 @@ namespace FT_Rider.Pages
             //Show Step 02
             this.grv_Step02.Visibility = Visibility.Visible;
         }
-        //========================= END show and Design UI 3 taxi near current position =========================//
+        //------ END show and Design UI 3 taxi near current position ------//
 
 
 
-
-        //========================= BEGIN For open menu =========================//
+        //------ BEGIN For open menu ------//
         private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
         {
 
@@ -332,8 +406,8 @@ namespace FT_Rider.Pages
 
         private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
-            if (e.DeltaManipulation.Translation.X != 0)
-                Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
+            //if (e.DeltaManipulation.Translation.X != 0)
+            //    Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
         }
 
         private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
@@ -371,12 +445,12 @@ namespace FT_Rider.Pages
                     MoveViewWindow(0);
             }
         }
-        //========================= END For open menu =========================//
+        //------ END For open menu ------//
 
 
 
 
-        //========================= BEGIN Taxi type bar =========================//
+        //------ BEGIN Taxi type bar ------//
         private void img_CarBar_SavingCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_Selected.png", UriKind.Relative));
@@ -395,30 +469,149 @@ namespace FT_Rider.Pages
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_Selected.png", UriKind.Relative));
         }
-        //========================= END Taxi type bar =========================//
+        //------ END Taxi type bar ------//
 
 
 
 
 
-        //========================= BEGIN Car type bar chose =========================//
+
+
+        //------ BEGIN Car type bar chose ------//
         private void img_CallTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             this.grv_Step01.Visibility = Visibility.Collapsed;
             this.grv_Step02.Visibility = Visibility.Visible;
         }
-        //========================= END Car type bar chose =========================//
+        //------ END Car type bar chose ------//
 
 
 
-        //========================= BEGIN Map API key =========================//
+
+
+
+
+        //------ BEGIN Map API key ------//
         private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
         {
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
-        //========================= END Map API key =========================//
+        //------ END Map API key ------//
 
+
+
+
+
+
+        //------ BEGIN Convert Lat & Lng from Address for Bing map Input ------//
+        private void searchCoordinateFromAddress(string inputAddress)
+        {
+            //GoogleAPIGeocoding URL
+            string URL = StaticVariables.googleAPIGeocodingRequestsBaseURI + inputAddress + "&key=" + StaticVariables.googleGeolocationAPIkey;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_searchCoordinateFromAddress);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+        private void proxy_searchCoordinateFromAddress(object sender, DownloadStringCompletedEventArgs e)
+        {
+            //1. Convert Json String to an Object
+            GoogleAPIGeocoding places = new GoogleAPIGeocoding();
+            places = JsonConvert.DeserializeObject<GoogleAPIGeocoding>(e.Result);
+            try
+            {
+                double lat = places.results[0].geometry.location.lat;
+                double lng = places.results[0].geometry.location.lng;
+
+                //route direction on map
+                this.getMapRouteTo(lat, lng);
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show(StaticVariables.errInvalidAddress);
+            }
+        }
+        //------ END Convert Lat & Lng from Address for Bing map Input ------//
+
+
+
+
+
+
+
+
+        //------ BEGIN Auto Complete ------//
+        //Parse JSON
+        private void loadAutoCompletePlace(string inputAddress)
+        {
+            //GoogleAPIQueryAutoComplete URL
+            string URL = StaticVariables.googleAPIQueryAutoCompleteRequestsBaseURI + StaticVariables.googleGeolocationAPIkey + "&input=" + inputAddress;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_loadAutoCompletePlace);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+
+        private void proxy_loadAutoCompletePlace(object sender, DownloadStringCompletedEventArgs e)
+        {
+            //1. Convert Json String to an Object
+            GoogleAPIQueryAutoComplete places = new GoogleAPIQueryAutoComplete();
+            places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoComplete>(e.Result);
+            //2. Create Place list
+            ObservableCollection<AutoCompletePlace> autoCompleteDataSource = new ObservableCollection<AutoCompletePlace>();
+            lls_AutoComplete.ItemsSource = autoCompleteDataSource;
+            //3. Loop to list all item in object
+            foreach (var obj in places.predictions)
+            {
+                autoCompleteDataSource.Add(new AutoCompletePlace(obj.description.ToString()));
+            }
+
+        }
+
+        //LonglistSelector selection event
+        private void lls_AutoComplete_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedPlace = ((AutoCompletePlace)(sender as LongListSelector).SelectedItem);
+            // If selected item is null, do nothing
+            if (lls_AutoComplete.SelectedItem == null)
+                return;
+            //else route direction
+            this.searchCoordinateFromAddress(selectedPlace.Name.ToString());
+            //showMapRoute(21.031579, 105.779560);
+            //and fill to address textbox on search bar
+            txt_InputAddress.Text = selectedPlace.Name.ToString();
+            setCursorAtLast(txt_InputAddress);
+
+            //clear lls
+            lls_AutoComplete.Visibility = System.Windows.Visibility.Collapsed;
+            lls_AutoComplete.SelectedItem = null;
+        }
+
+        //------ END Auto Complete ------//
+
+
+
+
+
+
+        //------ BEGIN Search Bar EVENT ------//
+        private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            img_CloseIcon.Visibility = Visibility.Visible;
+            lls_AutoComplete.IsEnabled = true;
+            lls_AutoComplete.Visibility = Visibility.Visible;
+            string queryAddress = txt_InputAddress.Text;
+            lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
+            //Call Auto Complete function
+            loadAutoCompletePlace(queryAddress);
+
+        }
 
         private void tb_InputAddress_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
@@ -426,56 +619,89 @@ namespace FT_Rider.Pages
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 string destinationAddress;
-                destinationAddress = txt_InputAddress.Text;                
-                this.GetCoordinates(destinationAddress);
+                destinationAddress = txt_InputAddress.Text;
+                this.searchCoordinateFromAddress(destinationAddress);
+                //showMapRoute(21.031579, 105.779560);
                 //Hide keyboard
                 this.Focus();
             }
         }
 
+
         private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_InputAddress.Text == "Địa chỉ đón")
+            //check if text is "Địa chỉ đón"
+            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
             {
                 txt_InputAddress.Text = string.Empty;
-                txt_InputAddress.Foreground = new SolidColorBrush(Colors.Black);
             }
+            txt_InputAddress.Background = new SolidColorBrush(Colors.Transparent);
+            //Show end of address
+            setCursorAtLast(txt_InputAddress);
         }
 
-        private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void img_CloseIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            string queryAddress = txt_InputAddress.Text;
-            lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
-            loadAutoCompletePlace(queryAddress);
+            txt_InputAddress.Text = String.Empty;
+            txt_InputAddress.Focus();
+            //lls_AutoComplete.Visibility = Visibility.Collapsed;
+            //img_CloseIcon.Visibility = Visibility.Collapsed;
+            //lls_AutoComplete.IsEnabled = false;
 
         }
 
-        private void loadAutoCompletePlace(string inputAddress)
+        //Textbox background focus transparent
+        private void txt_InputAddress_GotFocus(object sender, RoutedEventArgs e)
         {
-            string URL = StaticVariables.queryAutocompleteRequestsBaseURI + StaticVariables.googleGeolocationAPIkey + "&input=" + inputAddress;
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
 
-            //Query Autocomplete Responses to a JSON String
-            WebClient proxy = new WebClient();
-            proxy.DownloadStringCompleted +=
-            new DownloadStringCompletedEventHandler(proxy_DownloadStringCompleted);
-            proxy.DownloadStringAsync(new Uri(URL));
-        }
+            img_CloseIcon.Visibility = Visibility.Visible;
 
-        private void proxy_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            //1. Convert Json String to an Object
-            GoogleAPIQueryAutoComplete places = new GoogleAPIQueryAutoComplete();
-            places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoComplete>(e.Result);
-            //2. Create Place list
-            ObservableCollection<AutoCompletePlaceList> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceList>();
-            lls_AutoComplete.ItemsSource = autoCompleteDataSource;
-            //3. Loop to list all item in object
-            foreach (var obj in places.predictions)
+            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
             {
-                autoCompleteDataSource.Add(new AutoCompletePlaceList(obj.description.ToString()));
+                txt_InputAddress.Text = string.Empty;
             }
-            
+
+            //redisplay Auto complete when re focus
+            if (txt_InputAddress.Text != String.Empty && txt_InputAddress.Text != StaticVariables.destiationAddressDescription)
+            {
+                loadAutoCompletePlace(txt_InputAddress.Text);
+                lls_AutoComplete.Visibility = Visibility.Visible;
+            }
+            //Show end of address
+            setCursorAtLast(txt_InputAddress);
         }
+
+        private void txt_InputAddress_LostFocus(object sender, RoutedEventArgs e)
+        {
+            lls_AutoComplete.IsEnabled = false;
+            lls_AutoComplete.Visibility = Visibility.Collapsed;
+            img_CloseIcon.Visibility = Visibility.Collapsed;
+            if (txt_InputAddress.Text == String.Empty)
+            {
+                txt_InputAddress.Text = StaticVariables.destiationAddressDescription;
+            }
+            //Show first of address
+            setCursorAtFirst(txt_InputAddress);
+        }
+
+        //Setting cursor at the end of any text of a textbox
+        private void setCursorAtLast(TextBox txtBox)
+        {
+            txtBox.SelectionStart = txtBox.Text.Length; // add some logic if length is 0
+            txtBox.SelectionLength = 0;
+        }
+
+        //Setting cursor at the first of any text of a textbox
+        private void setCursorAtFirst(TextBox txtBox)
+        {
+            txtBox.SelectionStart = 0;
+            txtBox.SelectionLength = 0;
+        }
+        //------ END Search Bar EVENT ------//
 
     }
 
