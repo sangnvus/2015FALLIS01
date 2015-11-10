@@ -26,22 +26,26 @@ namespace FT_Rider.Pages
     public partial class HomePage : PhoneApplicationPage
     {
         //For Store Points
-        List<GeoCoordinate> MyCoordinates = new List<GeoCoordinate>();
+        List<GeoCoordinate> riderCoordinates = new List<GeoCoordinate>();
+
+        //For Base Current Position Coordinates
+        GeoCoordinate riderCurrentPosition = null;
 
         //For Position
-        Geolocator MyGeolocator = new Geolocator();
-        Geoposition MyGeoPosition = null;
+        Geolocator riderGeolocator = new Geolocator();
+        Geoposition riderGeoPosition = null;
 
-        //For Router
-        RouteQuery MyQuery = null;
-        GeocodeQuery Mygeocodequery = null;
-        MapRoute MyMapRoute;
+        //For Router        
+        GeocodeQuery riderGeocodeQuery = null;
+        MapRoute riderMapRoute;
+        RouteQuery riderQuery = null;
+        Route riderRoute;
 
         //For map layer
-        MapLayer riderMapLayer;
+        MapLayer riderMapLayer;                
 
         //VibrateController
-        VibrateController VibrateController = VibrateController.Default;
+        VibrateController vibrateController = VibrateController.Default;
 
         //For Distance
         Double distanceMeter;
@@ -55,7 +59,7 @@ namespace FT_Rider.Pages
             InitializeComponent();
 
             //get My Position
-            this.GetMyPosition();
+            this.SetMyPosition();
 
             //HardCode Taxi position
             //this.getTaxiPosition(47.678603, -122.134643);
@@ -66,26 +70,23 @@ namespace FT_Rider.Pages
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
 
-            this.lls_AutoComplete.IsEnabled = false;
-
+            this.lls_AutoComplete.IsEnabled = false;            
 
         }
 
 
-
         //------ BEGIN get current Position ------//
-        public async void GetMyPosition()
+        public async void SetMyPosition()
         {
             //await new MessageDialog("Data Loaded!").ShowAsync();
             //get position
-            MyGeoPosition = await MyGeolocator.GetGeopositionAsync();
-            Geocoordinate MyGeocoordinate = MyGeoPosition.Coordinate;
+            riderGeoPosition = await riderGeolocator.GetGeopositionAsync();
+            Geocoordinate MyGeocoordinate = riderGeoPosition.Coordinate;
             GeoCoordinate MyGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(MyGeocoordinate);
-            MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+            riderGeoPosition = await riderGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
             //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_RiderMap.Center = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude - 0.001500, MyGeoPosition.Coordinate.Longitude);
+            this.map_RiderMap.Center = new GeoCoordinate(riderGeoPosition.Coordinate.Latitude - 0.001500, riderGeoPosition.Coordinate.Longitude);
             this.map_RiderMap.ZoomLevel = 16;
-
 
             //Show maker
             // Create a small Point to mark the current location.
@@ -114,14 +115,16 @@ namespace FT_Rider.Pages
 
 
         //------ BEGIN route Direction on Map ------//
-        private async void showMapRoute(double lat, double lng)
+        private async void getMapRouteTo(double lat, double lng)
         {
-            MyGeolocator.DesiredAccuracyInMeters = 5;
+            //reset route
+            //map_RiderMap.Layers.Remove(riderMapLayer);
+            riderGeolocator.DesiredAccuracyInMeters = 5;
             try
             {
                 //Set Position point
-                MyGeoPosition = await MyGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-                MyCoordinates.Add(new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude));
+                riderGeoPosition = await riderGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+                riderCoordinates.Add(new GeoCoordinate(riderGeoPosition.Coordinate.Latitude, riderGeoPosition.Coordinate.Longitude));
             }
             catch (UnauthorizedAccessException)
             {
@@ -134,13 +137,13 @@ namespace FT_Rider.Pages
                 MessageBox.Show(ex.Message);
             }
 
-            Mygeocodequery = new GeocodeQuery();
-            Mygeocodequery.SearchTerm = lat.ToString().Replace(',', '.') + "," + lng.ToString().Replace(',', '.');
-            Mygeocodequery.GeoCoordinate = new GeoCoordinate(MyGeoPosition.Coordinate.Latitude, MyGeoPosition.Coordinate.Longitude);
+            riderGeocodeQuery = new GeocodeQuery();
+            riderGeocodeQuery.SearchTerm = lat.ToString().Replace(',', '.') + "," + lng.ToString().Replace(',', '.');
+            riderGeocodeQuery.GeoCoordinate = new GeoCoordinate(riderGeoPosition.Coordinate.Latitude, riderGeoPosition.Coordinate.Longitude);
 
 
-            Mygeocodequery.QueryCompleted += Mygeocodequery_QueryCompleted;
-            Mygeocodequery.QueryAsync();
+            riderGeocodeQuery.QueryCompleted += Mygeocodequery_QueryCompleted;
+            riderGeocodeQuery.QueryAsync();
         }
 
 
@@ -150,12 +153,12 @@ namespace FT_Rider.Pages
             {
                 try
                 {
-                    MyQuery = new RouteQuery();
-                MyCoordinates.Add(e.Result[0].GeoCoordinate);
-                MyQuery.Waypoints = MyCoordinates;
-                MyQuery.QueryCompleted += MyQuery_QueryCompleted;
-                MyQuery.QueryAsync();
-                Mygeocodequery.Dispose();
+                    riderQuery = new RouteQuery();
+                    riderCoordinates.Add(e.Result[0].GeoCoordinate);
+                    riderQuery.Waypoints = riderCoordinates;
+                    riderQuery.QueryCompleted += MyQuery_QueryCompleted;
+                    riderQuery.QueryAsync();
+                    riderGeocodeQuery.Dispose();
                 }
                 catch (Exception)
                 {
@@ -169,19 +172,28 @@ namespace FT_Rider.Pages
 
         private void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
         {
+            
             //if valid address input
             if (e.Error == null)
             {
-                Route MyRoute = e.Result;
-                MyMapRoute = new MapRoute(MyRoute);
+                //remove route
+                if (riderMapRoute != null)
+                {
+                    map_RiderMap.RemoveRoute(riderMapRoute);
+                    riderMapRoute = null;
+                    riderRoute = null;
+                }
+
+                riderRoute = e.Result;
+                riderMapRoute = new MapRoute(riderRoute);
                 //Makeup for router
-                MyMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
-                map_RiderMap.AddRoute(MyMapRoute);
-                MyQuery.Dispose();
+                riderMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
+                map_RiderMap.AddRoute(riderMapRoute);
+                riderQuery.Dispose();
 
                 //get Coordinate of Destination Point
-                double destinationLatitude = MyCoordinates[MyCoordinates.Count - 1].Latitude;
-                double destinationLongtitude = MyCoordinates[MyCoordinates.Count - 1].Longitude;
+                double destinationLatitude = riderCoordinates[riderCoordinates.Count - 1].Latitude;
+                double destinationLongtitude = riderCoordinates[riderCoordinates.Count - 1].Longitude;
 
                 //Set Map Center
                 this.map_RiderMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
@@ -208,7 +220,7 @@ namespace FT_Rider.Pages
                 map_RiderMap.Layers.Add(riderMapLayer);
 
                 //Calculate Distance
-                distanceMeter = Math.Round(GetTotalDistance(MyCoordinates), 0); //Round double in zero decimal places
+                distanceMeter = Math.Round(GetTotalDistance(riderCoordinates), 0); //Round double in zero decimal places
             }
             else
             {
@@ -219,6 +231,63 @@ namespace FT_Rider.Pages
             }
         }
         //------ END route Direction on Map ------//
+
+
+
+
+
+
+
+
+
+
+        private void getRouteTo(GeoCoordinate myPosition, GeoCoordinate destination)
+        {
+            if (riderMapRoute != null)
+            {
+                map_RiderMap.RemoveRoute(riderMapRoute);
+                riderMapRoute = null;
+                riderQuery = null;
+            }
+            riderQuery = new RouteQuery()
+            {
+                TravelMode = TravelMode.Driving,
+                Waypoints = new List<GeoCoordinate>()
+            {
+                myPosition, 
+                destination
+            },
+                RouteOptimization = RouteOptimization.MinimizeTime
+            };
+            riderQuery.QueryCompleted += riderRouteQuery_QueryCompleted;
+            riderQuery.QueryAsync();
+        }
+        void riderRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        {
+            if (e.Error == null)
+            {
+                Route newRoute = e.Result;
+
+                riderMapRoute = new MapRoute(newRoute);
+                map_RiderMap.AddRoute(riderMapRoute);
+                riderQuery.Dispose();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -458,7 +527,7 @@ namespace FT_Rider.Pages
                 double lng = places.results[0].geometry.location.lng;
 
                 //route direction on map
-                this.showMapRoute(lat, lng);
+                this.getMapRouteTo(lat, lng);
             }
             catch (Exception)
             {
