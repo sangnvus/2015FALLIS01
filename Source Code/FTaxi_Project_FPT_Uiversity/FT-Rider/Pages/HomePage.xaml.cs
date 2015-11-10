@@ -62,9 +62,9 @@ namespace FT_Rider.Pages
             this.SetMyPosition();
 
             //HardCode Taxi position
-            //this.getTaxiPosition(47.678603, -122.134643);
-            //this.getTaxiPosition(47.678574, -122.127626);
-            //this.getTaxiPosition(47.676291, -122.134407);
+            this.getTaxiPosition(47.678603, -122.134643);
+            this.getTaxiPosition(47.678574, -122.127626);
+            this.getTaxiPosition(47.676291, -122.134407);
 
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;

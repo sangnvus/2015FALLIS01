@@ -209,7 +209,7 @@
                     <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Left" Margin="422,361,0,0" VerticalAlignment="Top"/>
                 </Grid>
                 <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
-                    <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg" d:IsHidden="True"/>
+                    <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg"/>
                 </Grid>
             </Grid>
         </Canvas>
