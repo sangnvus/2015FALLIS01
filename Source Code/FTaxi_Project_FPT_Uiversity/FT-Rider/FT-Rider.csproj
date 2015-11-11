@@ -98,6 +98,8 @@
     <Compile Include="Classes\GeoCoordinateConvert.cs" />
     <Compile Include="Classes\GoogleAPIGeocoding.cs" />
     <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
+    <Compile Include="Classes\RiderGetNearCar.cs" />
+    <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\StaticVariables.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />

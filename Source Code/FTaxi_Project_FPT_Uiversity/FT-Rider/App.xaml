@@ -29,6 +29,7 @@
         <System:Double x:Key="ButtonBorderOpacity_20">0.2</System:Double>
         <Color x:Key="Button_Background_Color_Red">#FFDC1D51</Color>
         <System:Double x:Key="Longlistselector_WidthSize">NaN</System:Double>
+        <Color x:Key="lls_ColorBackground">#FF060F27</Color>
 
     </Application.Resources>
 
