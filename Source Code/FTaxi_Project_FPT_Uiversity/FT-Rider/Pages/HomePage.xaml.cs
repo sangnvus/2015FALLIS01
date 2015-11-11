@@ -42,7 +42,7 @@ namespace FT_Rider.Pages
         Route riderRoute;
 
         //For map layer
-        MapLayer riderMapLayer;                
+        MapLayer riderMapLayer;
 
         //VibrateController
         VibrateController vibrateController = VibrateController.Default;
@@ -58,8 +58,8 @@ namespace FT_Rider.Pages
         {
             InitializeComponent();
 
-            //get My Position
-            this.SetMyPosition();
+            //get First Local Position
+            this.ShowCurrentLocalOnTheMap();
 
             //HardCode Taxi position
             this.getTaxiPosition(47.678603, -122.134643);
@@ -67,41 +67,40 @@ namespace FT_Rider.Pages
             this.getTaxiPosition(47.676291, -122.134407);
 
             //hide all step sceen
-            this.grv_Step02.Visibility = Visibility.Collapsed;            
+            this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
 
-            this.lls_AutoComplete.IsEnabled = false;            
+            this.lls_AutoComplete.IsEnabled = false;
 
         }
 
 
         //------ BEGIN get current Position ------//
-        public async void SetMyPosition()
+        private async void ShowCurrentLocalOnTheMap()
         {
-            //await new MessageDialog("Data Loaded!").ShowAsync();
             //get position
-            riderGeoPosition = await riderGeolocator.GetGeopositionAsync();
-            Geocoordinate MyGeocoordinate = riderGeoPosition.Coordinate;
-            GeoCoordinate MyGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(MyGeocoordinate);
-            riderGeoPosition = await riderGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+            Geolocator riderFirstGeolocator = new Geolocator();
+            Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
+            Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
+            GeoCoordinate riderFirstGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(riderFirstGeocoordinate);            
             //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_RiderMap.Center = new GeoCoordinate(riderGeoPosition.Coordinate.Latitude - 0.001500, riderGeoPosition.Coordinate.Longitude);
+            this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
             this.map_RiderMap.ZoomLevel = 16;
 
             //Show maker
             // Create a small Point to mark the current location.
-            Image myPositionIcon = new Image();
-            myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_MyPositionIcon.png", UriKind.Relative));
-            myPositionIcon.Height = 35;
-            myPositionIcon.Width = 25;
+            Image firstRiderPositionIcon = new Image();
+            firstRiderPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_MyPositionIcon.png", UriKind.Relative));
+            firstRiderPositionIcon.Height = 35;
+            firstRiderPositionIcon.Width = 25;
 
             // Create a MapOverlay to contain the circle.
             MapOverlay myLocationOverlay = new MapOverlay();
-            myLocationOverlay.Content = myPositionIcon;
+            myLocationOverlay.Content = firstRiderPositionIcon;
 
             //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            myLocationOverlay.PositionOrigin = new Point(0.9, 0.9);
-            myLocationOverlay.GeoCoordinate = MyGeoCoordinate;
+            //myLocationOverlay.PositionOrigin = new Point(-0.5, -0.5);
+            myLocationOverlay.GeoCoordinate = riderFirstGeoCoordinate;
 
             // Create a MapLayer to contain the MapOverlay.
             riderMapLayer = new MapLayer();
@@ -172,7 +171,7 @@ namespace FT_Rider.Pages
 
         private void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
         {
-            
+
             //if valid address input
             if (e.Error == null)
             {
@@ -589,7 +588,7 @@ namespace FT_Rider.Pages
             setCursorAtLast(txt_InputAddress);
 
             //vibrate phone
-            vibrateController.Start(TimeSpan.FromSeconds(0.5));
+            vibrateController.Start(TimeSpan.FromSeconds(0.1));
 
             //clear lls
             lls_AutoComplete.Visibility = System.Windows.Visibility.Collapsed;

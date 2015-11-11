@@ -159,8 +159,7 @@
                         </Rectangle>
                         <Rectangle x:Name="line" HorizontalAlignment="Left" Height="1" Margin="19,60,0,0" VerticalAlignment="Top" Width="396" Fill="#FFA8A8A8"/>
                         <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp" LostFocus="txt_InputAddress_LostFocus" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="25" FontWeight="Light" FontStretch="SemiCondensed" SelectionForeground="{x:Null}" GotFocus="txt_InputAddress_GotFocus" Foreground="White" Width="480" Padding="2,2,30,2"/>
-                        <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="30" Margin="0,0,20,0" VerticalAlignment="Center" Width="30" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Opacity="0.5" Tap="img_CloseIcon_Tap" Visibility="Collapsed" />
-                        <phone:LongListSelector x:Name="lls_AutoComplete" Margin="10,66,10,-291" Width="{StaticResource Longlistselector_WidthSize}" SelectionChanged="lls_AutoComplete_SelectionChanged">
+                        <phone:LongListSelector x:Name="lls_AutoComplete" Margin="10,66,10,-291" Width="{StaticResource Longlistselector_WidthSize}" SelectionChanged="lls_AutoComplete_SelectionChanged" Visibility="Collapsed">
                             <phone:LongListSelector.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
@@ -174,6 +173,7 @@
                                 </DataTemplate>
                             </phone:LongListSelector.ItemTemplate>
                         </phone:LongListSelector>
+                        <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" Width="40" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Tap="img_CloseIcon_Tap" Visibility="Collapsed" />
                     </Grid>
                 </Grid>
                 <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom" d:IsHidden="True">

@@ -33,7 +33,7 @@
             <Ellipse x:Name="el_Page3" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="226,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
             <Ellipse x:Name="el_Page4" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="249,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
             <Ellipse x:Name="el_Page5" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="10" Margin="271,93,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
-            <Button x:Name="btn_Go" Content="BỎ QUA ĐỂ BẮT ĐẦU" HorizontalAlignment="Center" Margin="0,682,0,0" VerticalAlignment="Top" Tap="btn_Go_Tap" Width="456" FontSize="{StaticResource Button_FontSize}" FontWeight="Medium" Height="76" Background="{x:Null}">
+            <Button x:Name="btn_Go" Content="BỎ QUA ĐỂ BẮT ĐẦU" HorizontalAlignment="Center" Margin="0,655,0,0" VerticalAlignment="Top" Tap="btn_Go_Tap" Width="456" FontSize="{StaticResource Button_FontSize}" FontWeight="Medium" Height="103" Background="{x:Null}">
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="0.5"/>
                 </Button.BorderBrush>
