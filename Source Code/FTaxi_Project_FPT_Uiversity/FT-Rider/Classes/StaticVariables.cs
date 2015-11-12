@@ -15,5 +15,6 @@ namespace FT_Rider.Classes
         public static string destiationAddressDescription = "Địa chỉ đón";
         public static string errInvalidAddress = "Địa chỉ không hợp lệ, vui lòng thử lại!";
         public static string errServiceIsOff = "Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.";
+        public static string errHasErrInProcess = "Đã có lỗi xảy ra trong quá trình hoạt động, vui lòng trở lại!";
     }
 }
