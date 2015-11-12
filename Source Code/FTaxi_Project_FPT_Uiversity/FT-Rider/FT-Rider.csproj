@@ -96,6 +96,8 @@
     <Compile Include="Classes\AutoCompletePlace.cs" />
     <Compile Include="Classes\BaseCoordinate.cs" />
     <Compile Include="Classes\ConvertData.cs" />
+    <Compile Include="Classes\FareCalculator.cs" />
+    <Compile Include="Classes\GetJsonFromServer.cs" />
     <Compile Include="Classes\GoogleAPIGeocoding.cs" />
     <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
     <Compile Include="Classes\RiderBaseDTO.cs" />

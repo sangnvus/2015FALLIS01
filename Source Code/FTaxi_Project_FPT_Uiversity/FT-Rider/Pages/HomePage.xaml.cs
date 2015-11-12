@@ -572,7 +572,7 @@ namespace FT_Rider.Pages
             }
             catch (Exception)
             {
-                MessageBox.Show(StaticVariables.errInvalidAddress);                
+                txt_InputAddress.Focus();                
             }
         }
 
@@ -666,6 +666,9 @@ namespace FT_Rider.Pages
         //Textbox background focus transparent
         private void txt_InputAddress_GotFocus(object sender, RoutedEventArgs e)
         {
+            //Enable Auto Complete
+            loadAutoCompletePlace("");
+
             enableAutoComplateGrid();
             TextBox addressTextbox = (TextBox)sender;
             addressTextbox.Background = new SolidColorBrush(Colors.Transparent);

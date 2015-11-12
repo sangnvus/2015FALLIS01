@@ -16,5 +16,12 @@ namespace FT_Rider.Classes
         public static string errInvalidAddress = "Địa chỉ không hợp lệ, vui lòng thử lại!";
         public static string errServiceIsOff = "Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.";
         public static string errHasErrInProcess = "Đã có lỗi xảy ra trong quá trình hoạt động, vui lòng trở lại!";
+
+        //Rider Controller
+        public static string tNetServerAddress = "123.30.236.109:8088/";
+        public static string tNetRestServices = "TN/restServices/";
+        public static string tNetRider = "RiderController/";
+        public static string tNetRequestParameter = "?json";
+        public static string tNetRiderController = tNetServerAddress + tNetRestServices + tNetRider + tNetRequestParameter;
     }
 }
