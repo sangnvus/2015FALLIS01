@@ -83,7 +83,7 @@ namespace FT_Rider.Pages
             Geolocator riderFirstGeolocator = new Geolocator();
             Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
             Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
-            GeoCoordinate riderFirstGeoCoordinate = GeoCoordinateConvert.ConvertGeocoordinate(riderFirstGeocoordinate);
+            GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
             //Adjust map on the phone screen - 0.001500 to move up the map
             this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
             this.map_RiderMap.ZoomLevel = 16;

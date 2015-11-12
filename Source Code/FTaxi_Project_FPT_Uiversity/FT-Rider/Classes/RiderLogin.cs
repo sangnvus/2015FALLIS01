@@ -17,7 +17,7 @@ namespace FT_Rider.Classes
         public string cate { get; set; }
     }
 
-    public class Content
+    public class RiderLoginContent
     {
         public string fName { get; set; }
         public string lName { get; set; }
@@ -47,6 +47,6 @@ namespace FT_Rider.Classes
     {
         public string status { get; set; }
         public int lmd { get; set; }
-        public Content content { get; set; }
+        public RiderGetNearDriverContent content { get; set; }
     }
 }

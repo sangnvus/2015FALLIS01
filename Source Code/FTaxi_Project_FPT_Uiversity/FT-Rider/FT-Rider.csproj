@@ -95,16 +95,19 @@
     </Compile>
     <Compile Include="Classes\AutoCompletePlace.cs" />
     <Compile Include="Classes\BaseCoordinate.cs" />
-    <Compile Include="Classes\GeoCoordinateConvert.cs" />
+    <Compile Include="Classes\ConvertData.cs" />
     <Compile Include="Classes\GoogleAPIGeocoding.cs" />
     <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
-    <Compile Include="Classes\RiderGetNearCar.cs" />
+    <Compile Include="Classes\RiderGetNearDriver.cs" />
     <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\StaticVariables.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DemoPage.xaml.cs">
+      <DependentUpon>DemoPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
@@ -149,6 +152,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DemoPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
