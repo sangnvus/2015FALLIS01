@@ -53,14 +53,71 @@ namespace FT_Rider.Pages
         'pw': null
     }
 }";
+
+        string nearCar = @"{
+    'status': '0000',
+    'lmd': 0,
+    'content': {
+        'listDriverDTO': [
+            {
+                'did': '85f9049d-7209-4173-8aa3-bf354a91a54d',
+                'fName': 'Đạo Dino in Storm',
+                'lName': 'Nguyễn Minh',
+                'cName': 'Hoàng Hà Taxi',
+                'mobile': '+84 16463668688',
+                'rate': null,
+                'oPrice': 11000,
+                'oKm': 0.6,
+                'f1Price': 13000,
+                'f1Km': 20,
+                'f2Price': 11000,
+                'f2Km': 0,
+                'f3Price': null,
+                'f3Km': null,
+                'f4Price': null,
+                'f4Km': null,
+                'img': '',
+                'lat': 21.075741,
+                'lng': 105.78757
+            },
+            {
+                'did': '4',
+                'fName': 'Nguyễnn',
+                'lName': 'Hoài Nam',
+                'cName': 'Hoàng Hà Taxi',
+                'mobile': '09777556231',
+                'rate': null,
+                'oPrice': 9000,
+                'oKm': 0.8,
+                'f1Price': 11000,
+                'f1Km': 15,
+                'f2Price': 10500,
+                'f2Km': 15,
+                'f3Price': null,
+                'f3Km': null,
+                'f4Price': null,
+                'f4Km': null,
+                'img': 'D:\\TNET\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\TaxiNet\\data\\uploaded\\driver\\image\\VN\\null\\2.jpg',
+                'lat': 21.071871,
+                'lng': 105.783251
+            }
+        ]
+    }
+}";
+        
         public DemoPage()
         {
             InitializeComponent();
 
             RiderLogin rdLogin = new RiderLogin();
             rdLogin = JsonConvert.DeserializeObject<RiderLogin>(json);
-            txt1.Text = rdLogin.content.email.ToString();
+            //txt1.Text = rdLogin.content.email.ToString();
             //txt1.Text = rdLogin.
+
+            RiderGetNearDriver getNearCar = new RiderGetNearDriver();
+            getNearCar = JsonConvert.DeserializeObject<RiderGetNearDriver>(nearCar);
+            txt1.Text = getNearCar.content.listDriverDTO[0].fName.ToString();
+            
 
         }
 

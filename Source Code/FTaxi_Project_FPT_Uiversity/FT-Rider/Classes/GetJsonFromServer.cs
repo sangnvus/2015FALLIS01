@@ -8,9 +8,5 @@ namespace FT_Rider.Classes
 {
     class GetJsonFromServer
     {
-        public string GetJsonFile(Uri jSonUrl)
-        {
-
-        }
     }
 }
