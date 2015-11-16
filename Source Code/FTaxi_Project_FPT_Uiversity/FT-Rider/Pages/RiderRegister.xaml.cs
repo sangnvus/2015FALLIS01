@@ -21,8 +21,9 @@ namespace FT_Rider.Pages
 {
     public partial class RiderRegister : PhoneApplicationPage
     {
-        IsolatedStorageFile ISOFile = IsolatedStorageFile.GetUserStoreForApplication();
-        List<UserData> ObjUserDataList = new List<UserData>();
+        IsolatedStorageFile iSOFile = IsolatedStorageFile.GetUserStoreForApplication();
+        List<UserData> objUserDataList = new List<UserData>();
+
         public RiderRegister()
         {
             InitializeComponent();
@@ -38,12 +39,12 @@ namespace FT_Rider.Pages
 
         private void RiderRegister_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ISOFile.FileExists("RegistrationDetails"))//loaded previous items into list
+            if (iSOFile.FileExists("RegistrationDetails"))//loaded previous items into list
             {
-                using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("RegistrationDetails", FileMode.Open))
+                using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("RegistrationDetails", FileMode.Open))
                 {
                     DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
-                    ObjUserDataList = (List<UserData>)serializer.ReadObject(fileStream);
+                    objUserDataList = (List<UserData>)serializer.ReadObject(fileStream);
 
                 }
             }
@@ -95,30 +96,6 @@ namespace FT_Rider.Pages
             return result;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-        //void txt_Email_LostFocus(object sender, RoutedEventArgs e)
-        //{
-
-        //    bool isValid = Validate(txt_Email.Text);
-        //    if (Regex.IsMatch(txt_Email.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
-        //    {
-        //        txt_Email.ChangeValidationState(ValidationState.Valid, "");
-        //    }
-        //    else
-        //    {
-        //        txt_Email.ChangeValidationState(ValidationState.Invalid, "Nhập lại Email");
-        //    }
-        //}
 
         private bool ValidateEmail()
         {
@@ -281,16 +258,16 @@ namespace FT_Rider.Pages
                 ObjUserData.FirstAndMiddleName = rad_FirstAndMiddleName.Text;
                 ObjUserData.Name = rad_Name.Text;
                 ObjUserData.PhoneNumber = rad_PhoneNumber.Text;
-                ObjUserDataList.Add(ObjUserData);
-                if (ISOFile.FileExists("RegistrationDetails"))
+                objUserDataList.Add(ObjUserData);
+                if (iSOFile.FileExists("RegistrationDetails"))
                 {
-                    ISOFile.DeleteFile("RegistrationDetails");
+                    iSOFile.DeleteFile("RegistrationDetails");
                 }
-                using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("RegistrationDetails", FileMode.Create))
+                using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("RegistrationDetails", FileMode.Create))
                 {
                     DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
 
-                    serializer.WriteObject(fileStream, ObjUserDataList);
+                    serializer.WriteObject(fileStream, objUserDataList);
 
                 }
                 MessageBox.Show("Đăng ký thành công");

@@ -8,12 +8,12 @@ namespace FT_Rider.Classes
 {
     public class Pmt
     {
-        public object pid { get; set; }
+        public string pid { get; set; }
         public string cNO { get; set; }
         public string cvv { get; set; }
         public string mon { get; set; }
         public string year { get; set; }
-        public object postal { get; set; }
+        public string postal { get; set; }
         public string cate { get; set; }
     }
 
@@ -31,10 +31,10 @@ namespace FT_Rider.Classes
         public string rid { get; set; }
         public string name { get; set; }
         public string oAdd { get; set; }
-        public double hAddLat { get; set; }
-        public double hAddLng { get; set; }
-        public double oAddLat { get; set; }
-        public double oAddLng { get; set; }
+        public Double? hAddLat { get; set; }
+        public Double? hAddLng { get; set; }
+        public Double? oAddLat { get; set; }
+        public Double? oAddLng { get; set; }
         public IList<Pmt> pmt { get; set; }
         public long olmd { get; set; }
         public int nlmd { get; set; }
@@ -45,8 +45,8 @@ namespace FT_Rider.Classes
 
     public class RiderLogin
     {
-        public string status { get; set; }
-        public int lmd { get; set; }
+        public int status { get; set; }
+        public long lmd { get; set; }
         public RiderLoginContent content { get; set; }
     }
 

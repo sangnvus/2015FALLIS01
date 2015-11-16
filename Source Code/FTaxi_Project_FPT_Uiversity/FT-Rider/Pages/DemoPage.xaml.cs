@@ -109,14 +109,10 @@ namespace FT_Rider.Pages
         {
             InitializeComponent();
 
-            RiderLogin rdLogin = new RiderLogin();
-            rdLogin = JsonConvert.DeserializeObject<RiderLogin>(json);
-            //txt1.Text = rdLogin.content.email.ToString();
-            //txt1.Text = rdLogin.
 
-            RiderGetNearDriver getNearCar = new RiderGetNearDriver();
-            getNearCar = JsonConvert.DeserializeObject<RiderGetNearDriver>(nearCar);
-            txt1.Text = getNearCar.content.listDriverDTO[0].fName.ToString();
+            RiderLogin login = new RiderLogin();
+            login = JsonConvert.DeserializeObject<RiderLogin>(json);
+            txt1.Text = login.content.fName.ToString();
             
 
         }

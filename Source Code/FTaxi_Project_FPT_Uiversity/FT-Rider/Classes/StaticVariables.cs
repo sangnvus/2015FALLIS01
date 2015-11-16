@@ -23,5 +23,8 @@ namespace FT_Rider.Classes
         public static string tNetRider = "RiderController/";
         public static string tNetRequestParameter = "?json";
         public static string tNetRiderController = tNetServerAddress + tNetRestServices + tNetRider + tNetRequestParameter;
+
+        //Login Page
+        public static string strLoginSucess = "Đăng nhập thành công.";
     }
 }
