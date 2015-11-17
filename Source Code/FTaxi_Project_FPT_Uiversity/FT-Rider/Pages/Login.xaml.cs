@@ -69,46 +69,46 @@ namespace FT_Rider.Pages
             }
         }
 
-
+        
 
         private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //if (rad_Account.Text != "" && rad_Password.ToString() != "")
-            //{
-            //    int Temp = 0;
-            //    foreach (var UserLogin in objUserDataList)
-            //    {
-            //        if (rad_Account.Text == UserLogin.Email && rad_Password.ToString() == UserLogin.Password)
-            //        {
-            //            Temp = 1;
-            //            var Settings = IsolatedStorageSettings.ApplicationSettings;
-            //            Settings["CheckLogin"] = StaticVariables.strLoginSucess;//write iso    
+            if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            {
+                int Temp = 0;
+                foreach (var UserLogin in objUserDataList)
+                {
+                    if (rad_Account.Text == UserLogin.Email && rad_Password.ToString() == UserLogin.Password)
+                    {
+                        Temp = 1;
+                        var Settings = IsolatedStorageSettings.ApplicationSettings;
+                        Settings["CheckLogin"] = StaticVariables.strLoginSucess;//write iso    
 
-            //            if (iSOFile.FileExists("CurrentLoginUserDetails"))
-            //            {
-            //                iSOFile.DeleteFile("CurrentLoginUserDetails");
-            //            }
-            //            using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("CurrentLoginUserDetails", FileMode.Create))
-            //            {
-            //                DataContractSerializer serializer = new DataContractSerializer(typeof(UserData));
+                        if (iSOFile.FileExists("CurrentLoginUserDetails"))
+                        {
+                            iSOFile.DeleteFile("CurrentLoginUserDetails");
+                        }
+                        using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("CurrentLoginUserDetails", FileMode.Create))
+                        {
+                            DataContractSerializer serializer = new DataContractSerializer(typeof(UserData));
 
-            //                serializer.WriteObject(fileStream, UserLogin);
+                            serializer.WriteObject(fileStream, UserLogin);
 
-            //            }
-            //            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-            //        }
-            //    }
-            //    if (Temp == 0)
-            //    {
-            //        rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-            //        rad_Account.ChangeValidationState(ValidationState.Invalid, "");
-            //    }
-            //}
-            //else
-            //{
-            //    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-            //    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
-            //}
+                        }
+                        NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                    }
+                }
+                if (Temp == 0)
+                {
+                    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
+                    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                }
+            }
+            else
+            {
+                rad_Password.ChangeValidationState(ValidationState.Invalid, "");
+                rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+            }
 
         }
 
@@ -130,54 +130,6 @@ namespace FT_Rider.Pages
 
         string URL = "http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider?json={'uid':'apl.ytb2@gmail.com','pw':'Abc123!','mid':'','mType':'AND'}";
 
-        void sendRequest()
-        {
-           Uri myUri = new Uri(http://www.yourwebsite.com);
-           HttpWebRequest myRequest = (HttpWebRequest)HttpWebRequest.Create(myUri);
-           myR1equest.Method = AppResources.POST;
-           myRequest.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), myRequest);
-        }
 
-        void GetRequestStreamCallback(IAsyncResult callbackResult)
-        {
-            HttpWebRequest myRequest = (HttpWebRequest)callbackResult.AsyncState;
-
-            // End the stream request operation
-            Stream postStream = myRequest.EndGetRequestStream(callbackResult);
-
-            // Create the post data
-            string postData = "INSERT HERE THE JASON YOU WANT TO SEND";
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-
-            // Add the post data to the web request
-            postStream.Write(byteArray, 0, byteArray.Length);
-            postStream.Close();
-
-            // Start the web request
-            myRequest.BeginGetResponse(new AsyncCallback(GetResponsetStreamCallback), myRequest);
-        }
-
-        void GetResponsetStreamCallback(IAsyncResult callbackResult)
-        {
-            lib = new ApiLibrary();
-
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)callbackResult.AsyncState;
-                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(callbackResult);
-                string result = "";
-                using (StreamReader httpWebStreamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    result = httpWebStreamReader.ReadToEnd();
-                }
-
-                string APIResult = result;
-
-            }
-            catch (Exception e)
-            {
-
-            }
-        }
     }
 }
