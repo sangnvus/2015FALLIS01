@@ -19,6 +19,8 @@ using Telerik.Windows.Controls.PhoneTextBox;
 using Newtonsoft.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace FT_Rider.Pages
 {
@@ -128,8 +130,34 @@ namespace FT_Rider.Pages
             NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
         }
 
-        string URL = "http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider?json={'uid':'apl.ytb2@gmail.com','pw':'Abc123!','mid':'','mType':'AND'}";
+
+        private async void sendJsonRequest()
+        {
+            string URL = StaticVariables.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
+
+            Dictionary<string, string> parameter = new Dictionary<string, string>();
+            parameter.Add("json", "{\"uid\":\"apl.ytb2@gmail.com\",\"pw\":\"Abc123!\",\"mid\":\"\",\"mType\":\"AND\"}");
 
 
+            HttpClient client = new HttpClient();
+            HttpContent contents = new FormUrlEncodedContent(parameter);
+            var response = await client.PostAsync(new Uri(URL), contents);
+            var reply = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                //JObject jResult = JObject.Parse(response.Content.ReadAsStringAsync().Result.ToString());
+                RiderLogin riderLogin = new RiderLogin();
+                riderLogin = JsonConvert.DeserializeObject<RiderLogin>(response.Content.ReadAsStringAsync().Result);
+                //MessageBox.Show(riderLogin.content.email);
+
+                string json = JsonConvert.SerializeObject(riderLogin);
+                MessageBox.Show(json);
+            }
+        }
+
+        private void btn_t1_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            sendJsonRequest();
+        }
     }
 }
