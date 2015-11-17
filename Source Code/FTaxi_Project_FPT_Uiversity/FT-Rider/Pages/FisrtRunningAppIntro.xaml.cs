@@ -9,6 +9,10 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Media;
 using System.Windows.Input;
+using FT_Rider.Classes;
+using System.Device.Location;
+using Windows.Devices.Geolocation;
+using System.Threading.Tasks;
 
 namespace FT_Rider.Pages
 {
@@ -18,6 +22,7 @@ namespace FT_Rider.Pages
         SolidColorBrush mySolidColorBrush = new SolidColorBrush();
         PivotItem pivot = null;
 
+        
 
         public FisrtRunningAppIntro()
         {
@@ -63,7 +68,9 @@ namespace FT_Rider.Pages
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/DemoPage.xaml", UriKind.Relative));
+            
+            
+           
         }
 
     }

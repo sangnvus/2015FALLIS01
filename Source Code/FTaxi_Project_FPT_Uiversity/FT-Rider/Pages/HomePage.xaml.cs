@@ -20,6 +20,8 @@ using FT_Rider.Resources;
 using FT_Rider.Classes;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Threading;
 
 namespace FT_Rider.Pages
 {
@@ -53,6 +55,15 @@ namespace FT_Rider.Pages
         //Rider Destination Icon Overlay
         MapOverlay riderDestinationIconOverlay;
 
+        //Rider Profile Object;
+        RiderLogin riderProfile;
+
+        //Get Near Taxi
+        RiderGetNearDriver nearDrivers;
+
+        //for car types
+        string taxiType;
+               
 
 
         //For menu
@@ -62,38 +73,95 @@ namespace FT_Rider.Pages
         public HomePage()
         {
             InitializeComponent();
-
             //get First Local Position
             ShowCurrentLocalOnTheMap();
-
-
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
 
             this.lls_AutoComplete.IsEnabled = false;
 
+            //Hardcode
+            GetRiderProfile();
+
+            //default taxi type
+            string taxiType = TaxiTypes.Type.ECO.ToString();
+
+
         }
+
+
+
+
+
+
+
+
+        //Fix Data for Rider Profile
+        private async void GetRiderProfile()
+        {
+            string URL = ConstantString.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
+
+            Dictionary<string, string> parameter = new Dictionary<string, string>();
+            parameter.Add("json", "{\"uid\":\"apl.ytb2@gmail.com\",\"pw\":\"Abc123!\",\"mid\":\"\",\"mType\":\"AND\"}");
+
+
+            HttpClient client = new HttpClient();
+            HttpContent contents = new FormUrlEncodedContent(parameter);
+            var response = await client.PostAsync(new Uri(URL), contents);
+            var reply = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                riderProfile = new RiderLogin();
+                riderProfile = JsonConvert.DeserializeObject<RiderLogin>(response.Content.ReadAsStringAsync().Result);
+
+                //Show info
+                LoadRiderProfile();
+            }
+        }
+
+        private void LoadRiderProfile()
+        {
+            tbl_FirstAndMidleName1.Text = riderProfile.content.fName.ToString();
+            tbl_LastName.Text = riderProfile.content.lName.ToString();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //------ BEGIN get current Position ------//
         private async void ShowCurrentLocalOnTheMap()
         {
+       
             //get position
             Geolocator riderFirstGeolocator = new Geolocator();
             Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
             Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
             GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
+
+
             //Adjust map on the phone screen - 0.001500 to move up the map
             this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
             this.map_RiderMap.ZoomLevel = 16;
 
             //Show maker
-            // Create a small Point to mark the current location.
-            //Image firstRiderPositionIcon = new Image();
-            //firstRiderPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_MyPositionIcon.png", UriKind.Relative));
-            //firstRiderPositionIcon.Height = 35;
-            //firstRiderPositionIcon.Width = 25;
 
             // Create a small circle to mark the current location.
             Ellipse firstRiderPositionIcon = new Ellipse();
@@ -116,8 +184,50 @@ namespace FT_Rider.Pages
 
             // Add the MapLayer to the Map.
             map_RiderMap.Layers.Add(riderMapLayer);
+
+
+            GetNearDriver();
         }
         //------ END get current Position ------//
+
+
+
+
+
+        //------ BEGIN get near Driver ------//
+        private async void GetNearDriver()
+        {
+            string URL = ConstantString.tNetRiderGetNerDriverAddress;
+
+            Dictionary<string, string> parameter = new Dictionary<string, string>();
+            parameter.Add("json", "{\"uid\":\"hoangha@gmail.com\",\"lat\":21.075726,\"lng\":105.787548,\"cLvl\":\"ECO\"}");
+
+            HttpClient client = new HttpClient();
+            HttpContent contents = new FormUrlEncodedContent(parameter);
+            var response = await client.PostAsync(new Uri(URL), contents);
+            var reply = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                nearDrivers = new RiderGetNearDriver();
+                nearDrivers = JsonConvert.DeserializeObject<RiderGetNearDriver>(response.Content.ReadAsStringAsync().Result);
+                if (nearDrivers.content.listDriverDTO.Count > 0)
+                {
+                    foreach (var taxi in nearDrivers.content.listDriverDTO)
+                    {
+                        ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName);
+                    }
+                }
+                else
+                {
+                    Thread.Sleep(1000);
+                    MessageBox.Show(ConstantString.errNoCarYet);
+                }
+            }
+        }
+        //------ END get near Driver ------//
+
+
+
 
 
 
@@ -147,7 +257,7 @@ namespace FT_Rider.Pages
             catch (UnauthorizedAccessException)
             {
                 //Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.
-                MessageBox.Show(StaticVariables.errServiceIsOff);
+                MessageBox.Show(ConstantString.errServiceIsOff);
             }
             catch (Exception ex)
             {
@@ -181,7 +291,7 @@ namespace FT_Rider.Pages
                 catch (Exception)
                 {
 
-                    MessageBox.Show(StaticVariables.errInvalidAddress);
+                    MessageBox.Show(ConstantString.errInvalidAddress);
                 }
             }
         }
@@ -240,7 +350,7 @@ namespace FT_Rider.Pages
             }
             else
             {
-                MessageBox.Show(StaticVariables.errInvalidAddress);
+                MessageBox.Show(ConstantString.errInvalidAddress);
                 txt_InputAddress.Focus();
             }
         }
@@ -311,7 +421,7 @@ namespace FT_Rider.Pages
 
 
         //------ BEGIN show and Design UI 3 taxi near current position ------//
-        private void getTaxiPosition(double lat, double lng)
+        private void ShowNearDrivers(double lat, double lng, string tName)
         {
             GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
 
@@ -325,7 +435,7 @@ namespace FT_Rider.Pages
             //Create Taxi Name 
             TextBlock taxiName = new TextBlock();
             taxiName.HorizontalAlignment = HorizontalAlignment.Center;
-            taxiName.Text = "ACB Taxi";
+            taxiName.Text = tName;
             taxiName.FontSize = 12;
             taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
 
@@ -452,18 +562,24 @@ namespace FT_Rider.Pages
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_Selected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
+
+            taxiType = TaxiTypes.Type.SAV.ToString();
         }
         private void img_CarBar_EconomyCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_Selected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
+
+            taxiType = TaxiTypes.Type.ECO.ToString();
         }
         private void img_CarBar_LuxuryCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_Selected.png", UriKind.Relative));
+
+            taxiType = TaxiTypes.Type.LUX.ToString();
         }
         //------ END Taxi type bar ------//
 
@@ -504,7 +620,7 @@ namespace FT_Rider.Pages
         private void searchCoordinateFromAddress(string inputAddress)
         {
             //GoogleAPIGeocoding URL
-            string URL = StaticVariables.googleAPIGeocodingRequestsBaseURI + inputAddress + "&key=" + StaticVariables.googleGeolocationAPIkey;
+            string URL = ConstantString.googleAPIGeocodingRequestsBaseURI + inputAddress + "&key=" + ConstantString.googleGeolocationAPIkey;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -528,7 +644,7 @@ namespace FT_Rider.Pages
             catch (Exception)
             {
 
-                MessageBox.Show(StaticVariables.errInvalidAddress);
+                MessageBox.Show(ConstantString.errInvalidAddress);
             }
         }
         //------ END Convert Lat & Lng from Address for Bing map Input ------//
@@ -545,7 +661,7 @@ namespace FT_Rider.Pages
         private void loadAutoCompletePlace(string inputAddress)
         {
             //GoogleAPIQueryAutoComplete URL
-            string URL = StaticVariables.googleAPIQueryAutoCompleteRequestsBaseURI + StaticVariables.googleGeolocationAPIkey + "&input=" + inputAddress;
+            string URL = ConstantString.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantString.googleGeolocationAPIkey + "&input=" + inputAddress;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -644,7 +760,7 @@ namespace FT_Rider.Pages
         private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //check if text is "Địa chỉ đón"
-            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
+            if (txt_InputAddress.Text == ConstantString.destiationAddressDescription)
             {
                 txt_InputAddress.Text = string.Empty;
             }
@@ -677,7 +793,7 @@ namespace FT_Rider.Pages
 
             //img_CloseIcon.Visibility = Visibility.Visible;
 
-            if (txt_InputAddress.Text == StaticVariables.destiationAddressDescription)
+            if (txt_InputAddress.Text == ConstantString.destiationAddressDescription)
             {
                 txt_InputAddress.Text = string.Empty;
             }
@@ -710,7 +826,7 @@ namespace FT_Rider.Pages
             img_CloseIcon.Visibility = Visibility.Collapsed;
             if (txt_InputAddress.Text == String.Empty)
             {
-                txt_InputAddress.Text = StaticVariables.destiationAddressDescription;
+                txt_InputAddress.Text = ConstantString.destiationAddressDescription;
             }
             //Show first of address
             setCursorAtFirst(txt_InputAddress);
