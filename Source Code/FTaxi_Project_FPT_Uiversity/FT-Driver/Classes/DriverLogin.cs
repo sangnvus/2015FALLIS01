@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace FT_Driver.Classes
 {
+    //{"uid":"dao@gmail.com","pw":"b65bd772c3b0dfebf0a189efd420352d","mid":"123","mType":"iOS"}
+    //pass là Abc123!
     public class DriverInfo
     {
         public string fName { get; set; }
