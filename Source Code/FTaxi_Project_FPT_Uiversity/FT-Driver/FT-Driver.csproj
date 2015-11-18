@@ -93,7 +93,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\AutoCompletePlace.cs" />
+    <Compile Include="Classes\ConstantVariable.cs" />
+    <Compile Include="Classes\ConvertData.cs" />
     <Compile Include="Classes\DriverLogin.cs" />
+    <Compile Include="Classes\GoogleAPIGeocoding.cs" />
+    <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
     <Compile Include="Classes\Language.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />

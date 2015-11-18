@@ -200,7 +200,7 @@ namespace FT_Rider.Pages
             string URL = ConstantVariable.tNetRiderGetNerDriverAddress;
 
             Dictionary<string, string> parameter = new Dictionary<string, string>();
-            parameter.Add("json", "{\"uid\":\"hoangha@gmail.com\",\"lat\":21.075726,\"lng\":105.787548,\"cLvl\":\"ECO\"}");
+            parameter.Add("json", "{\"uid\":\"hoangha@gmail.com\",\"lat\":21.038472,\"lng\":105.8014108,\"cLvl\":\"ECO\"}");
 
             HttpClient client = new HttpClient();
             HttpContent contents = new FormUrlEncodedContent(parameter);
