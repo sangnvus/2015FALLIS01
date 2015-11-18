@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
-    x:Class="FT_Rider.Pages.HomePage"
+    x:Class="FT_Driver.Pages.HomePage"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -135,7 +135,7 @@
                         <RowDefinition Height="7*"/>
                         <RowDefinition Height="82*"/>
                     </Grid.RowDefinitions>
-                    <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2"/>
+                    <maps:Map x:Name="map_DriverMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Grid.RowSpan="2" Width="480" Loaded="map_DriverMap_Loaded"/>
                 </Grid>
             </Grid>
         </Canvas>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FT_Rider.Classes
+namespace FT_Driver.Classes
 {
     public class AddressComponent
     {

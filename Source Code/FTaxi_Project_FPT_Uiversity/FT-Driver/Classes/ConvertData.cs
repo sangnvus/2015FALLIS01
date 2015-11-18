@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 
-namespace FT_Rider.Classes
+namespace FT_Driver.Classes
 {
     class ConvertData
     {

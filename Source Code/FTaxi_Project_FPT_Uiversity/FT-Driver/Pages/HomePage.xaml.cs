@@ -22,9 +22,8 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading;
-using FT_Rider.Classes;
 
-namespace FT_Rider.Pages
+namespace FT_Driver.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
@@ -77,8 +76,8 @@ namespace FT_Rider.Pages
 
 
             //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
-            this.map_RiderMap.ZoomLevel = 16;
+            this.map_DriverMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
+            this.map_DriverMap.ZoomLevel = 16;
 
             //Show maker
 
@@ -102,7 +101,7 @@ namespace FT_Rider.Pages
             riderMapLayer.Add(firstRiderLocationOverlay);
 
             // Add the MapLayer to the Map.
-            map_RiderMap.Layers.Add(riderMapLayer);
+            map_DriverMap.Layers.Add(riderMapLayer);
 
         }
         //------ END get current Position ------//
@@ -120,7 +119,7 @@ namespace FT_Rider.Pages
             if (riderMapRoute != null)
             {
                 //delete route
-                map_RiderMap.RemoveRoute(riderMapRoute);
+                map_DriverMap.RemoveRoute(riderMapRoute);
                 riderMapRoute = null;
                 riderQuery = null;                
                 riderMapLayer.Remove(riderDestinationIconOverlay);
@@ -187,7 +186,7 @@ namespace FT_Rider.Pages
             {
                 //if (riderMapRoute != null)
                 //{
-                //    map_RiderMap.RemoveRoute(riderMapRoute);
+                //    map_DriverMap.RemoveRoute(riderMapRoute);
                 //    riderMapLayer.Remove(riderDestinationIconOverlay);
                 //    riderMapRoute = null;
                 //}                
@@ -195,7 +194,7 @@ namespace FT_Rider.Pages
                 riderMapRoute = new MapRoute(riderRoute);
                 //Makeup for router
                 riderMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
-                map_RiderMap.AddRoute(riderMapRoute);
+                map_DriverMap.AddRoute(riderMapRoute);
                 riderQuery.Dispose();
 
                 //get Coordinate of Destination Point
@@ -203,7 +202,7 @@ namespace FT_Rider.Pages
                 double destinationLongtitude = riderCoordinates[riderCoordinates.Count - 1].Longitude;
 
                 //Set Map Center
-                this.map_RiderMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
+                this.map_DriverMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
 
                 // Create a small Point to mark the current location.
                 Image myPositionIcon = new Image();
@@ -224,7 +223,7 @@ namespace FT_Rider.Pages
                 riderMapLayer.Add(riderDestinationIconOverlay);
 
                 // Add the MapLayer to the Map.
-                map_RiderMap.Layers.Add(riderMapLayer);
+                map_DriverMap.Layers.Add(riderMapLayer);
 
                 //Calculate Distance
                 distanceMeter = Math.Round(GetTotalDistance(riderCoordinates), 0); //Round double in zero decimal places
@@ -242,7 +241,7 @@ namespace FT_Rider.Pages
         //{
         //    if (riderMapRoute != null)
         //    {
-        //        map_RiderMap.RemoveRoute(riderMapRoute);
+        //        map_DriverMap.RemoveRoute(riderMapRoute);
         //        riderMapRoute = null;
         //        riderQuery = null;
         //    }
@@ -266,7 +265,7 @@ namespace FT_Rider.Pages
         //        Route newRoute = e.Result;
 
         //        riderMapRoute = new MapRoute(newRoute);
-        //        map_RiderMap.AddRoute(riderMapRoute);
+        //        map_DriverMap.AddRoute(riderMapRoute);
         //        riderQuery.Dispose();
         //    }
         //}
@@ -351,7 +350,7 @@ namespace FT_Rider.Pages
             riderMapLayer = new MapLayer();
             riderMapLayer.Add(myTaxiOvelay);
 
-            map_RiderMap.Layers.Add(riderMapLayer);
+            map_DriverMap.Layers.Add(riderMapLayer);
         }
 
         //Tapped event
@@ -433,21 +432,6 @@ namespace FT_Rider.Pages
 
 
 
-
-
-        //------ BEGIN Map API key ------//
-        private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
-            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
-        }
-        //------ END Map API key ------//
-
-
-
-
-
-
         //------ BEGIN Convert Lat & Lng from Address for Bing map Input ------//
         private void searchCoordinateFromAddress(string inputAddress)
         {
@@ -479,8 +463,15 @@ namespace FT_Rider.Pages
                 MessageBox.Show(ConstantVariable.errInvalidAddress);
             }
         }
+
         //------ END Convert Lat & Lng from Address for Bing map Input ------//
 
+
+        private void map_DriverMap_Loaded(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
+            Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
+        }
 
     }
 
