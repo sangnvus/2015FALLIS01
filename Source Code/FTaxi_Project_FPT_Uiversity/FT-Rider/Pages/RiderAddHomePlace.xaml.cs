@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using System.Windows.Media;
 using FT_Rider.Classes;
 using FT_Rider.Resources;
+using Newtonsoft.Json;
 
 namespace FT_Rider.Pages
 {
@@ -19,7 +20,7 @@ namespace FT_Rider.Pages
         {
             InitializeComponent();
 
-            this.LoadLocationOnMap();
+            this.LoadLocationOnMap(21.038472, 105.8014108);
         }
 
         private void txt_Address_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -40,10 +41,21 @@ namespace FT_Rider.Pages
             txt_City.Foreground = new SolidColorBrush(Colors.Black);
         }
 
-        private void LoadLocationOnMap()
+        private async void LoadLocationOnMap(double lat, double lng)
         {
+            //Show marker
             MapShowMarker myMarker = new MapShowMarker();
-            myMarker.ShowPointOnMap(21.038472, 105.8014108,map_RiderHome);
+            myMarker.ShowPointOnMap(lat, lng ,map_RiderHome);
+
+            //Convert Lat & Lng to Address String
+            string jsonString = await GoogleAPIFunction.ConvertLatLngToAddress(lat, lng); //Get Json String
+            GoogleAPILatLngObj address = new GoogleAPILatLngObj(); 
+            address = JsonConvert.DeserializeObject<GoogleAPILatLngObj>(jsonString); //Convert to Obj
+
+            //Load address to screen
+            txt_Address.Text = address.results[0].address_components[0].long_name.ToString();
+            txt_State.Text = address.results[0].address_components[1].long_name.ToString();
+            txt_City.Text = address.results[0].address_components[2].long_name.ToString();
         }
         
     }
