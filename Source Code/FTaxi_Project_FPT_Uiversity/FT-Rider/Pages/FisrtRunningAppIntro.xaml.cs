@@ -68,8 +68,8 @@ namespace FT_Rider.Pages
 
         private void Button_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            
-            
+
+            NavigationService.Navigate(new Uri("/Pages/RiderAddHomePlace.xaml", UriKind.Relative));
            
         }
 

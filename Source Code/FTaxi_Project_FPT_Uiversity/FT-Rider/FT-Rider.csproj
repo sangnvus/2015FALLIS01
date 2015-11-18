@@ -96,8 +96,11 @@
     <Compile Include="Classes\AutoCompletePlace.cs" />
     <Compile Include="Classes\GetCurrentPosition.cs" />
     <Compile Include="Classes\ConvertData.cs" />
-    <Compile Include="Classes\GoogleAPIGeocoding.cs" />
-    <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
+    <Compile Include="Classes\GoogleAPIFunction.cs" />
+    <Compile Include="Classes\GoogleAPIAddressObj.cs" />
+    <Compile Include="Classes\GoogleAPILatLngObj.cs" />
+    <Compile Include="Classes\GoogleAPIQueryAutoCompleteObj.cs" />
+    <Compile Include="Classes\MapShowMarker.cs" />
     <Compile Include="Classes\RiderBaseRequest.cs" />
     <Compile Include="Classes\RiderFunctions.cs" />
     <Compile Include="Classes\RiderGetNearDriver.cs" />

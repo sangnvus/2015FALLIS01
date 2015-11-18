@@ -29,7 +29,7 @@ namespace FT_Rider.Classes
         public IList<string> types { get; set; }
     }
 
-    public class GoogleAPIQueryAutoComplete
+    public class GoogleAPIQueryAutoCompleteObj
     {
         public IList<Prediction> predictions { get; set; }
         public string status { get; set; }

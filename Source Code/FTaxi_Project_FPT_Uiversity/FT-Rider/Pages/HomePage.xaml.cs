@@ -155,7 +155,7 @@ namespace FT_Rider.Pages
             Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
             Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
             GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
-
+            
 
             //Adjust map on the phone screen - 0.001500 to move up the map
             this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
@@ -164,15 +164,15 @@ namespace FT_Rider.Pages
             //Show maker
 
             // Create a small circle to mark the current location.
-            Ellipse firstRiderPositionIcon = new Ellipse();
-            firstRiderPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-            firstRiderPositionIcon.Height = 15;
-            firstRiderPositionIcon.Width = 15;
-            firstRiderPositionIcon.Opacity = 100;
+            Ellipse riderFirstPositionIcon = new Ellipse();
+            riderFirstPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
+            riderFirstPositionIcon.Height = 15;
+            riderFirstPositionIcon.Width = 15;
+            riderFirstPositionIcon.Opacity = 100;
 
             // Create a MapOverlay to contain the circle.
             MapOverlay firstRiderLocationOverlay = new MapOverlay();
-            firstRiderLocationOverlay.Content = firstRiderPositionIcon;
+            firstRiderLocationOverlay.Content = riderFirstPositionIcon;
 
             //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
             firstRiderLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
@@ -200,7 +200,9 @@ namespace FT_Rider.Pages
             string URL = ConstantVariable.tNetRiderGetNerDriverAddress;
 
             Dictionary<string, string> parameter = new Dictionary<string, string>();
-            parameter.Add("json", "{\"uid\":\"hoangha@gmail.com\",\"lat\":21.038472,\"lng\":105.8014108,\"cLvl\":\"ECO\"}");
+            //21.039273, 105.802044
+            //21.038472, 105.8014108
+            parameter.Add("json", "{\"uid\":\"hoangha@gmail.com\",\"lat\":21.039273,\"lng\":105.802044,\"cLvl\":\"ECO\"}");
 
             HttpClient client = new HttpClient();
             HttpContent contents = new FormUrlEncodedContent(parameter);
@@ -620,7 +622,7 @@ namespace FT_Rider.Pages
         private void searchCoordinateFromAddress(string inputAddress)
         {
             //GoogleAPIGeocoding URL
-            string URL = ConstantVariable.googleAPIGeocodingRequestsBaseURI + inputAddress + "&key=" + ConstantVariable.googleGeolocationAPIkey;
+            string URL = ConstantVariable.googleAPIGeocodingAddressBaseURI + inputAddress + "&key=" + ConstantVariable.googleGeolocationAPIkey;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -631,8 +633,8 @@ namespace FT_Rider.Pages
         private void proxy_searchCoordinateFromAddress(object sender, DownloadStringCompletedEventArgs e)
         {
             //1. Convert Json String to an Object
-            GoogleAPIGeocoding places = new GoogleAPIGeocoding();
-            places = JsonConvert.DeserializeObject<GoogleAPIGeocoding>(e.Result);
+            GoogleAPIAddressObj places = new GoogleAPIAddressObj();
+            places = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(e.Result);
             try
             {
                 double lat = places.results[0].geometry.location.lat;
@@ -675,8 +677,8 @@ namespace FT_Rider.Pages
             try
             {
                 //1. Convert Json String to an Object
-                GoogleAPIQueryAutoComplete places = new GoogleAPIQueryAutoComplete();
-                places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoComplete>(e.Result);
+                GoogleAPIQueryAutoCompleteObj places = new GoogleAPIQueryAutoCompleteObj();
+                places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoCompleteObj>(e.Result);
                 //2. Create Place list
                 ObservableCollection<AutoCompletePlace> autoCompleteDataSource = new ObservableCollection<AutoCompletePlace>();
                 lls_AutoComplete.ItemsSource = autoCompleteDataSource;
