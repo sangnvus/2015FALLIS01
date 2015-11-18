@@ -100,7 +100,7 @@ namespace FT_Rider.Pages
         //Fix Data for Rider Profile
         private async void GetRiderProfile()
         {
-            string URL = ConstantString.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
+            string URL = ConstantVariable.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
 
             Dictionary<string, string> parameter = new Dictionary<string, string>();
             parameter.Add("json", "{\"uid\":\"apl.ytb2@gmail.com\",\"pw\":\"Abc123!\",\"mid\":\"\",\"mType\":\"AND\"}");
@@ -197,7 +197,7 @@ namespace FT_Rider.Pages
         //------ BEGIN get near Driver ------//
         private async void GetNearDriver()
         {
-            string URL = ConstantString.tNetRiderGetNerDriverAddress;
+            string URL = ConstantVariable.tNetRiderGetNerDriverAddress;
 
             Dictionary<string, string> parameter = new Dictionary<string, string>();
             parameter.Add("json", "{\"uid\":\"hoangha@gmail.com\",\"lat\":21.075726,\"lng\":105.787548,\"cLvl\":\"ECO\"}");
@@ -220,7 +220,7 @@ namespace FT_Rider.Pages
                 else
                 {
                     Thread.Sleep(1000);
-                    MessageBox.Show(ConstantString.errNoCarYet);
+                    MessageBox.Show(ConstantVariable.errNoCarYet);
                 }
             }
         }
@@ -257,7 +257,7 @@ namespace FT_Rider.Pages
             catch (UnauthorizedAccessException)
             {
                 //Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.
-                MessageBox.Show(ConstantString.errServiceIsOff);
+                MessageBox.Show(ConstantVariable.errServiceIsOff);
             }
             catch (Exception ex)
             {
@@ -291,7 +291,7 @@ namespace FT_Rider.Pages
                 catch (Exception)
                 {
 
-                    MessageBox.Show(ConstantString.errInvalidAddress);
+                    MessageBox.Show(ConstantVariable.errInvalidAddress);
                 }
             }
         }
@@ -350,7 +350,7 @@ namespace FT_Rider.Pages
             }
             else
             {
-                MessageBox.Show(ConstantString.errInvalidAddress);
+                MessageBox.Show(ConstantVariable.errInvalidAddress);
                 txt_InputAddress.Focus();
             }
         }
@@ -620,7 +620,7 @@ namespace FT_Rider.Pages
         private void searchCoordinateFromAddress(string inputAddress)
         {
             //GoogleAPIGeocoding URL
-            string URL = ConstantString.googleAPIGeocodingRequestsBaseURI + inputAddress + "&key=" + ConstantString.googleGeolocationAPIkey;
+            string URL = ConstantVariable.googleAPIGeocodingRequestsBaseURI + inputAddress + "&key=" + ConstantVariable.googleGeolocationAPIkey;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -644,7 +644,7 @@ namespace FT_Rider.Pages
             catch (Exception)
             {
 
-                MessageBox.Show(ConstantString.errInvalidAddress);
+                MessageBox.Show(ConstantVariable.errInvalidAddress);
             }
         }
         //------ END Convert Lat & Lng from Address for Bing map Input ------//
@@ -661,7 +661,7 @@ namespace FT_Rider.Pages
         private void loadAutoCompletePlace(string inputAddress)
         {
             //GoogleAPIQueryAutoComplete URL
-            string URL = ConstantString.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantString.googleGeolocationAPIkey + "&input=" + inputAddress;
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&input=" + inputAddress;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -760,7 +760,7 @@ namespace FT_Rider.Pages
         private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //check if text is "Địa chỉ đón"
-            if (txt_InputAddress.Text == ConstantString.destiationAddressDescription)
+            if (txt_InputAddress.Text == ConstantVariable.destiationAddressDescription)
             {
                 txt_InputAddress.Text = string.Empty;
             }
@@ -793,7 +793,7 @@ namespace FT_Rider.Pages
 
             //img_CloseIcon.Visibility = Visibility.Visible;
 
-            if (txt_InputAddress.Text == ConstantString.destiationAddressDescription)
+            if (txt_InputAddress.Text == ConstantVariable.destiationAddressDescription)
             {
                 txt_InputAddress.Text = string.Empty;
             }
@@ -826,7 +826,7 @@ namespace FT_Rider.Pages
             img_CloseIcon.Visibility = Visibility.Collapsed;
             if (txt_InputAddress.Text == String.Empty)
             {
-                txt_InputAddress.Text = ConstantString.destiationAddressDescription;
+                txt_InputAddress.Text = ConstantVariable.destiationAddressDescription;
             }
             //Show first of address
             setCursorAtFirst(txt_InputAddress);

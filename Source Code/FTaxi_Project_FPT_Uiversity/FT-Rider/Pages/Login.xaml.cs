@@ -84,7 +84,7 @@ namespace FT_Rider.Pages
                     {
                         Temp = 1;
                         var Settings = IsolatedStorageSettings.ApplicationSettings;
-                        Settings["CheckLogin"] = ConstantString.strLoginSucess;//write iso    
+                        Settings["CheckLogin"] = ConstantVariable.strLoginSucess;//write iso    
 
                         if (iSOFile.FileExists("CurrentLoginUserDetails"))
                         {
@@ -133,7 +133,7 @@ namespace FT_Rider.Pages
 
         private async void sendJsonRequest()
         {
-            string URL = ConstantString.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
+            string URL = ConstantVariable.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
 
             Dictionary<string, string> parameter = new Dictionary<string, string>();
             parameter.Add("json", "{\"uid\":\"apl.ytb2@gmail.com\",\"pw\":\"Abc123!\",\"mid\":\"\",\"mType\":\"AND\"}");

@@ -10,12 +10,12 @@ namespace FT_Rider.Classes
 
     public class ListDriverDTO
     {
-        public string did { get; set; }
-        public string fName { get; set; }
-        public string lName { get; set; }
-        public string cName { get; set; }
-        public string mobile { get; set; }
-        public string rate { get; set; }
+        public String did { get; set; }
+        public String fName { get; set; }
+        public String lName { get; set; }
+        public String cName { get; set; }
+        public String mobile { get; set; }
+        public String rate { get; set; }
         public double oPrice { get; set; }
         public double oKm { get; set; }
         public Double? f1Price { get; set; }
@@ -26,7 +26,7 @@ namespace FT_Rider.Classes
         public Double? f3Km { get; set; }
         public Double? f4Price { get; set; }
         public Double? f4Km { get; set; }
-        public string img { get; set; }
+        public String img { get; set; }
         public double lat { get; set; }
         public double lng { get; set; }
     }
