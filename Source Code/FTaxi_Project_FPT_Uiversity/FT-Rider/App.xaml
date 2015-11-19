@@ -30,6 +30,8 @@
         <Color x:Key="Button_Background_Color_Red">#FFDC1D51</Color>
         <System:Double x:Key="Longlistselector_WidthSize">NaN</System:Double>
         <Color x:Key="lls_ColorBackground">#FF060F27</Color>
+        <Color x:Key="textbox_TextColor_SpaceGray">#FF060F27</Color>
+        <Color x:Key="icoBGColor">#FFE6E6E6</Color>
 
     </Application.Resources>
 

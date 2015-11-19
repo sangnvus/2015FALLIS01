@@ -13,12 +13,19 @@ namespace FT_Rider.Classes
 
     class GetCurrentPosition
     {
-        public async Task<Geoposition> GetGeoCoordinate()
+        public static async Task<GeoCoordinate> GetGeoCoordinate()
         {
             Geolocator myGeolocator = new Geolocator();
             Geoposition myGeoposition = await myGeolocator.GetGeopositionAsync();
-            return myGeoposition;
+            Geocoordinate myGeocoordinate = myGeoposition.Coordinate;
+            GeoCoordinate myGeoCoordinate = ConvertData.ConvertGeocoordinate(myGeocoordinate);
+
+            return myGeoCoordinate;
         }
+
+        //How to uses?
+        //GeoCoordinate newGeo = new GeoCoordinate();
+        //newGeo = await GetCurrentPosition.GetGeoCoordinate();
     }
 
 }

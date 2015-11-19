@@ -13,11 +13,11 @@ namespace FT_Rider.Classes
 {
     class MapShowMarker
     {
-        public void ShowPointOnMap(double lat, double lng, Map map)
+        public void ShowPointOnMap(double lat, double lng, Map map, int zoomLevel)
         {
             GeoCoordinate myCoordinate = new GeoCoordinate(lat, lng);
             map.Center = myCoordinate;
-            map.ZoomLevel = 15;
+            map.ZoomLevel = zoomLevel;
 
             //Create icon on map
             Image addressIcon = new Image();
@@ -33,6 +33,7 @@ namespace FT_Rider.Classes
             MapLayer myMaplayer = new MapLayer();
             myMaplayer.Add(myOvelay);
             map.Layers.Add(myMaplayer);
+            
         }
     }
 }

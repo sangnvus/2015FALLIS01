@@ -297,6 +297,7 @@
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
+    <Content Include="Images\SearchBar\img_PNG_CloseIcon_Black.png" />
     <Content Include="Images\Taxis\img_CarIcon.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />

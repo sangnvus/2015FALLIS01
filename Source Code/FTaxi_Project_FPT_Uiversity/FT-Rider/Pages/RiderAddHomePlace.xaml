@@ -61,24 +61,25 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBox x:Name="txt_Address" HorizontalAlignment="Center" Height="72" Margin="0,14,0,0" TextWrapping="Wrap" Text="118/8/1 Nguyễn Khánh Toàn" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Background="White" Tap="txt_Address_Tap">
+
+            <TextBox x:Name="txt_Address" HorizontalAlignment="Center" Height="129" Margin="0,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Background="White" Tap="txt_Address_Tap" KeyUp="txt_Address_KeyUp">
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
                 </TextBox.BorderBrush>
                 <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
+                    <SolidColorBrush Color="{StaticResource textbox_TextColor_SpaceGray}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <TextBox x:Name="txt_City" HorizontalAlignment="Center" Height="72" Margin="0,133,0,0" TextWrapping="Wrap" Text="Hà Nội" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Tap="txt_City_Tap">
+            <TextBox x:Name="txt_City" HorizontalAlignment="Center" Height="72" Margin="0,133,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" IsReadOnly="True">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource textbox_TextColor_SpaceGray}"/>
+                </TextBox.Foreground>
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
                 </TextBox.BorderBrush>
                 <TextBox.Background>
                     <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
                 </TextBox.Background>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
             </TextBox>
             <Button x:Name="btn_Save" Content="Lưu lại" HorizontalAlignment="Center" Margin="0,636,0,0" VerticalAlignment="Top" Width="456" Foreground="White" FontSize="{StaticResource Button_FontSize}" Height="90">
                 <Button.BorderBrush>
@@ -88,21 +89,32 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
             </Button>
-            <TextBox x:Name="txt_State" HorizontalAlignment="Center" Height="72" Margin="0,76,0,0" TextWrapping="Wrap" Text="Cầu Giấy" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Tap="txt_State_Tap">
-                <TextBox.BorderBrush>
-                    <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
-                </TextBox.BorderBrush>
-                <TextBox.Background>
-                    <SolidColorBrush Color="{StaticResource Textbox_BackgroundColor}"/>
-                </TextBox.Background>
-                <TextBox.Foreground>
-                    <SolidColorBrush Color="{StaticResource Textbox_TextColor}"/>
-                </TextBox.Foreground>
-            </TextBox>
-            <Image x:Name="img_TextboxIcon" HorizontalAlignment="Left" Height="42" Margin="15,29,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
-            <Image x:Name="img_TextboxIcon_Copy" HorizontalAlignment="Left" Height="42" Margin="15,91,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
+            <Rectangle x:Name="rt_AddressBG" HorizontalAlignment="Left" Height="99" Margin="15,29,0,0" VerticalAlignment="Top" Width="42">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource icoBGColor}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Image x:Name="img_TextboxIcon" HorizontalAlignment="Left" Height="42" Margin="15,55,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
             <Image x:Name="img_TextboxIcon_Copy1" HorizontalAlignment="Left" Height="42" Margin="15,148,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
             <maps:Map x:Name="map_RiderHome" HorizontalAlignment="Left" Margin="13,208,0,0" VerticalAlignment="Top" Height="423" Width="431"/>
+            <phone:LongListSelector x:Name="lls_AutoComplete" HorizontalAlignment="Left" Height="202" Margin="12,128,0,0" VerticalAlignment="Top" Width="432" SelectionChanged="lls_AutoComplete_SelectionChanged">
+                <phone:LongListSelector.Background>
+                    <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                </phone:LongListSelector.Background>
+                <phone:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="20"/>
+                            <Rectangle HorizontalAlignment="Center" Height="1" Width="456">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </StackPanel>
+                    </DataTemplate>
+                </phone:LongListSelector.ItemTemplate>
+            </phone:LongListSelector>
+            <Image x:Name="img_ClearText" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" Source="/Images/SearchBar/img_PNG_CloseIcon_Black.png" Margin="396,86,0,0" Tap="img_ClearText_Tap"/>
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbl_AddHomePlace" HorizontalAlignment="Center" Margin="177.834,10,177.166,0" TextWrapping="Wrap" Text="NHÀ RIÊNG" VerticalAlignment="Top" FontSize="24"/>
