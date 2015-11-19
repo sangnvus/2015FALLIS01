@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class RiderUpdateCurrentLocation
+    class RiderUpdateDriverStatusDTORequest
     {
-        private String uid { get; set; }
-        private Double? lat { get; set; }
-        private Double? lng { get; set; }
+        private String uid;
+        private List<String> did;
     }
 }

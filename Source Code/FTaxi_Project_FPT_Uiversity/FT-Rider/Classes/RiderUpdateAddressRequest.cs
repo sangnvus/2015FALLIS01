@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class RiderUpdateAddress
+    class RiderUpdateAddressRequest
     {
         private String id { get; set; }
         private String nCity { get; set; }

@@ -10,16 +10,16 @@ namespace FT_Rider.Classes
     class RiderFunctions
     {
         //Return Near Taxi as Object
-        public static RiderGetNearDriver ReturnTaxisPosition(string jsonInput)
+        public static RiderGetNearDriverResponse ReturnTaxisPosition(string jsonInput)
         {
-            RiderGetNearDriver nearTaxisPosition;
-            nearTaxisPosition = JsonConvert.DeserializeObject<RiderGetNearDriver>(jsonInput);
+            RiderGetNearDriverResponse nearTaxisPosition;
+            nearTaxisPosition = JsonConvert.DeserializeObject<RiderGetNearDriverResponse>(jsonInput);
             return nearTaxisPosition;
         }
 
 
         //Fare Cal
-        public static Double TaxiPriceCalculator(RiderGetNearDriver taxiInput, Double kmInput)
+        public static Double TaxiPriceCalculator(RiderGetNearDriverResponse taxiInput, Double kmInput)
         {
             int i = 0;
             Double price;
@@ -53,7 +53,7 @@ namespace FT_Rider.Classes
             return price;
         }
 
-        public static Double estimateTaxiPriceCalculator(RiderGetNearDriver taxiInput, Double kmInput)
+        public static Double estimateTaxiPriceCalculator(RiderGetNearDriverResponse taxiInput, Double kmInput)
         {
             int i = 0;
             Double price;

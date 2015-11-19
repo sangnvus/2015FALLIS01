@@ -39,5 +39,9 @@ namespace FT_Rider.Classes
 		public const String BANK_ACCOUNT = "BA";
 		public const String CREDIT_CARD = "CR";
 		public const String PAYPAL = "PP";
+
+        //Trip Type
+        public const String ONE_MANY = "OM";
+        public const String MANY = "MN";
     }
 }

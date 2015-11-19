@@ -36,7 +36,7 @@ namespace FT_Rider.Classes
         public IList<ListDriverDTO> listDriverDTO { get; set; }
     }
 
-    public class RiderGetNearDriver
+    public class RiderGetNearDriverResponse
     {
         public int status { get; set; }
         public long lmd { get; set; }

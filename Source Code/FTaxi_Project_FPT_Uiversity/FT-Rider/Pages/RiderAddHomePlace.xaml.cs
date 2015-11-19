@@ -99,7 +99,7 @@ namespace FT_Rider.Pages
         private async void AutoCompletePlace(string inputAddress)
         {
             GoogleAPIQueryAutoCompleteObj placesObj = new GoogleAPIQueryAutoCompleteObj();
-   
+
             try
             {
                 placesObj = await GoogleAPIFunction.ConvertAutoCompleteToLLS(inputAddress);
@@ -129,10 +129,17 @@ namespace FT_Rider.Pages
                 return;
             }
 
-
+            //show address on textbox
             GoogleAPIAddressObj address = new GoogleAPIAddressObj();
             address = await GoogleAPIFunction.ConvertAddressToLatLng(selectedPlace.Name.ToString());
-            txt_Address.Text = address.results[0].address_components[address.results[0].address_components.Count - 2].long_name.ToString();
+            txt_Address.Text = address.results[0].address_components[0].long_name.ToString()
+                                + ", " + address.results[0].address_components[1].long_name.ToString()
+                                + ", " + address.results[0].address_components[2].long_name.ToString();
+            txt_City.Text = address.results[0].address_components[address.results[0].address_components.Count - 2].long_name.ToString();
+
+            //Return Lat, Lng, some paramenter here
+            //Return Lat, Lng, some paramenter here
+            //Return Lat, Lng, some paramenter here
 
             setCursorAtLast(txt_Address);
 

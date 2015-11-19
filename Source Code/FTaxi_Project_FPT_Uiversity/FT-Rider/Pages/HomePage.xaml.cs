@@ -59,7 +59,7 @@ namespace FT_Rider.Pages
         RiderLogin riderProfile;
 
         //Get Near Taxi
-        RiderGetNearDriver nearDrivers;
+        RiderGetNearDriverResponse nearDrivers;
 
         //for car types
         string taxiType;
@@ -210,8 +210,8 @@ namespace FT_Rider.Pages
             var reply = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                nearDrivers = new RiderGetNearDriver();
-                nearDrivers = JsonConvert.DeserializeObject<RiderGetNearDriver>(response.Content.ReadAsStringAsync().Result);
+                nearDrivers = new RiderGetNearDriverResponse();
+                nearDrivers = JsonConvert.DeserializeObject<RiderGetNearDriverResponse>(response.Content.ReadAsStringAsync().Result);
                 if (nearDrivers.content.listDriverDTO.Count > 0)
                 {
                     foreach (var taxi in nearDrivers.content.listDriverDTO)
