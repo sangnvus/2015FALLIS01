@@ -93,16 +93,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\AutoCompletePlace.cs" />
+    <Compile Include="Classes\DriverVehiceInfoObj.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
     <Compile Include="Classes\ConvertData.cs" />
-    <Compile Include="Classes\DriverLogin.cs" />
+    <Compile Include="Classes\DriverLoginResponse.cs" />
     <Compile Include="Classes\DriverSelectAvailableVehicle.cs" />
     <Compile Include="Classes\DriverSelectVehice.cs" />
     <Compile Include="Classes\DriverUpdateCurrentLocation.cs" />
+    <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />
     <Compile Include="Classes\GoogleAPIGeocoding.cs" />
     <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
     <Compile Include="Classes\Language.cs" />
+    <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -110,6 +112,9 @@
     </Compile>
     <Compile Include="Pages\CompanyInfo.xaml.cs">
       <DependentUpon>CompanyInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverCarList.xaml.cs">
+      <DependentUpon>DriverCarList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
@@ -149,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\CompanyInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverCarList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,6 +221,7 @@
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
     <Content Include="Images\Buttons\img_CallTaxiButton.png" />
+    <Content Include="Images\CarList\img_CarItemInLLS.jpg" />
     <Content Include="Images\CarsBar\img_Carbar_background.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />

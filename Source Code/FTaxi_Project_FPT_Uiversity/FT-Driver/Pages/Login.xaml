@@ -70,7 +70,7 @@
         <!--ContentPanel - place additional content here-->
         <!--TitlePanel contains the name of the application and page title-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button x:Name="btn_Login" Content="Đăng nhập" Margin="20,434,0,0" Tap="tbn_Tap_Login" Height="72" VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize_22}">
+            <Button x:Name="btn_Login" Content="Đăng nhập" Margin="10,409,10,0" Tap="tbn_Tap_Login" Height="97" VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize_22}">
                 <Button.Background>
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
@@ -93,6 +93,7 @@
             <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="42" Margin="25,254,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
             <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="42" Margin="25,346,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserPassword.jpg"/>
             <Button Content="View Maps" HorizontalAlignment="Center" Margin="140,557,153,0" VerticalAlignment="Top" Tap="Button_Tap"/>
+            <Button Content="Button" HorizontalAlignment="Left" Margin="156,645,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         </Grid>
 
     </Grid>

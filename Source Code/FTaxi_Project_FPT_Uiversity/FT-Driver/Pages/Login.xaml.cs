@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using FT_Driver.Classes;
 using FT_Driver.Resources;
 using Telerik.Windows.Controls.PhoneTextBox;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace FT_Driver.Pages
 {
@@ -111,9 +113,33 @@ namespace FT_Driver.Pages
             NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
+        }
 
 
 
+        //private async void getJsonFromPOST()
+        //{
+        //    string URL = ConstantVariable.tNetDriverLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
+
+        //    Dictionary<string, string> parameter = new Dictionary<string, string>();
+        //    parameter.Add("json", "{\"uid\":\"dao@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}"); //fix data
+
+        //    HttpClient client = new HttpClient();
+        //    HttpContent contents = new FormUrlEncodedContent(parameter);
+        //    var response = await client.PostAsync(new Uri(URL), contents);
+        //    var reply = await response.Content.ReadAsStringAsync();
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        DriverLoginResponse DriverLogin = new DriverLoginResponse();
+        //        DriverLogin = JsonConvert.DeserializeObject<DriverLoginResponse>(response.Content.ReadAsStringAsync().Result);
+        //        string json = JsonConvert.SerializeObject(DriverLogin);
+        //        MessageBox.Show(json);
+        //    }
+        //}
 
 
     }

@@ -74,7 +74,7 @@ namespace FT_Driver.Classes
         public IList<CityName> cityNames { get; set; }
     }
 
-    public class DriverLogin
+    public class DriverLoginResponse
     {
         public int status { get; set; }
         public long lmd { get; set; }
