@@ -31,8 +31,9 @@ namespace FT_Rider.Classes
         public const string tNetWsParameterName = "json";
         public const string tNetRiderLoginAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider";
         public const string tNetRiderGetNerDriverAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/GetNearDriver";
-        
-        
+        public const string tNetRiderRegisterAddress = "http://123.30.236.109:8088/TN/restServices/TestController/RegisterRider";
+
+
 
         //Card type
         public const String DIRECT = "DI";

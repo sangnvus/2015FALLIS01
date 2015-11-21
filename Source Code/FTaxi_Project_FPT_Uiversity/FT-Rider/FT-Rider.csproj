@@ -94,6 +94,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\AutoCompletePlace.cs" />
+    <Compile Include="Classes\Base.cs" />
     <Compile Include="Classes\GetCurrentPosition.cs" />
     <Compile Include="Classes\ConvertData.cs" />
     <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />

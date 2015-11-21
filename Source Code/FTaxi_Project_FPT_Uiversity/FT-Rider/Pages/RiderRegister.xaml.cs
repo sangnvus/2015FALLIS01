@@ -15,6 +15,7 @@ using FT_Rider.Classes;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Telerik.Windows.Controls.PhoneTextBox;
+using Newtonsoft.Json;
 
 
 namespace FT_Rider.Pages
@@ -248,30 +249,50 @@ namespace FT_Rider.Pages
         }
 
 
-        private void btn_Click_Register(object sender, RoutedEventArgs e)
+        private async void btn_Click_Register(object sender, RoutedEventArgs e)
         {
             if (ValidateEmail() && ValidatePassword() && ValidateVerifyPassword() && ValidateName() && ValidatePhoneNumber() && ValidateFirstAndMiddleName())
             {
-                UserData ObjUserData = new UserData();
-                ObjUserData.Email = rad_Email.Text;
-                ObjUserData.Password = rad_Password.ToString();
-                ObjUserData.FirstAndMiddleName = rad_FirstAndMiddleName.Text;
-                ObjUserData.Name = rad_Name.Text;
-                ObjUserData.PhoneNumber = rad_PhoneNumber.Text;
-                objUserDataList.Add(ObjUserData);
-                if (iSOFile.FileExists("RegistrationDetails"))
-                {
-                    iSOFile.DeleteFile("RegistrationDetails");
-                }
-                using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("RegistrationDetails", FileMode.Create))
-                {
-                    DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
+                //UserData ObjUserData = new UserData();
+                //ObjUserData.Email = rad_Email.Text;
+                //ObjUserData.Password = rad_Password.ToString();
+                //ObjUserData.FirstAndMiddleName = rad_FirstAndMiddleName.Text;
+                //ObjUserData.Name = rad_Name.Text;
+                //ObjUserData.PhoneNumber = rad_PhoneNumber.Text;
+                //objUserDataList.Add(ObjUserData);
+                //if (iSOFile.FileExists("RegistrationDetails"))
+                //{
+                //    iSOFile.DeleteFile("RegistrationDetails");
+                //}
+                //using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("RegistrationDetails", FileMode.Create))
+                //{
+                //    DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
 
-                    serializer.WriteObject(fileStream, objUserDataList);
+                //    serializer.WriteObject(fileStream, objUserDataList);
 
+                //}
+                var email = rad_Email.Text;
+                var password = rad_Password.ActionButtonCommandParameter.ToString();
+                var country = "VN";
+                var name = rad_Name.Text;
+                var code = "+84";
+                var lName = rad_FirstAndMiddleName.Text;
+                var lan = "vi";
+                var phone = rad_PhoneNumber.Text;
+
+                //var pw = rad_Password.ActionButtonCommandParameter.ToString();
+                var input = string.Format("{{\"cntry\":\"{0}\",\"fName\":\"{1}\",\"pmt\":null,\"lName\":\"{2}\",\"lan\":\"{3}\",\"mobile\":\"{4}\",\"pw\":\"{5}\",\"uid\":\"{6}\"}}", country, lName,name,lan,phone,password, email);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderRegisterAddress, input);
+                var result = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (result.status.Equals("0000"))
+                {
+                    MessageBox.Show("Đăng ký thành công.");
+                    NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
                 }
-                MessageBox.Show("Đăng ký thành công");
-                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+                else
+                {
+                    MessageBox.Show("Đăng ký không thành công.");
+                }
             }
 
         }
