@@ -225,9 +225,6 @@ namespace FT_Rider.Pages
                 UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
                 marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
 
-                Pushpin mypushpin = (Pushpin)this.FindName("mypushpin");
-                mypushpin.GeoCoordinate = geocoordinate.ToGeoCoordinate();
-
                 //// Create a small circle to mark the current location.
                 //Ellipse riderFirstPositionIcon = new Ellipse();
                 //riderFirstPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
