@@ -80,9 +80,6 @@ namespace FT_Rider.Pages
 
             this.lls_AutoComplete.IsEnabled = false;
 
-            //Hardcode
-            //GetRiderProfile();
-
             //default taxi type
             taxiType = TaxiTypes.Type.ECO.ToString();
 
@@ -96,6 +93,18 @@ namespace FT_Rider.Pages
             tbl_LastName.Text = userData.content.lName;
             tbl_FirstName.Text = userData.content.fName;
         }
+        
+        //Hàm này để hiển thị 1 picker trên màn hình, ở giữa màn hình
+        //Để khi người dùng di chuyển map, sẽ lấy tọa độ ở điểm trung tâm
+        private void EnablePickerOnMap()
+        {          
+            this.img_Picker.Visibility = Visibility.Visible;
+        }
+
+        private void DisablePickerOnMap()
+        {
+            this.img_Picker.Visibility = Visibility.Collapsed;
+        }        
 
 
         //------ BEGIN get current Position ------//

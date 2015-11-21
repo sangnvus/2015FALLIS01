@@ -248,6 +248,7 @@
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
     <Content Include="Images\Buttons\img_CallTaxiButton.png" />
+    <Content Include="Images\Buttons\img_Picker.png" />
     <Content Include="Images\CarsBar\img_Carbar_background.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />

@@ -142,7 +142,7 @@
                         </toolkit:MapExtensions.Children>
                     </maps:Map>
                 </Grid>
-                <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0" d:IsHidden="True">
+                <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
                     <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Center" Height="73" VerticalAlignment="Bottom" Width="480" Margin="0,0,0,75">
                         <Image x:Name="img_CallTaxi" HorizontalAlignment="Center" Height="49" VerticalAlignment="Center" Width="313" Source="/Images/Buttons/img_CallTaxiButton.png" Margin="0" Tap="img_CallTaxi_Tap"/>
                     </Grid>
@@ -184,7 +184,7 @@
                         <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" Width="40" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Tap="img_CloseIcon_Tap" Visibility="Collapsed" />
                     </Grid>
                 </Grid>
-                <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom">
+                <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom" d:IsHidden="True">
                     <Image x:Name="img_RequestTaxiBackground" Height="491" VerticalAlignment="Bottom" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png"/>
                     <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,391,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg"/>
@@ -219,6 +219,7 @@
                 <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
                     <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg"/>
                 </Grid>
+                <Image x:Name="img_Picker" HorizontalAlignment="Center" Height="121" Margin="136,296,127,351" VerticalAlignment="Center" Width="217" Source="/Images/Buttons/img_Picker.png"/>
             </Grid>
         </Canvas>
 
