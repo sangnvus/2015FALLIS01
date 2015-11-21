@@ -22,6 +22,8 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading;
+using System.IO.IsolatedStorage;
+using Microsoft.Phone.Maps.Toolkit;
 
 namespace FT_Rider.Pages
 {
@@ -63,6 +65,15 @@ namespace FT_Rider.Pages
 
         //for car types
         string taxiType;
+
+
+
+        //for demo
+        private string currentLatitude = string.Empty;
+        private string currentLongitude = string.Empty;
+        private Boolean isPosSet = false;
+
+
                
 
 
@@ -74,7 +85,7 @@ namespace FT_Rider.Pages
         {
             InitializeComponent();
             //get First Local Position
-            ShowCurrentLocalOnTheMap();
+            GetCurrentCoordinate();
             //hide all step sceen
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
@@ -144,49 +155,116 @@ namespace FT_Rider.Pages
 
 
 
-
+        Geolocator riderFirstGeolocator = null;
+        Geoposition riderFirstGeoposition = null;
 
         //------ BEGIN get current Position ------//
-        private async void ShowCurrentLocalOnTheMap()
+        private async void GetCurrentCoordinate()
         {
-       
-            //get position
-            Geolocator riderFirstGeolocator = new Geolocator();
-            Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
-            Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
-            GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
+
+            riderFirstGeolocator = new Geolocator();
+            riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High; //Độ chính xác mong muốn //trong mảng "PositionAccuracy"
+            riderFirstGeolocator.MovementThreshold = 20; //Tính toán khoảng cách giữa 2 vị trí qua sự kiện "PositionChanged"
+            riderFirstGeolocator.ReportInterval = 100;
+            
+            //Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
+           
+            riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10)); //TimeSpan.FromMinutes(1) return 00:01:00
+
+            riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
+
+            //Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
+            //GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
             
 
-            //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
-            this.map_RiderMap.ZoomLevel = 16;
+            ////Adjust map on the phone screen - 0.001500 to move up the map
+            //this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
+            //this.map_RiderMap.ZoomLevel = 16;
 
-            //Show maker
+            ////Show maker
 
-            // Create a small circle to mark the current location.
-            Ellipse riderFirstPositionIcon = new Ellipse();
-            riderFirstPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-            riderFirstPositionIcon.Height = 15;
-            riderFirstPositionIcon.Width = 15;
-            riderFirstPositionIcon.Opacity = 100;
+            //// Create a small circle to mark the current location.
+            //Ellipse riderFirstPositionIcon = new Ellipse();
+            //riderFirstPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
+            //riderFirstPositionIcon.Height = 15;
+            //riderFirstPositionIcon.Width = 15;
+            //riderFirstPositionIcon.Opacity = 100;
 
-            // Create a MapOverlay to contain the circle.
-            MapOverlay firstRiderLocationOverlay = new MapOverlay();
-            firstRiderLocationOverlay.Content = riderFirstPositionIcon;
+            //// Create a MapOverlay to contain the circle.
+            //MapOverlay firstRiderLocationOverlay = new MapOverlay();
+            //firstRiderLocationOverlay.Content = riderFirstPositionIcon;
 
-            //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            firstRiderLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            firstRiderLocationOverlay.GeoCoordinate = riderFirstGeoCoordinate;
+            ////MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
+            //firstRiderLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+            //firstRiderLocationOverlay.GeoCoordinate = riderFirstGeoCoordinate;
 
-            // Create a MapLayer to contain the MapOverlay.
-            riderMapLayer = new MapLayer();
-            riderMapLayer.Add(firstRiderLocationOverlay);
+            //// Create a MapLayer to contain the MapOverlay.
+            //riderMapLayer = new MapLayer();
+            //riderMapLayer.Add(firstRiderLocationOverlay);
 
-            // Add the MapLayer to the Map.
-            map_RiderMap.Layers.Add(riderMapLayer);
+            //// Add the MapLayer to the Map.
+            //map_RiderMap.Layers.Add(riderMapLayer);
 
 
-            GetNearDriver();
+            
+        }
+
+        private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+
+                Geocoordinate geocoordinate = null;
+                geocoordinate = args.Position.Coordinate; 
+
+                map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+                
+                UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
+                marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
+
+                Pushpin mypushpin = (Pushpin)this.FindName("mypushpin");
+                mypushpin.GeoCoordinate = geocoordinate.ToGeoCoordinate();
+
+                //// Create a small circle to mark the current location.
+                //Ellipse riderFirstPositionIcon = new Ellipse();
+                //riderFirstPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
+                //riderFirstPositionIcon.Height = 15;
+                //riderFirstPositionIcon.Width = 15;
+                //riderFirstPositionIcon.Opacity = 100;
+
+                //// Create a MapOverlay to contain the circle.
+                //MapOverlay firstRiderLocationOverlay = new MapOverlay();
+                //firstRiderLocationOverlay.Content = riderFirstPositionIcon;
+
+                ////MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
+                //firstRiderLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+                //firstRiderLocationOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate();
+
+
+
+                //// Create a MapLayer to contain the MapOverlay.
+                //riderMapLayer = new MapLayer();
+                //riderMapLayer.Add(firstRiderLocationOverlay);
+
+                //// Add the MapLayer to the Map.
+                //map_RiderMap.Layers.Add(riderMapLayer);
+
+                myPositionChanged(args);
+                GetNearDriver();
+
+            });
+        }
+
+        void myPositionChanged(PositionChangedEventArgs e)
+        {        
+            currentLatitude = e.Position.Coordinate.Latitude.ToString();
+            currentLongitude =  e.Position.Coordinate.Longitude.ToString();
+
+            if (!isPosSet)
+            {
+                isPosSet = true;
+            }
+
         }
         //------ END get current Position ------//
 
@@ -849,6 +927,35 @@ namespace FT_Rider.Pages
         }
 
         //------ END Search Bar EVENT ------//
+
+
+
+       // protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        //{
+        //    if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
+        //    {
+        //        // User has opted in or out of Location
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        MessageBoxResult result =
+        //            MessageBox.Show("This app accesses your phone's location. Is that ok?",
+        //            "Location",
+        //            MessageBoxButton.OKCancel);
+
+        //        if (result == MessageBoxResult.OK)
+        //        {
+        //            IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+        //        }
+        //        else
+        //        {
+        //            IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+        //        }
+
+        //        IsolatedStorageSettings.ApplicationSettings.Save();
+        //    }
+        //}
 
     }
 
