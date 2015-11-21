@@ -38,6 +38,10 @@ namespace FT_Rider.Pages
         MapRoute riderMapRoute = null;
         Route riderRoute = null;
 
+        //For get Current Possirion
+        Geolocator riderFirstGeolocator = null;
+        Geoposition riderFirstGeoposition = null;
+
         //For map layer
         MapLayer riderMapLayer;
 
@@ -49,9 +53,6 @@ namespace FT_Rider.Pages
 
         //Rider Destination Icon Overlay
         MapOverlay riderDestinationIconOverlay;
-
-        //Rider Profile Object;
-        RiderLogin riderProfile;
 
         //Get Near Taxi
         RiderGetNearDriver nearDrivers;
@@ -85,110 +86,27 @@ namespace FT_Rider.Pages
             //default taxi type
             taxiType = TaxiTypes.Type.ECO.ToString();
 
-            //test show data
+            //Load Rider Profile on Left Menu
+            LoadRiderProfile();
+        }
+
+
+        private void LoadRiderProfile()
+        {
             tbl_LastName.Text = userData.content.lName;
             tbl_FirstName.Text = userData.content.fName;
         }
 
 
-
-
-
-
-
-
-        //Fix Data for Rider Profile
-        private async void GetRiderProfile()
-        {
-            string URL = ConstantVariable.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
-
-            Dictionary<string, string> parameter = new Dictionary<string, string>();
-            parameter.Add("json", "{\"uid\":\"apl.ytb2@gmail.com\",\"pw\":\"Abc123!\",\"mid\":\"\",\"mType\":\"AND\"}");
-
-
-            HttpClient client = new HttpClient();
-            HttpContent contents = new FormUrlEncodedContent(parameter);
-            var response = await client.PostAsync(new Uri(URL), contents);
-            var reply = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
-            {
-                riderProfile = new RiderLogin();
-                riderProfile = JsonConvert.DeserializeObject<RiderLogin>(response.Content.ReadAsStringAsync().Result);
-
-                //Show info
-                LoadRiderProfile();
-            }
-        }
-
-        private void LoadRiderProfile()
-        {
-            tbl_FirstName.Text = riderProfile.content.fName.ToString();
-            tbl_LastName.Text = riderProfile.content.lName.ToString();
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        Geolocator riderFirstGeolocator = null;
-        Geoposition riderFirstGeoposition = null;
-
         //------ BEGIN get current Position ------//
         private async void GetCurrentCoordinate()
         {
             riderFirstGeolocator = new Geolocator();
-            riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High; //Độ chính xác mong muốn //trong mảng "PositionAccuracy"
-            riderFirstGeolocator.MovementThreshold = 20; //Tính toán khoảng cách giữa 2 vị trí qua sự kiện "PositionChanged"
+            riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High; 
+            riderFirstGeolocator.MovementThreshold = 20;
             riderFirstGeolocator.ReportInterval = 100;
-            riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10)); //TimeSpan.FromMinutes(1) return 00:01:00
-
+            //riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10)); 
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
-
-            //Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
-            //GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
-
-
-            ////Adjust map on the phone screen - 0.001500 to move up the map
-            //this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
-            //this.map_RiderMap.ZoomLevel = 16;
-
-            ////Show maker
-
-            //// Create a small circle to mark the current location.
-            //Ellipse riderFirstPositionIcon = new Ellipse();
-            //riderFirstPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-            //riderFirstPositionIcon.Height = 15;
-            //riderFirstPositionIcon.Width = 15;
-            //riderFirstPositionIcon.Opacity = 100;
-
-            //// Create a MapOverlay to contain the circle.
-            //MapOverlay firstRiderLocationOverlay = new MapOverlay();
-            //firstRiderLocationOverlay.Content = riderFirstPositionIcon;
-
-            ////MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            //firstRiderLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            //firstRiderLocationOverlay.GeoCoordinate = riderFirstGeoCoordinate;
-
-            //// Create a MapLayer to contain the MapOverlay.
-            //riderMapLayer = new MapLayer();
-            //riderMapLayer.Add(firstRiderLocationOverlay);
-
-            //// Add the MapLayer to the Map.
-            //map_RiderMap.Layers.Add(riderMapLayer);
 
         }
 
@@ -220,7 +138,6 @@ namespace FT_Rider.Pages
         {
             GeoCoordinate myGeoCoordinate = new GeoCoordinate();
             myGeoCoordinate = await GetCurrentPosition.GetGeoCoordinate();
-
             var uid = userData.content.uid;
             var lat = myGeoCoordinate.Latitude;
             var lng = myGeoCoordinate.Longitude;
@@ -240,6 +157,7 @@ namespace FT_Rider.Pages
                 }
                 else
                 {
+                    Thread.Sleep(2000);
                     MessageBox.Show("Không tìm thấy xe nào quanh đây");
                 }
 

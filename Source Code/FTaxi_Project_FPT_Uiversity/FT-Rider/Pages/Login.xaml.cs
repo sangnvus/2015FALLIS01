@@ -71,10 +71,24 @@ namespace FT_Rider.Pages
             }
         }
 
-        
+
 
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            var uid = txt_UserId.Text;
+            var pw = txt_Password.ActionButtonCommandParameter.ToString();
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
+            try
+            {
+                var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
+                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Login fail!");
+            }
             //if (txt_UserId.Text != "" && txt_Password.ToString() != "")
             //{
             //    int Temp = 0;
@@ -112,20 +126,6 @@ namespace FT_Rider.Pages
             //    txt_Password.ChangeValidationState(ValidationState.Invalid, "");
             //    txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
             //}
-            var uid = txt_UserId.Text;
-            var pw = txt_Password.ActionButtonCommandParameter.ToString();
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
-            try
-            {
-                var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
-                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Login fail!");
-            }
         }
 
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
@@ -145,49 +145,26 @@ namespace FT_Rider.Pages
         }
 
 
-        private async void sendJsonRequest()
+        private async void txt_Password_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            string URL = ConstantVariable.tNetRiderLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
-
-            Dictionary<string, string> parameter = new Dictionary<string, string>();
-            parameter.Add("json", "{\"uid\":\"apl.ytb2@gmail.com\",\"pw\":\"Abc123!\",\"mid\":\"\",\"mType\":\"AND\"}");
-
-
-            HttpClient client = new HttpClient();
-            HttpContent contents = new FormUrlEncodedContent(parameter);
-            var response = await client.PostAsync(new Uri(URL), contents);
-            var reply = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+            //check if input is "Enter" key
+            if (e.Key == System.Windows.Input.Key.Enter)
             {
-                //JObject jResult = JObject.Parse(response.Content.ReadAsStringAsync().Result.ToString());
-                RiderLogin riderLogin = new RiderLogin();
-                riderLogin = JsonConvert.DeserializeObject<RiderLogin>(response.Content.ReadAsStringAsync().Result);
-                //MessageBox.Show(riderLogin.content.email);
-
-                string json = JsonConvert.SerializeObject(riderLogin);
-                MessageBox.Show(json);
+                var uid = txt_UserId.Text;
+                var pw = txt_Password.ActionButtonCommandParameter.ToString();
+                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
+                try
+                {
+                    var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
+                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                    PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Login fail!");
+                }
             }
-        }
-
-        private void btn_t1_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //sendJsonRequest();
-            //test
-            var uid = txt_UserId;
-            var pw = txt_Password.ActionButtonCommandParameter.ToString();
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
-            var output = GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
-            try
-            {
-                var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output.Result);
-                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml?userLogin =" + riderLogin, UriKind.Relative));
-                PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Login fail!");
-            }
-
         }
     }
 }

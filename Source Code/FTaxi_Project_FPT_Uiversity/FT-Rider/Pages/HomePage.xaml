@@ -138,7 +138,7 @@
                     </Grid.RowDefinitions>
                     <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2">
                         <toolkit:MapExtensions.Children>
-                            <toolkit:UserLocationMarker x:Name="UserLocationMarker"/>
+                            <toolkit:UserLocationMarker x:Name="UserLocationMarker" Foreground="#FF2E9FFF" Background="#FFD5EBFF"/>
                         </toolkit:MapExtensions.Children>
                     </maps:Map>
                 </Grid>
