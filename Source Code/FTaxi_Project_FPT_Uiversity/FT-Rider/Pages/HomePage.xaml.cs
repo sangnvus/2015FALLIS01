@@ -98,7 +98,10 @@ namespace FT_Rider.Pages
             //default taxi type
             string taxiType = TaxiTypes.Type.ECO.ToString();
 
-
+            //test show data
+            var userLogin = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
+            tbl_LastName.Text = userLogin.content.lName;
+            tbl_FirstAndMidleName1.Text = userLogin.content.fName;
         }
 
 

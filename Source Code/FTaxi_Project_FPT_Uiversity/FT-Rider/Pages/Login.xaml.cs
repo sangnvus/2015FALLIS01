@@ -73,45 +73,59 @@ namespace FT_Rider.Pages
 
         
 
-        private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
+        private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            //if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            //{
+            //    int Temp = 0;
+            //    foreach (var UserLogin in objUserDataList)
+            //    {
+            //        if (rad_Account.Text == UserLogin.Email && rad_Password.ToString() == UserLogin.Password)
+            //        {
+            //            Temp = 1;
+            //            var Settings = IsolatedStorageSettings.ApplicationSettings;
+            //            Settings["CheckLogin"] = ConstantVariable.strLoginSucess;//write iso    
+
+            //            if (iSOFile.FileExists("CurrentLoginUserDetails"))
+            //            {
+            //                iSOFile.DeleteFile("CurrentLoginUserDetails");
+            //            }
+            //            using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("CurrentLoginUserDetails", FileMode.Create))
+            //            {
+            //                DataContractSerializer serializer = new DataContractSerializer(typeof(UserData));
+
+            //                serializer.WriteObject(fileStream, UserLogin);
+
+            //            }
+            //            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+
+            //        }
+            //    }
+            //    if (Temp == 0)
+            //    {
+            //        rad_Password.ChangeValidationState(ValidationState.Invalid, "");
+            //        rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+            //    }
+            //}
+            //else
+            //{
+            //    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
+            //    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+            //}
+            var uid = rad_Account.Text;
+            var pw = rad_Password.ActionButtonCommandParameter.ToString();
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
+            try
             {
-                int Temp = 0;
-                foreach (var UserLogin in objUserDataList)
-                {
-                    if (rad_Account.Text == UserLogin.Email && rad_Password.ToString() == UserLogin.Password)
-                    {
-                        Temp = 1;
-                        var Settings = IsolatedStorageSettings.ApplicationSettings;
-                        Settings["CheckLogin"] = ConstantVariable.strLoginSucess;//write iso    
-
-                        if (iSOFile.FileExists("CurrentLoginUserDetails"))
-                        {
-                            iSOFile.DeleteFile("CurrentLoginUserDetails");
-                        }
-                        using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("CurrentLoginUserDetails", FileMode.Create))
-                        {
-                            DataContractSerializer serializer = new DataContractSerializer(typeof(UserData));
-
-                            serializer.WriteObject(fileStream, UserLogin);
-
-                        }
-                        NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                    }
-                }
-                if (Temp == 0)
-                {
-                    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
-                }
+                var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
+                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
             }
-            else
+            catch (Exception)
             {
-                rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                MessageBox.Show("Login fail!");
             }
-
         }
 
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
@@ -157,7 +171,23 @@ namespace FT_Rider.Pages
 
         private void btn_t1_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            sendJsonRequest();
+            //sendJsonRequest();
+            //test
+            var uid = rad_Account;
+            var pw = rad_Password.ActionButtonCommandParameter.ToString();
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
+            var output = GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
+            try
+            {
+                var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output.Result);
+                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml?userLogin =" + riderLogin, UriKind.Relative));
+                PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Login fail!");
+            }
+
         }
     }
 }
