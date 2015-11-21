@@ -93,7 +93,7 @@ namespace FT_Rider.Pages
             this.lls_AutoComplete.IsEnabled = false;
 
             //Hardcode
-            GetRiderProfile();
+            //GetRiderProfile();
 
             //default taxi type
             string taxiType = TaxiTypes.Type.ECO.ToString();
