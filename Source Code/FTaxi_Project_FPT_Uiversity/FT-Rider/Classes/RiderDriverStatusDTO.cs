@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class RiderDriverStatusDTOResponse
+    class RiderDriverStatusDTO
     {
         private List<DriverCurrentStatus> driverStatusList;
         private String did;

@@ -78,9 +78,9 @@
                     <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
                 </Button.BorderBrush>
             </Button>
-            <telerikPrimitives:RadTextBox x:Name="rad_Account" Header="{Binding Name}" Margin="10,204,10,456"  SelectionForeground="Black" Padding="60,2,2,2"/>
+            <telerikPrimitives:RadTextBox x:Name="txt_UserId" Header="{Binding Name}" Margin="10,204,10,456"  SelectionForeground="Black" Padding="60,2,2,2"/>
 
-            <telerikPrimitives:RadPasswordBox x:Name="rad_Password" Header="{Binding Name}" Margin="10,296,10,364"  Padding="60,2,2,2"/>
+            <telerikPrimitives:RadPasswordBox x:Name="txt_Password" Header="{Binding Name}" Margin="10,296,10,364"  Padding="60,2,2,2"/>
             <TextBlock x:Name="tbl_LostPassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/>
             <!--Button x:Name="tbn_Register1" HorizontalAlignment="Left" Margin="10,456,0,0"   VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize}" Width="436" Height="72" Content="Đăng ký" Tap="tbn_Tap_Register" /-->
             <!--TextBox x:Name="txt_Account1" Margin="10,240,10,0" TextWrapping="Wrap" Text="fuhl@fpt.edu.vn" Height="72" VerticalAlignment="Top" Padding="60,2,2,2" Foreground="#FFCFCFCF" FontSize="{StaticResource Textbox_FontSize}" Tap="txt_Account_Tap" InputScope="EmailUserName"/-->

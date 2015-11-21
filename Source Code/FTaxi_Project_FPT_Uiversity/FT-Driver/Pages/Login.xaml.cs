@@ -28,8 +28,8 @@ namespace FT_Driver.Pages
         public Login()
         {
             InitializeComponent();
-            this.rad_Account.DataContext = new Data { Name = "Email" };
-            this.rad_Password.DataContext = new Data { Name = "Passsword" };
+            this.txt_UserId.DataContext = new Data { Name = "Email" };
+            this.txt_Password.DataContext = new Data { Name = "Passsword" };
             this.Loaded += Login_Loaded;
         }
 
@@ -73,11 +73,11 @@ namespace FT_Driver.Pages
 
         private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            if (txt_UserId.Text != "" && txt_Password.ToString() != "")
             {
                 int Temp = 0;
                
-                    if (rad_Account.Text == "admin@gmail.com" && rad_Password.Password == "admin")
+                    if (txt_UserId.Text == "admin@gmail.com" && txt_Password.Password == "admin")
                     {
                         Temp = 1;
                         NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative));
@@ -85,14 +85,14 @@ namespace FT_Driver.Pages
                 }
                 if (Temp == 0)
                 {
-                    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                    txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+                    txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
                 }
             }
             else
             {
-                rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+                txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
             }
 
         }

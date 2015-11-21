@@ -43,7 +43,7 @@
                     </Image.Clip>
                 </Image>
                 <TextBlock x:Name="tbl_LastName" Text="Nguyễn Văn" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27"/>
-                <TextBlock x:Name="tbl_FirstAndMidleName1" Text="Lập" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27"/>
+                <TextBlock x:Name="tbl_FirstName" Text="Lập" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27"/>
                 <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,164,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,233,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,296,0,0" FontSize="22"/>

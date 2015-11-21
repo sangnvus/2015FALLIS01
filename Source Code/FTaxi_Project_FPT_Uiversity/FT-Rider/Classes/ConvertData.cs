@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Device.Location;
 using System.Linq;
@@ -47,6 +48,12 @@ namespace FT_Rider.Classes
             string dt;
             dt = inputDateTime.ToString("ddMMyyyyHHmmss");
             return dt;
+        }
+
+        //Convert Json Obj to string
+        public static string ConvertJsonObjToString(Object jSonObj)
+        {
+            return JsonConvert.SerializeObject(jSonObj);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace FT_Rider.Classes
 {
 
-    class RiderBaseRequest 
+    class RiderBase 
     {
         private String id { get; set; }
         private String uid { get; set; }

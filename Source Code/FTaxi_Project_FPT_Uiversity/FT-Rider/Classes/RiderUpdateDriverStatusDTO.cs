@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class RiderUpdateDriverStatusDTORequest
+    class RiderUpdateDriverStatusDTO
     {
         //Hiện tại chưa cần dùng
         //Cài này để bên Rider cập nhật vị trí hiện tại của các Driver

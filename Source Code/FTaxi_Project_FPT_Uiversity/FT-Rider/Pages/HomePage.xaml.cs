@@ -32,13 +32,6 @@ namespace FT_Rider.Pages
         //For Store Points
         List<GeoCoordinate> riderCoordinates = new List<GeoCoordinate>();
 
-        //For Base Current Position Coordinates
-        //GeoCoordinate riderCurrentPosition = null;
-
-        //For Position
-        //Geolocator riderGeolocator = new Geolocator();
-
-
         //For Router        
         GeocodeQuery riderGeocodeQuery = null;
         RouteQuery riderQuery = null;
@@ -61,20 +54,13 @@ namespace FT_Rider.Pages
         RiderLogin riderProfile;
 
         //Get Near Taxi
-        RiderGetNearDriverResponse nearDrivers;
+        RiderGetNearDriver nearDrivers;
 
         //for car types
         string taxiType;
 
-
-
-        //for demo
-        private string currentLatitude = string.Empty;
-        private string currentLongitude = string.Empty;
-        private Boolean isPosSet = false;
-
-
-               
+        //USER DATA
+        RiderLogin userData = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
 
 
         //For menu
@@ -83,6 +69,7 @@ namespace FT_Rider.Pages
 
         public HomePage()
         {
+
             InitializeComponent();
             //get First Local Position
             GetCurrentCoordinate();
@@ -96,12 +83,11 @@ namespace FT_Rider.Pages
             //GetRiderProfile();
 
             //default taxi type
-            string taxiType = TaxiTypes.Type.ECO.ToString();
+            taxiType = TaxiTypes.Type.ECO.ToString();
 
             //test show data
-            var userLogin = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
-            tbl_LastName.Text = userLogin.content.lName;
-            tbl_FirstAndMidleName1.Text = userLogin.content.fName;
+            tbl_LastName.Text = userData.content.lName;
+            tbl_FirstName.Text = userData.content.fName;
         }
 
 
@@ -136,7 +122,7 @@ namespace FT_Rider.Pages
 
         private void LoadRiderProfile()
         {
-            tbl_FirstAndMidleName1.Text = riderProfile.content.fName.ToString();
+            tbl_FirstName.Text = riderProfile.content.fName.ToString();
             tbl_LastName.Text = riderProfile.content.lName.ToString();
         }
 
@@ -164,21 +150,17 @@ namespace FT_Rider.Pages
         //------ BEGIN get current Position ------//
         private async void GetCurrentCoordinate()
         {
-
             riderFirstGeolocator = new Geolocator();
             riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High; //Độ chính xác mong muốn //trong mảng "PositionAccuracy"
             riderFirstGeolocator.MovementThreshold = 20; //Tính toán khoảng cách giữa 2 vị trí qua sự kiện "PositionChanged"
             riderFirstGeolocator.ReportInterval = 100;
-            
-            //Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
-           
             riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10)); //TimeSpan.FromMinutes(1) return 00:01:00
 
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
             //Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
             //GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
-            
+
 
             ////Adjust map on the phone screen - 0.001500 to move up the map
             //this.map_RiderMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
@@ -208,8 +190,6 @@ namespace FT_Rider.Pages
             //// Add the MapLayer to the Map.
             //map_RiderMap.Layers.Add(riderMapLayer);
 
-
-            
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -218,53 +198,16 @@ namespace FT_Rider.Pages
             {
 
                 Geocoordinate geocoordinate = null;
-                geocoordinate = args.Position.Coordinate; 
+                geocoordinate = args.Position.Coordinate;
 
                 map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
-                
+
                 UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
                 marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
 
-                //// Create a small circle to mark the current location.
-                //Ellipse riderFirstPositionIcon = new Ellipse();
-                //riderFirstPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-                //riderFirstPositionIcon.Height = 15;
-                //riderFirstPositionIcon.Width = 15;
-                //riderFirstPositionIcon.Opacity = 100;
-
-                //// Create a MapOverlay to contain the circle.
-                //MapOverlay firstRiderLocationOverlay = new MapOverlay();
-                //firstRiderLocationOverlay.Content = riderFirstPositionIcon;
-
-                ////MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-                //firstRiderLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-                //firstRiderLocationOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate();
-
-
-
-                //// Create a MapLayer to contain the MapOverlay.
-                //riderMapLayer = new MapLayer();
-                //riderMapLayer.Add(firstRiderLocationOverlay);
-
-                //// Add the MapLayer to the Map.
-                //map_RiderMap.Layers.Add(riderMapLayer);
-
-                myPositionChanged(args);
                 GetNearDriver();
 
             });
-        }
-
-        void myPositionChanged(PositionChangedEventArgs e)
-        {        
-            currentLatitude = e.Position.Coordinate.Latitude.ToString();
-            currentLongitude =  e.Position.Coordinate.Longitude.ToString();
-
-            if (!isPosSet)
-            {
-                isPosSet = true;
-            }
-
         }
         //------ END get current Position ------//
 
@@ -275,33 +218,35 @@ namespace FT_Rider.Pages
         //------ BEGIN get near Driver ------//
         private async void GetNearDriver()
         {
-            string URL = ConstantVariable.tNetRiderGetNerDriverAddress;
+            GeoCoordinate myGeoCoordinate = new GeoCoordinate();
+            myGeoCoordinate = await GetCurrentPosition.GetGeoCoordinate();
 
-            Dictionary<string, string> parameter = new Dictionary<string, string>();
-            //21.039273, 105.802044
-            //21.038472, 105.8014108
-            parameter.Add("json", "{\"uid\":\"hoangha@gmail.com\",\"lat\":21.039273,\"lng\":105.802044,\"cLvl\":\"ECO\"}");
+            var uid = userData.content.uid;
+            var lat = myGeoCoordinate.Latitude;
+            var lng = myGeoCoordinate.Longitude;
+            var clvl = taxiType;
 
-            HttpClient client = new HttpClient();
-            HttpContent contents = new FormUrlEncodedContent(parameter);
-            var response = await client.PostAsync(new Uri(URL), contents);
-            var reply = await response.Content.ReadAsStringAsync();
-            if (response.IsSuccessStatusCode)
+            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"clvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
+            try
             {
-                nearDrivers = new RiderGetNearDriverResponse();
-                nearDrivers = JsonConvert.DeserializeObject<RiderGetNearDriverResponse>(response.Content.ReadAsStringAsync().Result);
-                if (nearDrivers.content.listDriverDTO.Count > 0)
+                var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+                if (nearDriver.content.listDriverDTO.Count > 0)
                 {
-                    foreach (var taxi in nearDrivers.content.listDriverDTO)
+                    foreach (var taxi in nearDriver.content.listDriverDTO)
                     {
                         ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName);
                     }
                 }
                 else
                 {
-                    Thread.Sleep(1000);
-                    MessageBox.Show(ConstantVariable.errNoCarYet);
+                    MessageBox.Show("Không tìm thấy xe nào quanh đây");
                 }
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Đã có lỗi xảy ra");
             }
         }
         //------ END get near Driver ------//
@@ -321,7 +266,7 @@ namespace FT_Rider.Pages
                 //delete route
                 map_RiderMap.RemoveRoute(riderMapRoute);
                 riderMapRoute = null;
-                riderQuery = null;                
+                riderQuery = null;
                 riderMapLayer.Remove(riderDestinationIconOverlay);
             }
 
@@ -768,7 +713,7 @@ namespace FT_Rider.Pages
             }
             catch (Exception)
             {
-                txt_InputAddress.Focus();                
+                txt_InputAddress.Focus();
             }
         }
 
@@ -930,7 +875,7 @@ namespace FT_Rider.Pages
 
 
 
-       // protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        // protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         //{
         //    if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
         //    {

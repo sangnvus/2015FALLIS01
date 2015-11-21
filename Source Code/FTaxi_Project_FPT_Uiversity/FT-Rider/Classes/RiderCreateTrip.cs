@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class RiderCreateTripRequest
+    class RiderCreateTrip
     {
         private String uid;
         private String rid;

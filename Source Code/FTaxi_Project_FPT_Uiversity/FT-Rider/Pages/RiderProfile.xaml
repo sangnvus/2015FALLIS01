@@ -86,7 +86,7 @@
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
-            <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="5,332,0,0" VerticalAlignment="Top"  Tap="btn__Tap_Logout" Grid.Row="2" HorizontalAlignment="Left" Width="475" FontSize="{StaticResource Textbox_FontSize}" Height="83">
+            <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="5,311,0,0" VerticalAlignment="Top"  Tap="btn__Tap_Logout" Grid.Row="2" HorizontalAlignment="Left" Width="475" FontSize="{StaticResource Textbox_FontSize}" Height="104">
                 <Button.Background>
                     <SolidColorBrush Color="{StaticResource Button_Background_Color_Red}"/>
                 </Button.Background>
@@ -132,10 +132,10 @@
                 				RadiusY="45" />
                         </Image.Clip>
                     </Image>
-                    <TextBox x:Name="txt_Email" Text="lapnvse02314@fpt.edu.vn" HorizontalAlignment="Left" Height="72" Margin="5,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
-                    <TextBox x:Name="txt_Name" Text="Lập" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}"/>
-                    <TextBox x:Name="txt_PhoneNumber" Text="+84988707727" HorizontalAlignment="Left" Height="72" Margin="5,244,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
-                    <TextBox x:Name="txt_FirstAndMiddleName" Text="Nguyễn Văn" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}"/>
+                    <TextBox x:Name="txt_userId" Text="lapnvse02314@fpt.edu.vn" HorizontalAlignment="Left" Height="72" Margin="5,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
+                    <TextBox x:Name="txt_FirstName" Text="Lập" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}"/>
+                    <TextBox x:Name="txt_Mobile" Text="+84988707727" HorizontalAlignment="Left" Height="72" Margin="5,244,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
+                    <TextBox x:Name="txt_LastName" Text="Nguyễn Văn" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}"/>
                 </Grid>
             </StackPanel>
             <Image x:Name="img_UserFName" HorizontalAlignment="Left" Height="50" Margin="9,16,0,0" Grid.Row="1" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>

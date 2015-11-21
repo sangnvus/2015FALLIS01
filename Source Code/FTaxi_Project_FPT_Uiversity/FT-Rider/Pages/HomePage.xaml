@@ -44,7 +44,7 @@
                     </Image.Clip>
                 </Image>
                 <TextBlock x:Name="tbl_LastName" Text="Nguyễn Văn" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27"/>
-                <TextBlock x:Name="tbl_FirstAndMidleName1" Text="Lập" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27"/>
+                <TextBlock x:Name="tbl_FirstName" Text="Lập" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27"/>
                 <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,164,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,233,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,296,0,0" FontSize="22"/>
@@ -142,7 +142,7 @@
                         </toolkit:MapExtensions.Children>
                     </maps:Map>
                 </Grid>
-                <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
+                <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0" d:IsHidden="True">
                     <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Center" Height="73" VerticalAlignment="Bottom" Width="480" Margin="0,0,0,75">
                         <Image x:Name="img_CallTaxi" HorizontalAlignment="Center" Height="49" VerticalAlignment="Center" Width="313" Source="/Images/Buttons/img_CallTaxiButton.png" Margin="0" Tap="img_CallTaxi_Tap"/>
                     </Grid>
@@ -184,7 +184,7 @@
                         <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" Width="40" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Tap="img_CloseIcon_Tap" Visibility="Collapsed" />
                     </Grid>
                 </Grid>
-                <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom" d:IsHidden="True">
+                <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom">
                     <Image x:Name="img_RequestTaxiBackground" Height="491" VerticalAlignment="Bottom" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png"/>
                     <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,391,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg"/>
@@ -205,7 +205,7 @@
                     <TextBlock x:Name="tbl_PromoteCode" HorizontalAlignment="Left" Margin="349,314,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="37" Width="121" TextAlignment="Right">
                 		<Run FontSize="30" Text="KM1758"/>
                     </TextBlock>
-                    <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DemoAvatar2.jpg" Margin="10,309,0,0">
+                    <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DemoAvatar2.jpg" Margin="10,309,0,0">
                         <Image.Clip>
                             <EllipseGeometry
                 				Center="50,50"

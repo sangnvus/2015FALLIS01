@@ -43,8 +43,8 @@ namespace FT_Rider.Pages
         public Login()
         {
             InitializeComponent();
-            this.rad_Account.DataContext = new Data { Name = "Email" };
-            this.rad_Password.DataContext = new Data { Name = "Passsword" };
+            this.txt_UserId.DataContext = new Data { Name = "Email" };
+            this.txt_Password.DataContext = new Data { Name = "Passsword" };
             this.Loaded += Login_Loaded;
         }
 
@@ -75,12 +75,12 @@ namespace FT_Rider.Pages
 
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            //if (txt_UserId.Text != "" && txt_Password.ToString() != "")
             //{
             //    int Temp = 0;
             //    foreach (var UserLogin in objUserDataList)
             //    {
-            //        if (rad_Account.Text == UserLogin.Email && rad_Password.ToString() == UserLogin.Password)
+            //        if (txt_UserId.Text == UserLogin.Email && txt_Password.ToString() == UserLogin.Password)
             //        {
             //            Temp = 1;
             //            var Settings = IsolatedStorageSettings.ApplicationSettings;
@@ -103,17 +103,17 @@ namespace FT_Rider.Pages
             //    }
             //    if (Temp == 0)
             //    {
-            //        rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-            //        rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+            //        txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+            //        txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
             //    }
             //}
             //else
             //{
-            //    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-            //    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+            //    txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+            //    txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
             //}
-            var uid = rad_Account.Text;
-            var pw = rad_Password.ActionButtonCommandParameter.ToString();
+            var uid = txt_UserId.Text;
+            var pw = txt_Password.ActionButtonCommandParameter.ToString();
             var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
             try
@@ -173,8 +173,8 @@ namespace FT_Rider.Pages
         {
             //sendJsonRequest();
             //test
-            var uid = rad_Account;
-            var pw = rad_Password.ActionButtonCommandParameter.ToString();
+            var uid = txt_UserId;
+            var pw = txt_Password.ActionButtonCommandParameter.ToString();
             var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
             var output = GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
             try

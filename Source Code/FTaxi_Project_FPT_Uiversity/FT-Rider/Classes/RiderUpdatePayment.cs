@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class RiderUpdatePaymentRequest : RiderBaseRequest
+    class RiderUpdatePaymentRequest : RiderBase
     {
         private List<int> deletedPaymentId { get; set; }
         private List<RiderPaymentDTO> paymentDTOs { get; set; }
