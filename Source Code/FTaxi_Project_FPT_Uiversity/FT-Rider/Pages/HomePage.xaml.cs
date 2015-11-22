@@ -102,6 +102,15 @@ namespace FT_Rider.Pages
             //21.038556, 105.800667
         }
 
+
+
+
+
+
+
+
+
+
         private void pickupTimer_Tick(object sender, EventArgs e)
         {
             img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
@@ -184,7 +193,7 @@ namespace FT_Rider.Pages
 
         //------ BEGIN show and Design UI 3 taxi near current position ------//
         private void ShowNearDrivers(double lat, double lng, string tName)
-        {            
+        {
             GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
 
             //Create taxi icon on map
@@ -379,42 +388,6 @@ namespace FT_Rider.Pages
 
 
 
-        //private void getRouteTo(GeoCoordinate myPosition, GeoCoordinate destination)
-        //{
-        //    if (riderMapRoute != null)
-        //    {
-        //        map_RiderMap.RemoveRoute(riderMapRoute);
-        //        riderMapRoute = null;
-        //        riderQuery = null;
-        //    }
-        //    riderQuery = new RouteQuery()
-        //    {
-        //        TravelMode = TravelMode.Driving,
-        //        Waypoints = new List<GeoCoordinate>()
-        //    {
-        //        myPosition, 
-        //        destination
-        //    },
-        //        RouteOptimization = RouteOptimization.MinimizeTime
-        //    };
-        //    riderQuery.QueryCompleted += riderRouteQuery_QueryCompleted;
-        //    riderQuery.QueryAsync();
-        //}
-        //void riderRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
-        //{
-        //    if (e.Error == null)
-        //    {
-        //        Route newRoute = e.Result;
-
-        //        riderMapRoute = new MapRoute(newRoute);
-        //        map_RiderMap.AddRoute(riderMapRoute);
-        //        riderQuery.Dispose();
-        //    }
-        //}
-
-
-
-
 
 
 
@@ -456,7 +429,6 @@ namespace FT_Rider.Pages
 
 
 
-
         //------ BEGIN Taxi type bar ------//
         private void img_CarBar_SavingCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -483,7 +455,6 @@ namespace FT_Rider.Pages
             taxiType = TaxiTypes.Type.LUX.ToString();
         }
         //------ END Taxi type bar ------//
-
 
 
 
@@ -692,13 +663,6 @@ namespace FT_Rider.Pages
                 txt_InputAddress.Text = string.Empty;
             }
 
-            ////redisplay Auto complete when re focus
-            //if (txt_InputAddress.Text != String.Empty && txt_InputAddress.Text != StaticVariables.destiationAddressDescription)
-            //{
-            //    loadAutoCompletePlace(txt_InputAddress.Text);
-            //    lls_AutoComplete.Visibility = Visibility.Visible;
-            //    lls_AutoComplete.IsEnabled = true;
-            //}
 
             //hide close icon
             if (txt_InputAddress.Text == String.Empty)
@@ -801,11 +765,6 @@ namespace FT_Rider.Pages
         }
 
 
-        private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
-        {
-            //if (e.DeltaManipulation.Translation.X != 0)
-            //    Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
-        }
 
         private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
         {
@@ -852,6 +811,58 @@ namespace FT_Rider.Pages
             addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
         }
         //------ END For open menu ------//
+
+
+
+        private async void GetNearDriverNew()
+        {
+            var uid = userData.content.uid;
+            var lat = pickupLat;
+            var lng = pickupLng;
+            var clvl = taxiType;
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
+            var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+            if (nearDriver.content.listDriverDTO.Count > 0)
+            {
+                IDictionary<string, ListDriverDTO> col = new Dictionary<string, ListDriverDTO>();
+                foreach (var item in nearDriver.content.listDriverDTO)
+                {
+                    col[item.did.ToString()] = new ListDriverDTO
+                    {
+                        did = item.did,
+                        fName = item.fName,
+                        lName = item.lName,
+                        cName = item.cName,
+                        mobile = item.mobile,
+                        rate = item.rate,
+                        oPrice = item.oPrice,
+                        oKm = item.oKm,
+                        f1Price = item.f1Price,
+                        f1Km = item.f1Km,
+                        f2Price = item.f2Price,
+                        f2Km = item.f2Km,
+                        f3Price = item.f3Price,
+                        f3Km = item.f3Km,
+                        f4Price = item.f4Price,
+                        f4Km = item.f4Km,
+                        img = item.img,
+                        lat = item.lat,
+                        lng = item.lng
+                    };
+                }
+                foreach (var taxi in nearDriver.content.listDriverDTO)
+                {
+                    //ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName, taxi.did);
+                }
+            }
+        }
+
+        private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
+        {
+
+        }
 
     }
 
