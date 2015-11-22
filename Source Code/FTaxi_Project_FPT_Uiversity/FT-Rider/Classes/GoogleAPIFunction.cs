@@ -16,9 +16,9 @@ namespace FT_Rider.Classes
             string addressObjString;
 
             //GoogleAPIGeocoding URL
-            string URL = ConstantVariable.googleAPIGeocodingLatLngBaseURI 
-                + lat.ToString().Replace(',', '.') + "," 
-                + lng.ToString().Replace(',', '.') + "&key=" 
+            string URL = ConstantVariable.googleAPIGeocodingLatLngBaseURI
+                + lat.ToString().Replace(',', '.') + ","
+                + lng.ToString().Replace(',', '.') + "&key="
                 + ConstantVariable.googleGeolocationAPIkey;
 
             addressObjString = await ReqAndRes.GetJsonString(URL);
@@ -47,9 +47,9 @@ namespace FT_Rider.Classes
         //Output a json incluted detail of address 18 Pham Hung
         public static async Task<GoogleAPIQueryAutoCompleteObj> ConvertAutoCompleteToLLS(string address)
         {
-            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI 
-                + ConstantVariable.googleGeolocationAPIkey 
-                + "&input=" 
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI
+                + ConstantVariable.googleGeolocationAPIkey
+                + "&input="
                 + address;
 
             //Get Json string
@@ -61,6 +61,43 @@ namespace FT_Rider.Classes
 
             return addressObj;
         }
-      
+
+        public static async Task<int> GetDistance(Double sLat, Double sLng, Double eLat, Double eLng)
+        {
+            var URL = ConstantVariable.googleAPIDistanceMatrixBaseURI1
+                + sLat + "," + sLng
+                + "&destinations="
+                + eLat + "," + eLng
+                + ConstantVariable.googleAPIDistanceMatrixBaseURI3
+                + ConstantVariable.googleGeolocationAPIkey;
+
+            var returnString = await ReqAndRes.GetJsonString(URL);
+            var distance = JsonConvert.DeserializeObject<GoogleAPIDistanceMatrixObj>(returnString);
+
+            return int.Parse(distance.rows[0].elements[0].distance.ToString());
+            //{
+            //"destination_addresses" : [ "143 Kim Mã, Kim Mã, Ba Đình, Hà Nội, Việt Nam" ],
+            //"origin_addresses" : [ "50 Liễu Giai, Ngọc Khánh, Ba Đình, Hà Nội, Việt Nam" ],
+            //"rows" : [
+            //   {
+            //      "elements" : [
+            //         {
+            //            "distance" : {
+            //               "text" : "1,7 km",
+            //               "value" : 1707 <<<=====
+            //            },
+            //            "duration" : {
+            //               "text" : "5 phút",
+            //               "value" : 327
+            //            },
+            //            "status" : "OK"
+            //         }
+            //      ]
+            //   }
+            //],
+            //"status" : "OK"
+            //}
+        }
+
     }
 }

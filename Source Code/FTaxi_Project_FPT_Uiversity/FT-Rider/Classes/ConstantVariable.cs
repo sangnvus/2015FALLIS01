@@ -8,13 +8,23 @@ namespace FT_Rider.Classes
 {
     class ConstantVariable
     {
-        
+
         //Google Maps API String
         public const string googleAPIQueryAutoCompleteRequestsBaseURI = "https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=";
         public const string googleAPIGeocodingAddressBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?address=";
         //public static string googleGeolocationAPIkey = "AIzaSyAOi7TswVYRlkqvZcQ88Qf9SUHODK67TR0";
         public const string googleGeolocationAPIkey = "AIzaSyD4Y-OfQiAfs9hS_kyrfmzUSs5jY9gEKiY";
         public const string googleAPIGeocodingLatLngBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+
+        //https://maps.googleapis.com/maps/api/distancematrix/json?
+        //origins=21.032585,105.813623
+        //&destinations=21.031849,105.826399
+        //&mode=driving&language=vi-VI
+        //&key=AIzaSyD4Y-OfQiAfs9hS_kyrfmzUSs5jY9gEKiY
+        public const string googleAPIDistanceMatrixBaseURI1 = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
+        public const string googleAPIDistanceMatrixBaseURI2 = "&destinations=";
+        public const string googleAPIDistanceMatrixBaseURI3 = "&mode=driving&language=vi-VI";
+
 
 
         //String
@@ -37,9 +47,9 @@ namespace FT_Rider.Classes
 
         //Card type
         public const String DIRECT = "DI";
-		public const String BANK_ACCOUNT = "BA";
-		public const String CREDIT_CARD = "CR";
-		public const String PAYPAL = "PP";
+        public const String BANK_ACCOUNT = "BA";
+        public const String CREDIT_CARD = "CR";
+        public const String PAYPAL = "PP";
 
         //Trip Type
         public const String ONE_MANY = "OM";
