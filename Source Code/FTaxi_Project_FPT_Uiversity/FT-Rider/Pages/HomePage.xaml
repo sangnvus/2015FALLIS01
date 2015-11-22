@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Maps.Toolkit;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:imagetools="clr-namespace:ImageTools.Controls;assembly=ImageTools.Controls"
     x:Class="FT_Rider.Pages.HomePage"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -22,6 +23,7 @@
             <Storyboard x:Name="moveAnimation">
                 <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="(Canvas.Left)" Storyboard.TargetName="LayoutRoot" d:IsOptimized="True" />
             </Storyboard>
+            <imagetools:ImageConverter x:Key="ImageConverter" />
         </Canvas.Resources>
         <!--For Open Menu-->
         <!--LayoutRoot is the root grid where all page content is placed-->
@@ -136,16 +138,14 @@
                         <RowDefinition Height="7*"/>
                         <RowDefinition Height="82*"/>
                     </Grid.RowDefinitions>
-                    <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2">
+                    <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2" ResolveCompleted="map_RiderMap_ResolveCompleted" MouseLeftButtonDown="map_RiderMap_MouseLeftButtonDown">
                         <toolkit:MapExtensions.Children>
                             <toolkit:UserLocationMarker x:Name="UserLocationMarker" Foreground="#FF2E9FFF" Background="#FFD5EBFF"/>
                         </toolkit:MapExtensions.Children>
                     </maps:Map>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Center" Height="73" VerticalAlignment="Bottom" Width="480" Margin="0,0,0,75">
-                        <Image x:Name="img_CallTaxi" HorizontalAlignment="Center" Height="49" VerticalAlignment="Center" Width="313" Source="/Images/Buttons/img_CallTaxiButton.png" Margin="0" Tap="img_CallTaxi_Tap"/>
-                    </Grid>
+                    <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Center" Height="73" VerticalAlignment="Bottom" Width="480" Margin="0,0,0,75"/>
                     <Grid x:Name="grv_CarsBar" HorizontalAlignment="Center" Height="76" VerticalAlignment="Bottom" Width="480" Margin="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="31*"/>
@@ -219,7 +219,10 @@
                 <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
                     <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg"/>
                 </Grid>
-                <Image x:Name="img_Picker" HorizontalAlignment="Center" Height="121" Margin="136,296,127,351" VerticalAlignment="Center" Width="217" Source="/Images/Buttons/img_Picker.png"/>
+                <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="109" Margin="76,305,75,0" VerticalAlignment="Top" Width="329">
+                    <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
+                    <Image x:Name="img_PickerLabel" HorizontalAlignment="Center" Height="66" VerticalAlignment="Top" Width="234" Margin="46,0,49,0" Source="/Images/Picker/img_Picker_SetPickup.png"/>
+                </Grid>
             </Grid>
         </Canvas>
 

@@ -5,25 +5,27 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Threading;
+using System.Windows.Threading;
+using System.IO.IsolatedStorage;
+using System.Device.Location;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
+using Windows.Devices.Geolocation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Controls;
-using System.Device.Location;
-using Windows.Devices.Geolocation;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Devices;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Animation;
+using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
-using Newtonsoft.Json;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Threading;
-using System.IO.IsolatedStorage;
-using Microsoft.Phone.Maps.Toolkit;
+
 
 namespace FT_Rider.Pages
 {
@@ -54,19 +56,24 @@ namespace FT_Rider.Pages
         //Rider Destination Icon Overlay
         MapOverlay riderDestinationIconOverlay;
 
-        //Get Near Taxi
-        RiderGetNearDriver nearDrivers;
-
         //for car types
         string taxiType;
 
         //USER DATA
         RiderLogin userData = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
 
+        //For GET PICK UP
+        Double pickupLat;
+        Double pickupLng;
+
 
         //For menu
         double initialPosition;
         bool _viewMoved = false;
+
+        //For Timer
+        DispatcherTimer pickupTimer;
+        bool isPickup = false;
 
         public HomePage()
         {
@@ -85,6 +92,24 @@ namespace FT_Rider.Pages
 
             //Load Rider Profile on Left Menu
             LoadRiderProfile();
+
+            //
+            pickupTimer = new DispatcherTimer();
+            pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
+            pickupTimer.Interval = new TimeSpan(0, 0, 0, 3);
+
+        }
+
+        private void pickupTimer_Tick(object sender, EventArgs e)
+        {
+            img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
+            GetNearDriver();
+            img_PickerLabel.Tap += img_PickerLabel_CallTaxi_tab;
+        }
+
+        private void img_PickerLabel_CallTaxi_tab(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.grv_Step02.Visibility = Visibility.Visible;
         }
 
 
@@ -93,30 +118,23 @@ namespace FT_Rider.Pages
             tbl_LastName.Text = userData.content.lName;
             tbl_FirstName.Text = userData.content.fName;
         }
-        
-        //Hàm này để hiển thị 1 picker trên màn hình, ở giữa màn hình
-        //Để khi người dùng di chuyển map, sẽ lấy tọa độ ở điểm trung tâm
-        private void EnablePickerOnMap()
-        {          
-            this.img_Picker.Visibility = Visibility.Visible;
-        }
-
-        private void DisablePickerOnMap()
-        {
-            this.img_Picker.Visibility = Visibility.Collapsed;
-        }        
 
 
         //------ BEGIN get current Position ------//
         private async void GetCurrentCoordinate()
         {
             riderFirstGeolocator = new Geolocator();
-            riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High; 
+            riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High;
             riderFirstGeolocator.MovementThreshold = 20;
             riderFirstGeolocator.ReportInterval = 100;
-            //riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10)); 
+            riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+
+            //Set Center view
+            map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
+            //StartPickupTimer();
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -127,14 +145,12 @@ namespace FT_Rider.Pages
                 Geocoordinate geocoordinate = null;
                 geocoordinate = args.Position.Coordinate;
 
-                map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+                //map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
                 UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
                 marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
-
-                GetNearDriver();
-
             });
+
         }
         //------ END get current Position ------//
 
@@ -145,14 +161,13 @@ namespace FT_Rider.Pages
         //------ BEGIN get near Driver ------//
         private async void GetNearDriver()
         {
-            GeoCoordinate myGeoCoordinate = new GeoCoordinate();
-            myGeoCoordinate = await GetCurrentPosition.GetGeoCoordinate();
+            //lat.ToString().Replace(',', '.')
             var uid = userData.content.uid;
-            var lat = myGeoCoordinate.Latitude;
-            var lng = myGeoCoordinate.Longitude;
+            var lat = pickupLat;
+            var lng = pickupLng;
             var clvl = taxiType;
 
-            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"clvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"clvl\":\"{3}\"}}", uid, lat, lng, clvl);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
             try
             {
@@ -163,11 +178,6 @@ namespace FT_Rider.Pages
                     {
                         ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName);
                     }
-                }
-                else
-                {
-                    Thread.Sleep(2000);
-                    MessageBox.Show("Không tìm thấy xe nào quanh đây");
                 }
 
             }
@@ -797,6 +807,30 @@ namespace FT_Rider.Pages
             txtBox.SelectionStart = 0;
             txtBox.SelectionLength = 0;
         }
+
+
+        //Event này để bắt trường hợp sau mỗi lần di chuyển map
+        private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
+        {
+            pickupLat = map_RiderMap.Center.Latitude;
+            pickupLng = map_RiderMap.Center.Longitude;
+            if (isPickup == true)
+            {
+                pickupTimer.Start();
+            }
+            isPickup = false;
+        }
+
+
+        private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
+            pickupTimer.Stop();
+            isPickup = true;
+        }
+
+
+
 
         //------ END Search Bar EVENT ------//
 
