@@ -96,7 +96,7 @@ namespace FT_Rider.Pages
             //
             pickupTimer = new DispatcherTimer();
             pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
-            pickupTimer.Interval = new TimeSpan(0, 0, 0, 3);
+            pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
 
 
             //21.038556, 105.800667
@@ -163,7 +163,6 @@ namespace FT_Rider.Pages
         //------ BEGIN get near Driver ------//
         private async void GetNearDriver()
         {
-            //lat.ToString().Replace(',', '.')
             var uid = userData.content.uid;
             var lat = pickupLat;
             var lng = pickupLng;
@@ -183,7 +182,73 @@ namespace FT_Rider.Pages
         //------ END get near Driver ------//
 
 
+        //------ BEGIN show and Design UI 3 taxi near current position ------//
+        private void ShowNearDrivers(double lat, double lng, string tName)
+        {            
+            GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
 
+            //Create taxi icon on map
+            Image taxiIcon = new Image();
+            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
+
+            //Add a tapped event
+            taxiIcon.Tap += taxiIcon_Tap;
+
+            //Create Taxi Name 
+            TextBlock taxiName = new TextBlock();
+            taxiName.HorizontalAlignment = HorizontalAlignment.Center;
+            taxiName.Text = tName;
+            taxiName.FontSize = 12;
+            taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
+
+            //Create Stack Panel to group icon, taxi name, ...            
+            Rectangle taxiNameBackground = new Rectangle();
+            taxiNameBackground.Height = 18;
+            taxiNameBackground.Width = taxiName.ToString().Length + 20;
+            taxiNameBackground.RadiusX = 9;
+            taxiNameBackground.RadiusY = 7;
+            //taxiNameBackground.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)171, (byte)171, (byte)171)); //RBG color for #ababab
+            taxiNameBackground.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)213, (byte)235, (byte)255)); //RBG color for #d5ebff
+
+            Grid taxiNameGrid = new Grid();
+            taxiNameGrid.Margin = new Thickness(0, 4, 0, 4); //Margin Top and Bottom 4px
+            taxiNameGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            taxiNameGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            taxiNameGrid.Children.Add(taxiNameBackground);
+            taxiNameGrid.Children.Add(taxiName);
+
+            StackPanel taxiStackPanel = new StackPanel();
+            //taxiStackPanel.Margin  = new Thickness(5, 0, 5, 0);
+            taxiStackPanel.Children.Add(taxiIcon);
+            taxiStackPanel.Children.Add(taxiNameGrid);
+
+            // Create a MapOverlay to contain the circle.
+            MapOverlay myTaxiOvelay = new MapOverlay();
+            //myTaxiOvelay.Content = myCircle;
+            myTaxiOvelay.Content = taxiStackPanel;
+            myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
+            myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
+
+            //Add to Map's Layer
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(myTaxiOvelay);
+
+            map_RiderMap.Layers.Add(riderMapLayer);
+        }
+
+        //Tapped event
+        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Hide Step 01
+            this.grv_Step01.Visibility = Visibility.Collapsed;
+
+            //Show Step 02
+            this.grv_Step02.Visibility = Visibility.Visible;
+            this.grv_Picker.Visibility = Visibility.Collapsed;
+            //Step 2 info
+            LoadStep2Info();
+        }
+        //------ END show and Design UI 3 taxi near current position ------//
 
 
 
@@ -376,140 +441,18 @@ namespace FT_Rider.Pages
 
 
 
-        //------ BEGIN show and Design UI 3 taxi near current position ------//
-        private void ShowNearDrivers(double lat, double lng, string tName)
+
+        //Load step 02 profile
+        private async void LoadStep2Info()
         {
-            GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
 
-            //Create taxi icon on map
-            Image taxiIcon = new Image();
-            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
+            txt_RiderName.Text = userData.content.fName + " " + userData.content.lName;
+            txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
 
-            //Add a tapped event
-            taxiIcon.Tap += taxiIcon_Tap;
-
-            //Create Taxi Name 
-            TextBlock taxiName = new TextBlock();
-            taxiName.HorizontalAlignment = HorizontalAlignment.Center;
-            taxiName.Text = tName;
-            taxiName.FontSize = 12;
-            taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
-
-            //Create Stack Panel to group icon, taxi name, ...            
-            Rectangle taxiNameBackground = new Rectangle();
-            taxiNameBackground.Height = 18;
-            taxiNameBackground.Width = taxiName.ToString().Length + 20;
-            taxiNameBackground.RadiusX = 9;
-            taxiNameBackground.RadiusY = 7;
-            //taxiNameBackground.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)171, (byte)171, (byte)171)); //RBG color for #ababab
-            taxiNameBackground.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)213, (byte)235, (byte)255)); //RBG color for #d5ebff
-
-            Grid taxiNameGrid = new Grid();
-            taxiNameGrid.Margin = new Thickness(0, 4, 0, 4); //Margin Top and Bottom 4px
-            taxiNameGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            taxiNameGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            taxiNameGrid.Children.Add(taxiNameBackground);
-            taxiNameGrid.Children.Add(taxiName);
-
-            StackPanel taxiStackPanel = new StackPanel();
-            //taxiStackPanel.Margin  = new Thickness(5, 0, 5, 0);
-            taxiStackPanel.Children.Add(taxiIcon);
-            taxiStackPanel.Children.Add(taxiNameGrid);
-
-            // Create a MapOverlay to contain the circle.
-            MapOverlay myTaxiOvelay = new MapOverlay();
-            //myTaxiOvelay.Content = myCircle;
-            myTaxiOvelay.Content = taxiStackPanel;
-            myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
-            myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
-
-            //Add to Map's Layer
-            riderMapLayer = new MapLayer();
-            riderMapLayer.Add(myTaxiOvelay);
-
-            map_RiderMap.Layers.Add(riderMapLayer);
         }
 
-        //Tapped event
-        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //Hide Step 01
-            this.grv_Step01.Visibility = Visibility.Collapsed;
-
-            //Show Step 02
-            this.grv_Step02.Visibility = Visibility.Visible;
-
-            this.grv_Picker.Visibility = Visibility.Collapsed;
-        }
-        //------ END show and Design UI 3 taxi near current position ------//
-
-
-
-        //------ BEGIN For open menu ------//
-        private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
-        {
-
-            var left = Canvas.GetLeft(LayoutRoot);
-            if (left > -100)
-            {
-                MoveViewWindow(-420);
-            }
-            else
-            {
-                MoveViewWindow(0);
-            }
-        }
-        void MoveViewWindow(double left)
-        {
-            _viewMoved = true;
-            ((Storyboard)canvas.Resources["moveAnimation"]).SkipToFill();
-            ((DoubleAnimation)((Storyboard)canvas.Resources["moveAnimation"]).Children[0]).To = left;
-            ((Storyboard)canvas.Resources["moveAnimation"]).Begin();
-        }
-
-
-        private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
-        {
-            //if (e.DeltaManipulation.Translation.X != 0)
-            //    Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
-        }
-
-        private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
-        {
-            _viewMoved = false;
-            initialPosition = Canvas.GetLeft(LayoutRoot);
-        }
-
-        private void canvas_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
-        {
-            var left = Canvas.GetLeft(LayoutRoot);
-            if (_viewMoved)
-                return;
-            if (Math.Abs(initialPosition - left) < 100)
-            {
-                //bouncing back
-                MoveViewWindow(initialPosition);
-                return;
-            }
-            //change of state
-            if (initialPosition - left > 0)
-            {
-                //slide to the left
-                if (initialPosition > -420)
-                    MoveViewWindow(-420);
-                else
-                    MoveViewWindow(-840);
-            }
-            else
-            {
-                //slide to the right
-                if (initialPosition < -420)
-                    MoveViewWindow(-420);
-                else
-                    MoveViewWindow(0);
-            }
-        }
-        //------ END For open menu ------//
 
 
 
@@ -545,8 +488,6 @@ namespace FT_Rider.Pages
 
 
 
-
-
         //------ BEGIN Car type bar chose ------//
         private void img_CallTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -560,7 +501,6 @@ namespace FT_Rider.Pages
 
 
 
-
         //------ BEGIN Map API key ------//
         private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
         {
@@ -568,8 +508,6 @@ namespace FT_Rider.Pages
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
         //------ END Map API key ------//
-
-
 
 
 
@@ -606,8 +544,6 @@ namespace FT_Rider.Pages
             }
         }
         //------ END Convert Lat & Lng from Address for Bing map Input ------//
-
-
 
 
 
@@ -742,8 +678,8 @@ namespace FT_Rider.Pages
         {
             //Enable Auto Complete
             loadAutoCompletePlace("");
-
             enableAutoComplateGrid();
+
             TextBox addressTextbox = (TextBox)sender;
             addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
             addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
@@ -841,32 +777,81 @@ namespace FT_Rider.Pages
 
 
 
-        // protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-        //{
-        //    if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
-        //    {
-        //        // User has opted in or out of Location
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        MessageBoxResult result =
-        //            MessageBox.Show("This app accesses your phone's location. Is that ok?",
-        //            "Location",
-        //            MessageBoxButton.OKCancel);
 
-        //        if (result == MessageBoxResult.OK)
-        //        {
-        //            IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
-        //        }
-        //        else
-        //        {
-        //            IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
-        //        }
+        //------ BEGIN For open menu ------//
+        private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
+        {
 
-        //        IsolatedStorageSettings.ApplicationSettings.Save();
-        //    }
-        //}
+            var left = Canvas.GetLeft(LayoutRoot);
+            if (left > -100)
+            {
+                MoveViewWindow(-420);
+            }
+            else
+            {
+                MoveViewWindow(0);
+            }
+        }
+        void MoveViewWindow(double left)
+        {
+            _viewMoved = true;
+            ((Storyboard)canvas.Resources["moveAnimation"]).SkipToFill();
+            ((DoubleAnimation)((Storyboard)canvas.Resources["moveAnimation"]).Children[0]).To = left;
+            ((Storyboard)canvas.Resources["moveAnimation"]).Begin();
+        }
+
+
+        private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
+        {
+            //if (e.DeltaManipulation.Translation.X != 0)
+            //    Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
+        }
+
+        private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
+        {
+            _viewMoved = false;
+            initialPosition = Canvas.GetLeft(LayoutRoot);
+        }
+
+        private void canvas_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
+        {
+            var left = Canvas.GetLeft(LayoutRoot);
+            if (_viewMoved)
+                return;
+            if (Math.Abs(initialPosition - left) < 100)
+            {
+                //bouncing back
+                MoveViewWindow(initialPosition);
+                return;
+            }
+            //change of state
+            if (initialPosition - left > 0)
+            {
+                //slide to the left
+                if (initialPosition > -420)
+                    MoveViewWindow(-420);
+                else
+                    MoveViewWindow(-840);
+            }
+            else
+            {
+                //slide to the right
+                if (initialPosition < -420)
+                    MoveViewWindow(-420);
+                else
+                    MoveViewWindow(0);
+            }
+        }
+
+        private void txt_PickupAddress_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //Trong suốt texbox
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+        }
+        //------ END For open menu ------//
 
     }
 

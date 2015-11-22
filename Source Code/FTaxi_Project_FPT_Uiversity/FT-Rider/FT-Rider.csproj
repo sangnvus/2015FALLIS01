@@ -298,8 +298,8 @@
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
+    <Content Include="Images\Others\img_DefaultAvatar.png" />
     <Content Include="Images\Others\img_AppNavbar.png" />
-    <Content Include="Images\Others\img_DemoAvatar.jpg" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />
