@@ -184,28 +184,30 @@
                         <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" Width="40" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Tap="img_CloseIcon_Tap" Visibility="Collapsed" />
                     </Grid>
                 </Grid>
-                <Grid x:Name="grv_Step02" Height="491" VerticalAlignment="Bottom" d:IsHidden="True">
-                    <Image x:Name="img_RequestTaxiBackground" Height="491" VerticalAlignment="Bottom" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png"/>
-                    <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,391,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
-                    <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg"/>
-                    <TextBlock x:Name="tbl_PickupAddress" HorizontalAlignment="Left" Margin="15,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="455">
+                <Grid x:Name="grv_Step02" Height="334" VerticalAlignment="Bottom">
+                    <Image x:Name="img_RequestTaxiBackground" Height="292" VerticalAlignment="Bottom" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png"/>
+                    <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,0.2,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
+                    <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg" Margin="0"/>
+                    <TextBlock x:Name="tbl_PickupAddress" HorizontalAlignment="Right" Margin="0,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="49" Width="347" TextAlignment="Right" Padding="0,0,15,0" FontSize="18">
                 		<Run Text="P1705 Tòa nhà HH2 Bắc Hà"/>
                 		<LineBreak/>
                 		<Run Text="Lê Văn Lương"/>
                     </TextBlock>
-                    <TextBlock x:Name="tbl_DestinationAddress" HorizontalAlignment="Left" Margin="15,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="455">
-                		<Run Text="Tòa nhà FPT Cầu Giấy, Duy Tân, Dịch Vọng Hậu"/>
-                		<LineBreak/>
-                		<Run Text="Cầu Giấy"/>
+                    <TextBlock x:Name="tbl_DestinationAddress" HorizontalAlignment="Right" Margin="0,105,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="59" Width="347" TextAlignment="Right" FontSize="18">
+                    	<Run Text="Tòa nhà FPT Cầu Giấy, Duy Tân,"/>
+                    	<LineBreak/>
+                    	<Run Text="Dịch Vọng Hậu, Cầu Giấy"/>
                     </TextBlock>
-                    <TextBlock x:Name="tbl_EstimatedCost" HorizontalAlignment="Left" Margin="349,255,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="37" Width="121">
-                		<Run FontWeight="Bold" FontSize="30" Text="48.000 "/>
-                		<Run Text="đ"/>
+                    <TextBlock x:Name="tbl_EstimatedCost" HorizontalAlignment="Right" Margin="0,7,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18">
+                		<Run FontWeight="Bold" Text="48.000 đ"/>
                     </TextBlock>
-                    <TextBlock x:Name="tbl_PromoteCode" HorizontalAlignment="Left" Margin="349,314,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="37" Width="121" TextAlignment="Right">
-                		<Run FontSize="30" Text="KM1758"/>
+                    <TextBlock x:Name="tbl_OpenPrice" HorizontalAlignment="Right" Margin="0,7,245,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18">
+                    	<Run FontWeight="Bold" Text="10.000 đ"/>
                     </TextBlock>
-                    <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DemoAvatar2.jpg" Margin="10,309,0,0">
+                    <TextBlock x:Name="tbl_PromoteCode" HorizontalAlignment="Right" Margin="0,172,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="28" Width="100" TextAlignment="Right" FontSize="19">
+                		<Run Text="KM1758"/>
+                    </TextBlock>
+                    <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DemoAvatar2.jpg" Margin="10,156,0,0">
                         <Image.Clip>
                             <EllipseGeometry
                 				Center="50,50"
@@ -213,13 +215,13 @@
                 				RadiusY="45" />
                         </Image.Clip>
                     </Image>
-                    <TextBlock x:Name="tbl_RiderName" HorizontalAlignment="Left" Margin="10,405,0,0" TextWrapping="Wrap" Text="Apolong" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>
-                    <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Left" Margin="422,361,0,0" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="tbl_RiderName" HorizontalAlignment="Left" Margin="10,251,0,0" TextWrapping="Wrap" Text="Apolong" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>
+                    <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Right" Margin="0,205,0,0" VerticalAlignment="Top" Width="61"/>
                 </Grid>
                 <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
                     <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg"/>
                 </Grid>
-                <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="109" Margin="76,305,75,0" VerticalAlignment="Top" Width="329">
+                <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="109" Margin="76,305,75,0" VerticalAlignment="Top" Width="329" d:IsHidden="True">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
                     <Image x:Name="img_PickerLabel" HorizontalAlignment="Center" Height="66" VerticalAlignment="Top" Width="234" Margin="46,0,49,0" Source="/Images/Picker/img_Picker_SetPickup.png"/>
                 </Grid>

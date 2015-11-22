@@ -98,12 +98,13 @@ namespace FT_Rider.Pages
             pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
             pickupTimer.Interval = new TimeSpan(0, 0, 0, 3);
 
+
+            //21.038556, 105.800667
         }
 
         private void pickupTimer_Tick(object sender, EventArgs e)
         {
             img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
-            GetNearDriver();
             img_PickerLabel.Tap += img_PickerLabel_CallTaxi_tab;
         }
 
@@ -135,6 +136,7 @@ namespace FT_Rider.Pages
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
             //StartPickupTimer();
+            //GetNearDriver();
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -167,23 +169,15 @@ namespace FT_Rider.Pages
             var lng = pickupLng;
             var clvl = taxiType;
 
-            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"clvl\":\"{3}\"}}", uid, lat, lng, clvl);
+            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-            try
+            var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+            if (nearDriver.content.listDriverDTO.Count > 0)
             {
-                var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
-                if (nearDriver.content.listDriverDTO.Count > 0)
+                foreach (var taxi in nearDriver.content.listDriverDTO)
                 {
-                    foreach (var taxi in nearDriver.content.listDriverDTO)
-                    {
-                        ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName);
-                    }
+                    ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName);
                 }
-
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Đã có lỗi xảy ra");
             }
         }
         //------ END get near Driver ------//
@@ -444,6 +438,8 @@ namespace FT_Rider.Pages
 
             //Show Step 02
             this.grv_Step02.Visibility = Visibility.Visible;
+
+            this.grv_Picker.Visibility = Visibility.Collapsed;
         }
         //------ END show and Design UI 3 taxi near current position ------//
 
@@ -808,6 +804,13 @@ namespace FT_Rider.Pages
             txtBox.SelectionLength = 0;
         }
 
+        private async void ShowPickerAddress()
+        {
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+            txt_InputAddress.Text = address.results[0].formatted_address.ToString();
+        }
+
 
         //Event này để bắt trường hợp sau mỗi lần di chuyển map
         private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
@@ -817,6 +820,8 @@ namespace FT_Rider.Pages
             if (isPickup == true)
             {
                 pickupTimer.Start();
+                ShowPickerAddress();
+                GetNearDriver();
             }
             isPickup = false;
         }
