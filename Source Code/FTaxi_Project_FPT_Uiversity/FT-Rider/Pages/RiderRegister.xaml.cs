@@ -15,35 +15,37 @@ using FT_Rider.Classes;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Telerik.Windows.Controls.PhoneTextBox;
+using Newtonsoft.Json;
 
 
 namespace FT_Rider.Pages
 {
     public partial class RiderRegister : PhoneApplicationPage
     {
-        IsolatedStorageFile ISOFile = IsolatedStorageFile.GetUserStoreForApplication();
-        List<UserData> ObjUserDataList = new List<UserData>();
+        IsolatedStorageFile iSOFile = IsolatedStorageFile.GetUserStoreForApplication();
+        List<UserData> objUserDataList = new List<UserData>();
+
         public RiderRegister()
         {
             InitializeComponent();
-            this.rad_Email.DataContext = new Data { Name = "Email" };
-            this.rad_Password.DataContext = new Data { Name = "Mật khẩu" };
-            this.rad_PasswordAgain.DataContext = new Data { Name = "Nhập lại mật khẩu" };
-            this.rad_Name.DataContext = new Data { Name = "Tên" };
-            this.rad_FirstAndMiddleName.DataContext = new Data { Name = "Họ" };
-            this.rad_PhoneNumber.DataContext = new Data { Name = "Số điện thoại" };
+            this.txt_UserId.DataContext = new Data { Name = "Email" };
+            this.txt_Password.DataContext = new Data { Name = "Mật khẩu" };
+            this.txt_PasswordAgain.DataContext = new Data { Name = "Nhập lại mật khẩu" };
+            this.txt_FirstName.DataContext = new Data { Name = "Tên" };
+            this.txt_LastName.DataContext = new Data { Name = "Họ" };
+            this.txt_Mobile.DataContext = new Data { Name = "Số điện thoại" };
             this.Loaded += RiderRegister_Loaded;
         }
 
 
         private void RiderRegister_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ISOFile.FileExists("RegistrationDetails"))//loaded previous items into list
+            if (iSOFile.FileExists("RegistrationDetails"))//loaded previous items into list
             {
-                using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("RegistrationDetails", FileMode.Open))
+                using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("RegistrationDetails", FileMode.Open))
                 {
                     DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
-                    ObjUserDataList = (List<UserData>)serializer.ReadObject(fileStream);
+                    objUserDataList = (List<UserData>)serializer.ReadObject(fileStream);
 
                 }
             }
@@ -96,40 +98,16 @@ namespace FT_Rider.Pages
         }
 
 
-
-
-
-
-
-
-
-
-
-
-        //void txt_Email_LostFocus(object sender, RoutedEventArgs e)
-        //{
-
-        //    bool isValid = Validate(txt_Email.Text);
-        //    if (Regex.IsMatch(txt_Email.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
-        //    {
-        //        txt_Email.ChangeValidationState(ValidationState.Valid, "");
-        //    }
-        //    else
-        //    {
-        //        txt_Email.ChangeValidationState(ValidationState.Invalid, "Nhập lại Email");
-        //    }
-        //}
-
         private bool ValidateEmail()
         {
-            if (Regex.IsMatch(rad_Email.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
+            if (Regex.IsMatch(txt_UserId.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
             {
-                rad_Email.ChangeValidationState(ValidationState.Valid, "");
+                txt_UserId.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
             else
             {
-                rad_Email.ChangeValidationState(ValidationState.Invalid, "Nhập lại Email");
+                txt_UserId.ChangeValidationState(ValidationState.Invalid, "Nhập lại Email");
                 return false;
             }
         }
@@ -137,73 +115,73 @@ namespace FT_Rider.Pages
 
         private bool ValidatePassword()
         {
-            var passwordEmpty = string.IsNullOrEmpty(rad_Password.Password);
+            var passwordEmpty = string.IsNullOrEmpty(txt_Password.Password);
             //tbPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
             //pbPassword.Opacity = passwordEmpty ? 0 : 100;
-            if (passwordEmpty || rad_Password.Password.Length < 6)
+            if (passwordEmpty || txt_Password.Password.Length < 6)
             {
 
-                rad_Password.ChangeValidationState(ValidationState.Invalid, "Vui lòng nhập mật khẩu");
+                txt_Password.ChangeValidationState(ValidationState.Invalid, "Vui lòng nhập mật khẩu");
                 return false;
             }
             else
             {
-                rad_Password.ChangeValidationState(ValidationState.Valid, "");
+                txt_Password.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
         }
 
         private bool ValidateVerifyPassword()
         {
-            var passwordEmpty = string.IsNullOrEmpty(rad_PasswordAgain.Password);
+            var passwordEmpty = string.IsNullOrEmpty(txt_PasswordAgain.Password);
             //tbVerifyPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
             //pbVerifyPassword.Opacity = passwordEmpty ? 0 : 100;
-            if (passwordEmpty || rad_PasswordAgain.Password.Length < 6)
+            if (passwordEmpty || txt_PasswordAgain.Password.Length < 6)
             {
 
-                rad_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu ít nhất 6 kí tự !");
+                txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu ít nhất 6 kí tự !");
                 return false;
             }
-            else if (!rad_PasswordAgain.Password.Equals(rad_Password.Password))
+            else if (!txt_PasswordAgain.Password.Equals(txt_Password.Password))
             {
-                rad_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu không trùng nhau !");
+                txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu không trùng nhau !");
                 return false;
             }
 
             else
             {
 
-                rad_PasswordAgain.ChangeValidationState(ValidationState.Valid, "");
+                txt_PasswordAgain.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
         }
 
         private bool ValidateName()
         {
-            var NameEmpty = string.IsNullOrEmpty(rad_Name.Text);
+            var NameEmpty = string.IsNullOrEmpty(txt_FirstName.Text);
             if (NameEmpty)
             {
-                rad_Name.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập tên");
+                txt_FirstName.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập tên");
                 return false;
             }
             else
             {
-                rad_Name.ChangeValidationState(ValidationState.Valid, "");
+                txt_FirstName.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
         }
 
         private bool ValidateFirstAndMiddleName()
         {
-            var FirstAndMiddleNameEmpty = string.IsNullOrEmpty(rad_FirstAndMiddleName.Text);
+            var FirstAndMiddleNameEmpty = string.IsNullOrEmpty(txt_LastName.Text);
             if (FirstAndMiddleNameEmpty)
             {
-                rad_FirstAndMiddleName.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập họ và tên đệm");
+                txt_LastName.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập họ và tên đệm");
                 return false;
             }
             else
             {
-                rad_FirstAndMiddleName.ChangeValidationState(ValidationState.Valid, "");
+                txt_LastName.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
         }
@@ -211,45 +189,45 @@ namespace FT_Rider.Pages
 
         private bool ValidatePhoneNumber()
         {
-            var PhoneNumberEmpty = string.IsNullOrEmpty(rad_PhoneNumber.Text);
-            if (PhoneNumberEmpty || rad_PhoneNumber.Text.Length != 10)
+            var PhoneNumberEmpty = string.IsNullOrEmpty(txt_Mobile.Text);
+            if (PhoneNumberEmpty || txt_Mobile.Text.Length != 10)
             {
-                rad_PhoneNumber.ChangeValidationState(ValidationState.Invalid, "Số điện thoại gồm 10 số");
+                txt_Mobile.ChangeValidationState(ValidationState.Invalid, "Số điện thoại gồm 10 số");
                 return false;
             }
             else
             {
-                rad_PhoneNumber.ChangeValidationState(ValidationState.Valid, "");
+                txt_Mobile.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
         }
 
 
 
-        private void rad_Email_LostFocus(object sender, RoutedEventArgs e)
+        private void txt_UserId_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidateEmail();
         }
 
-        private void rad_Password_LostFocus(object sender, RoutedEventArgs e)
+        private void txt_Password_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidatePassword();
         }
 
-        private void rad_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
+        private void txt_PasswordAgain_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidateVerifyPassword();
         }
 
-        private void rad_Name_LostFocus(object sender, RoutedEventArgs e)
+        private void txt_FirstName_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidateName();
         }
-        private void rad_FirstAndMiddleName_LostFocus(object sender, RoutedEventArgs e)
+        private void txt_LastName_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidateFirstAndMiddleName();
         }
-        private void rad_PhoneNumber_LostFocus(object sender, RoutedEventArgs e)
+        private void txt_Mobile_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidatePhoneNumber();
         }
@@ -271,30 +249,49 @@ namespace FT_Rider.Pages
         }
 
 
-        private void btn_Click_Register(object sender, RoutedEventArgs e)
+        private async void btn_Click_Register(object sender, RoutedEventArgs e)
         {
             if (ValidateEmail() && ValidatePassword() && ValidateVerifyPassword() && ValidateName() && ValidatePhoneNumber() && ValidateFirstAndMiddleName())
             {
-                UserData ObjUserData = new UserData();
-                ObjUserData.Email = rad_Email.Text;
-                ObjUserData.Password = rad_Password.ToString();
-                ObjUserData.FirstAndMiddleName = rad_FirstAndMiddleName.Text;
-                ObjUserData.Name = rad_Name.Text;
-                ObjUserData.PhoneNumber = rad_PhoneNumber.Text;
-                ObjUserDataList.Add(ObjUserData);
-                if (ISOFile.FileExists("RegistrationDetails"))
-                {
-                    ISOFile.DeleteFile("RegistrationDetails");
-                }
-                using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("RegistrationDetails", FileMode.Create))
-                {
-                    DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
+                //UserData ObjUserData = new UserData();
+                //ObjUserData.Email = txt_UserId.Text;
+                //ObjUserData.Password = txt_Password.ToString();
+                //ObjUserData.FirstAndMiddleName = txt_LastName.Text;
+                //ObjUserData.Name = txt_FirstName.Text;
+                //ObjUserData.PhoneNumber = txt_Mobile.Text;
+                //objUserDataList.Add(ObjUserData);
+                //if (iSOFile.FileExists("RegistrationDetails"))
+                //{
+                //    iSOFile.DeleteFile("RegistrationDetails");
+                //}
+                //using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("RegistrationDetails", FileMode.Create))
+                //{
+                //    DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
 
-                    serializer.WriteObject(fileStream, ObjUserDataList);
+                //    serializer.WriteObject(fileStream, objUserDataList);
 
+                //}
+                var userId = txt_UserId.Text;
+                var password = txt_Password.ActionButtonCommandParameter.ToString();
+                var country = "VN";
+                var fName = txt_FirstName.Text;
+                var lName = txt_LastName.Text;
+                var lang = "vi";
+                var mobile = txt_Mobile.Text;
+
+                //var pw = txt_Password.ActionButtonCommandParameter.ToString();
+                var input = string.Format("{{\"cntry\":\"{0}\",\"fName\":\"{1}\",\"pmt\":null,\"lName\":\"{2}\",\"lan\":\"{3}\",\"mobile\":\"{4}\",\"pw\":\"{5}\",\"uid\":\"{6}\"}}", country, lName,fName,lang,mobile,password, userId);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderRegisterAddress, input);
+                var result = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (result.status.Equals("0000"))
+                {
+                    MessageBox.Show("Đăng ký thành công.");
+                    NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
                 }
-                MessageBox.Show("Đăng ký thành công");
-                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+                else
+                {
+                    MessageBox.Show("Đăng ký không thành công.");
+                }
             }
 
         }

@@ -23,6 +23,10 @@
         <System:Double x:Key="TextboxTextPayment">20</System:Double>
         <TextAlignment x:Key="TextboxTextRight">Right</TextAlignment>
         <System:Double x:Key="Button_BorderOpacity_20">0.2</System:Double>
+        <Color x:Key="Menu_BackgroundColor_BlackGray">#FF31363E</Color>
+        <Color x:Key="Button_BackgroundColor_Red">#FFDC1D51</Color>
+        <System:Double x:Key="Button_FontSize_22">22</System:Double>
+        <Color x:Key="lls_BackgroundColor">#FF060F27</Color>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using FT_Driver.Classes;
 using FT_Driver.Resources;
 using Telerik.Windows.Controls.PhoneTextBox;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace FT_Driver.Pages
 {
@@ -26,8 +28,8 @@ namespace FT_Driver.Pages
         public Login()
         {
             InitializeComponent();
-            this.rad_Account.DataContext = new Data { Name = "Email" };
-            this.rad_Password.DataContext = new Data { Name = "Passsword" };
+            this.txt_UserId.DataContext = new Data { Name = "Email" };
+            this.txt_Password.DataContext = new Data { Name = "Passsword" };
             this.Loaded += Login_Loaded;
         }
 
@@ -71,11 +73,11 @@ namespace FT_Driver.Pages
 
         private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            if (txt_UserId.Text != "" && txt_Password.ToString() != "")
             {
                 int Temp = 0;
                
-                    if (rad_Account.Text == "admin@gmail.com" && rad_Password.Password == "admin")
+                    if (txt_UserId.Text == "admin@gmail.com" && txt_Password.Password == "admin")
                     {
                         Temp = 1;
                         NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative));
@@ -83,14 +85,14 @@ namespace FT_Driver.Pages
                 }
                 if (Temp == 0)
                 {
-                    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                    txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+                    txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
                 }
             }
             else
             {
-                rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+                txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
             }
 
         }
@@ -111,9 +113,33 @@ namespace FT_Driver.Pages
             NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
+        }
 
 
 
+        //private async void getJsonFromPOST()
+        //{
+        //    string URL = ConstantVariable.tNetDriverLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
+
+        //    Dictionary<string, string> parameter = new Dictionary<string, string>();
+        //    parameter.Add("json", "{\"uid\":\"dao@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}"); //fix data
+
+        //    HttpClient client = new HttpClient();
+        //    HttpContent contents = new FormUrlEncodedContent(parameter);
+        //    var response = await client.PostAsync(new Uri(URL), contents);
+        //    var reply = await response.Content.ReadAsStringAsync();
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        DriverLoginResponse DriverLogin = new DriverLoginResponse();
+        //        DriverLogin = JsonConvert.DeserializeObject<DriverLoginResponse>(response.Content.ReadAsStringAsync().Result);
+        //        string json = JsonConvert.SerializeObject(DriverLogin);
+        //        MessageBox.Show(json);
+        //    }
+        //}
 
 
     }

@@ -93,7 +93,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\DriverVehiceInfoObj.cs" />
+    <Compile Include="Classes\ConstantVariable.cs" />
+    <Compile Include="Classes\ConvertData.cs" />
+    <Compile Include="Classes\DriverLoginResponse.cs" />
+    <Compile Include="Classes\DriverSelectAvailableVehicle.cs" />
+    <Compile Include="Classes\DriverSelectVehice.cs" />
+    <Compile Include="Classes\DriverUpdateCurrentLocation.cs" />
+    <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />
+    <Compile Include="Classes\GoogleAPIGeocoding.cs" />
+    <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
     <Compile Include="Classes\Language.cs" />
+    <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -102,8 +113,14 @@
     <Compile Include="Pages\CompanyInfo.xaml.cs">
       <DependentUpon>CompanyInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DriverCarList.xaml.cs">
+      <DependentUpon>DriverCarList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\HomePage.xaml.cs">
+      <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\HomePayment.xaml.cs">
       <DependentUpon>HomePayment.xaml</DependentUpon>
@@ -140,7 +157,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\DriverCarList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\FisrtRunningAppIntro.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -166,7 +191,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\Others\Thumbs.db" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
@@ -196,36 +220,54 @@
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
+    <Content Include="Images\Buttons\img_CallTaxiButton.png" />
+    <Content Include="Images\CarList\img_CarItemInLLS.jpg" />
+    <Content Include="Images\CarsBar\img_Carbar_background.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Luxury_NotSelected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Luxury_Selected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Saving_NotSelected.png" />
+    <Content Include="Images\CarsBar\img_Carbar_Saving_Selected.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut1.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut2.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut3.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
+    <Resource Include="Images\Gifs\img_GIF_Processing.gif" />
+    <Content Include="Images\Grid_NoCarYet\img_CallCenter.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiGridBackground.png" />
+    <Content Include="Images\Icons\icon-OpenMenu.png" />
+    <Content Include="Images\Icons\icon-OpenMenu_OnTab.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />
-    <Content Include="Images\Icons\icon_Customer.png" />
+    <Content Include="Images\Icons\icon_AddressOffice.jpg" />
     <Content Include="Images\Icons\icon_Edit.jpg" />
     <Content Include="Images\Icons\icon_Email.jpg" />
-    <Content Include="Images\Icons\icon_language.png" />
-    <Content Include="Images\Icons\icon_money.png" />
     <Content Include="Images\Icons\icon_NewUserPassword.jpg" />
     <Content Include="Images\Icons\icon_PhoneNumber.jpg" />
-    <Content Include="Images\Icons\icon_stop.png" />
     <Content Include="Images\Icons\icon_UseID.jpg" />
     <Content Include="Images\Icons\icon_UseID.png" />
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
+    <Content Include="Images\Icons\icon_VisaCard.jpg" />
+    <Content Include="Images\Icons\img_DestinationPoint.png" />
+    <Content Include="Images\Icons\img_MyPositionIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
     <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Email.png" />
-    <Content Include="Images\Icons\PNG\iconPNG_FromIcon.png" />
-    <Content Include="Images\Icons\PNG\iconPNG_Money.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_Language.png" />
     <Content Include="Images\Icons\PNG\iconPNG_NewUserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_PhoneNumber.png" />
-    <Content Include="Images\Icons\PNG\iconPNG_ToIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
-    <Content Include="Images\Icons\icon_start.png" />
-    <Content Include="Images\Icons\PNG\iconPNG_Count.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_About.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_Feedback.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_MyTrip.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_PromotionTrip.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_Support.png" />
+    <Content Include="Images\LeftMenu\icon_Menu_VIP.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
@@ -233,6 +275,12 @@
     <Content Include="Images\Others\img_DemoAvatar.jpg" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
+    <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
+    <Content Include="Images\Taxis\img_CarIcon.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Vertical_Down.png" />
+    <Content Include="Images\Taxis\img_CarIcon_Vertical_Up.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
@@ -253,6 +301,22 @@
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.Data, Version=2013.2.718.3040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
@@ -285,4 +349,9 @@
   </Target>
   -->
   <ProjectExtensions />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
 </Project>

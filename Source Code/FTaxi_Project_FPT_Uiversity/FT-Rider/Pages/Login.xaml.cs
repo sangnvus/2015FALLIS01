@@ -16,20 +16,18 @@ using System.Windows.Media.Imaging;
 using FT_Rider.Classes;
 using FT_Rider.Resources;
 using Telerik.Windows.Controls.PhoneTextBox;
+using Newtonsoft.Json;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace FT_Rider.Pages
 {
     public partial class Login : PhoneApplicationPage
     {
-        IsolatedStorageFile ISOFile = IsolatedStorageFile.GetUserStoreForApplication();
-        List<UserData> ObjUserDataList = new List<UserData>();
-        public Login()
-        {
-            InitializeComponent();
-            this.rad_Account.DataContext = new Data { Name = "Email" };
-            this.rad_Password.DataContext = new Data { Name = "Passsword" };
-            this.Loaded += Login_Loaded;
-        }
+        IsolatedStorageFile iSOFile = IsolatedStorageFile.GetUserStoreForApplication();
+        List<UserData> objUserDataList = new List<UserData>();
 
         private bool Validate(string text)
         {
@@ -37,11 +35,17 @@ namespace FT_Rider.Pages
             return false;
         }
 
-
-
         public class Data
         {
             public string Name { get; set; }
+        }
+
+        public Login()
+        {
+            InitializeComponent();
+            this.txt_UserId.DataContext = new Data { Name = "Email" };
+            this.txt_Password.DataContext = new Data { Name = "Passsword" };
+            this.Loaded += Login_Loaded;
         }
 
 
@@ -55,12 +59,12 @@ namespace FT_Rider.Pages
             }
             else
             {
-                if (ISOFile.FileExists("RegistrationDetails"))//loaded previous items into list  
+                if (iSOFile.FileExists("RegistrationDetails"))//loaded previous items into list  
                 {
-                    using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("RegistrationDetails", FileMode.Open))
+                    using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("RegistrationDetails", FileMode.Open))
                     {
                         DataContractSerializer serializer = new DataContractSerializer(typeof(List<UserData>));
-                        ObjUserDataList = (List<UserData>)serializer.ReadObject(fileStream);
+                        objUserDataList = (List<UserData>)serializer.ReadObject(fileStream);
 
                     }
                 }
@@ -69,45 +73,59 @@ namespace FT_Rider.Pages
 
 
 
-        private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
+        private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (rad_Account.Text != "" && rad_Password.ToString() != "")
+            var uid = txt_UserId.Text;
+            var pw = txt_Password.ActionButtonCommandParameter.ToString();
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
+            try
             {
-                int Temp = 0;
-                foreach (var UserLogin in ObjUserDataList)
-                {
-                    if (rad_Account.Text == UserLogin.Email && rad_Password.ToString() == UserLogin.Password)
-                    {
-                        Temp = 1;
-                        var Settings = IsolatedStorageSettings.ApplicationSettings;
-                        Settings["CheckLogin"] = "Login sucess";//write iso    
-
-                        if (ISOFile.FileExists("CurrentLoginUserDetails"))
-                        {
-                            ISOFile.DeleteFile("CurrentLoginUserDetails");
-                        }
-                        using (IsolatedStorageFileStream fileStream = ISOFile.OpenFile("CurrentLoginUserDetails", FileMode.Create))
-                        {
-                            DataContractSerializer serializer = new DataContractSerializer(typeof(UserData));
-
-                            serializer.WriteObject(fileStream, UserLogin);
-
-                        }
-                        NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
-                    }
-                }
-                if (Temp == 0)
-                {
-                    rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                    rad_Account.ChangeValidationState(ValidationState.Invalid, "");
-                }
+                var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
+                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
             }
-            else
+            catch (Exception)
             {
-                rad_Password.ChangeValidationState(ValidationState.Invalid, "");
-                rad_Account.ChangeValidationState(ValidationState.Invalid, "");
+                MessageBox.Show("Login fail!");
             }
+            //if (txt_UserId.Text != "" && txt_Password.ToString() != "")
+            //{
+            //    int Temp = 0;
+            //    foreach (var UserLogin in objUserDataList)
+            //    {
+            //        if (txt_UserId.Text == UserLogin.Email && txt_Password.ToString() == UserLogin.Password)
+            //        {
+            //            Temp = 1;
+            //            var Settings = IsolatedStorageSettings.ApplicationSettings;
+            //            Settings["CheckLogin"] = ConstantVariable.strLoginSucess;//write iso    
 
+            //            if (iSOFile.FileExists("CurrentLoginUserDetails"))
+            //            {
+            //                iSOFile.DeleteFile("CurrentLoginUserDetails");
+            //            }
+            //            using (IsolatedStorageFileStream fileStream = iSOFile.OpenFile("CurrentLoginUserDetails", FileMode.Create))
+            //            {
+            //                DataContractSerializer serializer = new DataContractSerializer(typeof(UserData));
+
+            //                serializer.WriteObject(fileStream, UserLogin);
+
+            //            }
+            //            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+
+            //        }
+            //    }
+            //    if (Temp == 0)
+            //    {
+            //        txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+            //        txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
+            //    }
+            //}
+            //else
+            //{
+            //    txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+            //    txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
+            //}
         }
 
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
@@ -127,9 +145,26 @@ namespace FT_Rider.Pages
         }
 
 
-
-
-
-
+        private async void txt_Password_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            //check if input is "Enter" key
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                var uid = txt_UserId.Text;
+                var pw = txt_Password.ActionButtonCommandParameter.ToString();
+                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
+                try
+                {
+                    var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
+                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                    PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Login fail!");
+                }
+            }
+        }
     }
 }

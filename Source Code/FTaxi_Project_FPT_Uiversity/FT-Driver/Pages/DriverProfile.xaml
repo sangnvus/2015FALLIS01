@@ -112,11 +112,11 @@
                 				RadiusY="45" />
                         </Image.Clip>
                     </Image>
-                    <TextBox x:Name="txt_Email" Text="lapnvse02314@fpt.edu.vn" HorizontalAlignment="Left" Height="72" Margin="5,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
-                    <TextBox x:Name="txt_Name" Text="Lập" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextboxTextPaddingLeft}"/>
-                    <TextBox x:Name="txt_PhoneNumber" Text="+84988707727" HorizontalAlignment="Left" Height="72" Margin="5,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
+                    <TextBox x:Name="txt_UserId" Text="lapnvse02314@fpt.edu.vn" HorizontalAlignment="Left" Height="72" Margin="5,195,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
+                    <TextBox x:Name="txt_FirstName" Text="Lập" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextboxTextPaddingLeft}"/>
+                    <TextBox x:Name="txt_Mobile" Text="+84988707727" HorizontalAlignment="Left" Height="72" Margin="5,254,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
                     <TextBox x:Name="txt_Balance" Text=" 5.000 VNĐ" HorizontalAlignment="Left" Height="72" Margin="0,320,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
-                    <TextBox x:Name="txt_FirstAndMiddleName" Text="Nguyễn Văn" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextboxTextPaddingLeft}"/>
+                    <TextBox x:Name="txt_LastName" Text="Nguyễn Văn" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextboxTextPaddingLeft}"/>
                 </Grid>
             </StackPanel>
             <Image x:Name="img_UserFName" HorizontalAlignment="Left" Height="50" Margin="9,16,0,0" Grid.Row="1" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>

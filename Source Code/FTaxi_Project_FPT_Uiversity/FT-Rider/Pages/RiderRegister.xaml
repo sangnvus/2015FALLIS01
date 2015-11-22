@@ -52,14 +52,14 @@
         <!--TitlePanel contains the name of the application and page title-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="10,10,14,-10">
 
-            <telerikPrimitives:RadTextBox x:Name="rad_Email" Header="{Binding Name}" Margin="-5,0,-10,618" LostFocus="rad_Email_LostFocus" SelectionForeground="Black" Padding="60,2,2,2">
+            <telerikPrimitives:RadTextBox x:Name="txt_UserId" Header="{Binding Name}" Margin="-5,0,-10,618" LostFocus="txt_UserId_LostFocus" SelectionForeground="Black" Padding="60,2,2,2">
 
             </telerikPrimitives:RadTextBox>
-            <telerikPrimitives:RadPasswordBox x:Name="rad_Password" Header="{Binding Name}" Margin="-5,88,-10,530" LostFocus="rad_Password_LostFocus"  Padding="60,2,2,2"/>
-            <telerikPrimitives:RadPasswordBox x:Name="rad_PasswordAgain" Header="{Binding Name}" Margin="-5,174,-10,444" LostFocus="rad_PasswordAgain_LostFocus"  Padding="60,2,2,2"/>
-            <telerikPrimitives:RadTextBox x:Name="rad_Name" Header="{Binding Name}" Margin="-5,295,-10,323" LostFocus="rad_Name_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
-            <telerikPrimitives:RadTextBox x:Name="rad_FirstAndMiddleName" Header="{Binding Name}" Margin="-5,385,-10,233" LostFocus="rad_FirstAndMiddleName_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
-            <telerikPrimitives:RadTextBox x:Name="rad_PhoneNumber" Header="{Binding Name}" Margin="-5,473,-10,145" LostFocus="rad_PhoneNumber_LostFocus" SelectionForeground="Black" Padding="60,2,2,2" InputScope="Digits"/>
+            <telerikPrimitives:RadPasswordBox x:Name="txt_Password" Header="{Binding Name}" Margin="-5,88,-10,530" LostFocus="txt_Password_LostFocus"  Padding="60,2,2,2"/>
+            <telerikPrimitives:RadPasswordBox x:Name="txt_PasswordAgain" Header="{Binding Name}" Margin="-5,174,-10,444" LostFocus="txt_PasswordAgain_LostFocus"  Padding="60,2,2,2"/>
+            <telerikPrimitives:RadTextBox x:Name="txt_FirstName" Header="{Binding Name}" Margin="-5,295,-10,323" LostFocus="txt_FirstName_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
+            <telerikPrimitives:RadTextBox x:Name="txt_LastName" Header="{Binding Name}" Margin="-5,385,-10,233" LostFocus="txt_LastName_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
+            <telerikPrimitives:RadTextBox x:Name="txt_Mobile" Header="{Binding Name}" Margin="-5,473,-10,145" LostFocus="txt_Mobile_LostFocus" SelectionForeground="Black" Padding="60,2,2,2" InputScope="Digits"/>
             <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="0,616,0,0" VerticalAlignment="Top" Height="72" Width="456"  FontSize="{StaticResource Button_FontSize}" Click="btn_Click_Register" >
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
