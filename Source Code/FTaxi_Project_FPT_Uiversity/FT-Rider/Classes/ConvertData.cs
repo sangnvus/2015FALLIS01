@@ -11,6 +11,8 @@ namespace FT_Rider.Classes
 {
     class ConvertData
     {
+
+
         public static GeoCoordinate ConvertGeocoordinate(Geocoordinate geocoordinate)
         {
             return new GeoCoordinate
@@ -54,6 +56,13 @@ namespace FT_Rider.Classes
         public static string ConvertJsonObjToString(Object jSonObj)
         {
             return JsonConvert.SerializeObject(jSonObj);
+        }
+
+        public static string ConvertStringToMD5(string inputStr)
+        {
+            MD5.MD5 md = new MD5.MD5();
+            md.Value = inputStr;
+            return md.FingerPrint;
         }
     }
 }

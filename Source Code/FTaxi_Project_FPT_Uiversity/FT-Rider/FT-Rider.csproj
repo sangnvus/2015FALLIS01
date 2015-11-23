@@ -99,6 +99,8 @@
     <Compile Include="Classes\ConvertData.cs" />
     <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
+    <Compile Include="Classes\Md5Hash\helper.cs" />
+    <Compile Include="Classes\Md5Hash\MD5.cs" />
     <Compile Include="Classes\OLDFUNCTION.cs" />
     <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\GoogleAPIFunction.cs" />
