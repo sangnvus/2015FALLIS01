@@ -65,7 +65,6 @@
                     </Grid>
                 </phone:PivotItem>
             </phone:Pivot>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="180,578,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.225,-0.375" Tap="Button_Tap"/>
 
         </Grid>
     </Grid>

@@ -5,25 +5,27 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Threading;
+using System.Windows.Threading;
+using System.IO.IsolatedStorage;
+using System.Device.Location;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
+using Windows.Devices.Geolocation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Controls;
-using System.Device.Location;
-using Windows.Devices.Geolocation;
-using System.Windows.Media;
-using System.Windows.Shapes;
+using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Devices;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Animation;
+using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
-using Newtonsoft.Json;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Threading;
-using System.IO.IsolatedStorage;
-using Microsoft.Phone.Maps.Toolkit;
+
 
 namespace FT_Rider.Pages
 {
@@ -54,19 +56,27 @@ namespace FT_Rider.Pages
         //Rider Destination Icon Overlay
         MapOverlay riderDestinationIconOverlay;
 
-        //Get Near Taxi
-        RiderGetNearDriver nearDrivers;
-
         //for car types
         string taxiType;
 
         //USER DATA
         RiderLogin userData = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
 
+        //For GET PICK UP
+        Double pickupLat;
+        Double pickupLng;
+
 
         //For menu
         double initialPosition;
         bool _viewMoved = false;
+
+        //For Timer
+        DispatcherTimer pickupTimer;
+        bool isPickup = false;
+
+        //for near driver
+        IDictionary<string, ListDriverDTO> nearDriverCollection;
 
         public HomePage()
         {
@@ -85,6 +95,34 @@ namespace FT_Rider.Pages
 
             //Load Rider Profile on Left Menu
             LoadRiderProfile();
+
+            //
+            pickupTimer = new DispatcherTimer();
+            pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
+            pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
+
+
+            //21.038556, 105.800667
+        }
+
+
+
+
+
+
+
+
+
+
+        private void pickupTimer_Tick(object sender, EventArgs e)
+        {
+            img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
+            img_PickerLabel.Tap += img_PickerLabel_CallTaxi_tab;
+        }
+
+        private void img_PickerLabel_CallTaxi_tab(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            this.grv_Step02.Visibility = Visibility.Visible;
         }
 
 
@@ -93,30 +131,24 @@ namespace FT_Rider.Pages
             tbl_LastName.Text = userData.content.lName;
             tbl_FirstName.Text = userData.content.fName;
         }
-        
-        //Hàm này để hiển thị 1 picker trên màn hình, ở giữa màn hình
-        //Để khi người dùng di chuyển map, sẽ lấy tọa độ ở điểm trung tâm
-        private void EnablePickerOnMap()
-        {          
-            this.img_Picker.Visibility = Visibility.Visible;
-        }
-
-        private void DisablePickerOnMap()
-        {
-            this.img_Picker.Visibility = Visibility.Collapsed;
-        }        
 
 
         //------ BEGIN get current Position ------//
         private async void GetCurrentCoordinate()
         {
             riderFirstGeolocator = new Geolocator();
-            riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High; 
+            riderFirstGeolocator.DesiredAccuracy = PositionAccuracy.High;
             riderFirstGeolocator.MovementThreshold = 20;
             riderFirstGeolocator.ReportInterval = 100;
-            //riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10)); 
+            riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+
+            //Set Center view
+            map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
+            //StartPickupTimer();
+            //GetNearDriver();
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -127,14 +159,12 @@ namespace FT_Rider.Pages
                 Geocoordinate geocoordinate = null;
                 geocoordinate = args.Position.Coordinate;
 
-                map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+                //map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
                 UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
                 marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
-
-                GetNearDriver();
-
             });
+
         }
         //------ END get current Position ------//
 
@@ -145,41 +175,118 @@ namespace FT_Rider.Pages
         //------ BEGIN get near Driver ------//
         private async void GetNearDriver()
         {
-            GeoCoordinate myGeoCoordinate = new GeoCoordinate();
-            myGeoCoordinate = await GetCurrentPosition.GetGeoCoordinate();
             var uid = userData.content.uid;
-            var lat = myGeoCoordinate.Latitude;
-            var lng = myGeoCoordinate.Longitude;
+            var lat = pickupLat;
+            var lng = pickupLng;
             var clvl = taxiType;
 
-            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"clvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-            try
+            var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+            if (nearDriver.content.listDriverDTO.Count > 0)
             {
-                var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
-                if (nearDriver.content.listDriverDTO.Count > 0)
+                nearDriverCollection = new Dictionary<string, ListDriverDTO>();
+                foreach (var item in nearDriver.content.listDriverDTO)
                 {
-                    foreach (var taxi in nearDriver.content.listDriverDTO)
+                    nearDriverCollection[item.did.ToString()] = new ListDriverDTO
                     {
-                        ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName);
-                    }
+                        did = item.did,
+                        fName = item.fName,
+                        lName = item.lName,
+                        cName = item.cName,
+                        mobile = item.mobile,
+                        rate = item.rate,
+                        oPrice = item.oPrice,
+                        oKm = item.oKm,
+                        f1Price = item.f1Price,
+                        f1Km = item.f1Km,
+                        f2Price = item.f2Price,
+                        f2Km = item.f2Km,
+                        f3Price = item.f3Price,
+                        f3Km = item.f3Km,
+                        f4Price = item.f4Price,
+                        f4Km = item.f4Km,
+                        img = item.img,
+                        lat = item.lat,
+                        lng = item.lng
+                    };
                 }
-                else
+                foreach (var item in nearDriverCollection.Values)
                 {
-                    Thread.Sleep(2000);
-                    MessageBox.Show("Không tìm thấy xe nào quanh đây");
+                    ShowNearDrivers(item.did);
                 }
-
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Đã có lỗi xảy ra");
             }
         }
         //------ END get near Driver ------//
 
 
+        //------ BEGIN show and Design UI 3 taxi near current position ------//
+        private void ShowNearDrivers(string did)
+        {
+            GeoCoordinate TaxiCoordinate = new GeoCoordinate(nearDriverCollection[did].lat, nearDriverCollection[did].lng);
 
+            //Create taxi icon on map
+            Image taxiIcon = new Image();
+            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
+
+            //Add a tapped event
+            taxiIcon.Tap += taxiIcon_Tap;
+
+            //Create Taxi Name 
+            TextBlock taxiName = new TextBlock();
+            taxiName.HorizontalAlignment = HorizontalAlignment.Center;
+            taxiName.Text = nearDriverCollection[did].cName;
+            taxiName.FontSize = 12;
+            taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
+
+            //Create Stack Panel to group icon, taxi name, ...            
+            Rectangle taxiNameBackground = new Rectangle();
+            taxiNameBackground.Height = 18;
+            taxiNameBackground.Width = taxiName.ToString().Length + 20;
+            taxiNameBackground.RadiusX = 9;
+            taxiNameBackground.RadiusY = 7;
+            //taxiNameBackground.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)171, (byte)171, (byte)171)); //RBG color for #ababab
+            taxiNameBackground.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)213, (byte)235, (byte)255)); //RBG color for #d5ebff
+
+            Grid taxiNameGrid = new Grid();
+            taxiNameGrid.Margin = new Thickness(0, 4, 0, 4); //Margin Top and Bottom 4px
+            taxiNameGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            taxiNameGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            taxiNameGrid.Children.Add(taxiNameBackground);
+            taxiNameGrid.Children.Add(taxiName);
+
+            StackPanel taxiStackPanel = new StackPanel();
+            //taxiStackPanel.Margin  = new Thickness(5, 0, 5, 0);
+            taxiStackPanel.Children.Add(taxiIcon);
+            taxiStackPanel.Children.Add(taxiNameGrid);
+
+            // Create a MapOverlay to contain the circle.
+            MapOverlay myTaxiOvelay = new MapOverlay();
+            //myTaxiOvelay.Content = myCircle;
+            myTaxiOvelay.Content = taxiStackPanel;
+            myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
+            myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
+
+            //Add to Map's Layer
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(myTaxiOvelay);
+
+            map_RiderMap.Layers.Add(riderMapLayer);
+        }
+
+        //Tapped event
+        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Hide Step 01
+            this.grv_Step01.Visibility = Visibility.Collapsed;
+
+            //Show Step 02
+            this.grv_Step02.Visibility = Visibility.Visible;
+            this.grv_Picker.Visibility = Visibility.Collapsed;
+            //Step 2 info
+            LoadStep2Info();
+        }
+        //------ END show and Design UI 3 taxi near current position ------//
 
 
 
@@ -310,42 +417,6 @@ namespace FT_Rider.Pages
 
 
 
-        //private void getRouteTo(GeoCoordinate myPosition, GeoCoordinate destination)
-        //{
-        //    if (riderMapRoute != null)
-        //    {
-        //        map_RiderMap.RemoveRoute(riderMapRoute);
-        //        riderMapRoute = null;
-        //        riderQuery = null;
-        //    }
-        //    riderQuery = new RouteQuery()
-        //    {
-        //        TravelMode = TravelMode.Driving,
-        //        Waypoints = new List<GeoCoordinate>()
-        //    {
-        //        myPosition, 
-        //        destination
-        //    },
-        //        RouteOptimization = RouteOptimization.MinimizeTime
-        //    };
-        //    riderQuery.QueryCompleted += riderRouteQuery_QueryCompleted;
-        //    riderQuery.QueryAsync();
-        //}
-        //void riderRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
-        //{
-        //    if (e.Error == null)
-        //    {
-        //        Route newRoute = e.Result;
-
-        //        riderMapRoute = new MapRoute(newRoute);
-        //        map_RiderMap.AddRoute(riderMapRoute);
-        //        riderQuery.Dispose();
-        //    }
-        //}
-
-
-
-
 
 
 
@@ -372,138 +443,17 @@ namespace FT_Rider.Pages
 
 
 
-        //------ BEGIN show and Design UI 3 taxi near current position ------//
-        private void ShowNearDrivers(double lat, double lng, string tName)
+
+        //Load step 02 profile
+        private async void LoadStep2Info()
         {
-            GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
 
-            //Create taxi icon on map
-            Image taxiIcon = new Image();
-            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
+            txt_RiderName.Text = userData.content.fName + " " + userData.content.lName;
+            txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
 
-            //Add a tapped event
-            taxiIcon.Tap += taxiIcon_Tap;
-
-            //Create Taxi Name 
-            TextBlock taxiName = new TextBlock();
-            taxiName.HorizontalAlignment = HorizontalAlignment.Center;
-            taxiName.Text = tName;
-            taxiName.FontSize = 12;
-            taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
-
-            //Create Stack Panel to group icon, taxi name, ...            
-            Rectangle taxiNameBackground = new Rectangle();
-            taxiNameBackground.Height = 18;
-            taxiNameBackground.Width = taxiName.ToString().Length + 20;
-            taxiNameBackground.RadiusX = 9;
-            taxiNameBackground.RadiusY = 7;
-            //taxiNameBackground.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)171, (byte)171, (byte)171)); //RBG color for #ababab
-            taxiNameBackground.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)213, (byte)235, (byte)255)); //RBG color for #d5ebff
-
-            Grid taxiNameGrid = new Grid();
-            taxiNameGrid.Margin = new Thickness(0, 4, 0, 4); //Margin Top and Bottom 4px
-            taxiNameGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            taxiNameGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            taxiNameGrid.Children.Add(taxiNameBackground);
-            taxiNameGrid.Children.Add(taxiName);
-
-            StackPanel taxiStackPanel = new StackPanel();
-            //taxiStackPanel.Margin  = new Thickness(5, 0, 5, 0);
-            taxiStackPanel.Children.Add(taxiIcon);
-            taxiStackPanel.Children.Add(taxiNameGrid);
-
-            // Create a MapOverlay to contain the circle.
-            MapOverlay myTaxiOvelay = new MapOverlay();
-            //myTaxiOvelay.Content = myCircle;
-            myTaxiOvelay.Content = taxiStackPanel;
-            myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
-            myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
-
-            //Add to Map's Layer
-            riderMapLayer = new MapLayer();
-            riderMapLayer.Add(myTaxiOvelay);
-
-            map_RiderMap.Layers.Add(riderMapLayer);
         }
-
-        //Tapped event
-        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //Hide Step 01
-            this.grv_Step01.Visibility = Visibility.Collapsed;
-
-            //Show Step 02
-            this.grv_Step02.Visibility = Visibility.Visible;
-        }
-        //------ END show and Design UI 3 taxi near current position ------//
-
-
-
-        //------ BEGIN For open menu ------//
-        private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
-        {
-
-            var left = Canvas.GetLeft(LayoutRoot);
-            if (left > -100)
-            {
-                MoveViewWindow(-420);
-            }
-            else
-            {
-                MoveViewWindow(0);
-            }
-        }
-        void MoveViewWindow(double left)
-        {
-            _viewMoved = true;
-            ((Storyboard)canvas.Resources["moveAnimation"]).SkipToFill();
-            ((DoubleAnimation)((Storyboard)canvas.Resources["moveAnimation"]).Children[0]).To = left;
-            ((Storyboard)canvas.Resources["moveAnimation"]).Begin();
-        }
-
-
-        private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
-        {
-            //if (e.DeltaManipulation.Translation.X != 0)
-            //    Canvas.SetLeft(LayoutRoot, Math.Min(Math.Max(-840, Canvas.GetLeft(LayoutRoot) + e.DeltaManipulation.Translation.X), 0));
-        }
-
-        private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
-        {
-            _viewMoved = false;
-            initialPosition = Canvas.GetLeft(LayoutRoot);
-        }
-
-        private void canvas_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
-        {
-            var left = Canvas.GetLeft(LayoutRoot);
-            if (_viewMoved)
-                return;
-            if (Math.Abs(initialPosition - left) < 100)
-            {
-                //bouncing back
-                MoveViewWindow(initialPosition);
-                return;
-            }
-            //change of state
-            if (initialPosition - left > 0)
-            {
-                //slide to the left
-                if (initialPosition > -420)
-                    MoveViewWindow(-420);
-                else
-                    MoveViewWindow(-840);
-            }
-            else
-            {
-                //slide to the right
-                if (initialPosition < -420)
-                    MoveViewWindow(-420);
-                else
-                    MoveViewWindow(0);
-            }
-        }
-        //------ END For open menu ------//
 
 
 
@@ -538,9 +488,6 @@ namespace FT_Rider.Pages
 
 
 
-
-
-
         //------ BEGIN Car type bar chose ------//
         private void img_CallTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -554,7 +501,6 @@ namespace FT_Rider.Pages
 
 
 
-
         //------ BEGIN Map API key ------//
         private void map_RiderMap_Loaded(object sender, RoutedEventArgs e)
         {
@@ -562,8 +508,6 @@ namespace FT_Rider.Pages
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
         //------ END Map API key ------//
-
-
 
 
 
@@ -600,8 +544,6 @@ namespace FT_Rider.Pages
             }
         }
         //------ END Convert Lat & Lng from Address for Bing map Input ------//
-
-
 
 
 
@@ -736,8 +678,8 @@ namespace FT_Rider.Pages
         {
             //Enable Auto Complete
             loadAutoCompletePlace("");
-
             enableAutoComplateGrid();
+
             TextBox addressTextbox = (TextBox)sender;
             addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
             addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
@@ -750,13 +692,6 @@ namespace FT_Rider.Pages
                 txt_InputAddress.Text = string.Empty;
             }
 
-            ////redisplay Auto complete when re focus
-            //if (txt_InputAddress.Text != String.Empty && txt_InputAddress.Text != StaticVariables.destiationAddressDescription)
-            //{
-            //    loadAutoCompletePlace(txt_InputAddress.Text);
-            //    lls_AutoComplete.Visibility = Visibility.Visible;
-            //    lls_AutoComplete.IsEnabled = true;
-            //}
 
             //hide close icon
             if (txt_InputAddress.Text == String.Empty)
@@ -798,36 +733,165 @@ namespace FT_Rider.Pages
             txtBox.SelectionLength = 0;
         }
 
+        private async void ShowPickerAddress()
+        {
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+            txt_InputAddress.Text = address.results[0].formatted_address.ToString();
+        }
+
+
+        //Event này để bắt trường hợp sau mỗi lần di chuyển map
+        private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
+        {
+            pickupLat = map_RiderMap.Center.Latitude;
+            pickupLng = map_RiderMap.Center.Longitude;
+            if (isPickup == true)
+            {
+                pickupTimer.Start();
+                ShowPickerAddress();
+                GetNearDriver();
+            }
+            isPickup = false;
+        }
+
+
+        private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
+            pickupTimer.Stop();
+            isPickup = true;
+        }
+
+
+
+
         //------ END Search Bar EVENT ------//
 
 
 
-        // protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+
+        //------ BEGIN For open menu ------//
+        private void btn_OpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+            var left = Canvas.GetLeft(LayoutRoot);
+            if (left > -100)
+            {
+                MoveViewWindow(-420);
+            }
+            else
+            {
+                MoveViewWindow(0);
+            }
+        }
+        void MoveViewWindow(double left)
+        {
+            _viewMoved = true;
+            ((Storyboard)canvas.Resources["moveAnimation"]).SkipToFill();
+            ((DoubleAnimation)((Storyboard)canvas.Resources["moveAnimation"]).Children[0]).To = left;
+            ((Storyboard)canvas.Resources["moveAnimation"]).Begin();
+        }
+
+
+
+        private void canvas_ManipulationStarted(object sender, System.Windows.Input.ManipulationStartedEventArgs e)
+        {
+            _viewMoved = false;
+            initialPosition = Canvas.GetLeft(LayoutRoot);
+        }
+
+        private void canvas_ManipulationCompleted(object sender, System.Windows.Input.ManipulationCompletedEventArgs e)
+        {
+            var left = Canvas.GetLeft(LayoutRoot);
+            if (_viewMoved)
+                return;
+            if (Math.Abs(initialPosition - left) < 100)
+            {
+                //bouncing back
+                MoveViewWindow(initialPosition);
+                return;
+            }
+            //change of state
+            if (initialPosition - left > 0)
+            {
+                //slide to the left
+                if (initialPosition > -420)
+                    MoveViewWindow(-420);
+                else
+                    MoveViewWindow(-840);
+            }
+            else
+            {
+                //slide to the right
+                if (initialPosition < -420)
+                    MoveViewWindow(-420);
+                else
+                    MoveViewWindow(0);
+            }
+        }
+
+        private void txt_PickupAddress_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //Trong suốt texbox
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+        }
+        //------ END For open menu ------//
+
+
+
+        //private async void GetNearDriverNew()
         //{
-        //    if (IsolatedStorageSettings.ApplicationSettings.Contains("LocationConsent"))
-        //    {
-        //        // User has opted in or out of Location
-        //        return;
-        //    }
-        //    else
-        //    {
-        //        MessageBoxResult result =
-        //            MessageBox.Show("This app accesses your phone's location. Is that ok?",
-        //            "Location",
-        //            MessageBoxButton.OKCancel);
+        //    var uid = userData.content.uid;
+        //    var lat = pickupLat;
+        //    var lng = pickupLng;
+        //    var clvl = taxiType;
 
-        //        if (result == MessageBoxResult.OK)
+        //    var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+        //    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
+        //    var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+        //    if (nearDriver.content.listDriverDTO.Count > 0)
+        //    {
+        //        IDictionary<string, ListDriverDTO> col = new Dictionary<string, ListDriverDTO>();
+        //        foreach (var item in nearDriver.content.listDriverDTO)
         //        {
-        //            IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = true;
+        //            col[item.did.ToString()] = new ListDriverDTO
+        //            {
+        //                did = item.did,
+        //                fName = item.fName,
+        //                lName = item.lName,
+        //                cName = item.cName,
+        //                mobile = item.mobile,
+        //                rate = item.rate,
+        //                oPrice = item.oPrice,
+        //                oKm = item.oKm,
+        //                f1Price = item.f1Price,
+        //                f1Km = item.f1Km,
+        //                f2Price = item.f2Price,
+        //                f2Km = item.f2Km,
+        //                f3Price = item.f3Price,
+        //                f3Km = item.f3Km,
+        //                f4Price = item.f4Price,
+        //                f4Km = item.f4Km,
+        //                img = item.img,
+        //                lat = item.lat,
+        //                lng = item.lng
+        //            };
         //        }
-        //        else
+        //        foreach (var taxi in nearDriver.content.listDriverDTO)
         //        {
-        //            IsolatedStorageSettings.ApplicationSettings["LocationConsent"] = false;
+        //            //ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName, taxi.did);
         //        }
-
-        //        IsolatedStorageSettings.ApplicationSettings.Save();
         //    }
         //}
+
+        private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
+        {
+
+        }
 
     }
 
