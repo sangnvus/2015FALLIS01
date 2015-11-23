@@ -1,38 +1,19 @@
 ﻿{
-    "status": "0000",
-    "lmd": 0,
-    "content": {
-        "fName": "Tung",
-        "lName": "Quang",
-        "interCode": null,
-        "img": "",
-        "mobile": "01246839943",
-        "hAdd": "TL904, Hòa Lộc, Tam Bình",
-        "lan": "vi",
-        "cntry": null,
-        "email": "rider1@gmail.com",
-        "rid": "2",
-        "name": null,
-        "oAdd": "FU Hòa Lạc, Thạch Thất",
-        "hAddLat": 10.074024941783989,
-        "hAddLng": 105.99978480488062,
-        "oAddLat": 21.008709822855284,
-        "oAddLng": 105.53801635742184,
-        "pmt": [
-            {
-                "pid": null,
-                "cNO": "4909127391297639",
-                "cvv": "6287",
-                "mon": "9",
-                "year": "2024",
-                "postal": null,
-                "cate": "ORG"
-            }
-        ],
-        "olmd": 1447214543000,
-        "nlmd": 0,
-        "status": "VR",
-        "uid": "rider1@gmail.com",
-        "pw": null
-    }
+    "uid": "apl.ytb2@gmail.com",
+    "rid": "00e0b474-3fa2-4f22-bbdf-339e887f27b6",
+    "did": [ { "did": "acffb40c-6a2a-4d3d-af03-ca5371524792" } ],
+	"sAddr" : "118 Nguyễn Khánh Toàn, Quan Hoa, Cầu Giấy, Hà Nội, Việt Nam",
+	"eAddr" : "34 Hoàng Quốc Việt, Nghĩa Đô, Cầu Giấy, Hà Nội, Việt Nam",
+	"sLat" : "21.038329",
+	"sLng" : "105.801256",
+	"eLat" : "21.046085",
+	"eLng" : "105.798287",
+	"sCity" : 1,
+	"eCity" : 1,
+	"sCityName" : "Ha Noi",
+	"eCityName" : "Ha Noi",
+	"cntry" : "VN",
+	"proCode" : null,
+	"rType" : "OM"
 }
+
