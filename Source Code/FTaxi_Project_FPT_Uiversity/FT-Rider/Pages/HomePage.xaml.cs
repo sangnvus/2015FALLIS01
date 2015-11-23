@@ -75,6 +75,9 @@ namespace FT_Rider.Pages
         DispatcherTimer pickupTimer;
         bool isPickup = false;
 
+        //for near driver
+        IDictionary<string, ListDriverDTO> nearDriverCollection;
+
         public HomePage()
         {
 
@@ -182,9 +185,35 @@ namespace FT_Rider.Pages
             var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
             if (nearDriver.content.listDriverDTO.Count > 0)
             {
-                foreach (var taxi in nearDriver.content.listDriverDTO)
+                nearDriverCollection = new Dictionary<string, ListDriverDTO>();
+                foreach (var item in nearDriver.content.listDriverDTO)
                 {
-                    ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName);
+                    nearDriverCollection[item.did.ToString()] = new ListDriverDTO
+                    {
+                        did = item.did,
+                        fName = item.fName,
+                        lName = item.lName,
+                        cName = item.cName,
+                        mobile = item.mobile,
+                        rate = item.rate,
+                        oPrice = item.oPrice,
+                        oKm = item.oKm,
+                        f1Price = item.f1Price,
+                        f1Km = item.f1Km,
+                        f2Price = item.f2Price,
+                        f2Km = item.f2Km,
+                        f3Price = item.f3Price,
+                        f3Km = item.f3Km,
+                        f4Price = item.f4Price,
+                        f4Km = item.f4Km,
+                        img = item.img,
+                        lat = item.lat,
+                        lng = item.lng
+                    };
+                }
+                foreach (var item in nearDriverCollection.Values)
+                {
+                    ShowNearDrivers(item.did);
                 }
             }
         }
@@ -192,9 +221,9 @@ namespace FT_Rider.Pages
 
 
         //------ BEGIN show and Design UI 3 taxi near current position ------//
-        private void ShowNearDrivers(double lat, double lng, string tName)
+        private void ShowNearDrivers(string did)
         {
-            GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
+            GeoCoordinate TaxiCoordinate = new GeoCoordinate(nearDriverCollection[did].lat, nearDriverCollection[did].lng);
 
             //Create taxi icon on map
             Image taxiIcon = new Image();
@@ -206,7 +235,7 @@ namespace FT_Rider.Pages
             //Create Taxi Name 
             TextBlock taxiName = new TextBlock();
             taxiName.HorizontalAlignment = HorizontalAlignment.Center;
-            taxiName.Text = tName;
+            taxiName.Text = nearDriverCollection[did].cName;
             taxiName.FontSize = 12;
             taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
 
@@ -814,50 +843,50 @@ namespace FT_Rider.Pages
 
 
 
-        private async void GetNearDriverNew()
-        {
-            var uid = userData.content.uid;
-            var lat = pickupLat;
-            var lng = pickupLng;
-            var clvl = taxiType;
+        //private async void GetNearDriverNew()
+        //{
+        //    var uid = userData.content.uid;
+        //    var lat = pickupLat;
+        //    var lng = pickupLng;
+        //    var clvl = taxiType;
 
-            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-            var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
-            if (nearDriver.content.listDriverDTO.Count > 0)
-            {
-                IDictionary<string, ListDriverDTO> col = new Dictionary<string, ListDriverDTO>();
-                foreach (var item in nearDriver.content.listDriverDTO)
-                {
-                    col[item.did.ToString()] = new ListDriverDTO
-                    {
-                        did = item.did,
-                        fName = item.fName,
-                        lName = item.lName,
-                        cName = item.cName,
-                        mobile = item.mobile,
-                        rate = item.rate,
-                        oPrice = item.oPrice,
-                        oKm = item.oKm,
-                        f1Price = item.f1Price,
-                        f1Km = item.f1Km,
-                        f2Price = item.f2Price,
-                        f2Km = item.f2Km,
-                        f3Price = item.f3Price,
-                        f3Km = item.f3Km,
-                        f4Price = item.f4Price,
-                        f4Km = item.f4Km,
-                        img = item.img,
-                        lat = item.lat,
-                        lng = item.lng
-                    };
-                }
-                foreach (var taxi in nearDriver.content.listDriverDTO)
-                {
-                    //ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName, taxi.did);
-                }
-            }
-        }
+        //    var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+        //    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
+        //    var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+        //    if (nearDriver.content.listDriverDTO.Count > 0)
+        //    {
+        //        IDictionary<string, ListDriverDTO> col = new Dictionary<string, ListDriverDTO>();
+        //        foreach (var item in nearDriver.content.listDriverDTO)
+        //        {
+        //            col[item.did.ToString()] = new ListDriverDTO
+        //            {
+        //                did = item.did,
+        //                fName = item.fName,
+        //                lName = item.lName,
+        //                cName = item.cName,
+        //                mobile = item.mobile,
+        //                rate = item.rate,
+        //                oPrice = item.oPrice,
+        //                oKm = item.oKm,
+        //                f1Price = item.f1Price,
+        //                f1Km = item.f1Km,
+        //                f2Price = item.f2Price,
+        //                f2Km = item.f2Km,
+        //                f3Price = item.f3Price,
+        //                f3Km = item.f3Km,
+        //                f4Price = item.f4Price,
+        //                f4Km = item.f4Km,
+        //                img = item.img,
+        //                lat = item.lat,
+        //                lng = item.lng
+        //            };
+        //        }
+        //        foreach (var taxi in nearDriver.content.listDriverDTO)
+        //        {
+        //            //ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName, taxi.did);
+        //        }
+        //    }
+        //}
 
         private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
