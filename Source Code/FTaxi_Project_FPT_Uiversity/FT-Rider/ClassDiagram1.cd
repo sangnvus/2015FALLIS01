@@ -1,0 +1,521 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FT_Rider.App" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAgCSAIAAAAhAAAAAAAAAAAAAAAEQAAAAAAAIIAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.LocalizedStrings" Collapsed="true">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>LocalizedStrings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.MainPage" Collapsed="true">
+    <Position X="17" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.AutoCompletePlace" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\AutoCompletePlace.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.BaseResponse" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\Base.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.ConstantVariable" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAIABAIAAABABBIAAAQBwACGAAAEQAAAoIACAAEAAI=</HashCode>
+      <FileName>Classes\ConstantVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.ConvertData" Collapsed="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgQAAAACAAAAIAAAAAABAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>Classes\ConvertData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.GetCurrentPosition" Collapsed="true">
+    <Position X="13.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Classes\GetCurrentPosition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.GetJsonFromPOSTMethod" Collapsed="true">
+    <Position X="15.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GetJsonFromPOSTMethod.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.AddressComponent" Collapsed="true">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Location" Collapsed="true">
+    <Position X="13.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Northeast" Collapsed="true">
+    <Position X="13.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Southwest" Collapsed="true">
+    <Position X="8.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Viewport" Collapsed="true">
+    <Position X="15.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Geometry" Collapsed="true">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgBAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Result" Collapsed="true">
+    <Position X="6.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAgIAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.GoogleAPIAddressObj" Collapsed="true">
+    <Position X="17" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIAddressObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Distance" Collapsed="true">
+    <Position X="3" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAIAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIDistanceMatrixObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Duration" Collapsed="true">
+    <Position X="6.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAACAIAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIDistanceMatrixObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Element" Collapsed="true">
+    <Position X="8.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAIAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIDistanceMatrixObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Row" Collapsed="true">
+    <Position X="6.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIDistanceMatrixObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.GoogleAPIDistanceMatrixObj" Collapsed="true">
+    <Position X="3" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAABAAAAQAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIDistanceMatrixObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.GoogleAPIFunction" Collapsed="true">
+    <Position X="4.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEBAAAAAAAAAAAAAAAAAAgIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngAddressComponent" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngNortheast" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngSouthwest" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngBounds" Collapsed="true">
+    <Position X="13.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngLocation" Collapsed="true">
+    <Position X="17" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngViewport" Collapsed="true">
+    <Position X="8.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngGeometry" Collapsed="true">
+    <Position X="15.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgBAAAAAACAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.LatLngResult" Collapsed="true">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAgIAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.GoogleAPILatLngObj" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPILatLngObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.MatchedSubstring" Collapsed="true">
+    <Position X="4.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIQueryAutoCompleteObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Term" Collapsed="true">
+    <Position X="11.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIQueryAutoCompleteObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Prediction" Collapsed="true">
+    <Position X="3" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAoAgAAAIBAAAAAAAAAAAAAAAAAAAAIAAgA=</HashCode>
+      <FileName>Classes\GoogleAPIQueryAutoCompleteObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.GoogleAPIQueryAutoCompleteObj" Collapsed="true">
+    <Position X="8.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Classes\GoogleAPIQueryAutoCompleteObj.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.MapShowMarker" Collapsed="true">
+    <Position X="3" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\MapShowMarker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.OLDFUNCTION" Collapsed="true">
+    <Position X="15.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\OLDFUNCTION.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.ReqAndRes" Collapsed="true">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\ReqAndRes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderBase" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAEAAAAAAAAACAAAAAAAAAAAgA=</HashCode>
+      <FileName>Classes\RiderBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderCreateTrip" Collapsed="true">
+    <Position X="13.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAiAAEAiAARAgAAAAAAAAwAQAAAgCIAgAAAA=</HashCode>
+      <FileName>Classes\RiderCreateTrip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderDriverStatusDTO" Collapsed="true">
+    <Position X="15.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAEAACAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderDriverStatusDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.DriverCurrentStatus" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAEAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderDriverStatusDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderFunctions" Collapsed="true">
+    <Position X="17" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderFunctions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.ListDriverDTO" Collapsed="true">
+    <Position X="10" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACoEEAACAAUAAAIAASMAAAAAAABBEAAAAAgACEAAA=</HashCode>
+      <FileName>Classes\RiderGetNearDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderGetNearDriverContent" Collapsed="true">
+    <Position X="4.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderGetNearDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderGetNearDriver" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderGetNearDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.Pmt" Collapsed="true">
+    <Position X="17" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAgAAAAAIAAAAAJAAAAAAAAAAAAAEAAAAAAAg=</HashCode>
+      <FileName>Classes\RiderLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderLoginContent" Collapsed="true">
+    <Position X="8.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAIAAAAAAoEAggEAIQAAAAAEAEhAQAAAAAyACEAAA=</HashCode>
+      <FileName>Classes\RiderLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderLogin" Collapsed="true">
+    <Position X="6.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderLogin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderPaymentDTO" Collapsed="true">
+    <Position X="11.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAgAAAAAIAAAAAJAAAAAAAAAAAAAEAAAAAAAg=</HashCode>
+      <FileName>Classes\RiderPaymentDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderUpdateAddress" Collapsed="true">
+    <Position X="3" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAIAEAAAAAkAAEAAAAABAAAAAAAAQgAAAAAAAAAgA=</HashCode>
+      <FileName>Classes\RiderUpdateAddress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderUpdateDriverStatusDTO" Collapsed="true">
+    <Position X="4.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderUpdateDriverStatusDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.RiderUpdatePaymentRequest" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAiEAEAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\RiderUpdatePayment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.TaxiTypes" Collapsed="true">
+    <Position X="10" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\TaxiTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Classes.UserData" Collapsed="true">
+    <Position X="13.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABAAAAAAAQAQAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Classes\UserData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MD5.Digest" Collapsed="true">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAApAEAAAA=</HashCode>
+      <FileName>Classes\Md5Hash\helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MD5.MD5Helper" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Classes\Md5Hash\helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MD5.MD5ChangingEventArgs" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Classes\Md5Hash\helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MD5.MD5ChangedEventArgs" Collapsed="true">
+    <Position X="8.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Classes\Md5Hash\helper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MD5.MD5" Collapsed="true">
+    <Position X="6.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACgAAAAAEBAAAAAAAIAAIhAAAEAgAAgAAAEQCA=</HashCode>
+      <FileName>Classes\Md5Hash\MD5.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.DemoPage" Collapsed="true">
+    <Position X="15.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAABAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Pages\DemoPage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.FisrtRunningAppIntro" Collapsed="true">
+    <Position X="10" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgRAAAAAAAAgAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Pages\FisrtRunningAppIntro.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.HomePage" Collapsed="true">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gVoChQABGSEQiSFCgDgKAAQAxA6BFIYKQKgAgUAEoAg=</HashCode>
+      <FileName>Pages\HomePage.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.Login" Collapsed="true">
+    <Position X="15.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAgBACAAAAAAAAAAAAEAAAAAAAAAgBAEAAAIAA=</HashCode>
+      <FileName>Pages\Login.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.RiderAddHomePlace" Collapsed="true">
+    <Position X="8.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAkAAAAAIGAAAAAgAAgAAAEAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Pages\RiderAddHomePlace.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.RiderAddWorkPlace" Collapsed="true">
+    <Position X="10" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\RiderAddWorkPlace.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.RiderChangePassword" Collapsed="true">
+    <Position X="11.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAAQAAAAAAA=</HashCode>
+      <FileName>Pages\RiderChangePassword.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.RiderLostPassword" Collapsed="true">
+    <Position X="10" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Pages\RiderLostPassword.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.RiderProfile" Collapsed="true">
+    <Position X="13.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAEAAACAIAAAQAAgAAAAAAAAAAAAQAAAAAACAAQAA=</HashCode>
+      <FileName>Pages\RiderProfile.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.RiderRegister" Collapsed="true">
+    <Position X="15.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ZAAAAAQAAIGAAAAAAAAgIAABAACAggAAAABAAIAAAAg=</HashCode>
+      <FileName>Pages\RiderRegister.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Pages.RiderRegisterPayment" Collapsed="true">
+    <Position X="17" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAAAAEAAEAAAAQAAAAAA=</HashCode>
+      <FileName>Pages\RiderRegisterPayment.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FT_Rider.Resources.AppResources" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgCAAAAAAABEIAAAQAAAAAAAAAAAAIAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="MD5.MD5InitializerConstant" Collapsed="true">
+    <Position X="3" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApAEAAAA=</HashCode>
+      <FileName>Classes\Md5Hash\helper.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

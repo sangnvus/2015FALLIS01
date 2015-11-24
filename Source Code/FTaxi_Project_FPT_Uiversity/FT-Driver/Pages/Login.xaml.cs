@@ -184,7 +184,7 @@ namespace FT_Driver.Pages
                 var pwmd5 = pw.FingerPrint;
                 var mid = pushChannelURI;
                 var mType = ConstantVariable.mTypeWIN;
-                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":{2}\"\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
+                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
                 try
                 {
