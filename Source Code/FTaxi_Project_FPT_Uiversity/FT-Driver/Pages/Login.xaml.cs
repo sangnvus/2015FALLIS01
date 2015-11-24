@@ -18,6 +18,8 @@ using FT_Driver.Resources;
 using Telerik.Windows.Controls.PhoneTextBox;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Microsoft.Phone.Notification;
+using System.Text;
 
 namespace FT_Driver.Pages
 {
@@ -25,13 +27,114 @@ namespace FT_Driver.Pages
     {
         IsolatedStorageFile ISOFile = IsolatedStorageFile.GetUserStoreForApplication();
         List<UserData> ObjUserDataList = new List<UserData>();
+        string pushChannelURI = null;
+
+
         public Login()
         {
             InitializeComponent();
+            CreatePushChannel();
+
             this.txt_UserId.DataContext = new Data { Name = "Email" };
             this.txt_Password.DataContext = new Data { Name = "Passsword" };
             this.Loaded += Login_Loaded;
         }
+
+        private void CreatePushChannel()
+        {
+            HttpNotificationChannel pushChannel;
+            string channelName = "FtaxiChannel";
+            pushChannel = HttpNotificationChannel.Find(channelName);
+
+            if (pushChannel == null)
+            {
+                pushChannel = new HttpNotificationChannel(channelName);
+
+                // Register for all the events before attempting to open the channel.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                pushChannel.Open();
+
+                // Bind this new channel for toast events.
+                pushChannel.BindToShellToast();
+
+            }
+            else
+            {
+                // The channel was already open, so just register for all the events.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
+                System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
+
+                pushChannelURI = pushChannel.ChannelUri.ToString();
+                //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
+
+            }
+        }
+
+
+        // Display the new URI for testing purposes.   Normally, the URI would be passed back to your web service at this point.
+        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+        {
+
+            Dispatcher.BeginInvoke(() =>
+            {
+                System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
+                pushChannelURI = e.ChannelUri.ToString();
+                //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
+
+                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<<<<<<<<<<<<<
+            });
+        }
+
+
+        // Error handling logic for your particular application would be here.
+        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+                MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
+                    e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
+                    );
+        }
+
+
+        // Parse out the information that was part of the message.
+        void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
+        {
+            StringBuilder message = new StringBuilder();
+            string relativeUri = string.Empty;
+
+            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+
+            // Parse out the information that was part of the message.
+            foreach (string key in e.Collection.Keys)
+            {
+                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+
+                if (string.Compare(
+                    key,
+                    "wp:Param",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.CompareOptions.IgnoreCase) == 0)
+                {
+                    relativeUri = e.Collection[key];
+                }
+            }
+
+            // Display a dialog of all the fields in the toast.
+            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+
+        }
+
 
         private bool Validate(string text)
         {
@@ -71,29 +174,52 @@ namespace FT_Driver.Pages
 
 
 
-        private void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
+        private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_UserId.Text != "" && txt_Password.ToString() != "")
+            if (txt_UserId.Text != "" && txt_Password.ToString() != "") 
             {
-                int Temp = 0;
-               
-                    if (txt_UserId.Text == "admin@gmail.com" && txt_Password.Password == "admin")
-                    {
-                        Temp = 1;
-                        NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative));
-                    
-                }
-                if (Temp == 0)
+                var uid = txt_UserId.Text;
+                MD5.MD5 pw = new MD5.MD5();
+                pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
+                var pwmd5 = pw.FingerPrint;
+                var mid = pushChannelURI;
+                var mType = ConstantVariable.mTypeWIN;
+                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":{2}\"\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
+                try
                 {
-                    txt_Password.ChangeValidationState(ValidationState.Invalid, "");
-                    txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
+                    var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
+                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                    PhoneApplicationService.Current.State["UserInfo"] = driverLogin;
+                }
+                catch (Exception)
+                {
+
+                    //Login Failed | Đăng nhập không thành công
+                    MessageBox.Show(ConstantVariable.errLoginFailed);
                 }
             }
-            else
-            {
-                txt_Password.ChangeValidationState(ValidationState.Invalid, "");
-                txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
-            }
+//             if (txt_UserId.Text != "" && txt_Password.ToString() != "")
+//             {
+//                 int Temp = 0;
+//                
+//                     if (txt_UserId.Text == "admin@gmail.com" && txt_Password.Password == "admin")
+//                     {
+//                         Temp = 1;
+//                         NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative));
+//                     
+//                 }
+//                 if (Temp == 0)
+//                 {
+//                     txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+//                     txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
+//                 }
+//             }
+//             else
+//             {
+//                 txt_Password.ChangeValidationState(ValidationState.Invalid, "");
+//                 txt_UserId.ChangeValidationState(ValidationState.Invalid, "");
+//             }
 
         }
 
@@ -118,29 +244,5 @@ namespace FT_Driver.Pages
 
             NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
         }
-
-
-
-        //private async void getJsonFromPOST()
-        //{
-        //    string URL = ConstantVariable.tNetDriverLoginAddress; //"http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider"
-
-        //    Dictionary<string, string> parameter = new Dictionary<string, string>();
-        //    parameter.Add("json", "{\"uid\":\"dao@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}"); //fix data
-
-        //    HttpClient client = new HttpClient();
-        //    HttpContent contents = new FormUrlEncodedContent(parameter);
-        //    var response = await client.PostAsync(new Uri(URL), contents);
-        //    var reply = await response.Content.ReadAsStringAsync();
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        DriverLoginResponse DriverLogin = new DriverLoginResponse();
-        //        DriverLogin = JsonConvert.DeserializeObject<DriverLoginResponse>(response.Content.ReadAsStringAsync().Result);
-        //        string json = JsonConvert.SerializeObject(DriverLogin);
-        //        MessageBox.Show(json);
-        //    }
-        //}
-
-
     }
 }

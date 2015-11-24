@@ -138,13 +138,12 @@ namespace FT_Rider.Pages
             pickupLat = riderFirstGeoposition.Coordinate.Latitude;
             pickupLng = riderFirstGeoposition.Coordinate.Longitude;
 
+            riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
+
             //Set Center view
             map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
-            riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
             GetNearDriver();
-
-            //StartPickupTimer();
             
         }
 
@@ -153,11 +152,7 @@ namespace FT_Rider.Pages
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
 
-                Geocoordinate geocoordinate = null;
-                geocoordinate = args.Position.Coordinate;
-
-                //map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
-
+                Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
                 UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
                 marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
             });
