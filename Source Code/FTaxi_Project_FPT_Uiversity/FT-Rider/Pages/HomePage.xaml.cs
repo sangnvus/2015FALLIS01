@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading;
+using System.Windows.Input;
 using System.Windows.Threading;
 using System.IO.IsolatedStorage;
 using System.Device.Location;
@@ -26,7 +27,6 @@ using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
 
-
 namespace FT_Rider.Pages
 {
     public partial class HomePage : PhoneApplicationPage
@@ -40,7 +40,7 @@ namespace FT_Rider.Pages
         MapRoute riderMapRoute = null;
         Route riderRoute = null;
 
-        //For get Current Possirion
+        //For get Current Position
         Geolocator riderFirstGeolocator = null;
         Geoposition riderFirstGeoposition = null;
 
@@ -76,7 +76,7 @@ namespace FT_Rider.Pages
         bool isPickup = false;
 
         //for near driver
-        IDictionary<string, ListDriverDTO> nearDriverCollection;
+        IDictionary<string, ListDriverDTO> nearDriverCollection = new Dictionary<string, ListDriverDTO>();
 
         public HomePage()
         {
@@ -84,7 +84,7 @@ namespace FT_Rider.Pages
             InitializeComponent();
             //get First Local Position
             GetCurrentCoordinate();
-            //hide all step sceen
+            //hide all step screen
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
 
@@ -97,21 +97,13 @@ namespace FT_Rider.Pages
             LoadRiderProfile();
 
             //
-            pickupTimer = new DispatcherTimer();
-            pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
-            pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
+            //pickupTimer = new DispatcherTimer();
+            //pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
+            //pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
 
 
             //21.038556, 105.800667
         }
-
-
-
-
-
-
-
-
 
 
         private void pickupTimer_Tick(object sender, EventArgs e)
@@ -142,13 +134,17 @@ namespace FT_Rider.Pages
             riderFirstGeolocator.ReportInterval = 100;
             riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
-            //Set Center view
-            map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+            // initialize pickup coordinates
+            pickupLat = riderFirstGeoposition.Coordinate.Latitude;
+            pickupLng = riderFirstGeoposition.Coordinate.Longitude;
 
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
-            //StartPickupTimer();
-            //GetNearDriver();
+            //Set Center view
+            map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+
+            GetNearDriver();
+            
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -156,11 +152,7 @@ namespace FT_Rider.Pages
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
 
-                Geocoordinate geocoordinate = null;
-                geocoordinate = args.Position.Coordinate;
-
-                //map_RiderMap.SetView(geocoordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
-
+                Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
                 UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
                 marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
             });
@@ -185,7 +177,6 @@ namespace FT_Rider.Pages
             var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
             if (nearDriver.content.listDriverDTO.Count > 0)
             {
-                nearDriverCollection = new Dictionary<string, ListDriverDTO>();
                 foreach (var item in nearDriver.content.listDriverDTO)
                 {
                     nearDriverCollection[item.did.ToString()] = new ListDriverDTO
@@ -211,9 +202,13 @@ namespace FT_Rider.Pages
                         lng = item.lng
                     };
                 }
-                foreach (var item in nearDriverCollection.Values)
-                {
-                    ShowNearDrivers(item.did);
+//                 foreach (var item in nearDriverCollection.Values)
+//                 {
+//                     ShowNearDrivers(item.did);
+//                 }
+
+                foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection) {
+                    ShowNearDrivers(tmpIter.Key);
                 }
             }
         }
@@ -231,6 +226,12 @@ namespace FT_Rider.Pages
 
             //Add a tapped event
             taxiIcon.Tap += taxiIcon_Tap;
+            taxiIcon.Tap += (sender, eventArgs) =>
+            {
+                txt_OpenPrice.Text = nearDriverCollection[did].oPrice.ToString();
+            };
+
+
 
             //Create Taxi Name 
             TextBlock taxiName = new TextBlock();
@@ -273,6 +274,8 @@ namespace FT_Rider.Pages
 
             map_RiderMap.Layers.Add(riderMapLayer);
         }
+
+
 
         //Tapped event
         private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -452,6 +455,8 @@ namespace FT_Rider.Pages
 
             txt_RiderName.Text = userData.content.fName + " " + userData.content.lName;
             txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
+            //txt_OpenPrice.Text = 
+
 
         }
 
@@ -744,11 +749,12 @@ namespace FT_Rider.Pages
         //Event này để bắt trường hợp sau mỗi lần di chuyển map
         private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
         {
+            img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
             pickupLat = map_RiderMap.Center.Latitude;
             pickupLng = map_RiderMap.Center.Longitude;
             if (isPickup == true)
             {
-                pickupTimer.Start();
+                //pickupTimer.Start();
                 ShowPickerAddress();
                 GetNearDriver();
             }
@@ -759,7 +765,7 @@ namespace FT_Rider.Pages
         private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
-            pickupTimer.Stop();
+            //pickupTimer.Stop();
             isPickup = true;
         }
 
@@ -891,6 +897,11 @@ namespace FT_Rider.Pages
         private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
 
+        }
+
+        private void txt_PickupAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            setCursorAtLast(txt_PickupAddress);
         }
 
     }

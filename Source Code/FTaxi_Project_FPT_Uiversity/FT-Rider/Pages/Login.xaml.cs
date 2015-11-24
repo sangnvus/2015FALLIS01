@@ -28,6 +28,7 @@ namespace FT_Rider.Pages
     {
         IsolatedStorageFile iSOFile = IsolatedStorageFile.GetUserStoreForApplication();
         List<UserData> objUserDataList = new List<UserData>();
+        
 
         private bool Validate(string text)
         {
@@ -43,6 +44,9 @@ namespace FT_Rider.Pages
         public Login()
         {
             InitializeComponent();
+
+          
+
             this.txt_UserId.DataContext = new Data { Name = "Email" };
             this.txt_Password.DataContext = new Data { Name = "Passsword" };
             this.Loaded += Login_Loaded;

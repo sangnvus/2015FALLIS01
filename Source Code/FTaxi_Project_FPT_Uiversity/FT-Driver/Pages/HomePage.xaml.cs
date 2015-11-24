@@ -47,6 +47,9 @@ namespace FT_Driver.Pages
 
         //Rider Destination Icon Overlay
         MapOverlay riderDestinationIconOverlay;
+
+        //USER DATA
+        DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
                
 
 
@@ -61,6 +64,14 @@ namespace FT_Driver.Pages
             ShowCurrentLocalOnTheMap();
         }
 
+
+        //------ BEGIN get driver profile ------//
+        private void LoadDriverProfile()
+        {
+            tbl_FirstName.Text = userData.content.driverInfo.fName;
+            tbl_LastName.Text = userData.content.driverInfo.lName;
+        }
+        //------ END get driver profile ------//
 
 
 

@@ -93,10 +93,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\DriverFunctions.cs" />
     <Compile Include="Classes\DriverVehiceInfoObj.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
     <Compile Include="Classes\ConvertData.cs" />
-    <Compile Include="Classes\DriverLoginResponse.cs" />
+    <Compile Include="Classes\DriverLogin.cs" />
     <Compile Include="Classes\DriverSelectAvailableVehicle.cs" />
     <Compile Include="Classes\DriverSelectVehice.cs" />
     <Compile Include="Classes\DriverUpdateCurrentLocation.cs" />
@@ -104,6 +105,9 @@
     <Compile Include="Classes\GoogleAPIGeocoding.cs" />
     <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
     <Compile Include="Classes\Language.cs" />
+    <Compile Include="Classes\Md5Hash\helper.cs" />
+    <Compile Include="Classes\Md5Hash\MD5.cs" />
+    <Compile Include="Classes\MobileTypes.cs" />
     <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -221,7 +225,7 @@
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
     <Content Include="Images\Buttons\img_CallTaxiButton.png" />
-    <Content Include="Images\CarList\img_CarItemInLLS.jpg" />
+    <Content Include="Images\Buttons\img_Picker.png" />
     <Content Include="Images\CarsBar\img_Carbar_background.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />
@@ -272,10 +276,16 @@
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
     <Content Include="Images\Others\img_AppNavbar.png" />
-    <Content Include="Images\Others\img_DemoAvatar.jpg" />
+    <Content Include="Images\Others\img_DefaultAvatar.png" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
+    <Content Include="Images\Picker\img_PickerPin.png" />
+    <Content Include="Images\Picker\img_Picker_CallTaxi.png" />
+    <Content Include="Images\Picker\img_Picker_CarGoing.png" />
+    <Content Include="Images\Picker\img_Picker_NoCarYet.png" />
+    <Content Include="Images\Picker\img_Picker_SetPickup.png" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
+    <Content Include="Images\SearchBar\img_PNG_CloseIcon_Black.png" />
     <Content Include="Images\Taxis\img_CarIcon.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />

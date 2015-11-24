@@ -26,7 +26,7 @@ namespace FT_Driver.Pages
         {
 
             //Get JSON string when login
-            DriverLoginResponse driverLogin = new DriverLoginResponse();
+            DriverLogin driverLogin = new DriverLogin();
             string driverLoginUrl = ConstantVariable.tNetDriverLoginAddress;
             string driverLoginData = "{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}";
             string driverLoginJsonReturn = await GetJsonFromPOSTMethod.GetJsonString(driverLoginUrl, driverLoginData);
@@ -34,7 +34,7 @@ namespace FT_Driver.Pages
             try
             {
                 //2. Parse Object and Load to LLS
-                driverLogin = JsonConvert.DeserializeObject<DriverLoginResponse>(driverLoginJsonReturn);
+                driverLogin = JsonConvert.DeserializeObject<DriverLogin>(driverLoginJsonReturn);
                 ObservableCollection<DriverVehiceInfoObj> carListDataSource = new ObservableCollection<DriverVehiceInfoObj>();
                 lls_CarList.ItemsSource = carListDataSource;
 

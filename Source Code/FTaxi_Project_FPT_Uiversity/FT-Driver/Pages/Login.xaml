@@ -92,8 +92,6 @@
 
             <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="42" Margin="25,254,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
             <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="42" Margin="25,346,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserPassword.jpg"/>
-            <Button Content="View Maps" HorizontalAlignment="Center" Margin="140,557,153,0" VerticalAlignment="Top" Tap="Button_Tap"/>
-            <Button Content="Button" HorizontalAlignment="Left" Margin="156,645,0,0" VerticalAlignment="Top" Click="Button_Click"/>
         </Grid>
 
     </Grid>

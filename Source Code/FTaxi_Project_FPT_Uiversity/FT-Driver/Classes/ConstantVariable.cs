@@ -16,9 +16,10 @@ namespace FT_Driver.Classes
 
         //Messenger
         public const string errInvalidAddress = "Địa chỉ không hợp lệ, vui lòng thử lại!";
-        public const string errServiceIsOff = "Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.";
+        public const string errServiceIsOff = "Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt!";
         public const string errHasErrInProcess = "Đã có lỗi xảy ra trong quá trình hoạt động, vui lòng trở lại!";
         public const string errNoCarYet = "Không có taxi nào gần đây, vui lòng thử lại sau!";
+        public const string errLoginFailed = "Đăng nhập không thành công, vui lòng kiểm tra lại thông tin!";
 
 
         public const string tNetWsParameterName = "json";
@@ -29,12 +30,15 @@ namespace FT_Driver.Classes
         
 
         //Login Page
-        public const string strLoginSucess = "Đăng nhập thành công.";
+        public const string strLoginSucess = "Đăng nhập thành công!";
 
         //Card type
         public const String DIRECT = "DI";
 		public const String BANK_ACCOUNT = "BA";
 		public const String CREDIT_CARD = "CR";
 		public const String PAYPAL = "PP";
+
+        //Mobile Type
+        public const string mTypeWIN = "WIN";
     }
 }

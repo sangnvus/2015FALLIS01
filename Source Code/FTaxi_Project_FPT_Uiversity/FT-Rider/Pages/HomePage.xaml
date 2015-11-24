@@ -188,7 +188,7 @@
                     <Image x:Name="img_RequestTaxiBackground" Height="292" VerticalAlignment="Bottom" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png"/>
                     <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,0.2,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg" Margin="0"/>
-                    <TextBox x:Name="txt_PickupAddress" HorizontalAlignment="Left" Height="90" Margin="146,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus"/>
+                    <TextBox x:Name="txt_PickupAddress" HorizontalAlignment="Left" Height="90" Margin="146,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus" Tap="txt_PickupAddress_Tap"/>
                     <TextBox x:Name="txt_DestinationAddress" HorizontalAlignment="Left" Height="87" Margin="146,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus"/>
                     <TextBlock x:Name="txt_EstimatedCost" HorizontalAlignment="Right" Margin="0,7,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18"/>
                     <TextBlock x:Name="txt_OpenPrice" HorizontalAlignment="Right" Margin="0,7,245,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18"/>
@@ -209,7 +209,7 @@
                 </Grid>
                 <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="109" Margin="76,305,75,0" VerticalAlignment="Top" Width="329" d:IsHidden="True">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
-                    <Image x:Name="img_PickerLabel" HorizontalAlignment="Center" Height="66" VerticalAlignment="Top" Width="234" Margin="46,0,49,0" Source="/Images/Picker/img_Picker_SetPickup.png"/>
+                    <Image x:Name="img_PickerLabel" HorizontalAlignment="Center" Height="66" VerticalAlignment="Top" Width="234" Margin="46,0,49,0" Source="/Images/Picker/img_Picker_CallTaxi.png"/>
                 </Grid>
             </Grid>
         </Canvas>
