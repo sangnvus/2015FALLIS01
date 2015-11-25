@@ -256,7 +256,7 @@ namespace FT_Rider.Pages
         }
 
 
-        private async void txt_Password_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void txt_Password_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
         }
     }

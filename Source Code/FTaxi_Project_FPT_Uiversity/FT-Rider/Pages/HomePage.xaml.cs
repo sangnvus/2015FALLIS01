@@ -86,6 +86,7 @@ namespace FT_Rider.Pages
         double destinationLat; //Why Double? because destinationLat can be null
         double destinationLng;
         string pickupType = ConstantVariable.ONE_MANY;
+        RiderCreateTrip createTrip;
 
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
@@ -149,7 +150,6 @@ namespace FT_Rider.Pages
             //{"uid":"apl.ytb2@gmail.com","pw":"Abc123!","lan":"VI","cntry":"VN"}
             var uid = userData.content.uid;
             var pw = rawPassword;
-            string fileContent;
             var lan = userData.content.lan;
             var cntry = "VN";//userData.content.cntry;
             var input = string.Format("{{\"uid\":\"{0}\",\"pw\":{1},\"lan\":{2},\"cntry\":\"{3}\"}}", uid, pw, lan, cntry);
@@ -248,10 +248,6 @@ namespace FT_Rider.Pages
                         lng = item.lng
                     };
                 }
-                //                 foreach (var item in nearDriverCollection.Values)
-                //                 {
-                //                     ShowNearDrivers(item.did);
-                //                 }
 
                 foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
                 {
@@ -936,7 +932,7 @@ namespace FT_Rider.Pages
             {
                 uid = userData.content.uid,
                 rid = userData.content.rid,
-                did = { selectedDid },
+                did = new List<string> { selectedDid },
                 sAddr = txt_PickupAddress.Text,
                 eAddr = txt_DestinationAddress.Text,
                 sLat = pickupLat,
@@ -953,21 +949,21 @@ namespace FT_Rider.Pages
             };
 
 
-            MessageBox.Show(createTrip.cntry 
-                + createTrip.did + ", "
-                + createTrip.eAddr + ", "
-                + createTrip.eCity + ", "
-                + createTrip.eCityName + ", "
-                + createTrip.eLat + ", "
-                + createTrip.eLng + ", "
-                + createTrip.proCode + ", "
-                + createTrip.rid + ", "
-                + createTrip.rType + ", "
-                + createTrip.sAddr + ", "
-                + createTrip.sCity + ", "
-                + createTrip.sCityName + ", "
-                + createTrip.sLat + ", "
-                + createTrip.sLng + ", "
+            MessageBox.Show(createTrip.cntry
+                + createTrip.did[0] + ", \n"
+                + createTrip.eAddr + ", \n"
+                + createTrip.eCity + ", \n"
+                + createTrip.eCityName + ", \n"
+                + createTrip.eLat + ", \n"
+                + createTrip.eLng + ", \n"
+                + createTrip.proCode + ", \n"
+                + createTrip.rid + ", \n"
+                + createTrip.rType + ", \n"
+                + createTrip.sAddr + ", \n"
+                + createTrip.sCity + ", \n"
+                + createTrip.sCityName + ", \n"
+                + createTrip.sLat + ", \n"
+                + createTrip.sLng + ", \n"
                 + createTrip.uid);
 
         }
