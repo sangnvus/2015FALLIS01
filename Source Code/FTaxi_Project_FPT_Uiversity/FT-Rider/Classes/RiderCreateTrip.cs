@@ -8,21 +8,21 @@ namespace FT_Rider.Classes
 {
     class RiderCreateTrip
     {
-        private String uid;
-        private String rid;
-        private List<String> did;
-        private String sAddr;
-        private String eAddr;
-        private Double? sLat;
-        private Double? sLng;
-        private Double? eLat;
-        private Double? eLng;
-        private Double? sCity;
-        private Double? eCity;
-        private String sCityName;
-        private String eCityName;
-        private String cntry;
-        private String proCode;
-        private String rType; // request type : 1 - many, many
+        public String uid { get; set; }
+        public String rid { get; set; }
+        public List<String> did { get; set; }
+        public String sAddr { get; set; }
+        public String eAddr { get; set; }
+        public Double? sLat { get; set; }
+        public Double? sLng { get; set; }
+        public Double? eLat { get; set; }
+        public Double? eLng { get; set; }
+        public Double? sCity { get; set; }
+        public Double? eCity { get; set; }
+        public String sCityName { get; set; }
+        public String eCityName { get; set; }
+        public String cntry { get; set; }
+        public String proCode { get; set; }
+        public String rType { get; set; } // request type : 1 - many, many
     }
 }

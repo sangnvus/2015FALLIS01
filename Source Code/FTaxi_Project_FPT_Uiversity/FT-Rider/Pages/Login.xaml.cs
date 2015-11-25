@@ -48,7 +48,7 @@ namespace FT_Rider.Pages
 
             //Create Push notification Channel
             CreatePushChannel();
-          
+
 
             this.txt_UserId.DataContext = new Data { Name = "Email" };
             this.txt_Password.DataContext = new Data { Name = "Passsword" };
@@ -177,18 +177,28 @@ namespace FT_Rider.Pages
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var uid = txt_UserId.Text;
-            var pw = txt_Password.ActionButtonCommandParameter.ToString();
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
+            MD5.MD5 pw = new MD5.MD5();
+            pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
+            var pwmd5 = pw.FingerPrint.ToLower();
+            var mid = pushChannelURI;
+            var mType = ConstantVariable.mTypeWIN;
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
             try
             {
                 var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
-                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
+                if (riderLogin.content != null)
+                {
+                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                    PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
+                    PhoneApplicationService.Current.State["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
+                }
+                
             }
             catch (Exception)
             {
-                MessageBox.Show("Login fail!");
+                MessageBox.Show(ConstantVariable.errLoginFailed);
             }
             //if (txt_UserId.Text != "" && txt_Password.ToString() != "")
             //{
@@ -248,24 +258,6 @@ namespace FT_Rider.Pages
 
         private async void txt_Password_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            //check if input is "Enter" key
-            if (e.Key == System.Windows.Input.Key.Enter)
-            {
-                var uid = txt_UserId.Text;
-                var pw = txt_Password.ActionButtonCommandParameter.ToString();
-                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"\",\"mType\":\"AND\"}}", uid, pw);
-                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
-                try
-                {
-                    var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
-                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                    PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Login fail!");
-                }
-            }
         }
     }
 }

@@ -33,7 +33,7 @@ namespace FT_Driver.Pages
         public Login()
         {
             InitializeComponent();
-            CreatePushChannel();
+           
 
             this.txt_UserId.DataContext = new Data { Name = "Email" };
             this.txt_Password.DataContext = new Data { Name = "Passsword" };
@@ -43,7 +43,7 @@ namespace FT_Driver.Pages
         private void CreatePushChannel()
         {
             HttpNotificationChannel pushChannel;
-            string channelName = "FtaxiChannel";
+            string channelName = "FtaxiDriverChannel";
             pushChannel = HttpNotificationChannel.Find(channelName);
 
             if (pushChannel == null)
@@ -152,6 +152,8 @@ namespace FT_Driver.Pages
 
         private void Login_Loaded(object sender, RoutedEventArgs e)
         {
+            CreatePushChannel();
+
             var Settings = IsolatedStorageSettings.ApplicationSettings;
             //Check if user already login,so we need to direclty navigate to details page instead of showing login page when user launch the app.  
             if (Settings.Contains("CheckLogin"))
@@ -181,8 +183,8 @@ namespace FT_Driver.Pages
                 var uid = txt_UserId.Text;
                 MD5.MD5 pw = new MD5.MD5();
                 pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
-                var pwmd5 = pw.FingerPrint;
-                var mid = pushChannelURI;
+                var pwmd5 = pw.FingerPrint.ToLower();
+                var mid = pushChannelURI; //HttpUtility.UrlEncode(pushChannelURI); ;
                 var mType = ConstantVariable.mTypeWIN;
                 var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);

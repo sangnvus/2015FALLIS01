@@ -16,6 +16,7 @@ namespace FT_Rider.Classes
         public const string googleGeolocationAPIkey = "AIzaSyD4Y-OfQiAfs9hS_kyrfmzUSs5jY9gEKiY";
         public const string googleAPIGeocodingLatLngBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 
+
         //https://maps.googleapis.com/maps/api/distancematrix/json?
         //origins=21.032585,105.813623
         //&destinations=21.031849,105.826399
@@ -34,7 +35,7 @@ namespace FT_Rider.Classes
         public const string errHasErrInProcess = "Đã có lỗi xảy ra trong quá trình hoạt động, vui lòng trở lại!";
         public const string errNoCarYet = "Không có taxi nào gần đây, vui lòng thử lại sau!";
         public const string strLoginSucess = "Đăng nhập thành công.";
-
+        public const string errLoginFailed = "Đăng nhập không thành công!";
 
 
         //Rider Controller
@@ -42,6 +43,7 @@ namespace FT_Rider.Classes
         public const string tNetRiderLoginAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider";
         public const string tNetRiderGetNerDriverAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/GetNearDriver";
         public const string tNetRiderRegisterAddress = "http://123.30.236.109:8088/TN/restServices/TestController/RegisterRider";
+        public const string tNetRiderGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
 
 
 
@@ -54,5 +56,10 @@ namespace FT_Rider.Classes
         //Trip Type
         public const String ONE_MANY = "OM";
         public const String MANY = "MN";
+
+        //Mobile Type
+        public const string mTypeWIN = "WIN";
+
+       
     }
 }

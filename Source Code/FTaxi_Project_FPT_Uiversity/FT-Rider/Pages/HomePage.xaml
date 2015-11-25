@@ -186,7 +186,7 @@
                 </Grid>
                 <Grid x:Name="grv_Step02" Height="334" VerticalAlignment="Bottom">
                     <Image x:Name="img_RequestTaxiBackground" Height="292" VerticalAlignment="Bottom" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png"/>
-                    <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,0.2,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg"/>
+                    <Image x:Name="img_RequestTaxiButton" Height="62" Margin="0,0.2,0,0" VerticalAlignment="Bottom" Source="/Images/Grid_RequestTaxi/img_RequestTaxiButton.jpg" Tap="img_RequestTaxiButton_Tap"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg" Margin="0"/>
                     <TextBox x:Name="txt_PickupAddress" HorizontalAlignment="Left" Height="90" Margin="146,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus" Tap="txt_PickupAddress_Tap"/>
                     <TextBox x:Name="txt_DestinationAddress" HorizontalAlignment="Left" Height="87" Margin="146,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus"/>

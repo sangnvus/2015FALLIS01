@@ -16,6 +16,10 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
+using System.Data.Linq;
+using System.ComponentModel;
+using System.IO;
+using Windows.Storage;
 using Windows.Devices.Geolocation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -26,6 +30,7 @@ using Microsoft.Devices;
 using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
+
 
 namespace FT_Rider.Pages
 {
@@ -51,21 +56,17 @@ namespace FT_Rider.Pages
         VibrateController vibrateController = VibrateController.Default;
 
         //For Distance
-        Double distanceMeter;
+        Double? distanceMeter = null;
 
         //Rider Destination Icon Overlay
         MapOverlay riderDestinationIconOverlay;
 
         //for car types
-        string taxiType;
+        string taxiType = null;
 
         //USER DATA
         RiderLogin userData = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
-
-        //For GET PICK UP
-        Double pickupLat;
-        Double pickupLng;
-
+        string rawPassword = PhoneApplicationService.Current.State["RawPassword"] as string;
 
         //For menu
         double initialPosition;
@@ -77,17 +78,30 @@ namespace FT_Rider.Pages
 
         //for near driver
         IDictionary<string, ListDriverDTO> nearDriverCollection = new Dictionary<string, ListDriverDTO>();
+        string selectedDid = null;
+
+        //For GET PICK UP & Create Trip
+        double pickupLat;
+        double pickupLng;
+        double destinationLat; //Why Double? because destinationLat can be null
+        double destinationLng;
+        string pickupType = ConstantVariable.ONE_MANY;
+
+        //For City Name
+        IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
+
 
         public HomePage()
         {
 
             InitializeComponent();
+
             //get First Local Position
             GetCurrentCoordinate();
+
             //hide all step screen
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
-
             this.lls_AutoComplete.IsEnabled = false;
 
             //default taxi type
@@ -96,14 +110,17 @@ namespace FT_Rider.Pages
             //Load Rider Profile on Left Menu
             LoadRiderProfile();
 
+            //Create CityName DB
+            LoadCityNameDataBase();
+
             //
             //pickupTimer = new DispatcherTimer();
             //pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
             //pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
-
-
-            //21.038556, 105.800667
         }
+
+
+
 
 
         private void pickupTimer_Tick(object sender, EventArgs e)
@@ -125,6 +142,35 @@ namespace FT_Rider.Pages
         }
 
 
+
+        //Check exxception input // and cntry is VN
+        public async void LoadCityNameDataBase()
+        {
+            //{"uid":"apl.ytb2@gmail.com","pw":"Abc123!","lan":"VI","cntry":"VN"}
+            var uid = userData.content.uid;
+            var pw = rawPassword;
+            string fileContent;
+            var lan = userData.content.lan;
+            var cntry = "VN";//userData.content.cntry;
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":{1},\"lan\":{2},\"cntry\":\"{3}\"}}", uid, pw, lan, cntry);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetCityName, input);
+            var cityItem = JsonConvert.DeserializeObject<RiderGetCityNames>(output);
+            foreach (var item in cityItem.content.list)
+            {
+                cityNamesDB[item.cityName] = new RiderGetCityList
+                {
+                    cityId = item.cityId,
+                    lan = item.lan,
+                    cityName = item.cityName,
+                    googleName = item.googleName,
+                    lat = item.lat,
+                    lng = item.lng
+                };
+            }
+        }
+
+
+
         //------ BEGIN get current Position ------//
         private async void GetCurrentCoordinate()
         {
@@ -144,7 +190,7 @@ namespace FT_Rider.Pages
             map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
             GetNearDriver();
-            
+
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -202,12 +248,13 @@ namespace FT_Rider.Pages
                         lng = item.lng
                     };
                 }
-//                 foreach (var item in nearDriverCollection.Values)
-//                 {
-//                     ShowNearDrivers(item.did);
-//                 }
+                //                 foreach (var item in nearDriverCollection.Values)
+                //                 {
+                //                     ShowNearDrivers(item.did);
+                //                 }
 
-                foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection) {
+                foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                {
                     ShowNearDrivers(tmpIter.Key);
                 }
             }
@@ -229,6 +276,7 @@ namespace FT_Rider.Pages
             taxiIcon.Tap += (sender, eventArgs) =>
             {
                 txt_OpenPrice.Text = nearDriverCollection[did].oPrice.ToString();
+                selectedDid = did;
             };
 
 
@@ -849,50 +897,6 @@ namespace FT_Rider.Pages
 
 
 
-        //private async void GetNearDriverNew()
-        //{
-        //    var uid = userData.content.uid;
-        //    var lat = pickupLat;
-        //    var lng = pickupLng;
-        //    var clvl = taxiType;
-
-        //    var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
-        //    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-        //    var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
-        //    if (nearDriver.content.listDriverDTO.Count > 0)
-        //    {
-        //        IDictionary<string, ListDriverDTO> col = new Dictionary<string, ListDriverDTO>();
-        //        foreach (var item in nearDriver.content.listDriverDTO)
-        //        {
-        //            col[item.did.ToString()] = new ListDriverDTO
-        //            {
-        //                did = item.did,
-        //                fName = item.fName,
-        //                lName = item.lName,
-        //                cName = item.cName,
-        //                mobile = item.mobile,
-        //                rate = item.rate,
-        //                oPrice = item.oPrice,
-        //                oKm = item.oKm,
-        //                f1Price = item.f1Price,
-        //                f1Km = item.f1Km,
-        //                f2Price = item.f2Price,
-        //                f2Km = item.f2Km,
-        //                f3Price = item.f3Price,
-        //                f3Km = item.f3Km,
-        //                f4Price = item.f4Price,
-        //                f4Km = item.f4Km,
-        //                img = item.img,
-        //                lat = item.lat,
-        //                lng = item.lng
-        //            };
-        //        }
-        //        foreach (var taxi in nearDriver.content.listDriverDTO)
-        //        {
-        //            //ShowNearDrivers(taxi.lat, taxi.lng, taxi.cName, taxi.did);
-        //        }
-        //    }
-        //}
 
         private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
@@ -904,6 +908,76 @@ namespace FT_Rider.Pages
             setCursorAtLast(txt_PickupAddress);
         }
 
-    }
 
+        //Focus to "PickupType"
+        private async void img_RequestTaxiButton_Tap(object sender, System.Windows.Input.GestureEventArgs e) //Check null input
+        {
+            int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
+            string eCityName;
+            int eCity;
+            if (destinationLat == 0 && destinationLng == 0)
+            {
+                eCity = 0;
+                eCityName = "";
+            }
+            else
+            {
+                eCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng));
+                eCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng);
+            }
+
+            string sCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng);
+            string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
+            string proCode = "";
+
+
+            //Create Request Trip Onject 
+            RiderCreateTrip createTrip = new RiderCreateTrip
+            {
+                uid = userData.content.uid,
+                rid = userData.content.rid,
+                did = { selectedDid },
+                sAddr = txt_PickupAddress.Text,
+                eAddr = txt_DestinationAddress.Text,
+                sLat = pickupLat,
+                sLng = pickupLng,
+                eLat = destinationLat,
+                eLng = destinationLng,
+                sCity = sCity,
+                eCity = eCity,
+                sCityName = sCityName,
+                eCityName = eCityName,
+                cntry = cntry,
+                proCode = proCode,
+                rType = pickupType
+            };
+
+
+            MessageBox.Show(createTrip.cntry 
+                + createTrip.did + ", "
+                + createTrip.eAddr + ", "
+                + createTrip.eCity + ", "
+                + createTrip.eCityName + ", "
+                + createTrip.eLat + ", "
+                + createTrip.eLng + ", "
+                + createTrip.proCode + ", "
+                + createTrip.rid + ", "
+                + createTrip.rType + ", "
+                + createTrip.sAddr + ", "
+                + createTrip.sCity + ", "
+                + createTrip.sCityName + ", "
+                + createTrip.sLat + ", "
+                + createTrip.sLng + ", "
+                + createTrip.uid);
+
+        }
+
+
+
+        private int GetCityCodeFromCityName(string cityName)
+        {
+            return cityNamesDB[cityName].cityId;
+        }
+
+    }
 }

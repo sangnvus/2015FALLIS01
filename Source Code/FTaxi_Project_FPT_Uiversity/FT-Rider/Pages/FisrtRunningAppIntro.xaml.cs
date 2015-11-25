@@ -73,5 +73,11 @@ namespace FT_Rider.Pages
            
         }
 
+        private async void btn_check_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string cname = await GoogleAPIFunction.GetCityNameFromCoordinate(21.038472, 105.8014108);
+            MessageBox.Show(cname);
+        }
+
     }
 }

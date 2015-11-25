@@ -28,16 +28,16 @@ namespace FT_Driver.Pages
     public partial class HomePage : PhoneApplicationPage
     {
         //For Store Points
-        List<GeoCoordinate> riderCoordinates = new List<GeoCoordinate>();
+        List<GeoCoordinate> driverCoordinates = new List<GeoCoordinate>();
 
         //For Router        
-        GeocodeQuery riderGeocodeQuery = null;
-        RouteQuery riderQuery = null;
-        MapRoute riderMapRoute = null;
-        Route riderRoute = null;
+        GeocodeQuery driverGeocodeQuery = null;
+        RouteQuery driverQuery = null;
+        MapRoute driverMapRoute = null;
+        Route driverRoute = null;
 
         //For map layer
-        MapLayer riderMapLayer;
+        MapLayer driverMapLayer;
 
         //VibrateController
         VibrateController vibrateController = VibrateController.Default;
@@ -46,7 +46,7 @@ namespace FT_Driver.Pages
         Double distanceMeter;
 
         //Rider Destination Icon Overlay
-        MapOverlay riderDestinationIconOverlay;
+        MapOverlay driverDestinationIconOverlay;
 
         //USER DATA
         DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
@@ -62,6 +62,7 @@ namespace FT_Driver.Pages
             InitializeComponent();
             //get First Local Position
             ShowCurrentLocalOnTheMap();
+            LoadDriverProfile();
         }
 
 
@@ -80,39 +81,39 @@ namespace FT_Driver.Pages
         {
        
             //get position
-            Geolocator riderFirstGeolocator = new Geolocator();
-            Geoposition riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync();
-            Geocoordinate riderFirstGeocoordinate = riderFirstGeoposition.Coordinate;
-            GeoCoordinate riderFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(riderFirstGeocoordinate);
+            Geolocator driverFirstGeolocator = new Geolocator();
+            Geoposition driverFirstGeoposition = await driverFirstGeolocator.GetGeopositionAsync();
+            Geocoordinate driverFirstGeocoordinate = driverFirstGeoposition.Coordinate;
+            GeoCoordinate driverFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(driverFirstGeocoordinate);
 
 
             //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_DriverMap.Center = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude - 0.001500, riderFirstGeoposition.Coordinate.Longitude);
+            this.map_DriverMap.Center = new GeoCoordinate(driverFirstGeoposition.Coordinate.Latitude - 0.001500, driverFirstGeoposition.Coordinate.Longitude);
             this.map_DriverMap.ZoomLevel = 16;
 
             //Show maker
 
             // Create a small circle to mark the current location.
-            Ellipse firstRiderPositionIcon = new Ellipse();
-            firstRiderPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-            firstRiderPositionIcon.Height = 15;
-            firstRiderPositionIcon.Width = 15;
-            firstRiderPositionIcon.Opacity = 100;
+            Ellipse firstDriverPositionIcon = new Ellipse();
+            firstDriverPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
+            firstDriverPositionIcon.Height = 15;
+            firstDriverPositionIcon.Width = 15;
+            firstDriverPositionIcon.Opacity = 100;
 
             // Create a MapOverlay to contain the circle.
-            MapOverlay firstRiderLocationOverlay = new MapOverlay();
-            firstRiderLocationOverlay.Content = firstRiderPositionIcon;
+            MapOverlay firstDriverLocationOverlay = new MapOverlay();
+            firstDriverLocationOverlay.Content = firstDriverPositionIcon;
 
             //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            firstRiderLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            firstRiderLocationOverlay.GeoCoordinate = riderFirstGeoCoordinate;
+            firstDriverLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+            firstDriverLocationOverlay.GeoCoordinate = driverFirstGeoCoordinate;
 
             // Create a MapLayer to contain the MapOverlay.
-            riderMapLayer = new MapLayer();
-            riderMapLayer.Add(firstRiderLocationOverlay);
+            driverMapLayer = new MapLayer();
+            driverMapLayer.Add(firstDriverLocationOverlay);
 
             // Add the MapLayer to the Map.
-            map_DriverMap.Layers.Add(riderMapLayer);
+            map_DriverMap.Layers.Add(driverMapLayer);
 
         }
         //------ END get current Position ------//
@@ -125,25 +126,25 @@ namespace FT_Driver.Pages
         //------ BEGIN route Direction on Map ------//
         private async void getMapRouteTo(double lat, double lng)
         {
-            //riderCoordinates.RemoveAll(item => item == null);
+            //driverCoordinates.RemoveAll(item => item == null);
             //Delete Previous Route if exist
-            if (riderMapRoute != null)
+            if (driverMapRoute != null)
             {
                 //delete route
-                map_DriverMap.RemoveRoute(riderMapRoute);
-                riderMapRoute = null;
-                riderQuery = null;                
-                riderMapLayer.Remove(riderDestinationIconOverlay);
+                map_DriverMap.RemoveRoute(driverMapRoute);
+                driverMapRoute = null;
+                driverQuery = null;                
+                driverMapLayer.Remove(driverDestinationIconOverlay);
             }
 
-            Geolocator riderGeolocator = new Geolocator();
-            riderGeolocator.DesiredAccuracyInMeters = 5;
-            Geoposition riderGeoPosition = null;
+            Geolocator driverGeolocator = new Geolocator();
+            driverGeolocator.DesiredAccuracyInMeters = 5;
+            Geoposition driverGeoPosition = null;
             try
             {
                 //Set Position point
-                riderGeoPosition = await riderGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-                riderCoordinates.Add(new GeoCoordinate(riderGeoPosition.Coordinate.Latitude, riderGeoPosition.Coordinate.Longitude));
+                driverGeoPosition = await driverGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+                driverCoordinates.Add(new GeoCoordinate(driverGeoPosition.Coordinate.Latitude, driverGeoPosition.Coordinate.Longitude));
             }
             catch (UnauthorizedAccessException)
             {
@@ -156,13 +157,13 @@ namespace FT_Driver.Pages
                 MessageBox.Show(ex.Message);
             }
 
-            riderGeocodeQuery = new GeocodeQuery();
-            riderGeocodeQuery.SearchTerm = lat.ToString().Replace(',', '.') + "," + lng.ToString().Replace(',', '.');
-            riderGeocodeQuery.GeoCoordinate = new GeoCoordinate(riderGeoPosition.Coordinate.Latitude, riderGeoPosition.Coordinate.Longitude);
+            driverGeocodeQuery = new GeocodeQuery();
+            driverGeocodeQuery.SearchTerm = lat.ToString().Replace(',', '.') + "," + lng.ToString().Replace(',', '.');
+            driverGeocodeQuery.GeoCoordinate = new GeoCoordinate(driverGeoPosition.Coordinate.Latitude, driverGeoPosition.Coordinate.Longitude);
 
 
-            riderGeocodeQuery.QueryCompleted += Mygeocodequery_QueryCompleted;
-            riderGeocodeQuery.QueryAsync();
+            driverGeocodeQuery.QueryCompleted += Mygeocodequery_QueryCompleted;
+            driverGeocodeQuery.QueryAsync();
         }
 
 
@@ -172,12 +173,12 @@ namespace FT_Driver.Pages
             {
                 try
                 {
-                    riderQuery = new RouteQuery();
-                    riderCoordinates.Add(e.Result[0].GeoCoordinate);
-                    riderQuery.Waypoints = riderCoordinates;
-                    riderQuery.QueryCompleted += MyQuery_QueryCompleted;
-                    riderQuery.QueryAsync();
-                    riderGeocodeQuery.Dispose();
+                    driverQuery = new RouteQuery();
+                    driverCoordinates.Add(e.Result[0].GeoCoordinate);
+                    driverQuery.Waypoints = driverCoordinates;
+                    driverQuery.QueryCompleted += MyQuery_QueryCompleted;
+                    driverQuery.QueryAsync();
+                    driverGeocodeQuery.Dispose();
                 }
                 catch (Exception)
                 {
@@ -195,22 +196,22 @@ namespace FT_Driver.Pages
             //if valid address input
             if (e.Error == null)
             {
-                //if (riderMapRoute != null)
+                //if (driverMapRoute != null)
                 //{
-                //    map_DriverMap.RemoveRoute(riderMapRoute);
-                //    riderMapLayer.Remove(riderDestinationIconOverlay);
-                //    riderMapRoute = null;
+                //    map_DriverMap.RemoveRoute(driverMapRoute);
+                //    driverMapLayer.Remove(driverDestinationIconOverlay);
+                //    driverMapRoute = null;
                 //}                
-                riderRoute = e.Result;
-                riderMapRoute = new MapRoute(riderRoute);
+                driverRoute = e.Result;
+                driverMapRoute = new MapRoute(driverRoute);
                 //Makeup for router
-                riderMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
-                map_DriverMap.AddRoute(riderMapRoute);
-                riderQuery.Dispose();
+                driverMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
+                map_DriverMap.AddRoute(driverMapRoute);
+                driverQuery.Dispose();
 
                 //get Coordinate of Destination Point
-                double destinationLatitude = riderCoordinates[riderCoordinates.Count - 1].Latitude;
-                double destinationLongtitude = riderCoordinates[riderCoordinates.Count - 1].Longitude;
+                double destinationLatitude = driverCoordinates[driverCoordinates.Count - 1].Latitude;
+                double destinationLongtitude = driverCoordinates[driverCoordinates.Count - 1].Longitude;
 
                 //Set Map Center
                 this.map_DriverMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
@@ -222,22 +223,22 @@ namespace FT_Driver.Pages
                 myPositionIcon.Width = 29;
 
                 // Create a MapOverlay to contain the circle.
-                riderDestinationIconOverlay = new MapOverlay();
-                riderDestinationIconOverlay.Content = myPositionIcon;
+                driverDestinationIconOverlay = new MapOverlay();
+                driverDestinationIconOverlay.Content = myPositionIcon;
 
                 //MapOverlay PositionOrigin to 0.3, 0.9 MapOverlay will align it's center towards the GeoCoordinate
-                riderDestinationIconOverlay.PositionOrigin = new Point(0.3, 0.9);
-                riderDestinationIconOverlay.GeoCoordinate = new GeoCoordinate(destinationLatitude, destinationLongtitude);
+                driverDestinationIconOverlay.PositionOrigin = new Point(0.3, 0.9);
+                driverDestinationIconOverlay.GeoCoordinate = new GeoCoordinate(destinationLatitude, destinationLongtitude);
 
                 // Create a MapLayer to contain the MapOverlay.
-                riderMapLayer = new MapLayer();
-                riderMapLayer.Add(riderDestinationIconOverlay);
+                driverMapLayer = new MapLayer();
+                driverMapLayer.Add(driverDestinationIconOverlay);
 
                 // Add the MapLayer to the Map.
-                map_DriverMap.Layers.Add(riderMapLayer);
+                map_DriverMap.Layers.Add(driverMapLayer);
 
                 //Calculate Distance
-                distanceMeter = Math.Round(GetTotalDistance(riderCoordinates), 0); //Round double in zero decimal places
+                distanceMeter = Math.Round(GetTotalDistance(driverCoordinates), 0); //Round double in zero decimal places
             }
             else
             {
@@ -250,13 +251,13 @@ namespace FT_Driver.Pages
 
         //private void getRouteTo(GeoCoordinate myPosition, GeoCoordinate destination)
         //{
-        //    if (riderMapRoute != null)
+        //    if (driverMapRoute != null)
         //    {
-        //        map_DriverMap.RemoveRoute(riderMapRoute);
-        //        riderMapRoute = null;
-        //        riderQuery = null;
+        //        map_DriverMap.RemoveRoute(driverMapRoute);
+        //        driverMapRoute = null;
+        //        driverQuery = null;
         //    }
-        //    riderQuery = new RouteQuery()
+        //    driverQuery = new RouteQuery()
         //    {
         //        TravelMode = TravelMode.Driving,
         //        Waypoints = new List<GeoCoordinate>()
@@ -266,18 +267,18 @@ namespace FT_Driver.Pages
         //    },
         //        RouteOptimization = RouteOptimization.MinimizeTime
         //    };
-        //    riderQuery.QueryCompleted += riderRouteQuery_QueryCompleted;
-        //    riderQuery.QueryAsync();
+        //    driverQuery.QueryCompleted += driverRouteQuery_QueryCompleted;
+        //    driverQuery.QueryAsync();
         //}
-        //void riderRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        //void driverRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
         //{
         //    if (e.Error == null)
         //    {
         //        Route newRoute = e.Result;
 
-        //        riderMapRoute = new MapRoute(newRoute);
-        //        map_DriverMap.AddRoute(riderMapRoute);
-        //        riderQuery.Dispose();
+        //        driverMapRoute = new MapRoute(newRoute);
+        //        map_DriverMap.AddRoute(driverMapRoute);
+        //        driverQuery.Dispose();
         //    }
         //}
 
@@ -358,10 +359,10 @@ namespace FT_Driver.Pages
             myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
 
             //Add to Map's Layer
-            riderMapLayer = new MapLayer();
-            riderMapLayer.Add(myTaxiOvelay);
+            driverMapLayer = new MapLayer();
+            driverMapLayer.Add(myTaxiOvelay);
 
-            map_DriverMap.Layers.Add(riderMapLayer);
+            map_DriverMap.Layers.Add(driverMapLayer);
         }
 
         //Tapped event

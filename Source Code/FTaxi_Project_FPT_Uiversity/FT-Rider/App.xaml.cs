@@ -12,6 +12,7 @@ namespace FT_Rider
 {
     public partial class App : Application
     {
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -54,6 +55,7 @@ namespace FT_Rider
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
+
 
         }
 

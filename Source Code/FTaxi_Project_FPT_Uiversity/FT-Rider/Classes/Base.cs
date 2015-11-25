@@ -12,4 +12,5 @@ namespace FT_Rider.Classes
         public long lmd { get; set; }
         public Object content { get; set; }
     }
+
 }

@@ -26,6 +26,31 @@ namespace FT_Rider.Classes
         }
 
 
+
+
+        public async static Task<string> GetCountryNameFromCoordinate(double lat, double lng)
+        {
+            string cntryName;
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(lat, lng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+            cntryName = address.results[0].address_components[address.results[0].address_components.Count - 1].short_name;
+
+            return cntryName;
+        }
+
+
+        public async static Task<string> GetCityNameFromCoordinate(double lat, double lng)
+        {
+            string cityName;
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(lat, lng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+            cityName = address.results[0].address_components[address.results[0].address_components.Count - 2].long_name;
+
+            return cityName;
+        }
+
+
+
         public static async Task<GoogleAPIAddressObj> ConvertAddressToLatLng(string address)
         {
             GoogleAPIAddressObj latLngObj = new GoogleAPIAddressObj();
@@ -41,6 +66,11 @@ namespace FT_Rider.Classes
 
             return latLngObj;
         }
+
+
+
+
+
 
 
         //Input Address (ex: 18 Pham Hung)
@@ -61,6 +91,12 @@ namespace FT_Rider.Classes
 
             return addressObj;
         }
+
+
+
+
+
+
 
         public static async Task<int> GetDistance(Double sLat, Double sLng, Double eLat, Double eLng)
         {

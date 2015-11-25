@@ -53,5 +53,8 @@ namespace FT_Rider.Classes
             }
             return price;
         }
+
+
+
     }
 }
