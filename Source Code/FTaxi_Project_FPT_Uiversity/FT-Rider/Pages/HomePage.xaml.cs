@@ -832,7 +832,7 @@ namespace FT_Rider.Pages
 
         private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            ((Storyboard)FindResource("animate")).Begin(img_PickerLabel);
+            //((Storyboard)FindResource("animate")).Begin(img_PickerLabel);
             //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
             //pickupTimer.Stop();
             img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
