@@ -824,6 +824,7 @@ namespace FT_Rider.Pages
                 //pickupTimer.Start();
                 ShowPickerAddress();
                 GetNearDriver();
+                //
             }
             isPickup = false;
         }
