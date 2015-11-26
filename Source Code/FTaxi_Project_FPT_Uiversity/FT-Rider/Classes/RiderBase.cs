@@ -8,11 +8,11 @@ using System.Runtime.Serialization;
 namespace FT_Rider.Classes
 {
 
-    class RiderBase 
+    public class RiderBase 
     {
-        private String id { get; set; }
-        private String uid { get; set; }
-        private String key { get; set; }
-        private String value { get; set; }
+        public String id { get; set; }
+        public String uid { get; set; }
+        public String key { get; set; }
+        public String value { get; set; }
     }
 }
