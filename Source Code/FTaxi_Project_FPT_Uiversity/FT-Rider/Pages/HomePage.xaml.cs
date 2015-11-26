@@ -949,24 +949,24 @@ namespace FT_Rider.Pages
             };
 
 
-            MessageBox.Show(createTrip.cntry
-                + createTrip.did[0] + ", \n"
-                + createTrip.eAddr + ", \n"
-                + createTrip.eCity + ", \n"
-                + createTrip.eCityName + ", \n"
-                + createTrip.eLat + ", \n"
-                + createTrip.eLng + ", \n"
-                + createTrip.proCode + ", \n"
-                + createTrip.rid + ", \n"
-                + createTrip.rType + ", \n"
-                + createTrip.sAddr + ", \n"
-                + createTrip.sCity + ", \n"
-                + createTrip.sCityName + ", \n"
-                + createTrip.sLat + ", \n"
-                + createTrip.sLng + ", \n"
-                + createTrip.uid);
+            //MessageBox.Show(createTrip.cntry
+            //    + createTrip.did[0] + ", \n"
+            //    + createTrip.eAddr + ", \n"
+            //    + createTrip.eCity + ", \n"
+            //    + createTrip.eCityName + ", \n"
+            //    + createTrip.eLat + ", \n"
+            //    + createTrip.eLng + ", \n"
+            //    + createTrip.proCode + ", \n"
+            //    + createTrip.rid + ", \n"
+            //    + createTrip.rType + ", \n"
+            //    + createTrip.sAddr + ", \n"
+            //    + createTrip.sCity + ", \n"
+            //    + createTrip.sCityName + ", \n"
+            //    + createTrip.sLat + ", \n"
+            //    + createTrip.sLng + ", \n"
+            //    + createTrip.uid);
 
-            //update
+            ////update
 
         }
 
