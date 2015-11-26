@@ -271,26 +271,30 @@ namespace FT_Rider.Pages
                 //    serializer.WriteObject(fileStream, objUserDataList);
 
                 //}
-                var userId = txt_UserId.Text;
-                var password = txt_Password.ActionButtonCommandParameter.ToString();
-                var country = "VN";
+
+                //Recheck PMT input
+                var uid = txt_UserId.Text;
+                MD5.MD5 pw = new MD5.MD5();
+                pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
+                var pwmd5 = pw.FingerPrint.ToLower();
+                var cntry = "VN";
                 var fName = txt_FirstName.Text;
                 var lName = txt_LastName.Text;
-                var lang = "vi";
+                var lan = "vi";
                 var mobile = txt_Mobile.Text;
 
                 //var pw = txt_Password.ActionButtonCommandParameter.ToString();
-                var input = string.Format("{{\"cntry\":\"{0}\",\"fName\":\"{1}\",\"pmt\":null,\"lName\":\"{2}\",\"lan\":\"{3}\",\"mobile\":\"{4}\",\"pw\":\"{5}\",\"uid\":\"{6}\"}}", country, lName,fName,lang,mobile,password, userId);
+                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"fName\":{2},\"lName\":\"{3}\",\"mobile\":\"{4}\",\"lan\":\"{5}\",\"cntry\":\"{6}\",\"pmt\":null}}", uid, pw, fName, lName, mobile, lan, cntry);
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderRegisterAddress, input);
                 var result = JsonConvert.DeserializeObject<BaseResponse>(output);
                 if (result.status.Equals("0000"))
                 {
-                    MessageBox.Show("Đăng ký thành công.");
+                    MessageBox.Show(ConstantVariable.strLoginSuccessed);
                     NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
                 }
                 else
                 {
-                    MessageBox.Show("Đăng ký không thành công.");
+                    MessageBox.Show(ConstantVariable.errRegisterFailed);
                 }
             }
 

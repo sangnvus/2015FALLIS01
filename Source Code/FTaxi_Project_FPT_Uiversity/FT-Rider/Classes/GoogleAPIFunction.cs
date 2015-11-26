@@ -98,7 +98,7 @@ namespace FT_Rider.Classes
 
 
 
-        public static async Task<int> GetDistance(Double sLat, Double sLng, Double eLat, Double eLng)
+        public static async Task<double> GetDistance(Double sLat, Double sLng, Double eLat, Double eLng)
         {
             var URL = ConstantVariable.googleAPIDistanceMatrixBaseURI1
                 + sLat + "," + sLng
@@ -109,8 +109,8 @@ namespace FT_Rider.Classes
 
             var returnString = await ReqAndRes.GetJsonString(URL);
             var distance = JsonConvert.DeserializeObject<GoogleAPIDistanceMatrixObj>(returnString);
-
-            return int.Parse(distance.rows[0].elements[0].distance.ToString());
+            var rawDistance = double.Parse(distance.rows[0].elements[0].distance.value.ToString())/1000;
+            return rawDistance;
             //{
             //"destination_addresses" : [ "143 Kim Mã, Kim Mã, Ba Đình, Hà Nội, Việt Nam" ],
             //"origin_addresses" : [ "50 Liễu Giai, Ngọc Khánh, Ba Đình, Hà Nội, Việt Nam" ],

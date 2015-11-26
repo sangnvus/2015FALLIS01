@@ -32,6 +32,7 @@
         <Color x:Key="lls_ColorBackground">#FF060F27</Color>
         <Color x:Key="textbox_TextColor_SpaceGray">#FF060F27</Color>
         <Color x:Key="icoBGColor">#FFE6E6E6</Color>
+        <Color x:Key="Button_AcceptColor">#FF59B747</Color>
 
     </Application.Resources>
 

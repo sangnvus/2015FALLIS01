@@ -34,17 +34,20 @@ namespace FT_Rider.Classes
         public const string errServiceIsOff = "Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.";
         public const string errHasErrInProcess = "Đã có lỗi xảy ra trong quá trình hoạt động, vui lòng trở lại!";
         public const string errNoCarYet = "Không có taxi nào gần đây, vui lòng thử lại sau!";
-        public const string strLoginSucess = "Đăng nhập thành công.";
         public const string errLoginFailed = "Đăng nhập không thành công!";
+        public const string errRegisterFailed = "Đăng ký không thành công!";
+        public const string strLoginSucess = "Đăng nhập thành công.";
+        public const string strLoginSuccessed = "Đăng ký thành công!";
 
-
+        
         //Rider Controller
         public const string tNetWsParameterName = "json";
         public const string tNetRiderLoginAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider";
         public const string tNetRiderGetNerDriverAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/GetNearDriver";
         public const string tNetRiderRegisterAddress = "http://123.30.236.109:8088/TN/restServices/TestController/RegisterRider";
         public const string tNetRiderGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
-
+        public const string tNetRiderCreateTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CreateTrip";
+        
 
 
         //Card type
@@ -59,6 +62,8 @@ namespace FT_Rider.Classes
 
         //Mobile Type
         public const string mTypeWIN = "WIN";
+
+
 
        
     }

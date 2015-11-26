@@ -50,8 +50,8 @@ namespace FT_Rider.Pages
             CreatePushChannel();
 
 
-            this.txt_UserId.DataContext = new Data { Name = "Email" };
-            this.txt_Password.DataContext = new Data { Name = "Passsword" };
+            this.txt_UserId.DataContext = new Data { Name = "Tên tài khoàn" };
+            this.txt_Password.DataContext = new Data { Name = "Mật khẩu" };
             this.Loaded += Login_Loaded;
         }
 

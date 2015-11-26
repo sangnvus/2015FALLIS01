@@ -259,20 +259,47 @@ namespace FT_Rider.Pages
 
 
         //------ BEGIN show and Design UI 3 taxi near current position ------//
-        private void ShowNearDrivers(string did)
+        private async void ShowNearDrivers(string did)
         {
             GeoCoordinate TaxiCoordinate = new GeoCoordinate(nearDriverCollection[did].lat, nearDriverCollection[did].lng);
+
+            double openPrice = nearDriverCollection[did].oPrice;
+            double estimateCost = 0;
+            double estimateKm = 0;
+            string driverName = nearDriverCollection[did].lName + ", " + nearDriverCollection[did].fName;
+            if (destinationLat != 0 && destinationLng != 0)
+            {
+                estimateKm = await GoogleAPIFunction.GetDistance(pickupLat, pickupLng, destinationLat, destinationLng);
+                estimateCost = RiderFunctions.EstimateCostCalculate(nearDriverCollection, did, estimateCost);
+            }
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+
 
             //Create taxi icon on map
             Image taxiIcon = new Image();
             taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
 
             //Add a tapped event
-            taxiIcon.Tap += taxiIcon_Tap;
+            //Show taxi and trip infor
+            //taxiIcon.Tap += taxiIcon_Tap;
+
             taxiIcon.Tap += (sender, eventArgs) =>
             {
-                txt_OpenPrice.Text = nearDriverCollection[did].oPrice.ToString();
                 selectedDid = did;
+                txt_OpenPrice.Text = openPrice.ToString();
+                txt_EstimatedCost.Text = estimateCost.ToString();
+                txt_RiderName.Text = driverName;
+                txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
+
+                //Hide Step 01
+                this.grv_Step01.Visibility = Visibility.Collapsed;
+
+                //Show Step 02
+                this.grv_Step02.Visibility = Visibility.Visible;
+                this.grv_Picker.Visibility = Visibility.Collapsed;
+                //Step 2 info
+                LoadStep2Info();
             };
 
 
@@ -319,6 +346,12 @@ namespace FT_Rider.Pages
             map_RiderMap.Layers.Add(riderMapLayer);
         }
 
+
+        //Load step 02 profile
+        private async void LoadStep2Info()
+        {
+
+        }
 
 
         //Tapped event
@@ -452,7 +485,7 @@ namespace FT_Rider.Pages
                 map_RiderMap.Layers.Add(riderMapLayer);
 
                 //Calculate Distance
-                distanceMeter = Math.Round(GetTotalDistance(riderCoordinates), 0); //Round double in zero decimal places
+                //distanceMeter = Math.Round(GetTotalDistance(riderCoordinates), 0); //Round double in zero decimal places
             }
             else
             {
@@ -491,18 +524,7 @@ namespace FT_Rider.Pages
 
 
 
-        //Load step 02 profile
-        private async void LoadStep2Info()
-        {
-            var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
-            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
 
-            txt_RiderName.Text = userData.content.fName + " " + userData.content.lName;
-            txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
-            //txt_OpenPrice.Text = 
-
-
-        }
 
 
 
@@ -793,7 +815,8 @@ namespace FT_Rider.Pages
         //Event này để bắt trường hợp sau mỗi lần di chuyển map
         private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
         {
-            img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
+            img_PickerLabel.Visibility = Visibility.Visible; //Enable Pickup label
+            //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
             pickupLat = map_RiderMap.Center.Latitude;
             pickupLng = map_RiderMap.Center.Longitude;
             if (isPickup == true)
@@ -808,8 +831,10 @@ namespace FT_Rider.Pages
 
         private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
+            ((Storyboard)FindResource("animate")).Begin(img_PickerLabel);
+            //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
             //pickupTimer.Stop();
+            img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
             isPickup = true;
         }
 
@@ -908,6 +933,18 @@ namespace FT_Rider.Pages
         //Focus to "PickupType"
         private async void img_RequestTaxiButton_Tap(object sender, System.Windows.Input.GestureEventArgs e) //Check null input
         {
+
+        }
+
+
+
+        private int GetCityCodeFromCityName(string cityName)
+        {
+            return cityNamesDB[cityName].cityId;
+        }
+
+        private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
             int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
             string eCityName;
             int eCity;
@@ -921,7 +958,6 @@ namespace FT_Rider.Pages
                 eCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng));
                 eCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng);
             }
-
             string sCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng);
             string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
             string proCode = "";
@@ -949,33 +985,43 @@ namespace FT_Rider.Pages
             };
 
 
-            //MessageBox.Show(createTrip.cntry
-            //    + createTrip.did[0] + ", \n"
-            //    + createTrip.eAddr + ", \n"
-            //    + createTrip.eCity + ", \n"
-            //    + createTrip.eCityName + ", \n"
-            //    + createTrip.eLat + ", \n"
-            //    + createTrip.eLng + ", \n"
-            //    + createTrip.proCode + ", \n"
-            //    + createTrip.rid + ", \n"
-            //    + createTrip.rType + ", \n"
-            //    + createTrip.sAddr + ", \n"
-            //    + createTrip.sCity + ", \n"
-            //    + createTrip.sCityName + ", \n"
-            //    + createTrip.sLat + ", \n"
-            //    + createTrip.sLng + ", \n"
-            //    + createTrip.uid);
+            var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
+                + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
+                + "\"eLat\":\"{7}\",\"eLng\":\"{8}\",\"sCity\":\"{9}\","
+                + "\"eCity\":\"{10}\",\"sCityName\":\"{11}\",\"eCityName\":\"{12}\","
+                + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
+                createTrip.uid,
+                createTrip.rid,
+                createTrip.did[0],
+                createTrip.sAddr,
+                createTrip.eAddr,
+                createTrip.sLat.ToString().Replace(',', '.'),
+                createTrip.sLng.ToString().Replace(',', '.'),
+                createTrip.eLat.ToString().Replace(',', '.'),
+                createTrip.eLng.ToString().Replace(',', '.'),
+                createTrip.sCity,
+                createTrip.eCity,
+                createTrip.sCityName,
+                createTrip.eCityName,
+                createTrip.cntry,
+                createTrip.proCode,
+                createTrip.rType);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCreateTrip, input);
+            var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
+            if (createTripResponse.lmd != 0) //check if create trip ok
+            {
+                btn_RequestTaxi.IsEnabled = false;
+                btn_RequestTaxi.Content = "Vui lòng đợi...";
+                btn_RequestTaxi.BorderBrush.Opacity = 0;
 
-            ////update
-
+            }
         }
 
-
-
-        private int GetCityCodeFromCityName(string cityName)
+        private void map_RiderMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            return cityNamesDB[cityName].cityId;
+            img_PickerLabel.Visibility = Visibility.Visible;
         }
+
 
     }
 }

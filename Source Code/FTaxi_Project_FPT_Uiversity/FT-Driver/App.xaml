@@ -27,6 +27,7 @@
         <Color x:Key="Button_BackgroundColor_Red">#FFDC1D51</Color>
         <System:Double x:Key="Button_FontSize_22">22</System:Double>
         <Color x:Key="lls_BackgroundColor">#FF060F27</Color>
+        <Color x:Key="Button_AcceptColor">#FF59B747</Color>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
