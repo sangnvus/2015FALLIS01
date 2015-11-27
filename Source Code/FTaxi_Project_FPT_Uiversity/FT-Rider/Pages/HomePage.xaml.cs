@@ -64,11 +64,11 @@ namespace FT_Rider.Pages
         //for car types
         string taxiType = null;
 
-        //USER DATA
+        //USER DATA PASS FROM LOGIN PAGE
         RiderLogin userData = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
         string rawPassword = PhoneApplicationService.Current.State["RawPassword"] as string;
 
-        //For menu
+        //For left menu
         double initialPosition;
         bool _viewMoved = false;
 
@@ -76,9 +76,9 @@ namespace FT_Rider.Pages
         DispatcherTimer pickupTimer;
         bool isPickup = false;
 
-        //for near driver
+        //For near driver
         IDictionary<string, ListDriverDTO> nearDriverCollection = new Dictionary<string, ListDriverDTO>();
-        string selectedDid = null;
+        string selectedDid = null; //This variable to detect what car is choosen in map
 
         //For GET PICK UP & Create Trip
         double pickupLat;
@@ -999,7 +999,7 @@ namespace FT_Rider.Pages
 
 
 
-
+        //This function to get City Code From City Name in City Dictionary
         private int GetCityCodeFromCityName(string cityName)
         {
             return cityNamesDB[cityName].cityId;
@@ -1024,13 +1024,29 @@ namespace FT_Rider.Pages
             string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
             string proCode = "";
 
+            ///Có nghĩa là sao? 
+            ///Nếu như không tích vào ô tự động gọi xe khác thì hệ thống chỉ gửi 1 did thôi
+            ///còn nếu có tích vào ô đó thì hệ thống sẽ gửi kèm lên 1 list các did
+            List<string> didList = new List<string>();
+            if (chk_AutoRecall.IsChecked == false)
+            {
+                didList = new List<string> { selectedDid };
+            }
+            else
+            {
+
+                foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                {
+                    didList.Add(tmpIter.Key);
+                }
+            }
 
             //Create Request Trip Onject 
             RiderCreateTrip createTrip = new RiderCreateTrip
             {
                 uid = userData.content.uid,
                 rid = userData.content.rid,
-                did = new List<string> { selectedDid },
+                did = didList,
                 sAddr = txt_PickupAddress.Text,
                 eAddr = txt_DestinationAddress.Text,
                 sLat = pickupLat,
@@ -1046,6 +1062,12 @@ namespace FT_Rider.Pages
                 rType = pickupType
             };
 
+            string didString = "";
+            for (int i = 0; i < createTrip.did.Count; i++)
+            {
+                didString += didList[i];
+                didString += ",";
+            }
 
             var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
                 + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
@@ -1054,7 +1076,7 @@ namespace FT_Rider.Pages
                 + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
                 createTrip.uid,
                 createTrip.rid,
-                createTrip.did[0],
+                didString.Remove(didString.Length - 1),
                 createTrip.sAddr,
                 createTrip.eAddr,
                 createTrip.sLat.ToString().Replace(',', '.'),
@@ -1105,7 +1127,6 @@ namespace FT_Rider.Pages
         {
 
             TouchFeedback();
-            chk_AutoRecall.IsChecked = false; //Auto Recall is disabled in this case
             grv_Picker.Visibility = Visibility.Collapsed;
             SwitchToWaitingStatus();
 
@@ -1128,10 +1149,10 @@ namespace FT_Rider.Pages
             string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
             string proCode = "";
             pickupType = ConstantVariable.MANY;
-            List<string> did = new List<string>();
+            List<string> didList = new List<string>();
             foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
             {
-                did.Add(tmpIter.Key);
+                didList.Add(tmpIter.Key);
             }
 
             //Create Request Trip Onject 
@@ -1139,7 +1160,7 @@ namespace FT_Rider.Pages
             {
                 uid = userData.content.uid,
                 rid = userData.content.rid,
-                did = did,///
+                did = didList,///
                 sAddr = txt_PickupAddress.Text,
                 eAddr = txt_DestinationAddress.Text,
                 sLat = pickupLat,
@@ -1158,7 +1179,7 @@ namespace FT_Rider.Pages
             string didString = "";
             for (int i = 0; i < createTrip.did.Count; i++)
             {
-                didString += did[i];
+                didString += didList[i];
                 didString += ",";
             }
 
@@ -1169,7 +1190,7 @@ namespace FT_Rider.Pages
                 + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
                 createTrip.uid,
                 createTrip.rid,
-                didString.Remove(didString.Length-1),
+                didString.Remove(didString.Length - 1), //.Remove(didString.Length-1) to cut "," character at the end of string // ["a","b","c"]
                 createTrip.sAddr,
                 createTrip.eAddr,
                 createTrip.sLat.ToString().Replace(',', '.'),
@@ -1187,11 +1208,9 @@ namespace FT_Rider.Pages
             var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
             if (createTripResponse.lmd != 0) //check if create trip ok
             {
-                //btn_RequestTaxi.IsEnabled = false;
-                //btn_RequestTaxi.Content = "Vui lòng đợi...";
-                //btn_RequestTaxi.BorderBrush.Opacity = 0;
-                SwitchToWaitingStatus();
 
+                /* btn_RequestTaxi.Content = "";*/
+                ///Code for create trip successed
             }
 
         }
