@@ -36,6 +36,11 @@ namespace FT_Driver.Pages
         MapRoute driverMapRoute = null;
         Route driverRoute = null;
 
+        //For get Current Position
+        Geolocator driverFirstGeolocator = null;
+        Geoposition driverFirstGeoposition = null;
+
+
         //For map layer
         MapLayer driverMapLayer;
 
@@ -50,6 +55,11 @@ namespace FT_Driver.Pages
 
         //USER DATA
         DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
+        string pwmd5 = PhoneApplicationService.Current.State["PasswordMd5"] as string;
+
+        //For Update Current Location
+        double currentLat;
+        double currentLng;
                
 
 
@@ -61,7 +71,7 @@ namespace FT_Driver.Pages
         {
             InitializeComponent();
             //get First Local Position
-            ShowCurrentLocalOnTheMap();
+            GetCurrentCorrdinate();
             LoadDriverProfile();
         }
 
@@ -77,43 +87,37 @@ namespace FT_Driver.Pages
 
 
         //------ BEGIN get current Position ------//
-        private async void ShowCurrentLocalOnTheMap()
+        private async void GetCurrentCorrdinate()
         {
        
             //get position
-            Geolocator driverFirstGeolocator = new Geolocator();
-            Geoposition driverFirstGeoposition = await driverFirstGeolocator.GetGeopositionAsync();
-            Geocoordinate driverFirstGeocoordinate = driverFirstGeoposition.Coordinate;
-            GeoCoordinate driverFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(driverFirstGeocoordinate);
+            driverFirstGeolocator = new Geolocator();
+            driverFirstGeolocator.DesiredAccuracy = PositionAccuracy.High;
+            driverFirstGeolocator.MovementThreshold = 20;
+            driverFirstGeolocator.ReportInterval = 100;
+            driverFirstGeoposition = await driverFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
 
-            //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_DriverMap.Center = new GeoCoordinate(driverFirstGeoposition.Coordinate.Latitude - 0.001500, driverFirstGeoposition.Coordinate.Longitude);
-            this.map_DriverMap.ZoomLevel = 16;
+            // initialize pickup coordinates
+            currentLat = driverFirstGeoposition.Coordinate.Latitude;
+            currentLng = driverFirstGeoposition.Coordinate.Longitude;
 
-            //Show maker
+            driverFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
-            // Create a small circle to mark the current location.
-            Ellipse firstDriverPositionIcon = new Ellipse();
-            firstDriverPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-            firstDriverPositionIcon.Height = 15;
-            firstDriverPositionIcon.Width = 15;
-            firstDriverPositionIcon.Opacity = 100;
+            //Set Center view
+            map_DriverMap.SetView(driverFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
-            // Create a MapOverlay to contain the circle.
-            MapOverlay firstDriverLocationOverlay = new MapOverlay();
-            firstDriverLocationOverlay.Content = firstDriverPositionIcon;
+        }
 
-            //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            firstDriverLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            firstDriverLocationOverlay.GeoCoordinate = driverFirstGeoCoordinate;
+        private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
 
-            // Create a MapLayer to contain the MapOverlay.
-            driverMapLayer = new MapLayer();
-            driverMapLayer.Add(firstDriverLocationOverlay);
-
-            // Add the MapLayer to the Map.
-            map_DriverMap.Layers.Add(driverMapLayer);
+                Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
+                UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
+                marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
+            });
 
         }
         //------ END get current Position ------//

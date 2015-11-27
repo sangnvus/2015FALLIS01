@@ -24,9 +24,10 @@ namespace FT_Driver.Classes
 
         public const string tNetWsParameterName = "json";
 
-        //Rider Controller
+        //Driver Controller
         public const string tNetDriverLoginAddress = "http://123.30.236.109:8088/TN/restServices/DriverController/Login";
-        //public static const string tNetRiderGetNerDriverAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/GetNearDriver";
+        public const string tNetDriverUpdateStatus = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateDriverStatus";
+        public const string tNetDriverUpdatePosition = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateCurrentLocation";
         
 
         //Login Page
@@ -40,5 +41,10 @@ namespace FT_Driver.Classes
 
         //Mobile Type
         public const string mTypeWIN = "WIN";
+
+        //Driver status
+        public const string dStatusAvailable = "AC";
+        public const string dStatusNotAvailable = "NA";
+        public const string dStatusBusy = "BU";
     }
 }

@@ -190,9 +190,19 @@ namespace FT_Driver.Pages
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
                 try
                 {
+                    
                     var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
-                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                    PhoneApplicationService.Current.State["UserInfo"] = driverLogin;
+                    if (driverLogin.content != null)
+                    {
+                        NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                        PhoneApplicationService.Current.State["UserInfo"] = driverLogin;
+                        PhoneApplicationService.Current.State["PasswordMd5"] = pwmd5;
+                    }
+                    else
+                    {
+                        MessageBox.Show(ConstantVariable.errLoginFailed);
+                    }
+
                 }
                 catch (Exception)
                 {

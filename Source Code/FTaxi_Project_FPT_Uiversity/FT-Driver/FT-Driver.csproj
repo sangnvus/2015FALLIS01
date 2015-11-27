@@ -93,6 +93,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\DriverBase.cs" />
     <Compile Include="Classes\DriverFunctions.cs" />
     <Compile Include="Classes\DriverVehiceInfoObj.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />

@@ -180,7 +180,7 @@ namespace FT_Rider.Pages
             riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
             // initialize pickup coordinates
-            pickupLat = riderFirstGeoposition.Coordinate.Latitude;
+            pickupLat = riderFirstGeoposition.Coordinate.Latitude; //Có thể xóa
             pickupLng = riderFirstGeoposition.Coordinate.Longitude;
 
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
