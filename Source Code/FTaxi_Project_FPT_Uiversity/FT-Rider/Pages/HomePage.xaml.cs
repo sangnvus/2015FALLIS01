@@ -1210,7 +1210,7 @@ namespace FT_Rider.Pages
             {
 
                 /* btn_RequestTaxi.Content = "";*/
-                ///Code for create trip successed
+                ///Code for create trip successed//
             }
 
         }
