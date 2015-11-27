@@ -38,6 +38,7 @@ namespace FT_Rider.Classes
         public const string errRegisterFailed = "Đăng ký không thành công!";
         public const string strLoginSucess = "Đăng nhập thành công.";
         public const string strLoginSuccessed = "Đăng ký thành công!";
+        public const string strPleseWait = "Vui lòng đợi!";
 
         
         //Rider Controller

@@ -113,7 +113,6 @@ namespace FT_Rider.Pages
 
             //Create CityName DB
             LoadCityNameDataBase();
-
             //
             //pickupTimer = new DispatcherTimer();
             //pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
@@ -621,7 +620,7 @@ namespace FT_Rider.Pages
 
 
 
-        //------ BEGIN Auto Complete ------//
+        //------ BEGIN Complete ------//
         //Parse JSON
         private void loadAutoCompletePlace(string inputAddress)
         {
@@ -664,15 +663,21 @@ namespace FT_Rider.Pages
             // If selected item is null, do nothing
             if (lls_AutoComplete.SelectedItem == null)
                 return;
+
             //else route direction
-            searchCoordinateFromAddress(selectedPlace.Name.ToString());
+            ///searchCoordinateFromAddress(selectedPlace.Name.ToString());
+            setPickupAddressFromSearchBar(selectedPlace.Name.ToString());
             //showMapRoute(21.031579, 105.779560);
+
+
+
             //and fill to address textbox on search bar
             txt_InputAddress.Text = selectedPlace.Name.ToString();
             setCursorAtLast(txt_InputAddress);
 
             //vibrate phone
-            vibrateController.Start(TimeSpan.FromSeconds(0.1));
+            //vibrateController.Start(TimeSpan.FromSeconds(0.1));
+            TouchFeedback();
 
             //clear lls
         }
@@ -690,6 +695,45 @@ namespace FT_Rider.Pages
             lls_AutoComplete.IsEnabled = false;
             lls_AutoComplete.Visibility = Visibility.Collapsed;
         }
+
+
+
+
+        //------ BEGIN set Pickup Address from address search ------//
+        private void setPickupAddressFromSearchBar(string inputAddress)
+        {
+            //GoogleAPIGeocoding URL
+            string URL = ConstantVariable.googleAPIGeocodingAddressBaseURI + inputAddress + "&key=" + ConstantVariable.googleGeolocationAPIkey;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_setPickupAddressFromSearchBar);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+        private void proxy_setPickupAddressFromSearchBar(object sender, DownloadStringCompletedEventArgs e)
+        {
+            //1. Convert Json String to an Object
+            GoogleAPIAddressObj places = new GoogleAPIAddressObj();
+            places = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(e.Result);
+            try
+            {
+                double lat = places.results[0].geometry.location.lat;
+                double lng = places.results[0].geometry.location.lng;
+
+                //route direction on map
+                map_RiderMap.SetView(new GeoCoordinate(lat, lng), 16, MapAnimationKind.Linear);
+                img_PickerPin.Visibility = Visibility.Visible;
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show(ConstantVariable.errInvalidAddress);
+            }
+        }
+        //------ END set Pickup Address from address search  ------//
+
+
 
 
 
@@ -736,8 +780,18 @@ namespace FT_Rider.Pages
 
         private void img_CloseIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            txt_InputAddress.Text = String.Empty;
-            txt_InputAddress.Focus();
+
+            if (txt_InputAddress.Text == string.Empty)
+            {
+                map_RiderMap.Focus();
+                img_PickerLabel.Visibility = Visibility.Visible;
+                img_PickerPin.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                txt_InputAddress.Text = String.Empty;
+                txt_InputAddress.Focus();
+            }
             //lls_AutoComplete.Visibility = Visibility.Collapsed;
             //img_CloseIcon.Visibility = Visibility.Collapsed;
             //lls_AutoComplete.IsEnabled = false;
@@ -747,6 +801,10 @@ namespace FT_Rider.Pages
         //Textbox background focus transparent
         private void txt_InputAddress_GotFocus(object sender, RoutedEventArgs e)
         {
+            //Hide Pickup icon
+            img_PickerLabel.Visibility = Visibility.Collapsed;
+            img_PickerPin.Visibility = Visibility.Collapsed;
+
             //Enable Auto Complete
             loadAutoCompletePlace("");
             enableAutoComplateGrid();
@@ -754,7 +812,7 @@ namespace FT_Rider.Pages
             TextBox addressTextbox = (TextBox)sender;
             addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
             addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent); ;
 
             //img_CloseIcon.Visibility = Visibility.Visible;
 
@@ -763,16 +821,18 @@ namespace FT_Rider.Pages
                 txt_InputAddress.Text = string.Empty;
             }
 
+            //Display Close icon
+            img_CloseIcon.Visibility = Visibility.Visible;
 
             //hide close icon
-            if (txt_InputAddress.Text == String.Empty)
-            {
-                img_CloseIcon.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                img_CloseIcon.Visibility = Visibility.Visible;
-            }
+            //if (txt_InputAddress.Text == String.Empty)
+            //{
+            //    img_CloseIcon.Visibility = Visibility.Collapsed;
+            //}
+            //else
+            //{
+            //    img_CloseIcon.Visibility = Visibility.Visible;
+            //}
             //Show end of address
             setCursorAtLast(txt_InputAddress);
         }
@@ -832,7 +892,7 @@ namespace FT_Rider.Pages
 
         private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //((Storyboard)FindResource("animate")).Begin(img_PickerLabel);
+            //((Storyboard)FindName("animate")).Begin(img_PickerLabel);
             //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
             //pickupTimer.Stop();
             img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
@@ -939,6 +999,7 @@ namespace FT_Rider.Pages
 
 
 
+
         private int GetCityCodeFromCityName(string cityName)
         {
             return cityNamesDB[cityName].cityId;
@@ -1011,16 +1072,128 @@ namespace FT_Rider.Pages
             var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
             if (createTripResponse.lmd != 0) //check if create trip ok
             {
-                btn_RequestTaxi.IsEnabled = false;
-                btn_RequestTaxi.Content = "Vui lòng đợi...";
-                btn_RequestTaxi.BorderBrush.Opacity = 0;
+                //btn_RequestTaxi.IsEnabled = false;
+                //btn_RequestTaxi.Content = "Vui lòng đợi...";
+                //btn_RequestTaxi.BorderBrush.Opacity = 0;
+                SwitchToWaitingStatus();
 
             }
+        }
+
+        private void SwitchToWaitingStatus()
+        {
+            if (grv_Step02.Visibility == Visibility.Collapsed)
+            {
+                grv_Step02.Visibility = Visibility.Visible;
+            }
+            btn_RequestTaxi.IsEnabled = false;
+            btn_RequestTaxi.Content = ConstantVariable.strPleseWait;
+            btn_RequestTaxi.BorderBrush.Opacity = 0;
         }
 
         private void map_RiderMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             img_PickerLabel.Visibility = Visibility.Visible;
+        }
+
+        private void TouchFeedback()
+        {
+            vibrateController.Start(TimeSpan.FromSeconds(0.1));
+        }
+
+        private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+            TouchFeedback();
+            chk_AutoRecall.IsChecked = false; //Auto Recall is disabled in this case
+            grv_Picker.Visibility = Visibility.Collapsed;
+            SwitchToWaitingStatus();
+
+
+            //Prepare for req service
+            int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
+            string eCityName;
+            int eCity;
+            if (destinationLat == 0 && destinationLng == 0)
+            {
+                eCity = 0;
+                eCityName = "";
+            }
+            else
+            {
+                eCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng));
+                eCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng);
+            }
+            string sCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng);
+            string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
+            string proCode = "";
+            pickupType = ConstantVariable.MANY;
+            List<string> did = new List<string>();
+            foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+            {
+                did.Add(tmpIter.Key);
+            }
+
+            //Create Request Trip Onject 
+            RiderCreateTrip createTrip = new RiderCreateTrip
+            {
+                uid = userData.content.uid,
+                rid = userData.content.rid,
+                did = did,///
+                sAddr = txt_PickupAddress.Text,
+                eAddr = txt_DestinationAddress.Text,
+                sLat = pickupLat,
+                sLng = pickupLng,
+                eLat = destinationLat,
+                eLng = destinationLng,
+                sCity = sCity,
+                eCity = eCity,
+                sCityName = sCityName,
+                eCityName = eCityName,
+                cntry = cntry,
+                proCode = proCode,
+                rType = pickupType///
+            };
+
+            string didString = "";
+            for (int i = 0; i < createTrip.did.Count; i++)
+            {
+                didString += did[i];
+                didString += ",";
+            }
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
+                + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
+                + "\"eLat\":\"{7}\",\"eLng\":\"{8}\",\"sCity\":\"{9}\","
+                + "\"eCity\":\"{10}\",\"sCityName\":\"{11}\",\"eCityName\":\"{12}\","
+                + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
+                createTrip.uid,
+                createTrip.rid,
+                didString.Remove(didString.Length-1),
+                createTrip.sAddr,
+                createTrip.eAddr,
+                createTrip.sLat.ToString().Replace(',', '.'),
+                createTrip.sLng.ToString().Replace(',', '.'),
+                createTrip.eLat.ToString().Replace(',', '.'),
+                createTrip.eLng.ToString().Replace(',', '.'),
+                createTrip.sCity,
+                createTrip.eCity,
+                createTrip.sCityName,
+                createTrip.eCityName,
+                createTrip.cntry,
+                createTrip.proCode,
+                createTrip.rType);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCreateTrip, input);
+            var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
+            if (createTripResponse.lmd != 0) //check if create trip ok
+            {
+                //btn_RequestTaxi.IsEnabled = false;
+                //btn_RequestTaxi.Content = "Vui lòng đợi...";
+                //btn_RequestTaxi.BorderBrush.Opacity = 0;
+                SwitchToWaitingStatus();
+
+            }
+
         }
 
 
