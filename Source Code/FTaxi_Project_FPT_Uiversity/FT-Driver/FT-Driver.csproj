@@ -240,6 +240,7 @@
     <Content Include="Images\FirstPage\img_FirstPageTut4.png" />
     <Content Include="Images\FirstPage\img_FirstPageTut5.png" />
     <Resource Include="Images\Gifs\img_GIF_Processing.gif" />
+    <Content Include="Images\Grid_AcceptReject\img_AcceptRejectGridBackgound.png" />
     <Content Include="Images\Grid_NoCarYet\img_CallCenter.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />

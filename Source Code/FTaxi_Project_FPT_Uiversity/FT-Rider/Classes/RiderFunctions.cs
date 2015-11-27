@@ -19,20 +19,20 @@ namespace FT_Rider.Classes
 
 
         //Fare Cal
-        public static Double TaxiPriceCalculator(RiderGetNearDriver taxiInput, Double kmInput)
+        public static Double EstimateCostCalculate(IDictionary<string, ListDriverDTO> taxiInput, string did, double kmInput)
         {
             int i = 0;
             Double price;
-            Double oKm = taxiInput.content.listDriverDTO[i].oKm;
-            Double oPrice = taxiInput.content.listDriverDTO[i].oPrice;
-            Double f1Km = (Double)taxiInput.content.listDriverDTO[i].f1Km;
-            Double f2Km = (Double)taxiInput.content.listDriverDTO[i].f2Km;
-            Double f3Km = (Double)taxiInput.content.listDriverDTO[i].f3Km;
-            Double f4Km = (Double)taxiInput.content.listDriverDTO[i].f4Km;
-            Double f1Price = (Double)taxiInput.content.listDriverDTO[i].f1Price;
-            Double f2Price = (Double)taxiInput.content.listDriverDTO[i].f2Price;
-            Double f3Price = (Double)taxiInput.content.listDriverDTO[i].f3Price;
-            Double f4Price = (Double)taxiInput.content.listDriverDTO[i].f4Price;
+            Double oKm = taxiInput[did].oKm;
+            Double oPrice = taxiInput[did].oPrice;
+            Double f1Km = (Double)taxiInput[did].f1Km;
+            Double f2Km = (Double)taxiInput[did].f2Km;
+            Double f3Km = (Double)taxiInput[did].f3Km;
+            Double f4Km = (Double)taxiInput[did].f4Km;
+            Double f1Price = (Double)taxiInput[did].f1Price;
+            Double f2Price = (Double)taxiInput[did].f2Price;
+            Double f3Price = (Double)taxiInput[did].f3Price;
+            Double f4Price = (Double)taxiInput[did].f4Price;
             price = oPrice;
 
             if (kmInput > oKm && kmInput < f1Km || kmInput == f1Km)
@@ -53,7 +53,6 @@ namespace FT_Rider.Classes
             }
             return price;
         }
-
 
 
     }

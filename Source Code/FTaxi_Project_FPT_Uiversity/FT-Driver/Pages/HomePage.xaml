@@ -129,6 +129,7 @@
                         </Button.Background>
                     </Button>
                 </Grid>
+                <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="246" Margin="0,522,0,0" Stroke="Black" VerticalAlignment="Top" Width="480"/>
 
                 <Grid x:Name="grv_Map" VerticalAlignment="Top" Width="480" Height="712" Margin="0,56,0,0">
                     <Grid.RowDefinitions>
@@ -136,6 +137,36 @@
                         <RowDefinition Height="82*"/>
                     </Grid.RowDefinitions>
                     <maps:Map x:Name="map_DriverMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Grid.RowSpan="2" Width="480" Loaded="map_DriverMap_Loaded"/>
+                </Grid>
+                <Grid x:Name="grv_AcceptReject" Height="246" VerticalAlignment="Bottom" Width="480">
+                    <Image x:Name="img_AcceptRejectBG" Source="/Images/Grid_AcceptReject/img_AcceptRejectGridBackgound.png" Width="480" Height="246" Margin="0"/>
+                    <Button x:Name="btn_AcceptTrip" Content="CHẤP NHẬN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" UseLayoutRounding="True" Height="105" Width="245">
+                        <Button.BorderBrush>
+                            <SolidColorBrush Color="White" Opacity="0.2"/>
+                        </Button.BorderBrush>
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="btn_RejectTrip" Content="TỪ CHỐI" VerticalAlignment="Bottom" Margin="0" HorizontalAlignment="Right" Height="105" Width="245">
+                        <Button.BorderBrush>
+                            <SolidColorBrush Color="White" Opacity="0.2"/>
+                        </Button.BorderBrush>
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
+                        </Button.Background>
+                    </Button>
+                    <Image x:Name="img_RiderAvatarAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="10,15,0,0">
+                        <Image.Clip>
+                            <EllipseGeometry
+                    			Center="50,50"
+                    			RadiusX="45"
+                    			RadiusY="45" />
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Right" Margin="0,11,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
+                    <TextBlock x:Name="txt_RiderMobile" HorizontalAlignment="Right" Margin="0,49,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
+                    <TextBlock x:Name="txt_RiderAddress" HorizontalAlignment="Right" Margin="0,89,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
                 </Grid>
             </Grid>
         </Canvas>
