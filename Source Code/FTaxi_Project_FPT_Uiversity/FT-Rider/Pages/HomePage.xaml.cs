@@ -180,7 +180,7 @@ namespace FT_Rider.Pages
             riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
             // initialize pickup coordinates
-            pickupLat = riderFirstGeoposition.Coordinate.Latitude;
+            pickupLat = riderFirstGeoposition.Coordinate.Latitude; //Có thể xóa
             pickupLng = riderFirstGeoposition.Coordinate.Longitude;
 
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
@@ -1125,7 +1125,7 @@ namespace FT_Rider.Pages
 
         private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            btn_RequestTaxi.IsEnabled = false;
             TouchFeedback();
             grv_Picker.Visibility = Visibility.Collapsed;
             SwitchToWaitingStatus();

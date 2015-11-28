@@ -188,18 +188,37 @@ namespace FT_Driver.Pages
                 var mType = ConstantVariable.mTypeWIN;
                 var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
-                try
+                if (output != null)
                 {
-                    var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
-                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                    PhoneApplicationService.Current.State["UserInfo"] = driverLogin;
-                }
-                catch (Exception)
-                {
+                    try
+                    {
 
-                    //Login Failed | Đăng nhập không thành công
+                        var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
+                        if (driverLogin.content != null)
+                        {
+                            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                            PhoneApplicationService.Current.State["UserInfo"] = driverLogin;
+                            PhoneApplicationService.Current.State["UserId"] = uid;
+                            PhoneApplicationService.Current.State["PasswordMd5"] = pwmd5;
+                        }
+                        else
+                        {
+                            MessageBox.Show(ConstantVariable.errLoginFailed);
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+
+                        //Login Failed | Đăng nhập không thành công
+                        MessageBox.Show(ConstantVariable.errLoginFailed);
+                    }
+                }
+                else
+                {
                     MessageBox.Show(ConstantVariable.errLoginFailed);
                 }
+               
             }
 //             if (txt_UserId.Text != "" && txt_Password.ToString() != "")
 //             {

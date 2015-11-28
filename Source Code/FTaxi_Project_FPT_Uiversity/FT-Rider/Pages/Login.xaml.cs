@@ -194,6 +194,10 @@ namespace FT_Rider.Pages
                     PhoneApplicationService.Current.State["UserInfo"] = riderLogin;
                     PhoneApplicationService.Current.State["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
                 }
+                else
+                {
+                    MessageBox.Show(ConstantVariable.errLoginFailed);
+                }
                 
             }
             catch (Exception)

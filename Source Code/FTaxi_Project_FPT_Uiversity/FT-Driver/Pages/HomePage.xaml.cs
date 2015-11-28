@@ -27,6 +27,12 @@ namespace FT_Driver.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
+        //USER DATA
+        DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
+        string userId = PhoneApplicationService.Current.State["UserId"] as string;
+        string pwmd5 = PhoneApplicationService.Current.State["PasswordMd5"] as string;
+
+
         //For Store Points
         List<GeoCoordinate> driverCoordinates = new List<GeoCoordinate>();
 
@@ -36,8 +42,12 @@ namespace FT_Driver.Pages
         MapRoute driverMapRoute = null;
         Route driverRoute = null;
 
-        //For map layer
-        MapLayer driverMapLayer;
+        //For get Current Location
+        Geolocator driverFirstGeolocator = null;
+        Geoposition driverFirstGeoposition = null;
+        MapOverlay driverMapOverlay = null;
+        MapLayer driverMapLayer = null;
+
 
         //VibrateController
         VibrateController vibrateController = VibrateController.Default;
@@ -48,9 +58,11 @@ namespace FT_Driver.Pages
         //Rider Destination Icon Overlay
         MapOverlay driverDestinationIconOverlay;
 
-        //USER DATA
-        DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
-               
+        //For Update Current Location
+        double currentLat;
+        double currentLng;
+        int countForUpdateLocation = 0;
+
 
 
         //For menu
@@ -60,10 +72,70 @@ namespace FT_Driver.Pages
         public HomePage()
         {
             InitializeComponent();
+
+            //Open Status Screen
+            this.grv_AcceptReject.Visibility = Visibility.Collapsed;            
+
             //get First Local Position
-            ShowCurrentLocalOnTheMap();
+            GetCurrentCorrdinate();
             LoadDriverProfile();
+            UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
         }
+
+
+
+        //------ BEGIN Update Driver Status ------//
+        private async void UpdateDriverStatus(string stt) //Chưa check try catch
+        {
+            //{"uid":"dao@gmail.com","pw":"b65bd772c3b0dfebf0a189efd420352d","status":"NA"}
+            //Nếu đang hoạt động (AC), muốn chuyển qua chế độ nghỉ thì truyền vào "AC"
+            //Nếu đang ở trạn thái nghỉ (NA) muốn chuyển qua chế độ hoạt động thì truyền vào "NA"
+            //Nếu bắt đầu đón khách thì chuyển qua chế độ bận (BU)
+            var uid = userId;
+            var pw = pwmd5;
+            var status = stt;
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"status\":\"{2}\"}}", uid, pw, status);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
+            try
+            {
+                var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+            }
+            catch (Exception)
+            {
+
+                //throw; //Exc here <<<<<<<<<<<<<<<<<<
+            }
+
+        }
+        //------ END Update Driver Status ------//
+
+
+
+
+
+        //------ BEGIN Update Current Location to Server ------//
+        private async void UpdateCurrentLocation()
+        {
+            //{"uid":"dao@gmail.com","lat":"21.038993","lng":"105.799242"}
+            var uid = userId;
+            var lat = currentLat;
+            var lng = currentLng;
+            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\",\"}}", uid, lat, lng);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
+            try
+            {
+                var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        //------ END Update Current Location to Server ------//
+
+
+
 
 
         //------ BEGIN get driver profile ------//
@@ -77,43 +149,61 @@ namespace FT_Driver.Pages
 
 
         //------ BEGIN get current Position ------//
-        private async void ShowCurrentLocalOnTheMap()
+        private async void GetCurrentCorrdinate()
         {
-       
+
             //get position
-            Geolocator driverFirstGeolocator = new Geolocator();
-            Geoposition driverFirstGeoposition = await driverFirstGeolocator.GetGeopositionAsync();
-            Geocoordinate driverFirstGeocoordinate = driverFirstGeoposition.Coordinate;
-            GeoCoordinate driverFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(driverFirstGeocoordinate);
+            driverFirstGeolocator = new Geolocator();
+            driverFirstGeolocator.DesiredAccuracy = PositionAccuracy.High;
+            driverFirstGeolocator.MovementThreshold = 20;
+            driverFirstGeolocator.ReportInterval = 100;
+            driverFirstGeoposition = await driverFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
 
-            //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_DriverMap.Center = new GeoCoordinate(driverFirstGeoposition.Coordinate.Latitude - 0.001500, driverFirstGeoposition.Coordinate.Longitude);
-            this.map_DriverMap.ZoomLevel = 16;
+            //Add img_CurrentLocation to Map
+            Image currentLocationPin = new Image();
+            currentLocationPin.Source = new BitmapImage(new Uri("/Images/Icons/img_CurrentLocation.png", UriKind.Relative));
+            currentLocationPin.Height = 27;
+            currentLocationPin.Width = 25;
 
-            //Show maker
+            driverMapOverlay = new MapOverlay();
+            driverMapOverlay.Content = currentLocationPin; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+            driverMapOverlay.GeoCoordinate = new GeoCoordinate(driverFirstGeoposition.Coordinate.Latitude, driverFirstGeoposition.Coordinate.Longitude);
+            driverMapOverlay.PositionOrigin = new Point(0.5, 0.5);
 
-            // Create a small circle to mark the current location.
-            Ellipse firstDriverPositionIcon = new Ellipse();
-            firstDriverPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-            firstDriverPositionIcon.Height = 15;
-            firstDriverPositionIcon.Width = 15;
-            firstDriverPositionIcon.Opacity = 100;
-
-            // Create a MapOverlay to contain the circle.
-            MapOverlay firstDriverLocationOverlay = new MapOverlay();
-            firstDriverLocationOverlay.Content = firstDriverPositionIcon;
-
-            //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            firstDriverLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            firstDriverLocationOverlay.GeoCoordinate = driverFirstGeoCoordinate;
-
-            // Create a MapLayer to contain the MapOverlay.
             driverMapLayer = new MapLayer();
-            driverMapLayer.Add(firstDriverLocationOverlay);
-
-            // Add the MapLayer to the Map.
+            driverMapLayer.Add(driverMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
             map_DriverMap.Layers.Add(driverMapLayer);
+
+            // initialize pickup coordinates
+            currentLat = driverFirstGeoposition.Coordinate.Latitude;
+            currentLng = driverFirstGeoposition.Coordinate.Longitude;
+
+            driverFirstGeolocator.PositionChanged += geolocator_PositionChanged;
+
+            //Set Center view
+            map_DriverMap.SetView(driverFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+
+        }
+
+        private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+
+                Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
+                driverMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
+
+                //For Update Current Location
+                //Cứ sau 5 lần thay đổi vị trí trên Map, thì sẽ cập nhật vị trí lên server một lần
+                //Việc này để giảm req lên sv và tránh hao pin cho tiết bị
+                countForUpdateLocation++;
+                if (countForUpdateLocation == 5)
+                {
+                    UpdateCurrentLocation();
+                    countForUpdateLocation = 0;
+                }
+            });
 
         }
         //------ END get current Position ------//
@@ -133,7 +223,7 @@ namespace FT_Driver.Pages
                 //delete route
                 map_DriverMap.RemoveRoute(driverMapRoute);
                 driverMapRoute = null;
-                driverQuery = null;                
+                driverQuery = null;
                 driverMapLayer.Remove(driverDestinationIconOverlay);
             }
 
@@ -368,7 +458,7 @@ namespace FT_Driver.Pages
         //Tapped event
         private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            
+
         }
         //------ END show and Design UI 3 taxi near current position ------//
 
@@ -483,6 +573,20 @@ namespace FT_Driver.Pages
         {
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
+        }
+
+        private void btn_ChangeStatus_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            // Update Status here
+            // Change Button Color Here after change 
+        }
+
+
+        //Mỗi khi map thay đổi, hai biến currentLat và currentLng sẽ được cập nhật
+        private void map_DriverMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
+        {
+            currentLat = map_DriverMap.Center.Latitude;
+            currentLng = map_DriverMap.Center.Longitude;
         }
 
     }

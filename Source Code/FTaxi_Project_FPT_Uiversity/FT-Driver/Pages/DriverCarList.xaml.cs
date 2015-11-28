@@ -16,30 +16,29 @@ namespace FT_Driver.Pages
 {
     public partial class DriverCarList : PhoneApplicationPage
     {
+        //USER DATA
+        DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
+        string userId = PhoneApplicationService.Current.State["UserId"] as string;
+        string pwmd5 = PhoneApplicationService.Current.State["PasswordMd5"] as string;
+
         public DriverCarList()
         {
             InitializeComponent();
             this.GetCarListToLLS();
         }
 
-        private async void GetCarListToLLS()
+        private void GetCarListToLLS()
         {
 
-            //Get JSON string when login
-            DriverLogin driverLogin = new DriverLogin();
-            string driverLoginUrl = ConstantVariable.tNetDriverLoginAddress;
-            string driverLoginData = "{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}";
-            string driverLoginJsonReturn = await GetJsonFromPOSTMethod.GetJsonString(driverLoginUrl, driverLoginData);
-
+            ///{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}
             try
             {
                 //2. Parse Object and Load to LLS
-                driverLogin = JsonConvert.DeserializeObject<DriverLogin>(driverLoginJsonReturn);
                 ObservableCollection<DriverVehiceInfoObj> carListDataSource = new ObservableCollection<DriverVehiceInfoObj>();
                 lls_CarList.ItemsSource = carListDataSource;
 
                 //3. Loop to list all item in object
-                foreach (var obj in driverLogin.content.vehicleInfos)
+                foreach (var obj in userData.content.vehicleInfos)
                 {
                     carListDataSource.Add(new DriverVehiceInfoObj(obj.plate, obj.carTitle, obj.carLevel));
                 }
