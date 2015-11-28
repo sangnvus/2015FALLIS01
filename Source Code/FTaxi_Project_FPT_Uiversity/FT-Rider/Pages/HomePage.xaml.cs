@@ -1125,7 +1125,7 @@ namespace FT_Rider.Pages
 
         private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            btn_RequestTaxi.IsEnabled = false;
             TouchFeedback();
             grv_Picker.Visibility = Visibility.Collapsed;
             SwitchToWaitingStatus();

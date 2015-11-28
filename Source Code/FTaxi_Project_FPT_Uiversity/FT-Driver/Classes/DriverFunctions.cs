@@ -35,7 +35,7 @@ namespace FT_Driver.Classes
         public async void UpdateCurrentPosition(string uid, double lat, double lng)
         {
             var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\"}}", uid, lat, lng);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdatePosition, input);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateCurrentLocation, input);
             try
             {
                 var driverStatus = JsonConvert.DeserializeObject<BaseResponse>(output);

@@ -196,6 +196,7 @@ namespace FT_Driver.Pages
                     {
                         NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
                         PhoneApplicationService.Current.State["UserInfo"] = driverLogin;
+                        PhoneApplicationService.Current.State["UserId"] = uid;
                         PhoneApplicationService.Current.State["PasswordMd5"] = pwmd5;
                     }
                     else

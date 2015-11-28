@@ -27,7 +27,7 @@ namespace FT_Driver.Classes
         //Driver Controller
         public const string tNetDriverLoginAddress = "http://123.30.236.109:8088/TN/restServices/DriverController/Login";
         public const string tNetDriverUpdateStatus = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateDriverStatus";
-        public const string tNetDriverUpdatePosition = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateCurrentLocation";
+        public const string tNetDriverUpdateCurrentLocation = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateCurrentLocation";
         
 
         //Login Page

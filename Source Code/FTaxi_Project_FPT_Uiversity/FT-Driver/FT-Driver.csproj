@@ -228,6 +228,7 @@
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
     <Content Include="Images\Buttons\img_CallTaxiButton.png" />
     <Content Include="Images\Buttons\img_Picker.png" />
+    <Content Include="Images\CarList\img_CarItemInLLS.jpg" />
     <Content Include="Images\CarsBar\img_Carbar_background.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />
@@ -259,6 +260,7 @@
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
     <Content Include="Images\Icons\icon_VisaCard.jpg" />
+    <Content Include="Images\Icons\img_CurrentLocation.png" />
     <Content Include="Images\Icons\img_DestinationPoint.png" />
     <Content Include="Images\Icons\img_MyPositionIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
