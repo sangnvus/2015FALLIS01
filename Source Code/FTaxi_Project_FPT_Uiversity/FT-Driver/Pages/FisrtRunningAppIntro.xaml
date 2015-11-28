@@ -68,6 +68,19 @@
                     </Grid>
                 </phone:PivotItem>
             </phone:Pivot>
+            <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed" Margin="0,0,-24,0">
+                <Rectangle x:Name="rt_processBar" Stroke="Black">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="Black" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                    <ProgressBar.Foreground>
+                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+            </Grid>
 
         </Grid>
     </Grid>

@@ -15,11 +15,12 @@ namespace FT_Driver.Classes
         public const string destiationAddressDescription = "Địa chỉ đón";
 
         //Messenger
-        public const string errInvalidAddress = "Địa chỉ không hợp lệ, vui lòng thử lại!";
-        public const string errServiceIsOff = "Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt!";
-        public const string errHasErrInProcess = "Đã có lỗi xảy ra trong quá trình hoạt động, vui lòng trở lại!";
-        public const string errNoCarYet = "Không có taxi nào gần đây, vui lòng thử lại sau!";
-        public const string errLoginFailed = "Đăng nhập không thành công, vui lòng kiểm tra lại thông tin!";
+        public const string errInvalidAddress = "Địa chỉ không hợp lệ. Vui lòng thử lại sau!";
+        public const string errServiceIsOff = "Dịch vụ định vị đang tắt. Vui lòng bật lên hoặc kiểm tra lại các thiết đặt!";
+        public const string errHasErrInProcess = "Đã có lỗi xảy ra trong quá trình hoạt động. Vui lòng trở lại!";
+        public const string errNoCarYet = "Không có taxi nào gần đây. Vui lòng thử lại sau!";
+        public const string errLoginFailed = "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin!";
+        public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
 
 
         public const string tNetWsParameterName = "json";

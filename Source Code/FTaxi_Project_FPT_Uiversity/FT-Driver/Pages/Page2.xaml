@@ -131,7 +131,7 @@
                 </Grid>
 
                 <Grid x:Name="grv_Map" VerticalAlignment="Top" Width="480" Height="712" Margin="0,56,0,0">
-                    <maps:Map x:Name="map_DriverMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Grid.RowSpan="2" Width="480" Loaded="map_DriverMap_Loaded" CenterChanged="map_DriverMap_CenterChanged"/>
+                    <maps:Map x:Name="map_DriverMap" HorizontalAlignment="Left" VerticalAlignment="Top" Height="712" Grid.RowSpan="2" Width="480" Loaded="map_DriverMap_Loaded" CenterChanged="map_DriverMap_CenterChanged" ResolveCompleted="map_DriverMap_ResolveCompleted"/>
                 </Grid>
                 <Grid x:Name="grv_ChangeStatus" Height="100" VerticalAlignment="Bottom">
                     <Button x:Name="btn_ChangeStatus" Content="Nhấn để chuyển qua chế độ nghỉ" Width="480" Height="100" FontSize="{StaticResource Button_FontSize_22}" FontFamily="Segoe WP SemiLight" FlowDirection="LeftToRight" UseLayoutRounding="True" RenderTransformOrigin="0.5,0.5" Tap="btn_ChangeStatus_Tap">
@@ -175,6 +175,19 @@
                     <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Right" Margin="0,11,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
                     <TextBlock x:Name="txt_RiderMobile" HorizontalAlignment="Right" Margin="0,49,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
                     <TextBlock x:Name="txt_RiderAddress" HorizontalAlignment="Right" Margin="0,89,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
+                </Grid>
+                <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
+                    <Rectangle x:Name="rt_processBar" Stroke="Black">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="Black" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                        <ProgressBar.Foreground>
+                            <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                        </ProgressBar.Foreground>
+                    </ProgressBar>
+                    <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
                 </Grid>
             </Grid>
         </Canvas>

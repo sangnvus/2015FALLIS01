@@ -33,7 +33,7 @@ namespace FT_Driver.Pages
         public Login()
         {
             InitializeComponent();
-           
+          
 
             this.txt_UserId.DataContext = new Data { Name = "Email" };
             this.txt_Password.DataContext = new Data { Name = "Passsword" };
@@ -176,10 +176,12 @@ namespace FT_Driver.Pages
 
 
 
+
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if (txt_UserId.Text != "" && txt_Password.ToString() != "") 
             {
+                grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
                 var uid = txt_UserId.Text;
                 MD5.MD5 pw = new MD5.MD5();
                 pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
@@ -196,14 +198,16 @@ namespace FT_Driver.Pages
                         var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
                         if (driverLogin.content != null)
                         {
-                            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                            NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
                             PhoneApplicationService.Current.State["UserInfo"] = driverLogin;
                             PhoneApplicationService.Current.State["UserId"] = uid;
                             PhoneApplicationService.Current.State["PasswordMd5"] = pwmd5;
+                            grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
                         }
                         else
                         {
                             MessageBox.Show(ConstantVariable.errLoginFailed);
+                            grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
                         }
 
                     }
@@ -212,11 +216,13 @@ namespace FT_Driver.Pages
 
                         //Login Failed | Đăng nhập không thành công
                         MessageBox.Show(ConstantVariable.errLoginFailed);
+                        grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
                     }
                 }
                 else
                 {
-                    MessageBox.Show(ConstantVariable.errLoginFailed);
+                    MessageBox.Show(ConstantVariable.errConnectingError);
+                    grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
                 }
                
             }

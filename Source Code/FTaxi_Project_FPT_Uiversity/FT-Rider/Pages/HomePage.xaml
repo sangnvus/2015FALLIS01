@@ -158,9 +158,6 @@
                         <RowDefinition Height="82*"/>
                     </Grid.RowDefinitions>
                     <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2" ResolveCompleted="map_RiderMap_ResolveCompleted" MouseLeftButtonUp="map_RiderMap_MouseLeftButtonUp" MouseLeftButtonDown="map_RiderMap_MouseLeftButtonDown">
-                        <toolkit:MapExtensions.Children>
-                            <toolkit:UserLocationMarker x:Name="UserLocationMarker" Foreground="#FF2E9FFF" Background="#FFD5EBFF"/>
-                        </toolkit:MapExtensions.Children>
                     </maps:Map>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">

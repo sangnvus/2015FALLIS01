@@ -45,12 +45,12 @@ namespace FT_Rider.Pages
         MapRoute riderMapRoute = null;
         Route riderRoute = null;
 
-        //For get Current Position
+        //For get Current Localtion
         Geolocator riderFirstGeolocator = null;
         Geoposition riderFirstGeoposition = null;
+        MapOverlay riderMapOverlay = null;
+        MapLayer riderMapLayer = null;
 
-        //For map layer
-        MapLayer riderMapLayer;
 
         //VibrateController
         VibrateController vibrateController = VibrateController.Default;
@@ -90,7 +90,7 @@ namespace FT_Rider.Pages
 
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
-
+        
 
         public HomePage()
         {
@@ -179,6 +179,22 @@ namespace FT_Rider.Pages
             riderFirstGeolocator.ReportInterval = 100;
             riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
+
+            //Add img_CurrentLocation to Map
+            Image currentLocationPin = new Image();
+            currentLocationPin.Source = new BitmapImage(new Uri("/Images/Icons/img_CurrentLocation.png", UriKind.Relative));
+            currentLocationPin.Height = 27;
+            currentLocationPin.Width = 25;
+
+            riderMapOverlay = new MapOverlay();
+            riderMapOverlay.Content = currentLocationPin; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+            riderMapOverlay.GeoCoordinate = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude, riderFirstGeoposition.Coordinate.Longitude);
+            riderMapOverlay.PositionOrigin = new Point(0.5, 0.5);
+
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(riderMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
+            map_RiderMap.Layers.Add(riderMapLayer);
+
             // initialize pickup coordinates
             pickupLat = riderFirstGeoposition.Coordinate.Latitude; //Có thể xóa
             pickupLng = riderFirstGeoposition.Coordinate.Longitude;
@@ -198,8 +214,8 @@ namespace FT_Rider.Pages
             {
 
                 Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
-                UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
-                marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
+                riderMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
+                
             });
 
         }

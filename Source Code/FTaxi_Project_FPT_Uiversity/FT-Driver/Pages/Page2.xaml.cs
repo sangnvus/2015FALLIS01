@@ -63,7 +63,9 @@ namespace FT_Driver.Pages
         double currentLng;
         int countForUpdateLocation = 0;
 
-
+        //For process bar
+        double tmpLat;
+        double tmpLng;
 
         //For menu
         double initialPosition;
@@ -73,8 +75,10 @@ namespace FT_Driver.Pages
         {
             InitializeComponent();
 
+            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
+
             //Open Status Screen
-            this.grv_AcceptReject.Visibility = Visibility.Collapsed;            
+            this.grv_AcceptReject.Visibility = Visibility.Collapsed;
 
             //get First Local Position
             GetCurrentCorrdinate();
@@ -175,9 +179,9 @@ namespace FT_Driver.Pages
             driverMapLayer.Add(driverMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
             map_DriverMap.Layers.Add(driverMapLayer);
 
-            // initialize pickup coordinates
-            currentLat = driverFirstGeoposition.Coordinate.Latitude;
-            currentLng = driverFirstGeoposition.Coordinate.Longitude;
+            //// initialize pickup coordinates
+            tmpLat = Math.Round(driverFirstGeoposition.Coordinate.Latitude, 5);
+            tmpLng = Math.Round(driverFirstGeoposition.Coordinate.Longitude, 5);
 
             driverFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
@@ -587,6 +591,15 @@ namespace FT_Driver.Pages
         {
             currentLat = map_DriverMap.Center.Latitude;
             currentLng = map_DriverMap.Center.Longitude;
+        }
+
+        private void map_DriverMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
+        {
+            
+            if (new GeoCoordinate(Math.Round(map_DriverMap.Center.Latitude, 5), Math.Round(map_DriverMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
+            {
+                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
+            }
         }
 
     }

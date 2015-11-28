@@ -69,7 +69,10 @@
 
         <!--ContentPanel - place additional content here-->
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <!--TitlePanel contains the name of the application and page title-->
+        <!--TitlePanel contains the name of the application and page title-->
+        <!--TitlePanel contains the name of the application and page title-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0">
             <Button x:Name="btn_Login" Content="Đăng nhập" Margin="10,240,10,0" Tap="tbn_Tap_Login" Height="97" VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize_22}">
                 <Button.Background>
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
@@ -88,10 +91,23 @@
             <!--Image x:Name="img_UserIdIcon1" HorizontalAlignment="Left" Height="48" Margin="22,252,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UseID.jpg"/-->
             <!--Image x:Name="img_PasswordIcon1" HorizontalAlignment="Left" Height="48" Margin="22,324,0,0" VerticalAlignment="Top" Width="48" Source="/Images/Icons/icon_UserPassword.jpg"/-->
             <!--TextBlock x:Name="tbl_LostPassword1" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource Text_LinkTextFontSize}" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/-->
-            <Image x:Name="img_FTaxiLogo" Source="/Images/Logos/img_Ftaxi_logo.png" Margin="177,10,177,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="40" Width="102"/>
+            <Image x:Name="img_FTaxiLogo" Source="/Images/Logos/img_Ftaxi_logo.png" Margin="177,15,177,0" HorizontalAlignment="Center" VerticalAlignment="Top" Height="40" Width="102"/>
 
             <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="42" Margin="25,85,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
             <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="42" Margin="25,177,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserPassword.jpg"/>
+            <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
+                <Rectangle x:Name="rt_processBar" Stroke="Black">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="Black" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                    <ProgressBar.Foreground>
+                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+            </Grid>
         </Grid>
 
     </Grid>

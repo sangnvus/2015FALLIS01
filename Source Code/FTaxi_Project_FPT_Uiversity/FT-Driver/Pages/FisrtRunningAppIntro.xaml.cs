@@ -26,6 +26,7 @@ namespace FT_Driver.Pages
 
         private void btn_Go_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+
             NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
         }
 
