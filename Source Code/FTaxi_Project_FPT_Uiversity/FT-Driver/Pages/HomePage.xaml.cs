@@ -74,8 +74,7 @@ namespace FT_Driver.Pages
             InitializeComponent();
 
             //Open Status Screen
-            this.grv_AcceptReject.Visibility = Visibility.Collapsed;
-            this.img_CurrentLocation.Visibility = Visibility.Collapsed;
+            this.grv_AcceptReject.Visibility = Visibility.Collapsed;            
 
             //get First Local Position
             GetCurrentCorrdinate();
@@ -104,7 +103,7 @@ namespace FT_Driver.Pages
             catch (Exception)
             {
 
-                throw; //Exc here <<<<<<<<<<<<<<<<<<
+                //throw; //Exc here <<<<<<<<<<<<<<<<<<
             }
 
         }
@@ -162,7 +161,17 @@ namespace FT_Driver.Pages
 
 
             //Add img_CurrentLocation to Map
-            driverMapOverlay.Content = img_CurrentLocation; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+            Image currentLocationPin = new Image();
+            currentLocationPin.Source = new BitmapImage(new Uri("/Images/Icons/img_CurrentLocation.png", UriKind.Relative));
+            currentLocationPin.Height = 27;
+            currentLocationPin.Width = 25;
+
+            driverMapOverlay = new MapOverlay();
+            driverMapOverlay.Content = currentLocationPin; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+            driverMapOverlay.GeoCoordinate = new GeoCoordinate(driverFirstGeoposition.Coordinate.Latitude, driverFirstGeoposition.Coordinate.Longitude);
+            driverMapOverlay.PositionOrigin = new Point(0.5, 0.5);
+
+            driverMapLayer = new MapLayer();
             driverMapLayer.Add(driverMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
             map_DriverMap.Layers.Add(driverMapLayer);
 
@@ -174,7 +183,6 @@ namespace FT_Driver.Pages
 
             //Set Center view
             map_DriverMap.SetView(driverFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
-            img_CurrentLocation.Visibility = Visibility.Collapsed; //Show Current Location Image after GetCurrentCorrdinate();
 
         }
 
