@@ -84,6 +84,7 @@ namespace FT_Driver.Pages
             GetCurrentCorrdinate();
             LoadDriverProfile();
             UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
+            UpdateCurrentLocation();
         }
 
 

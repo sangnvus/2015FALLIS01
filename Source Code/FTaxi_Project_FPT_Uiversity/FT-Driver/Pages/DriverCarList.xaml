@@ -50,8 +50,9 @@
                                     <Image Height="100" Width="434" Source="/Images/CarList/img_CarItemInLLS.jpg"/>
                                     <TextBlock HorizontalAlignment="Left" Margin="14,3,0,0" TextWrapping="Wrap" Text="{Binding CarTitle}" VerticalAlignment="Top" Width="306" Height="41" FontSize="30"/>
                                     <TextBlock HorizontalAlignment="Left" Margin="14,47,0,0" TextWrapping="Wrap" Text="{Binding Plate}" VerticalAlignment="Top" Width="306" FontSize="36"/>
-                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="337,0,0,0" TextWrapping="Wrap" Text="{Binding CarLevel}"  FontSize="37"/>
+                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="337,10,0,10" TextWrapping="Wrap" Text="{Binding CarLevel}"  FontSize="23"/>
                                     <Rectangle HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="434"/>
+                                    <Image HorizontalAlignment="Left" Height="41" Margin="334,18,0,0" VerticalAlignment="Top" Width="83" Source="{Binding ImgUrl}"/>
                                 </Grid>
                                 <Rectangle HorizontalAlignment="Center" Height="10" Width="456" Fill="{x:Null}"/>
                             </StackPanel>

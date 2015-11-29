@@ -21,6 +21,7 @@ namespace FT_Driver.Classes
         public const string errNoCarYet = "Không có taxi nào gần đây. Vui lòng thử lại sau!";
         public const string errLoginFailed = "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin!";
         public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
+        public const string errNotEmpty = "Vui lòng điền đầy đủ thông tin!";
 
 
         public const string tNetWsParameterName = "json";
