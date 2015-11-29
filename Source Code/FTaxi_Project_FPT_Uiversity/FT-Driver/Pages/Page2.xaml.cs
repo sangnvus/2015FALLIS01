@@ -22,15 +22,17 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Threading;
+using System.IO.IsolatedStorage;
 
 namespace FT_Driver.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
         //USER DATA
-        DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
-        string userId = PhoneApplicationService.Current.State["UserId"] as string;
-        string pwmd5 = PhoneApplicationService.Current.State["PasswordMd5"] as string;
+        IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        DriverLogin userData = new DriverLogin();
+        string userId = "";
+        string pwmd5 = "";
 
 
         //For Store Points
@@ -75,9 +77,21 @@ namespace FT_Driver.Pages
         {
             InitializeComponent();
 
-            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
+
+            //Get User data from login
+            if (tNetUserLoginData.Contains("UserLoginData"))
+            {
+                userData = (DriverLogin)tNetUserLoginData["UserLoginData"];
+            }
+            if (tNetUserLoginData.Contains("UserId") && tNetUserLoginData.Contains("PasswordMd5"))
+            {
+                userId = (string)tNetUserLoginData["UserId"];
+                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
+            }
+
 
             //Open Status Screen
+            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
             this.grv_AcceptReject.Visibility = Visibility.Collapsed;
 
             //get First Local Position
@@ -85,6 +99,27 @@ namespace FT_Driver.Pages
             LoadDriverProfile();
             UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
             UpdateCurrentLocation();
+        }
+
+
+        //Nhận thông tin từ Notification
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            try
+            {
+                //txt1.Text = this.NavigationContext.QueryString["value1"].ToString();
+                if (this.NavigationContext.QueryString["json"].ToString() != null)
+                {
+                    var input = this.NavigationContext.QueryString["json"].ToString(); //Nhận chuỗi json truyền vào
+                    MessageBox.Show(input);
+                }
+
+            }
+            catch (KeyNotFoundException)
+            {
+            }
+
         }
 
 
@@ -596,7 +631,7 @@ namespace FT_Driver.Pages
 
         private void map_DriverMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
         {
-            
+
             if (new GeoCoordinate(Math.Round(map_DriverMap.Center.Latitude, 5), Math.Round(map_DriverMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
             {
                 grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar

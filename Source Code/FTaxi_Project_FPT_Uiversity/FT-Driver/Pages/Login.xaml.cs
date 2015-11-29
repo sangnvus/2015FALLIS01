@@ -33,6 +33,8 @@ namespace FT_Driver.Pages
         public Login()
         {
             InitializeComponent();
+
+            //Create Push notification Channel
             CreatePushChannel();
         }
 
@@ -48,6 +50,7 @@ namespace FT_Driver.Pages
                 var pwmd5 = pw.FingerPrint.ToLower();
                 var mid = pushChannelURI; //HttpUtility.UrlEncode(pushChannelURI); ;
                 var mType = ConstantVariable.mTypeWIN;
+
                 var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
                 if (output != null)
@@ -56,7 +59,7 @@ namespace FT_Driver.Pages
                     {
 
                         var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
-                        if (driverLogin.content != null)
+                        if (driverLogin != null)
                         {
                             tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
 

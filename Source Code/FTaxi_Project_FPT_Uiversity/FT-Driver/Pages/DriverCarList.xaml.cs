@@ -26,6 +26,7 @@ namespace FT_Driver.Pages
         //string pwmd5 = PhoneApplicationService.Current.State["PasswordMd5"] as string;
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         DriverLogin userData = new DriverLogin();
+        IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
 
 
 
@@ -84,7 +85,7 @@ namespace FT_Driver.Pages
 
         private void lls_CarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            tNetAppSetting["isSelectedCar"] = "SelectedCar"; //Cái này để đánh dấu rằng, sẽ bỏ qua bước chọn xe //Thêm vào sau tiến trình chọn xe
         }
     }
 }
