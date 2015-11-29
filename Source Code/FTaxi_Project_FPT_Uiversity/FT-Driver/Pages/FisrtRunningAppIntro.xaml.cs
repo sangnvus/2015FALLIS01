@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.IO.IsolatedStorage;
 
 namespace FT_Driver.Pages
 {
@@ -17,6 +18,7 @@ namespace FT_Driver.Pages
         //varible
         SolidColorBrush mySolidColorBrush = new SolidColorBrush();
         PivotItem pivot = null;
+        IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
 
 
         public FisrtRunningAppIntro()
@@ -26,7 +28,15 @@ namespace FT_Driver.Pages
 
         private void btn_Go_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+            if (tNetAppSetting.Contains("isLogin")) //Check if user was logined
+            {
+                NavigationService.Navigate(new Uri("/Pages/Page2.xaml", UriKind.Relative));
+            }
+            else
+            {
+                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+            }
+           
         }
 
         private void pvi_Tut_SelectionChanged(object sender, SelectionChangedEventArgs e)

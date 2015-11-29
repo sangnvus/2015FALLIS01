@@ -124,8 +124,8 @@
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\HomePage.xaml.cs">
-      <DependentUpon>HomePage.xaml</DependentUpon>
+    <Compile Include="Pages\Page2.xaml.cs">
+      <DependentUpon>Page2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\HomePayment.xaml.cs">
       <DependentUpon>HomePayment.xaml</DependentUpon>
@@ -170,7 +170,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\HomePage.xaml">
+    <Page Include="Pages\Page2.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -228,7 +228,10 @@
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
     <Content Include="Images\Buttons\img_CallTaxiButton.png" />
     <Content Include="Images\Buttons\img_Picker.png" />
+    <Content Include="Images\CarList\img_CarItemECO.png" />
     <Content Include="Images\CarList\img_CarItemInLLS.jpg" />
+    <Content Include="Images\CarList\img_CarItemLUX.png" />
+    <Content Include="Images\CarList\img_CarItemSAV.png" />
     <Content Include="Images\CarsBar\img_Carbar_background.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />
