@@ -124,6 +124,7 @@
     <Compile Include="Classes\RiderUpdateAddress.cs" />
     <Compile Include="Classes\RiderUpdateDriverStatusDTO.cs" />
     <Compile Include="Classes\RiderUpdatePayment.cs" />
+    <Compile Include="Classes\RiderUpdateRegId.cs" />
     <Compile Include="Classes\TaxiTypes.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />

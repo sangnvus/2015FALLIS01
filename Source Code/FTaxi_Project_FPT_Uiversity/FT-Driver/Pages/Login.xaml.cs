@@ -35,9 +35,8 @@ namespace FT_Driver.Pages
             InitializeComponent();
 
             //Create Push notification Channel
-            CreatePushChannel();
+            //CreatePushChannel();
         }
-
 
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -61,12 +60,20 @@ namespace FT_Driver.Pages
                         var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
                         if (driverLogin != null)
                         {
-                            tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
+                            if (driverLogin.content != null)
+                            {
+                                tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
 
-                            NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
-                            tNetUserLoginData["UserId"] = uid;
-                            tNetUserLoginData["PasswordMd5"] = pwmd5;
-                            tNetUserLoginData["UserLoginData"] = driverLogin;
+                                NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
+                                tNetUserLoginData["UserId"] = uid;
+                                tNetUserLoginData["PasswordMd5"] = pwmd5;
+                                tNetUserLoginData["UserLoginData"] = driverLogin;
+                            }
+                            else
+                            {
+                                MessageBox.Show(ConstantVariable.errLoginFailed);
+                                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                            }
                         }
                         else
                         {
@@ -95,105 +102,9 @@ namespace FT_Driver.Pages
                 MessageBox.Show(ConstantVariable.errNotEmpty);
                 grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
             }
-         
-        }
-
-        private void CreatePushChannel()
-        {
-            HttpNotificationChannel pushChannel;
-            string channelName = "FtaxiDriverChannel";
-            pushChannel = HttpNotificationChannel.Find(channelName);
-
-            if (pushChannel == null)
-            {
-                pushChannel = new HttpNotificationChannel(channelName);
-
-                // Register for all the events before attempting to open the channel.
-                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
-
-                // Register for this notification only if you need to receive the notifications while your application is running.
-                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
-
-                pushChannel.Open();
-
-                // Bind this new channel for toast events.
-                pushChannel.BindToShellToast();
-
-            }
-            else
-            {
-                // The channel was already open, so just register for all the events.
-                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
-
-                // Register for this notification only if you need to receive the notifications while your application is running.
-                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
-
-                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
-                System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
-
-                pushChannelURI = pushChannel.ChannelUri.ToString();
-                //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
-
-            }
-        }
-
-
-        // Display the new URI for testing purposes.   Normally, the URI would be passed back to your web service at this point.
-        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
-        {
-
-            Dispatcher.BeginInvoke(() =>
-            {
-                System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
-                pushChannelURI = e.ChannelUri.ToString();
-                //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
-
-                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<<<<<<<<<<<<<
-            });
-        }
-
-
-        // Error handling logic for your particular application would be here.
-        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
-        {
-            Dispatcher.BeginInvoke(() =>
-                MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
-                    e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
-                    );
-        }
-
-
-        // Parse out the information that was part of the message.
-        void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
-        {
-            StringBuilder message = new StringBuilder();
-            string relativeUri = string.Empty;
-
-            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
-
-            // Parse out the information that was part of the message.
-            foreach (string key in e.Collection.Keys)
-            {
-                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
-
-                if (string.Compare(
-                    key,
-                    "wp:Param",
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    System.Globalization.CompareOptions.IgnoreCase) == 0)
-                {
-                    relativeUri = e.Collection[key];
-                }
-            }
-
-            // Display a dialog of all the fields in the toast.
-            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
 
         }
-
-
+       
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/DriverRegister.xaml", UriKind.Relative));
@@ -215,5 +126,106 @@ namespace FT_Driver.Pages
 
             NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
         }
+
+
+
+        /*    
+
+       private void CreatePushChannel()
+       {
+           HttpNotificationChannel pushChannel;
+           string channelName = "FtaxiDriverChannel";
+           pushChannel = HttpNotificationChannel.Find(channelName);
+
+           if (pushChannel == null)
+           {
+               pushChannel = new HttpNotificationChannel(channelName);
+
+               // Register for all the events before attempting to open the channel.
+               pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+               pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+               // Register for this notification only if you need to receive the notifications while your application is running.
+               pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+               pushChannel.Open();
+
+               // Bind this new channel for toast events.
+               pushChannel.BindToShellToast();
+
+           }
+           else
+           {
+               // The channel was already open, so just register for all the events.
+               pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+               pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+               // Register for this notification only if you need to receive the notifications while your application is running.
+               pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+               // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
+               System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
+
+               pushChannelURI = pushChannel.ChannelUri.ToString();
+               //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
+
+           }
+       }
+
+
+       // Display the new URI for testing purposes.   Normally, the URI would be passed back to your web service at this point.
+       void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+       {
+
+           Dispatcher.BeginInvoke(() =>
+           {
+               System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
+               pushChannelURI = e.ChannelUri.ToString();
+               //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
+
+               //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<<<<<<<<<<<<<
+           });
+       }
+
+
+       // Error handling logic for your particular application would be here.
+       void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+       {
+           Dispatcher.BeginInvoke(() =>
+               MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
+                   e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
+                   );
+       }
+
+
+       // Parse out the information that was part of the message.
+       void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
+       {
+           StringBuilder message = new StringBuilder();
+           string relativeUri = string.Empty;
+
+           message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+
+           // Parse out the information that was part of the message.
+           foreach (string key in e.Collection.Keys)
+           {
+               message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+
+               if (string.Compare(
+                   key,
+                   "wp:Param",
+                   System.Globalization.CultureInfo.InvariantCulture,
+                   System.Globalization.CompareOptions.IgnoreCase) == 0)
+               {
+                   relativeUri = e.Collection[key];
+               }
+           }
+
+           // Display a dialog of all the fields in the toast.
+           Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+
+       }
+       */
+
     }
 }

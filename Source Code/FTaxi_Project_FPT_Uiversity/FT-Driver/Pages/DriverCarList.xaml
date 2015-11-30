@@ -84,7 +84,7 @@
                 <TextBlock x:Name="tbl_intro" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="Vui lòng chọn xe của bạn. Chúc bạn ngày làm việc hiệu quả và bình an trên mọi chặng đường." VerticalAlignment="Top" Height="87" Width="436" Foreground="#FFEEEEEE" FontSize="{StaticResource Layout_TextSize}"/>
                 <Image x:Name="img_PageBreak" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Source="/Images/Others/img_PageContentBreak.png" Height="43"/>
             </Grid>
-            <Grid x:Name="grv_ProcessScreen" Margin="0,0,0,-69" Visibility="Collapsed" d:IsHidden="True">
+            <Grid x:Name="grv_ProcessScreen" Margin="0,0,0,-69" Visibility="Collapsed">
                 <Rectangle x:Name="rt_processBar" Stroke="Black">
                     <Rectangle.Fill>
                         <SolidColorBrush Color="Black" Opacity="0.5"/>
