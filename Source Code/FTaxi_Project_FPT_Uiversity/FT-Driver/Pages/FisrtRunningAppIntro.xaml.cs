@@ -5,11 +5,13 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
+using System.Windows.Input;
 using Microsoft.Phone.Shell;
 using System.Windows.Media;
-using System.Windows.Input;
 using System.IO.IsolatedStorage;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Notification;
+using System.Text;
 
 namespace FT_Driver.Pages
 {
@@ -19,6 +21,7 @@ namespace FT_Driver.Pages
         SolidColorBrush mySolidColorBrush = new SolidColorBrush();
         PivotItem pivot = null;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+        string pushChannelURI = "";
 
 
         public FisrtRunningAppIntro()
@@ -33,7 +36,7 @@ namespace FT_Driver.Pages
             ///Nếu người dùng chưa login thành công thì lần truy cập triếp theo vẫn vào màn hình Login
             if (tNetAppSetting.Contains("isLogin") && tNetAppSetting.Contains("isSelectedCar")) //Check if user was logined and Selected Car
             {
-                NavigationService.Navigate(new Uri("/Pages/Page2.xaml", UriKind.Relative));
+                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
             }
             else if (tNetAppSetting.Contains("isSelectedCar"))
             {
@@ -43,7 +46,7 @@ namespace FT_Driver.Pages
             {
                 NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
             }
-           
+
         }
 
         /// Cái này để thay đổi nút số trang ở màn hình First Start App

@@ -43,7 +43,7 @@ namespace FT_Rider.Pages
 
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_UserId.Text != "" && txt_Password.ToString() != "")
+            if (txt_UserId.Text != "" && txt_Password.ActionButtonCommandParameter.ToString() != "")
             {
 
                 grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
@@ -61,14 +61,22 @@ namespace FT_Rider.Pages
                     try
                     {
                         var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
-                        if (riderLogin.content != null)
+                        if (riderLogin != null)
                         {
-                            tNetAppSetting["isLogin"] = "WasLogined";
-                            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                            tNetUserLoginData["UserId"] = uid;
-                            tNetUserLoginData["PasswordMd5"] = pwmd5;
-                            tNetUserLoginData["UserLoginData"] = riderLogin;
-                            tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
+                            if (riderLogin.content != null)
+                            {
+                                tNetAppSetting["isLogin"] = "WasLogined";
+                                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                                tNetUserLoginData["UserId"] = uid;
+                                tNetUserLoginData["PasswordMd5"] = pwmd5;
+                                tNetUserLoginData["UserLoginData"] = riderLogin;
+                                tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
+                            }
+                            else
+                            {
+                                MessageBox.Show(ConstantVariable.errLoginFailed);
+                                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                            }
                         }
                         else
                         {

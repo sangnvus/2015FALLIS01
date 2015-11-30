@@ -32,6 +32,7 @@ namespace FT_Driver.Classes
         public const string tNetDriverUpdateStatus = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateDriverStatus";
         public const string tNetDriverUpdateCurrentLocation = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateCurrentLocation";
         public const string tNetDriverSelectVehicle = "http://123.30.236.109:8088/TN/restServices/DriverController/selectVehicle";
+        public const string tNetDriverUpdateRegId = "http://123.30.236.109:8088/TN/restServices/CommonController/updateRegId";
         
 
         //Login Page
@@ -50,5 +51,8 @@ namespace FT_Driver.Classes
         public const string dStatusAvailable = "AC";
         public const string dStatusNotAvailable = "NA";
         public const string dStatusBusy = "BU";
+
+        //Driver Type
+        public const string dRole = "DR";
     }
 }

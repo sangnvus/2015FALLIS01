@@ -76,12 +76,13 @@ namespace FT_Rider.Pages
         bool _viewMoved = false;
 
         //For Timer
-        DispatcherTimer pickupTimer;
+        //DispatcherTimer pickupTimer;
         bool isPickup = false;
 
         //For near driver
         IDictionary<string, ListDriverDTO> nearDriverCollection = new Dictionary<string, ListDriverDTO>();
         string selectedDid = null; //This variable to detect what car is choosen in map
+        DispatcherTimer getNearDriverTimer = new DispatcherTimer();
 
         //For GET PICK UP & Create Trip
         double pickupLat;
@@ -142,6 +143,20 @@ namespace FT_Rider.Pages
             //pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
             //pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
 
+
+            //Cái này để chạy Getneardriver. 
+            //Nếu sau khi login mà chưa kịp cập nhật lat lng thì sau 3 giây sẽ gọi lại
+            getNearDriverTimer = new DispatcherTimer();
+            getNearDriverTimer.Tick += new EventHandler(getNearDriverTimer_Tick);
+            getNearDriverTimer.Interval = new TimeSpan(0, 0, 0, 3);
+
+        }
+
+        private void getNearDriverTimer_Tick(object sender, EventArgs e)
+        {
+            GetNearDriver();
+            getNearDriverTimer.Stop();
+            //throw new NotImplementedException();
         }
 
 
@@ -267,60 +282,69 @@ namespace FT_Rider.Pages
         //------ BEGIN get near Driver ------//
         private async void GetNearDriver()
         {
-            var uid = userData.content.uid;
-            var lat = pickupLat;
-            var lng = pickupLng;
-            var clvl = taxiType;
-
-            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-            RiderGetNearDriver nearDriver;
-            try
+            if (pickupLat != 0 && pickupLng != 0)
             {
-                 nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
-                 if (nearDriver.content != null)
-                 {
-                     foreach (var item in nearDriver.content.listDriverDTO)
-                     {
-                         nearDriverCollection[item.did.ToString()] = new ListDriverDTO
-                         {
-                             did = item.did,
-                             fName = item.fName,
-                             lName = item.lName,
-                             cName = item.cName,
-                             mobile = item.mobile,
-                             rate = item.rate,
-                             oPrice = item.oPrice,
-                             oKm = item.oKm,
-                             f1Price = item.f1Price,
-                             f1Km = item.f1Km,
-                             f2Price = item.f2Price,
-                             f2Km = item.f2Km,
-                             f3Price = item.f3Price,
-                             f3Km = item.f3Km,
-                             f4Price = item.f4Price,
-                             f4Km = item.f4Km,
-                             img = item.img,
-                             lat = item.lat,
-                             lng = item.lng
-                         };
-                     }
+                var uid = userData.content.uid;
+                var lat = pickupLat;
+                var lng = pickupLng;
+                var clvl = taxiType;
 
-                     foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
-                     {
-                         ShowNearDrivers(tmpIter.Key);
-                     }
-                 }
-                 else
-                 {
-                     MessageBox.Show("Co loi 1");
-                 }                
+                var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
+                RiderGetNearDriver nearDriver;
+                try
+                {
+                    nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+                    if (nearDriver.content != null)
+                    {
+                        foreach (var item in nearDriver.content.listDriverDTO)
+                        {
+                            nearDriverCollection[item.did.ToString()] = new ListDriverDTO
+                            {
+                                did = item.did,
+                                fName = item.fName,
+                                lName = item.lName,
+                                cName = item.cName,
+                                mobile = item.mobile,
+                                rate = item.rate,
+                                oPrice = item.oPrice,
+                                oKm = item.oKm,
+                                f1Price = item.f1Price,
+                                f1Km = item.f1Km,
+                                f2Price = item.f2Price,
+                                f2Km = item.f2Km,
+                                f3Price = item.f3Price,
+                                f3Km = item.f3Km,
+                                f4Price = item.f4Price,
+                                f4Km = item.f4Km,
+                                img = item.img,
+                                lat = item.lat,
+                                lng = item.lng
+                            };
+                        }
+
+                        foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                        {
+                            ShowNearDrivers(tmpIter.Key);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Co loi 1");
+                    }
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Co loi 2");
+                }
             }
-            catch (Exception)
+            else
             {
-
-                MessageBox.Show("Co loi 2");
+                getNearDriverTimer.Start();
             }
+
+            
            
         }
         //------ END get near Driver ------//
@@ -1081,6 +1105,8 @@ namespace FT_Rider.Pages
 
         private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            pb_PleaseWait.Visibility = Visibility.Visible; //Khi bắt đầu nhấn nút "Yêu cầu Taxi" thì hệ thống sẽ hiện ProcessC Bar "Vui lòng đợi"
+            SwitchToWaitingStatus();
             chk_AutoRecall.IsEnabled = false;
 
             int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
@@ -1173,7 +1199,7 @@ namespace FT_Rider.Pages
                 //btn_RequestTaxi.IsEnabled = false;
                 //btn_RequestTaxi.Content = "Vui lòng đợi...";
                 //btn_RequestTaxi.BorderBrush.Opacity = 0;
-                SwitchToWaitingStatus();
+                //SwitchToWaitingStatus();
 
             }
         }

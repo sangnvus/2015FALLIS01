@@ -221,7 +221,7 @@
                     </Image>
                     <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Left" Margin="10,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>
                     <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Right" Margin="0,205,0,0" VerticalAlignment="Top" Width="61"/>
-                    <Button x:Name="btn_RequestTaxi" HorizontalAlignment="Left" Margin="0,251,0,0" VerticalAlignment="Bottom" Height="100" Width="480" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxi_Tap">
+                    <Button x:Name="btn_RequestTaxi" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="480" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxi_Tap">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </Button.Background>
@@ -229,6 +229,7 @@
                             <SolidColorBrush Color="White" Opacity="0.2"/>
                         </Button.BorderBrush>
                     </Button>
+                    <ProgressBar x:Name="pb_PleaseWait" HorizontalAlignment="Left" Height="10" VerticalAlignment="Top" Width="448" Margin="17,329,0,0" IsIndeterminate="True" Foreground="White" Visibility="Collapsed"/>
                 </Grid>
                 <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
                     <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg"/>

@@ -14,6 +14,7 @@ using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using FT_Driver.Classes;
 using Microsoft.Devices;
+using System.Threading;
 
 
 namespace FT_Driver.Pages
@@ -41,14 +42,13 @@ namespace FT_Driver.Pages
             }
 
 
-            this.GetCarListToLLS();
+            GetCarListToLLS();
 
         }
 
         private void GetCarListToLLS()
         {
             string carLelvel = "";
-            int vehicleId = 1;
             Uri imgUrl = new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative); ;
             ///{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}
             try
@@ -89,6 +89,7 @@ namespace FT_Driver.Pages
 
         private void lls_CarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            grv_ProcessScreen.Visibility = Visibility.Visible;
             tNetAppSetting["isSelectedCar"] = "SelectedCar"; //Cái này để đánh dấu rằng, sẽ bỏ qua bước chọn xe //Thêm vào sau tiến trình chọn xe
 
             var selectedCar = ((DriverVehiceInfoObj)(sender as LongListSelector).SelectedItem);
@@ -118,7 +119,9 @@ namespace FT_Driver.Pages
                     var selectVehicle = JsonConvert.DeserializeObject<DriverLogin>(output);
                     if (selectVehicle != null)
                     {
-                        NavigationService.Navigate(new Uri("/Pages/Page2.xaml", UriKind.Relative));
+                        NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                        Thread.Sleep(1000);
+                        grv_ProcessScreen.Visibility = Visibility.Collapsed;//Disable Process bar
                     }
                     else
                     {
