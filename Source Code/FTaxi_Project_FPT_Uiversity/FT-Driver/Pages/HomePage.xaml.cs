@@ -795,7 +795,7 @@ namespace FT_Driver.Pages
                 ///
 
                 //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
-                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<<<<<<<<<<<<<
+                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<
             });
         }
 
