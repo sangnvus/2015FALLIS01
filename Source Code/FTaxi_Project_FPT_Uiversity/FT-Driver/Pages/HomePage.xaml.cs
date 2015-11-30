@@ -106,19 +106,18 @@ namespace FT_Driver.Pages
 
             //Open Status Screen
             grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
-            this.grv_AcceptReject.Visibility = Visibility.Collapsed;
 
 
-            LoadDriverProfile();
-            UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
+            this.LoadDriverProfile();
+            this.UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
 
 
             updateLocationTimer = new DispatcherTimer();
             updateLocationTimer.Tick += new EventHandler(updateLocationTimer_Tick);
-            updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 5); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công            
+            updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 8); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công            
 
             //Cập nhật tọa độ của lái xe lên server
-            UpdateCurrentLocation();
+            this.UpdateCurrentLocation();
         }
 
         private void updateLocationTimer_Tick(object sender, EventArgs e)
@@ -156,17 +155,52 @@ namespace FT_Driver.Pages
             base.OnNavigatedTo(e);
             try
             {
-                //txt1.Text = this.NavigationContext.QueryString["value1"].ToString();
                 if (this.NavigationContext.QueryString["json"].ToString() != null)
                 {
-                    var input = this.NavigationContext.QueryString["json"].ToString(); //Nhận chuỗi json truyền vào
-                    MessageBox.Show(input);
+                    txt_RiderName.Text = this.NavigationContext.QueryString["json"];
                 }
-
             }
-            catch (KeyNotFoundException)
+            catch (Exception)
             {
+                
+                //throw;
             }
+
+            //try
+            //{
+            //    //txt1.Text = this.NavigationContext.QueryString["value1"].ToString();
+            //    if (this.NavigationContext.QueryString["json"].ToString() != null)
+            //    {
+            //        //Nếu noti này là noti của New trip thi...
+            //        if (this.NavigationContext.QueryString["notiType"].Equals("NT"))
+            //        {
+            //            var input = this.NavigationContext.QueryString["json"].ToString(); //Nhận chuỗi json truyền vào
+            //            DriverNewtripNotification newTrip = new DriverNewtripNotification();
+            //            try
+            //            {
+            //                newTrip = JsonConvert.DeserializeObject<DriverNewtripNotification>(input);
+
+            //                //Show Rider Information
+            //                txt_RiderName.Text = newTrip.rName;
+            //                txt_RiderMobile.Text = newTrip.mobile;
+            //                txt_RiderAddress.Text = newTrip.sAdd;
+            //            }
+            //            catch (Exception)
+            //            {
+
+            //                MessageBox.Show(ConstantVariable.errServerError);
+            //            }
+
+            //        }
+
+            //        //MessageBox.Show(input);
+            //    }
+
+            //}
+            //catch (KeyNotFoundException)
+            //{
+            //    MessageBox.Show(ConstantVariable.errServerError);
+            //}
 
         }
 
@@ -205,7 +239,7 @@ namespace FT_Driver.Pages
         private async void UpdateCurrentLocation()
         {
             //{"uid":"dao@gmail.com","lat":"21.038993","lng":"105.799242"}
-            if (currentLat != 0 && currentLng != 0)
+            if (Math.Round(currentLat, 0) != 0 && Math.Round(currentLng, 0) != 0)
             {
                 var uid = userId;
                 var lat = currentLat;
@@ -695,7 +729,7 @@ namespace FT_Driver.Pages
 
 
 
-
+        
         ///NOTIFICATION CHANNEL
         private void CreatePushChannel()
         {
@@ -733,7 +767,8 @@ namespace FT_Driver.Pages
                 System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
 
                 pushChannelURI = pushChannel.ChannelUri.ToString();
-                UpdateNotificationURI(pushChannelURI);
+                //UpdateNotificationURI(pushChannelURI);
+                MessageBox.Show("Create URI");
                 //tNetAppSetting["NotificationURI"] = pushChannelURI;
                 ///
                 ///CODE UPDATE URI HERE///
@@ -752,7 +787,8 @@ namespace FT_Driver.Pages
             {
                 System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
                 pushChannelURI = e.ChannelUri.ToString();
-                UpdateNotificationURI(pushChannelURI);
+                //UpdateNotificationURI(pushChannelURI);
+                MessageBox.Show("Updated");
                 //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
                 ///
                 ///CODE LOAD URI HERE///
@@ -806,13 +842,23 @@ namespace FT_Driver.Pages
         //Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
         private async void UpdateNotificationURI(string uri)
         {
+            var uid = userId;
             var mType = ConstantVariable.mTypeWIN;
             var role = ConstantVariable.dRole;
             var id = userData.content.driverInfo.did;
-            var input = string.Format("{{\"mid\":\"{0}\",\"mType\":\"{1}\",\"role\":\"{2}\",\"id\":\"{3}\"}}", uri, mType, role, id);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateRegId, input);
+            var input = string.Format("{{\"mid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateRegId, input);
+            }
+            catch (Exception)
+            {
+                //Lỗi máy chủ
+                MessageBox.Show(ConstantVariable.errServerError);
+            }
 
         }
+         
 
     }
 

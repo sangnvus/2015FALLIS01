@@ -21,7 +21,6 @@ namespace FT_Rider.Classes
         //Fare Cal
         public static Double EstimateCostCalculate(IDictionary<string, ListDriverDTO> taxiInput, string did, double kmInput)
         {
-            int i = 0;
             Double price;
             Double oKm = taxiInput[did].oKm;
             Double oPrice = taxiInput[did].oPrice;
