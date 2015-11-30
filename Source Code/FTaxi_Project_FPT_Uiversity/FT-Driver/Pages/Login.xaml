@@ -95,8 +95,8 @@
 
             <Image x:Name="img_UserIdIcon" HorizontalAlignment="Left" Height="42" Margin="25,85,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UseID.jpg"/>
             <Image x:Name="img_PasswordIcon" HorizontalAlignment="Left" Height="42" Margin="25,177,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_UserPassword.jpg"/>
-            <TextBlock x:Name="tbl_Account" HorizontalAlignment="Left" Margin="25,50,0,0" TextWrapping="Wrap" Text="Tài khoản" VerticalAlignment="Top" Foreground="Black"/>
-            <TextBlock x:Name="tbl_Password" HorizontalAlignment="Left" Margin="25,143,0,0" TextWrapping="Wrap" Text="Mật khẩu" VerticalAlignment="Top" Foreground="Black"/>
+            <TextBlock x:Name="tbl_Account" HorizontalAlignment="Left" Margin="25,50,0,0" TextWrapping="Wrap" Text="Tài khoản" VerticalAlignment="Top" Foreground="#FF595959"/>
+            <TextBlock x:Name="tbl_Password" HorizontalAlignment="Left" Margin="25,143,0,0" TextWrapping="Wrap" Text="Mật khẩu" VerticalAlignment="Top" Foreground="#FF595959"/>
             <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                 <Rectangle x:Name="rt_processBar" Stroke="Black">
                     <Rectangle.Fill>

@@ -36,6 +36,13 @@ namespace FT_Rider.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
+        //USER DATA PASS FROM LOGIN PAGE
+        IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        RiderLogin userData = new RiderLogin();
+        string userId = "";
+        string pwmd5 = "";
+        string rawPassword;
+
         //For Store Points
         List<GeoCoordinate> riderCoordinates = new List<GeoCoordinate>();
 
@@ -64,10 +71,6 @@ namespace FT_Rider.Pages
         //for car types
         string taxiType = null;
 
-        //USER DATA PASS FROM LOGIN PAGE
-        RiderLogin userData = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
-        string rawPassword = PhoneApplicationService.Current.State["RawPassword"] as string;
-
         //For left menu
         double initialPosition;
         bool _viewMoved = false;
@@ -90,6 +93,10 @@ namespace FT_Rider.Pages
 
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
+
+        //For process bar
+        double tmpLat;
+        double tmpLng;
         
 
         public HomePage()
@@ -97,10 +104,27 @@ namespace FT_Rider.Pages
 
             InitializeComponent();
 
+
+            //Get User data from login
+            if (tNetUserLoginData.Contains("UserLoginData"))
+            {
+                userData = (RiderLogin)tNetUserLoginData["UserLoginData"];
+            }
+            if (tNetUserLoginData.Contains("UserId") && tNetUserLoginData.Contains("PasswordMd5"))
+            {
+                userId = (string)tNetUserLoginData["UserId"];
+                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
+            }
+            if (tNetUserLoginData.Contains("RawPassword"))
+            {
+                rawPassword = (string)tNetUserLoginData["RawPassword"];
+            }
+
             //get First Local Position
             GetCurrentCoordinate();
 
             //hide all step screen
+            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
             this.lls_AutoComplete.IsEnabled = false;
@@ -117,6 +141,7 @@ namespace FT_Rider.Pages
             //pickupTimer = new DispatcherTimer();
             //pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
             //pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
+
         }
 
 
@@ -148,23 +173,33 @@ namespace FT_Rider.Pages
         {
             //{"uid":"apl.ytb2@gmail.com","pw":"Abc123!","lan":"VI","cntry":"VN"}
             var uid = userData.content.uid;
-            var pw = rawPassword;
+            //var pw = pwmd5;
             var lan = userData.content.lan;
-            var cntry = "VN";//userData.content.cntry;
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":{1},\"lan\":{2},\"cntry\":\"{3}\"}}", uid, pw, lan, cntry);
+            var cntry = userData.content.cntry;
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"lan\":\"{2}\",\"cntry\":\"{3}\"}}", uid, rawPassword, lan, cntry);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetCityName, input);
-            var cityItem = JsonConvert.DeserializeObject<RiderGetCityNames>(output);
-            foreach (var item in cityItem.content.list)
+            RiderGetCityNames cityItem;
+            try
             {
-                cityNamesDB[item.cityName] = new RiderGetCityList
+               
+                cityItem = JsonConvert.DeserializeObject<RiderGetCityNames>(output);
+                foreach (var item in cityItem.content.list)
                 {
-                    cityId = item.cityId,
-                    lan = item.lan,
-                    cityName = item.cityName,
-                    googleName = item.googleName,
-                    lat = item.lat,
-                    lng = item.lng
-                };
+                    cityNamesDB[item.cityName] = new RiderGetCityList
+                    {
+                        cityId = item.cityId,
+                        lan = item.lan,
+                        cityName = item.cityName,
+                        googleName = item.googleName,
+                        lat = item.lat,
+                        lng = item.lng
+                    };
+                }
+            }
+            catch (NullReferenceException)
+            {
+
+                MessageBox.Show(ConstantVariable.errServerErr);
             }
         }
 
@@ -196,8 +231,12 @@ namespace FT_Rider.Pages
             map_RiderMap.Layers.Add(riderMapLayer);
 
             // initialize pickup coordinates
-            pickupLat = riderFirstGeoposition.Coordinate.Latitude; //Có thể xóa
-            pickupLng = riderFirstGeoposition.Coordinate.Longitude;
+            //pickupLat = riderFirstGeoposition.Coordinate.Latitude; //Có thể xóa
+            //pickupLng = riderFirstGeoposition.Coordinate.Longitude;
+
+            //// initialize pickup coordinates
+            tmpLat = Math.Round(riderFirstGeoposition.Coordinate.Latitude, 5);
+            tmpLng = Math.Round(riderFirstGeoposition.Coordinate.Longitude, 5);
 
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
@@ -235,40 +274,54 @@ namespace FT_Rider.Pages
 
             var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-            var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
-            if (nearDriver.content.listDriverDTO.Count > 0)
+            RiderGetNearDriver nearDriver;
+            try
             {
-                foreach (var item in nearDriver.content.listDriverDTO)
-                {
-                    nearDriverCollection[item.did.ToString()] = new ListDriverDTO
-                    {
-                        did = item.did,
-                        fName = item.fName,
-                        lName = item.lName,
-                        cName = item.cName,
-                        mobile = item.mobile,
-                        rate = item.rate,
-                        oPrice = item.oPrice,
-                        oKm = item.oKm,
-                        f1Price = item.f1Price,
-                        f1Km = item.f1Km,
-                        f2Price = item.f2Price,
-                        f2Km = item.f2Km,
-                        f3Price = item.f3Price,
-                        f3Km = item.f3Km,
-                        f4Price = item.f4Price,
-                        f4Km = item.f4Km,
-                        img = item.img,
-                        lat = item.lat,
-                        lng = item.lng
-                    };
-                }
+                 nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+                 if (nearDriver.content != null)
+                 {
+                     foreach (var item in nearDriver.content.listDriverDTO)
+                     {
+                         nearDriverCollection[item.did.ToString()] = new ListDriverDTO
+                         {
+                             did = item.did,
+                             fName = item.fName,
+                             lName = item.lName,
+                             cName = item.cName,
+                             mobile = item.mobile,
+                             rate = item.rate,
+                             oPrice = item.oPrice,
+                             oKm = item.oKm,
+                             f1Price = item.f1Price,
+                             f1Km = item.f1Km,
+                             f2Price = item.f2Price,
+                             f2Km = item.f2Km,
+                             f3Price = item.f3Price,
+                             f3Km = item.f3Km,
+                             f4Price = item.f4Price,
+                             f4Km = item.f4Km,
+                             img = item.img,
+                             lat = item.lat,
+                             lng = item.lng
+                         };
+                     }
 
-                foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
-                {
-                    ShowNearDrivers(tmpIter.Key);
-                }
+                     foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                     {
+                         ShowNearDrivers(tmpIter.Key);
+                     }
+                 }
+                 else
+                 {
+                     MessageBox.Show("Co loi 1");
+                 }                
             }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Co loi 2");
+            }
+           
         }
         //------ END get near Driver ------//
 
@@ -891,6 +944,11 @@ namespace FT_Rider.Pages
         //Event này để bắt trường hợp sau mỗi lần di chuyển map
         private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
         {
+            if (new GeoCoordinate(Math.Round(map_RiderMap.Center.Latitude, 5), Math.Round(map_RiderMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
+            {
+                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
+            }
+
             img_PickerLabel.Visibility = Visibility.Visible; //Enable Pickup label
             //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
             pickupLat = map_RiderMap.Center.Latitude;
@@ -1023,6 +1081,8 @@ namespace FT_Rider.Pages
 
         private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            chk_AutoRecall.IsEnabled = false;
+
             int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
             string eCityName;
             int eCity;

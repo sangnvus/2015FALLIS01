@@ -33,13 +33,15 @@ namespace FT_Driver.Pages
         public Login()
         {
             InitializeComponent();
+
+            //Create Push notification Channel
             CreatePushChannel();
         }
 
 
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_UserId.Text != "" && txt_Password.ToString() != "")
+            if (txt_UserId.Text != "" && txt_Password.ActionButtonCommandParameter.ToString() != "")
             {
                 grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
                 var uid = txt_UserId.Text;
@@ -48,6 +50,7 @@ namespace FT_Driver.Pages
                 var pwmd5 = pw.FingerPrint.ToLower();
                 var mid = pushChannelURI; //HttpUtility.UrlEncode(pushChannelURI); ;
                 var mType = ConstantVariable.mTypeWIN;
+
                 var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
                 if (output != null)
@@ -56,7 +59,7 @@ namespace FT_Driver.Pages
                     {
 
                         var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
-                        if (driverLogin.content != null)
+                        if (driverLogin != null)
                         {
                             tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
 

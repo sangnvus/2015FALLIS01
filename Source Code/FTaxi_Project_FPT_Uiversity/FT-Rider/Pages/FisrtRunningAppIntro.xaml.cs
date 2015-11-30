@@ -13,12 +13,14 @@ using FT_Rider.Classes;
 using System.Device.Location;
 using Windows.Devices.Geolocation;
 using System.Threading.Tasks;
+using System.IO.IsolatedStorage;
 
 namespace FT_Rider.Pages
 {
     public partial class FisrtRunningAppIntro : PhoneApplicationPage
     {
         //varible
+        IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
         SolidColorBrush mySolidColorBrush = new SolidColorBrush();
         PivotItem pivot = null;
 
@@ -31,7 +33,15 @@ namespace FT_Rider.Pages
 
         private void btn_Go_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+            if (tNetAppSetting.Contains("isLogin")) //Check if user was logined
+            {
+                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+            }
+            
         }
 
         private void pvi_Tut_SelectionChanged(object sender, SelectionChangedEventArgs e)
