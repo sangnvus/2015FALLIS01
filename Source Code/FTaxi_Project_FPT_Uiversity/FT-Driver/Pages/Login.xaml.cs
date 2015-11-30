@@ -41,7 +41,7 @@ namespace FT_Driver.Pages
 
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (txt_UserId.Text != "" && txt_Password.ToString() != "")
+            if (txt_UserId.Text != "" && txt_Password.ActionButtonCommandParameter.ToString() != "")
             {
                 grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
                 var uid = txt_UserId.Text;

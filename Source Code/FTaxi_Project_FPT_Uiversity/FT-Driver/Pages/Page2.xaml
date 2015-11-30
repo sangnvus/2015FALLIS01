@@ -52,7 +52,7 @@
                 <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,492,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,560,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,631,0,0" FontSize="22"/>
-                <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize_22}">
+                <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_Logout_Tap">
                     <Button.Background>
                         <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
                     </Button.Background>

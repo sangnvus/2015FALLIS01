@@ -30,6 +30,7 @@ namespace FT_Driver.Pages
     {
         //USER DATA
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
         DriverLogin userData = new DriverLogin();
         string userId = "";
         string pwmd5 = "";
@@ -635,6 +636,17 @@ namespace FT_Driver.Pages
             if (new GeoCoordinate(Math.Round(map_DriverMap.Center.Latitude, 5), Math.Round(map_DriverMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
             {
                 grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
+            }
+        }
+
+        private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (tNetAppSetting.Contains("isLogin"))
+            {
+                tNetAppSetting.Remove("isLogin");
+                tNetUserLoginData.Remove("UserId");
+                tNetUserLoginData.Remove("PasswordMd5");
+                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
             }
         }
 

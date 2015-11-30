@@ -22,6 +22,7 @@ namespace FT_Driver.Classes
         public const string errLoginFailed = "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin!";
         public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
         public const string errNotEmpty = "Vui lòng điền đầy đủ thông tin!";
+        public const string errServerError = "Đang có lỗi máy chủ, vui lòng thử lại sau!";
 
 
         public const string tNetWsParameterName = "json";
@@ -30,6 +31,7 @@ namespace FT_Driver.Classes
         public const string tNetDriverLoginAddress = "http://123.30.236.109:8088/TN/restServices/DriverController/Login";
         public const string tNetDriverUpdateStatus = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateDriverStatus";
         public const string tNetDriverUpdateCurrentLocation = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateCurrentLocation";
+        public const string tNetDriverSelectVehicle = "http://123.30.236.109:8088/TN/restServices/DriverController/selectVehicle";
         
 
         //Login Page

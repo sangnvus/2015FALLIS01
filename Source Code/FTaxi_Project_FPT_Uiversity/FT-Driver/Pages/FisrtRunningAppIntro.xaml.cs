@@ -28,9 +28,16 @@ namespace FT_Driver.Pages
 
         private void btn_Go_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (tNetAppSetting.Contains("isLogin")) //Check if user was logined
+            ///Nếu người dùng login thành công và chọn xe thành công thì sẽ vào thằng màn hình Home
+            ///Nếu người dùng chỉ mới login nhưng sau đó không chọn xe mà loại thoát app thì lần sau vẫn vào màn hình chọn xe
+            ///Nếu người dùng chưa login thành công thì lần truy cập triếp theo vẫn vào màn hình Login
+            if (tNetAppSetting.Contains("isLogin") && tNetAppSetting.Contains("isSelectedCar")) //Check if user was logined and Selected Car
             {
                 NavigationService.Navigate(new Uri("/Pages/Page2.xaml", UriKind.Relative));
+            }
+            else if (tNetAppSetting.Contains("isSelectedCar"))
+            {
+                NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
             }
             else
             {
@@ -39,6 +46,7 @@ namespace FT_Driver.Pages
            
         }
 
+        /// Cái này để thay đổi nút số trang ở màn hình First Start App
         private void pvi_Tut_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //TUT page            

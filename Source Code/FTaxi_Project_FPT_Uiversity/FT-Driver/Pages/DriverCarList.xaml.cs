@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using FT_Driver.Classes;
+using Microsoft.Devices;
 
 
 namespace FT_Driver.Pages
@@ -20,13 +21,13 @@ namespace FT_Driver.Pages
     public partial class DriverCarList : PhoneApplicationPage
     {
         //USER DATA
-        //DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
-
-        //string userId = PhoneApplicationService.Current.State["UserId"] as string;
-        //string pwmd5 = PhoneApplicationService.Current.State["PasswordMd5"] as string;
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         DriverLogin userData = new DriverLogin();
+        string userId = "";
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+
+        //Vibrate
+        VibrateController vibrateController = VibrateController.Default;
 
 
 
@@ -36,6 +37,7 @@ namespace FT_Driver.Pages
             if (tNetUserLoginData.Contains("UserLoginData"))
             {
                 userData = (DriverLogin)tNetUserLoginData["UserLoginData"];
+                userId = (string)tNetUserLoginData["UserId"];
             }
 
 
@@ -45,16 +47,17 @@ namespace FT_Driver.Pages
 
         private void GetCarListToLLS()
         {
-
+            string carLelvel = "";
+            int vehicleId = 1;
+            Uri imgUrl = new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative); ;
             ///{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}
             try
             {
-                //2. Parse Object and Load to LLS
+                //1. Parse Object and Load to LLS
                 ObservableCollection<DriverVehiceInfoObj> carListDataSource = new ObservableCollection<DriverVehiceInfoObj>();
                 lls_CarList.ItemsSource = carListDataSource;
-                string carLelvel = "";
-                Uri imgUrl =  new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative);;
-                //3. Loop to list all item in object
+
+                //2. Loop to list all item in object
                 foreach (var obj in userData.content.vehicleInfos)
                 {
                     switch (obj.carLevel)
@@ -73,7 +76,8 @@ namespace FT_Driver.Pages
                             break;
                     }
 
-                    carListDataSource.Add(new DriverVehiceInfoObj(obj.plate, obj.carTitle, carLelvel, imgUrl));
+                    //3. Add to List
+                    carListDataSource.Add(new DriverVehiceInfoObj(obj.plate, obj.carTitle, carLelvel, obj.vehicleId, imgUrl));
                 }
             }
             catch (Exception)
@@ -86,6 +90,65 @@ namespace FT_Driver.Pages
         private void lls_CarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             tNetAppSetting["isSelectedCar"] = "SelectedCar"; //Cái này để đánh dấu rằng, sẽ bỏ qua bước chọn xe //Thêm vào sau tiến trình chọn xe
+
+            var selectedCar = ((DriverVehiceInfoObj)(sender as LongListSelector).SelectedItem);
+            // If selected item is null, do nothing
+            if (lls_CarList.SelectedItem == null)
+                return;
+
+            //Else Update Vehicle Id to Server
+            SelectVahicle(selectedCar.VehicleId);
+
+            //vibrate phone
+            TouchFeedback();
+        }
+
+        private async void SelectVahicle(int vehicleId)
+        {
+            var did = userData.content.driverInfo.did.ToString();
+            var uid = userId;
+
+            var input = string.Format("{{\"did\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\"}}", did, uid, vehicleId);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverSelectVehicle, input);
+            if (output != null)
+            {
+                try
+                {
+
+                    var selectVehicle = JsonConvert.DeserializeObject<DriverLogin>(output);
+                    if (selectVehicle != null)
+                    {
+                        NavigationService.Navigate(new Uri("/Pages/Page2.xaml", UriKind.Relative));
+                    }
+                    else
+                    {
+                        MessageBox.Show(ConstantVariable.errServerError);
+                        grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    //Login Failed | Đăng nhập không thành công
+                    MessageBox.Show(ConstantVariable.errServerError);
+                    grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                }
+            }
+            else
+            {
+                //Có lỗi kết nối với Server
+                MessageBox.Show(ConstantVariable.errConnectingError);
+                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+            }
+
+        }
+
+
+
+        private void TouchFeedback()
+        {
+            vibrateController.Start((TimeSpan.FromSeconds(0.1)));
         }
     }
 }
