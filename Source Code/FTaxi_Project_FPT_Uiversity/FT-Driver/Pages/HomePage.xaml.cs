@@ -5,28 +5,40 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Device.Location;
+using System.Windows.Media.Imaging;
+using System.Windows.Media.Animation;
+using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Threading;
+using System.IO.IsolatedStorage;
+using System.Windows.Threading;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Controls;
-using System.Device.Location;
-using Windows.Devices.Geolocation;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using Microsoft.Devices;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Animation;
+using Microsoft.Phone.Notification;
+using Windows.Devices.Geolocation;
+using Newtonsoft.Json;
 using FT_Driver.Resources;
 using FT_Driver.Classes;
-using Newtonsoft.Json;
-using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Threading;
+using System.Text;
 
 namespace FT_Driver.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
+        //USER DATA
+        IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+        DriverLogin userData = new DriverLogin();
+        string userId = "";
+        string pwmd5 = "";
+
+
         //For Store Points
         List<GeoCoordinate> driverCoordinates = new List<GeoCoordinate>();
 
@@ -36,8 +48,12 @@ namespace FT_Driver.Pages
         MapRoute driverMapRoute = null;
         Route driverRoute = null;
 
-        //For map layer
-        MapLayer driverMapLayer;
+        //For get Current Location
+        Geolocator driverFirstGeolocator = null;
+        Geoposition driverFirstGeoposition = null;
+        MapOverlay driverMapOverlay = null;
+        MapLayer driverMapLayer = null;
+
 
         //VibrateController
         VibrateController vibrateController = VibrateController.Default;
@@ -48,22 +64,208 @@ namespace FT_Driver.Pages
         //Rider Destination Icon Overlay
         MapOverlay driverDestinationIconOverlay;
 
-        //USER DATA
-        DriverLogin userData = PhoneApplicationService.Current.State["UserInfo"] as DriverLogin;
-               
+        //For Update Current Location
+        double currentLat;
+        double currentLng;
+        int countForUpdateLocation = 0;
 
+        //For process bar
+        double tmpLat;
+        double tmpLng;
 
         //For menu
         double initialPosition;
         bool _viewMoved = false;
 
+        //For timer
+        DispatcherTimer updateLocationTimer = new DispatcherTimer();
+
+        //Fot Update Notification
+        string pushChannelURI = "";
+
         public HomePage()
         {
             InitializeComponent();
+
+            //Tạo kênh Notification
+            CreatePushChannel();
+
+
             //get First Local Position
-            ShowCurrentLocalOnTheMap();
-            LoadDriverProfile();
+            GetCurrentCorrdinate();
+
+
+            //Get User data from login
+            if (tNetUserLoginData.Contains("UserLoginData"))
+            {
+                userData = (DriverLogin)tNetUserLoginData["UserLoginData"];
+                userId = (string)tNetUserLoginData["UserId"];
+                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
+            }
+
+
+            //Open Status Screen
+            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
+
+
+            this.LoadDriverProfile();
+            this.UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
+
+
+            updateLocationTimer = new DispatcherTimer();
+            updateLocationTimer.Tick += new EventHandler(updateLocationTimer_Tick);
+            updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 8); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công            
+
+            //Cập nhật tọa độ của lái xe lên server
+            this.UpdateCurrentLocation();
         }
+
+        private void updateLocationTimer_Tick(object sender, EventArgs e)
+        {
+            UpdateCurrentLocation();
+            updateLocationTimer.Stop();
+            //throw new NotImplementedException();
+        }
+
+
+
+
+
+        //Mỗi khi map thay đổi, hai biến currentLat và currentLng sẽ được cập nhật
+        private void map_DriverMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
+        {
+            currentLat = map_DriverMap.Center.Latitude;
+            currentLng = map_DriverMap.Center.Longitude;
+        }
+
+        private void map_DriverMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
+        {
+
+            if (new GeoCoordinate(Math.Round(map_DriverMap.Center.Latitude, 5), Math.Round(map_DriverMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
+            {
+                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
+            }
+        }
+
+
+
+        //Nhận thông tin từ Notification
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            try
+            {
+                if (this.NavigationContext.QueryString["json"].ToString() != null)
+                {
+                    txt_RiderName.Text = this.NavigationContext.QueryString["json"];
+                }
+            }
+            catch (Exception)
+            {
+                
+                //throw;
+            }
+
+            //try
+            //{
+            //    //txt1.Text = this.NavigationContext.QueryString["value1"].ToString();
+            //    if (this.NavigationContext.QueryString["json"].ToString() != null)
+            //    {
+            //        //Nếu noti này là noti của New trip thi...
+            //        if (this.NavigationContext.QueryString["notiType"].Equals("NT"))
+            //        {
+            //            var input = this.NavigationContext.QueryString["json"].ToString(); //Nhận chuỗi json truyền vào
+            //            DriverNewtripNotification newTrip = new DriverNewtripNotification();
+            //            try
+            //            {
+            //                newTrip = JsonConvert.DeserializeObject<DriverNewtripNotification>(input);
+
+            //                //Show Rider Information
+            //                txt_RiderName.Text = newTrip.rName;
+            //                txt_RiderMobile.Text = newTrip.mobile;
+            //                txt_RiderAddress.Text = newTrip.sAdd;
+            //            }
+            //            catch (Exception)
+            //            {
+
+            //                MessageBox.Show(ConstantVariable.errServerError);
+            //            }
+
+            //        }
+
+            //        //MessageBox.Show(input);
+            //    }
+
+            //}
+            //catch (KeyNotFoundException)
+            //{
+            //    MessageBox.Show(ConstantVariable.errServerError);
+            //}
+
+        }
+
+
+
+        //------ BEGIN Update Driver Status ------//
+        private async void UpdateDriverStatus(string stt) //Chưa check try catch
+        {
+            //{"uid":"dao@gmail.com","pw":"b65bd772c3b0dfebf0a189efd420352d","status":"NA"}
+            //Nếu đang hoạt động (AC), muốn chuyển qua chế độ nghỉ thì truyền vào "AC"
+            //Nếu đang ở trạn thái nghỉ (NA) muốn chuyển qua chế độ hoạt động thì truyền vào "NA"
+            //Nếu bắt đầu đón khách thì chuyển qua chế độ bận (BU)
+            var uid = userId;
+            var pw = pwmd5;
+            var status = stt;
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"status\":\"{2}\"}}", uid, pw, status);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
+            try
+            {
+                var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+            }
+            catch (Exception)
+            {
+
+                //throw; //Exc here <<<<<<<<<<<<<<<<<<
+            }
+
+        }
+        //------ END Update Driver Status ------//
+
+
+
+
+
+        //------ BEGIN Update Current Location to Server ------//
+        private async void UpdateCurrentLocation()
+        {
+            //{"uid":"dao@gmail.com","lat":"21.038993","lng":"105.799242"}
+            if (Math.Round(currentLat, 0) != 0 && Math.Round(currentLng, 0) != 0)
+            {
+                var uid = userId;
+                var lat = currentLat;
+                var lng = currentLng;
+                var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\",\"}}", uid, lat, lng);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
+                try
+                {
+                    var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            else
+            {
+                updateLocationTimer.Start();
+            }
+
+        }
+        //------ END Update Current Location to Server ------//
+
+
+
 
 
         //------ BEGIN get driver profile ------//
@@ -77,43 +279,61 @@ namespace FT_Driver.Pages
 
 
         //------ BEGIN get current Position ------//
-        private async void ShowCurrentLocalOnTheMap()
+        private async void GetCurrentCorrdinate()
         {
-       
+
             //get position
-            Geolocator driverFirstGeolocator = new Geolocator();
-            Geoposition driverFirstGeoposition = await driverFirstGeolocator.GetGeopositionAsync();
-            Geocoordinate driverFirstGeocoordinate = driverFirstGeoposition.Coordinate;
-            GeoCoordinate driverFirstGeoCoordinate = ConvertData.ConvertGeocoordinate(driverFirstGeocoordinate);
+            driverFirstGeolocator = new Geolocator();
+            driverFirstGeolocator.DesiredAccuracy = PositionAccuracy.High;
+            driverFirstGeolocator.MovementThreshold = 20;
+            driverFirstGeolocator.ReportInterval = 100;
+            driverFirstGeoposition = await driverFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
 
-            //Adjust map on the phone screen - 0.001500 to move up the map
-            this.map_DriverMap.Center = new GeoCoordinate(driverFirstGeoposition.Coordinate.Latitude - 0.001500, driverFirstGeoposition.Coordinate.Longitude);
-            this.map_DriverMap.ZoomLevel = 16;
+            //Add img_CurrentLocation to Map
+            Image currentLocationPin = new Image();
+            currentLocationPin.Source = new BitmapImage(new Uri("/Images/Icons/img_CurrentLocation.png", UriKind.Relative));
+            currentLocationPin.Height = 27;
+            currentLocationPin.Width = 25;
 
-            //Show maker
+            driverMapOverlay = new MapOverlay();
+            driverMapOverlay.Content = currentLocationPin; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+            driverMapOverlay.GeoCoordinate = new GeoCoordinate(driverFirstGeoposition.Coordinate.Latitude, driverFirstGeoposition.Coordinate.Longitude);
+            driverMapOverlay.PositionOrigin = new Point(0.5, 0.5);
 
-            // Create a small circle to mark the current location.
-            Ellipse firstDriverPositionIcon = new Ellipse();
-            firstDriverPositionIcon.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)42, (byte)165, (byte)255)); //RGB of #2aa5ff
-            firstDriverPositionIcon.Height = 15;
-            firstDriverPositionIcon.Width = 15;
-            firstDriverPositionIcon.Opacity = 100;
-
-            // Create a MapOverlay to contain the circle.
-            MapOverlay firstDriverLocationOverlay = new MapOverlay();
-            firstDriverLocationOverlay.Content = firstDriverPositionIcon;
-
-            //MapOverlay PositionOrigin to 0.9, 0. MapOverlay will align it's center towards the GeoCoordinate
-            firstDriverLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            firstDriverLocationOverlay.GeoCoordinate = driverFirstGeoCoordinate;
-
-            // Create a MapLayer to contain the MapOverlay.
             driverMapLayer = new MapLayer();
-            driverMapLayer.Add(firstDriverLocationOverlay);
-
-            // Add the MapLayer to the Map.
+            driverMapLayer.Add(driverMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
             map_DriverMap.Layers.Add(driverMapLayer);
+
+            //// initialize pickup coordinates
+            tmpLat = Math.Round(driverFirstGeoposition.Coordinate.Latitude, 5);
+            tmpLng = Math.Round(driverFirstGeoposition.Coordinate.Longitude, 5);
+
+            driverFirstGeolocator.PositionChanged += geolocator_PositionChanged;
+
+            //Set Center view
+            map_DriverMap.SetView(driverFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
+
+        }
+
+        private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+
+                Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
+                driverMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
+
+                //For Update Current Location
+                //Cứ sau 5 lần thay đổi vị trí trên Map, thì sẽ cập nhật vị trí lên server một lần
+                //Việc này để giảm req lên sv và tránh hao pin cho tiết bị
+                countForUpdateLocation++;
+                if (countForUpdateLocation == 4)
+                {
+                    UpdateCurrentLocation();
+                    countForUpdateLocation = 0;
+                }
+            });
 
         }
         //------ END get current Position ------//
@@ -133,7 +353,7 @@ namespace FT_Driver.Pages
                 //delete route
                 map_DriverMap.RemoveRoute(driverMapRoute);
                 driverMapRoute = null;
-                driverQuery = null;                
+                driverQuery = null;
                 driverMapLayer.Remove(driverDestinationIconOverlay);
             }
 
@@ -368,7 +588,7 @@ namespace FT_Driver.Pages
         //Tapped event
         private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            
+
         }
         //------ END show and Design UI 3 taxi near current position ------//
 
@@ -484,6 +704,161 @@ namespace FT_Driver.Pages
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
+
+        private void btn_ChangeStatus_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            // Update Status here
+            // Change Button Color Here after change 
+        }
+
+
+
+
+        private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (tNetAppSetting.Contains("isLogin"))
+            {
+                tNetAppSetting.Remove("isLogin");
+                tNetUserLoginData.Remove("UserId");
+                tNetUserLoginData.Remove("PasswordMd5");
+                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+            }
+        }
+
+
+
+
+
+        
+        ///NOTIFICATION CHANNEL
+        private void CreatePushChannel()
+        {
+            HttpNotificationChannel pushChannel;
+            string channelName = "FtaxiDriverChannel";
+            pushChannel = HttpNotificationChannel.Find(channelName);
+
+            if (pushChannel == null)
+            {
+                pushChannel = new HttpNotificationChannel(channelName);
+
+                // Register for all the events before attempting to open the channel.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                pushChannel.Open();
+
+                // Bind this new channel for toast events.
+                pushChannel.BindToShellToast();
+
+            }
+            else
+            {
+                // The channel was already open, so just register for all the events.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
+                System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
+
+                pushChannelURI = pushChannel.ChannelUri.ToString();
+                //UpdateNotificationURI(pushChannelURI);
+                MessageBox.Show("Create URI");
+                //tNetAppSetting["NotificationURI"] = pushChannelURI;
+                ///
+                ///CODE UPDATE URI HERE///
+                ///
+
+                //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
+
+            }
+        }
+
+        // Display the new URI for testing purposes.   Normally, the URI would be passed back to your web service at this point.
+        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+        {
+
+            Dispatcher.BeginInvoke(() =>
+            {
+                System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
+                pushChannelURI = e.ChannelUri.ToString();
+                //UpdateNotificationURI(pushChannelURI);
+                MessageBox.Show("Updated");
+                //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
+                ///
+                ///CODE LOAD URI HERE///
+                ///
+
+                //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
+                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<
+            });
+        }
+
+
+        // Error handling logic for your particular application would be here.
+        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+                MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
+                    e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
+                    );
+        }
+
+
+        // Parse out the information that was part of the message.
+        void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
+        {
+            StringBuilder message = new StringBuilder();
+            string relativeUri = string.Empty;
+
+            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+
+            // Parse out the information that was part of the message.
+            foreach (string key in e.Collection.Keys)
+            {
+                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+
+                if (string.Compare(
+                    key,
+                    "wp:Param",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.CompareOptions.IgnoreCase) == 0)
+                {
+                    relativeUri = e.Collection[key];
+                }
+            }
+
+            // Display a dialog of all the fields in the toast.
+            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+
+        }
+
+
+        //Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
+        private async void UpdateNotificationURI(string uri)
+        {
+            var uid = userId;
+            var mType = ConstantVariable.mTypeWIN;
+            var role = ConstantVariable.dRole;
+            var id = userData.content.driverInfo.did;
+            var input = string.Format("{{\"mid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateRegId, input);
+            }
+            catch (Exception)
+            {
+                //Lỗi máy chủ
+                MessageBox.Show(ConstantVariable.errServerError);
+            }
+
+        }
+         
 
     }
 

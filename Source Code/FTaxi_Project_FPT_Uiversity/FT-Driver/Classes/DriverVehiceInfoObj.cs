@@ -11,7 +11,19 @@ namespace FT_Driver.Classes
         private string _plate;
         private string _carTitle;
         private string _carLevel;
+        private int _vehicleId;
 
+        public int VehicleId
+        {
+            get { return _vehicleId; }
+            set { _vehicleId = value; }
+        }
+        private Uri _imgUrl;
+        public System.Uri ImgUrl
+        {
+            get { return _imgUrl; }
+            set { _imgUrl = value; }
+        }
         public string Plate
         {
             get { return _plate; }
@@ -30,11 +42,13 @@ namespace FT_Driver.Classes
             set { _carLevel = value; }
         }
 
-        public DriverVehiceInfoObj(string plate, string carTitle, string carLevel)
+        public DriverVehiceInfoObj(string plate, string carTitle, string carLevel, int vehicleId, Uri imgUrl)
         {
             this.Plate = plate;
             this.CarTitle = carTitle;
             this.CarLevel = carLevel;
+            this.VehicleId = vehicleId;
+            this.ImgUrl = imgUrl;
         }
     }
 }

@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Maps.Toolkit;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:imagetools="clr-namespace:ImageTools.Controls;assembly=ImageTools.Controls"
     x:Class="FT_Rider.Pages.HomePage"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -16,6 +16,33 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+
+    <phone:PhoneApplicationPage.Resources>
+        <Color x:Key="processbar_Color">#FF1FBAD6</Color>
+    </phone:PhoneApplicationPage.Resources>
+
+    
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Canvas x:Name="canvas" Height="768" Width="480" ManipulationCompleted="canvas_ManipulationCompleted" ManipulationDelta="canvas_ManipulationDelta" ManipulationStarted="canvas_ManipulationStarted" Background="Black">
 
@@ -158,9 +185,6 @@
                         <RowDefinition Height="82*"/>
                     </Grid.RowDefinitions>
                     <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2" ResolveCompleted="map_RiderMap_ResolveCompleted" MouseLeftButtonUp="map_RiderMap_MouseLeftButtonUp" MouseLeftButtonDown="map_RiderMap_MouseLeftButtonDown">
-                        <toolkit:MapExtensions.Children>
-                            <toolkit:UserLocationMarker x:Name="UserLocationMarker" Foreground="#FF2E9FFF" Background="#FFD5EBFF"/>
-                        </toolkit:MapExtensions.Children>
                     </maps:Map>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
@@ -221,7 +245,7 @@
                     </Image>
                     <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Left" Margin="10,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>
                     <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Right" Margin="0,205,0,0" VerticalAlignment="Top" Width="61"/>
-                    <Button x:Name="btn_RequestTaxi" HorizontalAlignment="Left" Margin="0,251,0,0" VerticalAlignment="Bottom" Height="100" Width="480" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxi_Tap">
+                    <Button x:Name="btn_RequestTaxi" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="480" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxi_Tap">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </Button.Background>
@@ -229,6 +253,7 @@
                             <SolidColorBrush Color="White" Opacity="0.2"/>
                         </Button.BorderBrush>
                     </Button>
+                    <ProgressBar x:Name="pb_PleaseWait" HorizontalAlignment="Left" Height="10" VerticalAlignment="Top" Width="448" Margin="17,329,0,0" IsIndeterminate="True" Foreground="White" Visibility="Collapsed"/>
                 </Grid>
                 <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" d:IsHidden="True">
                     <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg"/>
@@ -236,6 +261,19 @@
                 <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="141" Margin="76,273,75,0" VerticalAlignment="Top" Width="305.3">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
                     <Image x:Name="img_PickerLabel" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallTaxi.png" Stretch="None" Tap="img_PickerLabel_Tap"/>
+                </Grid>
+                <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
+                    <Rectangle x:Name="rt_processBar" Stroke="Black">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="Black" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                        <ProgressBar.Foreground>
+                            <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                        </ProgressBar.Foreground>
+                    </ProgressBar>
+                    <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
                 </Grid>
             </Grid>
         </Canvas>

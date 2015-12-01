@@ -30,12 +30,21 @@ using Microsoft.Devices;
 using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
+using Microsoft.Phone.Notification;
+using System.Text;
 
 
 namespace FT_Rider.Pages
 {
     public partial class HomePage : PhoneApplicationPage
     {
+        //USER DATA PASS FROM LOGIN PAGE
+        IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        RiderLogin userData = new RiderLogin();
+        string userId = "";
+        string pwmd5 = "";
+        string rawPassword;
+
         //For Store Points
         List<GeoCoordinate> riderCoordinates = new List<GeoCoordinate>();
 
@@ -45,12 +54,12 @@ namespace FT_Rider.Pages
         MapRoute riderMapRoute = null;
         Route riderRoute = null;
 
-        //For get Current Position
+        //For get Current Localtion
         Geolocator riderFirstGeolocator = null;
         Geoposition riderFirstGeoposition = null;
+        MapOverlay riderMapOverlay = null;
+        MapLayer riderMapLayer = null;
 
-        //For map layer
-        MapLayer riderMapLayer;
 
         //VibrateController
         VibrateController vibrateController = VibrateController.Default;
@@ -64,21 +73,18 @@ namespace FT_Rider.Pages
         //for car types
         string taxiType = null;
 
-        //USER DATA PASS FROM LOGIN PAGE
-        RiderLogin userData = PhoneApplicationService.Current.State["UserInfo"] as RiderLogin;
-        string rawPassword = PhoneApplicationService.Current.State["RawPassword"] as string;
-
         //For left menu
         double initialPosition;
         bool _viewMoved = false;
 
         //For Timer
-        DispatcherTimer pickupTimer;
+        //DispatcherTimer pickupTimer;
         bool isPickup = false;
 
         //For near driver
         IDictionary<string, ListDriverDTO> nearDriverCollection = new Dictionary<string, ListDriverDTO>();
         string selectedDid = null; //This variable to detect what car is choosen in map
+        DispatcherTimer getNearDriverTimer = new DispatcherTimer();
 
         //For GET PICK UP & Create Trip
         double pickupLat;
@@ -91,16 +97,43 @@ namespace FT_Rider.Pages
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
 
+        //For process bar
+        double tmpLat;
+        double tmpLng;
+
+        //For Notification 
+        string pushChannelURI = "";
+
 
         public HomePage()
         {
 
             InitializeComponent();
 
+            //Tạo kênh Notification
+            CreatePushChannel();
+
+
+            //Get User data from login
+            if (tNetUserLoginData.Contains("UserLoginData"))
+            {
+                userData = (RiderLogin)tNetUserLoginData["UserLoginData"];
+            }
+            if (tNetUserLoginData.Contains("UserId") && tNetUserLoginData.Contains("PasswordMd5"))
+            {
+                userId = (string)tNetUserLoginData["UserId"];
+                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
+            }
+            if (tNetUserLoginData.Contains("RawPassword"))
+            {
+                rawPassword = (string)tNetUserLoginData["RawPassword"];
+            }
+
             //get First Local Position
             GetCurrentCoordinate();
 
             //hide all step screen
+            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
             this.grv_Step02.Visibility = Visibility.Collapsed;
             this.grv_Step03.Visibility = Visibility.Collapsed;
             this.lls_AutoComplete.IsEnabled = false;
@@ -117,6 +150,21 @@ namespace FT_Rider.Pages
             //pickupTimer = new DispatcherTimer();
             //pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
             //pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
+
+
+            //Cái này để chạy Getneardriver. 
+            //Nếu sau khi login mà chưa kịp cập nhật lat lng thì sau 3 giây sẽ gọi lại
+            getNearDriverTimer = new DispatcherTimer();
+            getNearDriverTimer.Tick += new EventHandler(getNearDriverTimer_Tick);
+            getNearDriverTimer.Interval = new TimeSpan(0, 0, 0, 3);
+
+        }
+
+        private void getNearDriverTimer_Tick(object sender, EventArgs e)
+        {
+            GetNearDriver();
+            getNearDriverTimer.Stop();
+            //throw new NotImplementedException();
         }
 
 
@@ -148,23 +196,33 @@ namespace FT_Rider.Pages
         {
             //{"uid":"apl.ytb2@gmail.com","pw":"Abc123!","lan":"VI","cntry":"VN"}
             var uid = userData.content.uid;
-            var pw = rawPassword;
+            //var pw = pwmd5;
             var lan = userData.content.lan;
-            var cntry = "VN";//userData.content.cntry;
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":{1},\"lan\":{2},\"cntry\":\"{3}\"}}", uid, pw, lan, cntry);
+            var cntry = userData.content.cntry;
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"lan\":\"{2}\",\"cntry\":\"{3}\"}}", uid, rawPassword, lan, cntry);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetCityName, input);
-            var cityItem = JsonConvert.DeserializeObject<RiderGetCityNames>(output);
-            foreach (var item in cityItem.content.list)
+            RiderGetCityNames cityItem;
+            try
             {
-                cityNamesDB[item.cityName] = new RiderGetCityList
+
+                cityItem = JsonConvert.DeserializeObject<RiderGetCityNames>(output);
+                foreach (var item in cityItem.content.list)
                 {
-                    cityId = item.cityId,
-                    lan = item.lan,
-                    cityName = item.cityName,
-                    googleName = item.googleName,
-                    lat = item.lat,
-                    lng = item.lng
-                };
+                    cityNamesDB[item.cityName] = new RiderGetCityList
+                    {
+                        cityId = item.cityId,
+                        lan = item.lan,
+                        cityName = item.cityName,
+                        googleName = item.googleName,
+                        lat = item.lat,
+                        lng = item.lng
+                    };
+                }
+            }
+            catch (NullReferenceException)
+            {
+
+                MessageBox.Show(ConstantVariable.errServerErr);
             }
         }
 
@@ -179,9 +237,29 @@ namespace FT_Rider.Pages
             riderFirstGeolocator.ReportInterval = 100;
             riderFirstGeoposition = await riderFirstGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
 
+
+            //Add img_CurrentLocation to Map
+            Image currentLocationPin = new Image();
+            currentLocationPin.Source = new BitmapImage(new Uri("/Images/Icons/img_CurrentLocation.png", UriKind.Relative));
+            currentLocationPin.Height = 27;
+            currentLocationPin.Width = 25;
+
+            riderMapOverlay = new MapOverlay();
+            riderMapOverlay.Content = currentLocationPin; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+            riderMapOverlay.GeoCoordinate = new GeoCoordinate(riderFirstGeoposition.Coordinate.Latitude, riderFirstGeoposition.Coordinate.Longitude);
+            riderMapOverlay.PositionOrigin = new Point(0.5, 0.5);
+
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(riderMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
+            map_RiderMap.Layers.Add(riderMapLayer);
+
             // initialize pickup coordinates
-            pickupLat = riderFirstGeoposition.Coordinate.Latitude;
-            pickupLng = riderFirstGeoposition.Coordinate.Longitude;
+            //pickupLat = riderFirstGeoposition.Coordinate.Latitude; //Có thể xóa
+            //pickupLng = riderFirstGeoposition.Coordinate.Longitude;
+
+            //// initialize pickup coordinates
+            tmpLat = Math.Round(riderFirstGeoposition.Coordinate.Latitude, 5);
+            tmpLng = Math.Round(riderFirstGeoposition.Coordinate.Longitude, 5);
 
             riderFirstGeolocator.PositionChanged += geolocator_PositionChanged;
 
@@ -198,8 +276,8 @@ namespace FT_Rider.Pages
             {
 
                 Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
-                UserLocationMarker marker = (UserLocationMarker)this.FindName("UserLocationMarker");
-                marker.GeoCoordinate = geocoordinate.ToGeoCoordinate();
+                riderMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
+
             });
 
         }
@@ -212,47 +290,70 @@ namespace FT_Rider.Pages
         //------ BEGIN get near Driver ------//
         private async void GetNearDriver()
         {
-            var uid = userData.content.uid;
-            var lat = pickupLat;
-            var lng = pickupLng;
-            var clvl = taxiType;
-
-            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-            var nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
-            if (nearDriver.content.listDriverDTO.Count > 0)
+            if (pickupLat != 0 && pickupLng != 0)
             {
-                foreach (var item in nearDriver.content.listDriverDTO)
-                {
-                    nearDriverCollection[item.did.ToString()] = new ListDriverDTO
-                    {
-                        did = item.did,
-                        fName = item.fName,
-                        lName = item.lName,
-                        cName = item.cName,
-                        mobile = item.mobile,
-                        rate = item.rate,
-                        oPrice = item.oPrice,
-                        oKm = item.oKm,
-                        f1Price = item.f1Price,
-                        f1Km = item.f1Km,
-                        f2Price = item.f2Price,
-                        f2Km = item.f2Km,
-                        f3Price = item.f3Price,
-                        f3Km = item.f3Km,
-                        f4Price = item.f4Price,
-                        f4Km = item.f4Km,
-                        img = item.img,
-                        lat = item.lat,
-                        lng = item.lng
-                    };
-                }
+                var uid = userData.content.uid;
+                var lat = pickupLat;
+                var lng = pickupLng;
+                var clvl = taxiType;
 
-                foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
+                RiderGetNearDriver nearDriver;
+                try
                 {
-                    ShowNearDrivers(tmpIter.Key);
+                    nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
+                    if (nearDriver.content != null)
+                    {
+                        foreach (var item in nearDriver.content.listDriverDTO)
+                        {
+                            nearDriverCollection[item.did.ToString()] = new ListDriverDTO
+                            {
+                                did = item.did,
+                                fName = item.fName,
+                                lName = item.lName,
+                                cName = item.cName,
+                                mobile = item.mobile,
+                                rate = item.rate,
+                                oPrice = item.oPrice,
+                                oKm = item.oKm,
+                                f1Price = item.f1Price,
+                                f1Km = item.f1Km,
+                                f2Price = item.f2Price,
+                                f2Km = item.f2Km,
+                                f3Price = item.f3Price,
+                                f3Km = item.f3Km,
+                                f4Price = item.f4Price,
+                                f4Km = item.f4Km,
+                                img = item.img,
+                                lat = item.lat,
+                                lng = item.lng
+                            };
+                        }
+
+                        foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                        {
+                            ShowNearDrivers(tmpIter.Key);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Co loi 1");
+                    }
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Co loi 2");
                 }
             }
+            else
+            {
+                getNearDriverTimer.Start();
+            }
+
+
+
         }
         //------ END get near Driver ------//
 
@@ -297,8 +398,6 @@ namespace FT_Rider.Pages
                 //Show Step 02
                 this.grv_Step02.Visibility = Visibility.Visible;
                 this.grv_Picker.Visibility = Visibility.Collapsed;
-                //Step 2 info
-                LoadStep2Info();
             };
 
 
@@ -346,11 +445,6 @@ namespace FT_Rider.Pages
         }
 
 
-        //Load step 02 profile
-        private async void LoadStep2Info()
-        {
-
-        }
 
 
         //Tapped event
@@ -362,8 +456,6 @@ namespace FT_Rider.Pages
             //Show Step 02
             this.grv_Step02.Visibility = Visibility.Visible;
             this.grv_Picker.Visibility = Visibility.Collapsed;
-            //Step 2 info
-            LoadStep2Info();
         }
         //------ END show and Design UI 3 taxi near current position ------//
 
@@ -875,6 +967,11 @@ namespace FT_Rider.Pages
         //Event này để bắt trường hợp sau mỗi lần di chuyển map
         private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
         {
+            if (new GeoCoordinate(Math.Round(map_RiderMap.Center.Latitude, 5), Math.Round(map_RiderMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
+            {
+                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
+            }
+
             img_PickerLabel.Visibility = Visibility.Visible; //Enable Pickup label
             //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
             pickupLat = map_RiderMap.Center.Latitude;
@@ -1007,6 +1104,10 @@ namespace FT_Rider.Pages
 
         private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            pb_PleaseWait.Visibility = Visibility.Visible; //Khi bắt đầu nhấn nút "Yêu cầu Taxi" thì hệ thống sẽ hiện ProcessC Bar "Vui lòng đợi"
+            SwitchToWaitingStatus();
+            chk_AutoRecall.IsEnabled = false;
+
             int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
             string eCityName;
             int eCity;
@@ -1097,7 +1198,7 @@ namespace FT_Rider.Pages
                 //btn_RequestTaxi.IsEnabled = false;
                 //btn_RequestTaxi.Content = "Vui lòng đợi...";
                 //btn_RequestTaxi.BorderBrush.Opacity = 0;
-                SwitchToWaitingStatus();
+                //SwitchToWaitingStatus();
 
             }
         }
@@ -1125,7 +1226,7 @@ namespace FT_Rider.Pages
 
         private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            btn_RequestTaxi.IsEnabled = false;
             TouchFeedback();
             grv_Picker.Visibility = Visibility.Collapsed;
             SwitchToWaitingStatus();
@@ -1216,6 +1317,133 @@ namespace FT_Rider.Pages
 
         }
 
+
+        ///NOTIFICATION CHANNEL
+        private void CreatePushChannel()
+        {
+            HttpNotificationChannel pushChannel;
+            string channelName = "FtaxiRiderChannel";
+            pushChannel = HttpNotificationChannel.Find(channelName);
+
+            if (pushChannel == null)
+            {
+                pushChannel = new HttpNotificationChannel(channelName);
+
+                // Register for all the events before attempting to open the channel.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                pushChannel.Open();
+
+                // Bind this new channel for toast events.
+                pushChannel.BindToShellToast();
+
+            }
+            else
+            {
+                // The channel was already open, so just register for all the events.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
+                System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
+
+                pushChannelURI = pushChannel.ChannelUri.ToString();
+                UpdateNotificationURI(pushChannelURI);
+                //tNetAppSetting["NotificationURI"] = pushChannelURI;
+                ///
+                ///CODE UPDATE URI HERE///
+                ///
+
+                //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
+
+            }
+        }
+
+        // Display the new URI for testing purposes.   Normally, the URI would be passed back to your web service at this point.
+        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+        {
+
+            Dispatcher.BeginInvoke(() =>
+            {
+                System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
+                pushChannelURI = e.ChannelUri.ToString();
+                UpdateNotificationURI(pushChannelURI);
+                //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
+                ///
+                ///CODE LOAD URI HERE///
+                ///
+
+                //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
+                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<<<<<<<<<<<<<
+            });
+        }
+
+
+        // Error handling logic for your particular application would be here.
+        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+                MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
+                    e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
+                    );
+        }
+
+
+        // Parse out the information that was part of the message.
+        void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
+        {
+            StringBuilder message = new StringBuilder();
+            string relativeUri = string.Empty;
+
+            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+
+            // Parse out the information that was part of the message.
+            foreach (string key in e.Collection.Keys)
+            {
+                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+
+                if (string.Compare(
+                    key,
+                    "wp:Param",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.CompareOptions.IgnoreCase) == 0)
+                {
+                    relativeUri = e.Collection[key];
+                }
+            }
+
+            // Display a dialog of all the fields in the toast.
+            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+
+        }
+
+
+        //Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
+        private async void UpdateNotificationURI(string uri)
+        {
+            var uid = userId;
+            var mType = ConstantVariable.mTypeWIN;
+            var role = ConstantVariable.dRole;
+            var id = userData.content.rid;
+            var input = string.Format("{{\"mid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateRegId, input);
+            }
+            catch (Exception)
+            {
+                //Lỗi máy chủ
+                MessageBox.Show(ConstantVariable.errServerErr);
+            }
+
+        }
 
     }
 }

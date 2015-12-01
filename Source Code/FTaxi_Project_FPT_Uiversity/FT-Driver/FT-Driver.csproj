@@ -93,7 +93,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\DriverBase.cs" />
     <Compile Include="Classes\DriverFunctions.cs" />
+    <Compile Include="Classes\DriverNewtripNotification.cs" />
     <Compile Include="Classes\DriverVehiceInfoObj.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
     <Compile Include="Classes\ConvertData.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Classes\Md5Hash\MD5.cs" />
     <Compile Include="Classes\MobileTypes.cs" />
     <Compile Include="Classes\ReqAndRes.cs" />
+    <Compile Include="Classes\DriverUpdateRegId.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -227,6 +230,10 @@
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
     <Content Include="Images\Buttons\img_CallTaxiButton.png" />
     <Content Include="Images\Buttons\img_Picker.png" />
+    <Content Include="Images\CarList\img_CarItemECO.png" />
+    <Content Include="Images\CarList\img_CarItemInLLS.jpg" />
+    <Content Include="Images\CarList\img_CarItemLUX.png" />
+    <Content Include="Images\CarList\img_CarItemSAV.png" />
     <Content Include="Images\CarsBar\img_Carbar_background.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_NotSelected.png" />
     <Content Include="Images\CarsBar\img_Carbar_Economy_Selected.png" />
@@ -258,6 +265,7 @@
     <Content Include="Images\Icons\icon_UserPassword.jpg" />
     <Content Include="Images\Icons\icon_UserProfile.jpg" />
     <Content Include="Images\Icons\icon_VisaCard.jpg" />
+    <Content Include="Images\Icons\img_CurrentLocation.png" />
     <Content Include="Images\Icons\img_DestinationPoint.png" />
     <Content Include="Images\Icons\img_MyPositionIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />

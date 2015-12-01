@@ -11,15 +11,8 @@ namespace FT_Driver.Classes
     class UserData
     {
         [DataMember]
-        public string Email { get; set; }
+        public string uid { get; set; }
         [DataMember]
-        public string Password { get; set; }
-        [DataMember]
-        public string Name { get; set; }
-        [DataMember]
-        public string PhoneNumber { get; set; }
-        [DataMember]
-        public string FirstAndMiddleName { get; set; }
-
+        public string password { get; set; }
     }
 }

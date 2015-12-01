@@ -3,45 +3,81 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Windows;
+using System.Net.Http;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Collections.ObjectModel;
+using System.IO.IsolatedStorage;
+using System.IO;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using FT_Driver.Classes;
-using System.Net.Http;
 using Newtonsoft.Json;
-using System.Collections.ObjectModel;
+using FT_Driver.Classes;
+using Microsoft.Devices;
+using System.Threading;
+
 
 namespace FT_Driver.Pages
 {
     public partial class DriverCarList : PhoneApplicationPage
     {
+        //USER DATA
+        IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        DriverLogin userData = new DriverLogin();
+        string userId = "";
+        IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+
+        //Vibrate
+        VibrateController vibrateController = VibrateController.Default;
+
+
+
         public DriverCarList()
         {
             InitializeComponent();
-            this.GetCarListToLLS();
+            if (tNetUserLoginData.Contains("UserLoginData"))
+            {
+                userData = (DriverLogin)tNetUserLoginData["UserLoginData"];
+                userId = (string)tNetUserLoginData["UserId"];
+            }
+
+
+            GetCarListToLLS();
+
         }
 
-        private async void GetCarListToLLS()
+        private void GetCarListToLLS()
         {
-
-            //Get JSON string when login
-            DriverLogin driverLogin = new DriverLogin();
-            string driverLoginUrl = ConstantVariable.tNetDriverLoginAddress;
-            string driverLoginData = "{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}";
-            string driverLoginJsonReturn = await GetJsonFromPOSTMethod.GetJsonString(driverLoginUrl, driverLoginData);
-
+            string carLelvel = "";
+            Uri imgUrl = new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative); ;
+            ///{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}
             try
             {
-                //2. Parse Object and Load to LLS
-                driverLogin = JsonConvert.DeserializeObject<DriverLogin>(driverLoginJsonReturn);
+                //1. Parse Object and Load to LLS
                 ObservableCollection<DriverVehiceInfoObj> carListDataSource = new ObservableCollection<DriverVehiceInfoObj>();
                 lls_CarList.ItemsSource = carListDataSource;
 
-                //3. Loop to list all item in object
-                foreach (var obj in driverLogin.content.vehicleInfos)
+                //2. Loop to list all item in object
+                foreach (var obj in userData.content.vehicleInfos)
                 {
-                    carListDataSource.Add(new DriverVehiceInfoObj(obj.plate, obj.carTitle, obj.carLevel));
+                    switch (obj.carLevel)
+                    {
+                        case "ECO":
+                            carLelvel = "Kinh tế";
+                            imgUrl = new Uri("/Images/CarList/img_CarItemECO.png", UriKind.Relative);
+                            break;
+                        case "SAV":
+                            carLelvel = "Tiết kiệm";
+                            imgUrl = new Uri("/Images/CarList/img_CarItemSAV.png", UriKind.Relative);
+                            break;
+                        case "LUX":
+                            imgUrl = new Uri("/Images/CarList/img_CarItemLUX.png", UriKind.Relative);
+                            carLelvel = "Sang trọng";
+                            break;
+                    }
+
+                    //3. Add to List
+                    carListDataSource.Add(new DriverVehiceInfoObj(obj.plate, obj.carTitle, carLelvel, obj.vehicleId, imgUrl));
                 }
             }
             catch (Exception)
@@ -53,7 +89,69 @@ namespace FT_Driver.Pages
 
         private void lls_CarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            grv_ProcessScreen.Visibility = Visibility.Visible;
+            tNetAppSetting["isSelectedCar"] = "SelectedCar"; //Cái này để đánh dấu rằng, sẽ bỏ qua bước chọn xe //Thêm vào sau tiến trình chọn xe
 
+            var selectedCar = ((DriverVehiceInfoObj)(sender as LongListSelector).SelectedItem);
+            // If selected item is null, do nothing
+            if (lls_CarList.SelectedItem == null)
+                return;
+
+            //Else Update Vehicle Id to Server
+            SelectVahicle(selectedCar.VehicleId);
+
+            //vibrate phone
+            TouchFeedback();
+        }
+
+        private async void SelectVahicle(int vehicleId)
+        {
+            var did = userData.content.driverInfo.did.ToString();
+            var uid = userId;
+
+            var input = string.Format("{{\"did\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\"}}", did, uid, vehicleId);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverSelectVehicle, input);
+            if (output != null)
+            {
+                try
+                {
+
+                    var selectVehicle = JsonConvert.DeserializeObject<DriverLogin>(output);
+                    if (selectVehicle != null)
+                    {
+                        NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                        Thread.Sleep(1000);
+                        grv_ProcessScreen.Visibility = Visibility.Collapsed;//Disable Process bar
+                    }
+                    else
+                    {
+                        MessageBox.Show(ConstantVariable.errServerError);
+                        grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    //Login Failed | Đăng nhập không thành công
+                    MessageBox.Show(ConstantVariable.errServerError);
+                    grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                }
+            }
+            else
+            {
+                //Có lỗi kết nối với Server
+                MessageBox.Show(ConstantVariable.errConnectingError);
+                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+            }
+
+        }
+
+
+
+        private void TouchFeedback()
+        {
+            vibrateController.Start((TimeSpan.FromSeconds(0.1)));
         }
     }
 }
