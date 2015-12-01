@@ -30,6 +30,8 @@ using Microsoft.Devices;
 using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
+using Microsoft.Phone.Notification;
+using System.Text;
 
 
 namespace FT_Rider.Pages
@@ -98,12 +100,18 @@ namespace FT_Rider.Pages
         //For process bar
         double tmpLat;
         double tmpLng;
-        
+
+        //For Notification 
+        string pushChannelURI = "";
+
 
         public HomePage()
         {
 
             InitializeComponent();
+
+            //Tạo kênh Notification
+            CreatePushChannel();
 
 
             //Get User data from login
@@ -196,7 +204,7 @@ namespace FT_Rider.Pages
             RiderGetCityNames cityItem;
             try
             {
-               
+
                 cityItem = JsonConvert.DeserializeObject<RiderGetCityNames>(output);
                 foreach (var item in cityItem.content.list)
                 {
@@ -269,7 +277,7 @@ namespace FT_Rider.Pages
 
                 Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
                 riderMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
-                
+
             });
 
         }
@@ -344,8 +352,8 @@ namespace FT_Rider.Pages
                 getNearDriverTimer.Start();
             }
 
-            
-           
+
+
         }
         //------ END get near Driver ------//
 
@@ -390,8 +398,6 @@ namespace FT_Rider.Pages
                 //Show Step 02
                 this.grv_Step02.Visibility = Visibility.Visible;
                 this.grv_Picker.Visibility = Visibility.Collapsed;
-                //Step 2 info
-                LoadStep2Info();
             };
 
 
@@ -439,11 +445,6 @@ namespace FT_Rider.Pages
         }
 
 
-        //Load step 02 profile
-        private async void LoadStep2Info()
-        {
-
-        }
 
 
         //Tapped event
@@ -455,8 +456,6 @@ namespace FT_Rider.Pages
             //Show Step 02
             this.grv_Step02.Visibility = Visibility.Visible;
             this.grv_Picker.Visibility = Visibility.Collapsed;
-            //Step 2 info
-            LoadStep2Info();
         }
         //------ END show and Design UI 3 taxi near current position ------//
 
@@ -1317,6 +1316,133 @@ namespace FT_Rider.Pages
 
         }
 
+
+        ///NOTIFICATION CHANNEL
+        private void CreatePushChannel()
+        {
+            HttpNotificationChannel pushChannel;
+            string channelName = "FtaxiRiderChannel";
+            pushChannel = HttpNotificationChannel.Find(channelName);
+
+            if (pushChannel == null)
+            {
+                pushChannel = new HttpNotificationChannel(channelName);
+
+                // Register for all the events before attempting to open the channel.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                pushChannel.Open();
+
+                // Bind this new channel for toast events.
+                pushChannel.BindToShellToast();
+
+            }
+            else
+            {
+                // The channel was already open, so just register for all the events.
+                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
+                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
+
+                // Register for this notification only if you need to receive the notifications while your application is running.
+                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
+
+                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
+                System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
+
+                pushChannelURI = pushChannel.ChannelUri.ToString();
+                UpdateNotificationURI(pushChannelURI);
+                //tNetAppSetting["NotificationURI"] = pushChannelURI;
+                ///
+                ///CODE UPDATE URI HERE///
+                ///
+
+                //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
+
+            }
+        }
+
+        // Display the new URI for testing purposes.   Normally, the URI would be passed back to your web service at this point.
+        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
+        {
+
+            Dispatcher.BeginInvoke(() =>
+            {
+                System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
+                pushChannelURI = e.ChannelUri.ToString();
+                UpdateNotificationURI(pushChannelURI);
+                //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
+                ///
+                ///CODE LOAD URI HERE///
+                ///
+
+                //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
+                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<<<<<<<<<<<<<
+            });
+        }
+
+
+        // Error handling logic for your particular application would be here.
+        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+                MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
+                    e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
+                    );
+        }
+
+
+        // Parse out the information that was part of the message.
+        void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
+        {
+            StringBuilder message = new StringBuilder();
+            string relativeUri = string.Empty;
+
+            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+
+            // Parse out the information that was part of the message.
+            foreach (string key in e.Collection.Keys)
+            {
+                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+
+                if (string.Compare(
+                    key,
+                    "wp:Param",
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    System.Globalization.CompareOptions.IgnoreCase) == 0)
+                {
+                    relativeUri = e.Collection[key];
+                }
+            }
+
+            // Display a dialog of all the fields in the toast.
+            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+
+        }
+
+
+        //Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
+        private async void UpdateNotificationURI(string uri)
+        {
+            var uid = userId;
+            var mType = ConstantVariable.mTypeWIN;
+            var role = ConstantVariable.dRole;
+            var id = userData.content.rid;
+            var input = string.Format("{{\"mid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateRegId, input);
+            }
+            catch (Exception)
+            {
+                //Lỗi máy chủ
+                MessageBox.Show(ConstantVariable.errServerErr);
+            }
+
+        }
 
     }
 }

@@ -25,7 +25,7 @@ namespace FT_Driver.Pages
 {
     public partial class Login : PhoneApplicationPage
     {
-        string pushChannelURI = null;
+       // string pushChannelURI = null;
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
 
@@ -35,7 +35,7 @@ namespace FT_Driver.Pages
             InitializeComponent();
 
             //Create Push notification Channel
-            //CreatePushChannel();
+           // CreatePushChannel();
         }
 
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
@@ -47,7 +47,7 @@ namespace FT_Driver.Pages
                 MD5.MD5 pw = new MD5.MD5();
                 pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
                 var pwmd5 = pw.FingerPrint.ToLower();
-                var mid = pushChannelURI; //HttpUtility.UrlEncode(pushChannelURI); ;
+                var mid = "";//pushChannelURI; //HttpUtility.UrlEncode(pushChannelURI); ;
                 var mType = ConstantVariable.mTypeWIN;
 
                 var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
@@ -129,8 +129,8 @@ namespace FT_Driver.Pages
 
 
 
-        /*    
-
+          
+        /*
        private void CreatePushChannel()
        {
            HttpNotificationChannel pushChannel;
@@ -204,12 +204,12 @@ namespace FT_Driver.Pages
            StringBuilder message = new StringBuilder();
            string relativeUri = string.Empty;
 
-           message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+           //message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
 
            // Parse out the information that was part of the message.
            foreach (string key in e.Collection.Keys)
            {
-               message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+               //message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
 
                if (string.Compare(
                    key,

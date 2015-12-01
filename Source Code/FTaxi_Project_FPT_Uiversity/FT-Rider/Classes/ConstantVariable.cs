@@ -68,7 +68,8 @@ namespace FT_Rider.Classes
         //Mobile Type
         public const string mTypeWIN = "WIN";
 
-
+        //Noti Type
+        public const string dRole = "RD";
 
        
     }

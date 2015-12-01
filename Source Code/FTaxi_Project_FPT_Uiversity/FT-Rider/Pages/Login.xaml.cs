@@ -27,7 +27,7 @@ namespace FT_Rider.Pages
 {
     public partial class Login : PhoneApplicationPage
     {
-        string pushChannelURI = null;
+        //string pushChannelURI = null;
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
 
@@ -37,7 +37,7 @@ namespace FT_Rider.Pages
             InitializeComponent();
 
             //Create Push notification Channel
-            CreatePushChannel();
+            //CreatePushChannel();
         }
 
 
@@ -51,7 +51,7 @@ namespace FT_Rider.Pages
                 MD5.MD5 pw = new MD5.MD5();
                 pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
                 var pwmd5 = pw.FingerPrint.ToLower();
-                var mid = pushChannelURI;
+                var mid = "";//pushChannelURI;
                 var mType = ConstantVariable.mTypeWIN;
 
                 var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
@@ -106,7 +106,7 @@ namespace FT_Rider.Pages
         }
 
 
-
+        /*
         private void CreatePushChannel()
         {
             HttpNotificationChannel pushChannel;
@@ -200,7 +200,7 @@ namespace FT_Rider.Pages
             Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
 
         }
-
+        */
 
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
         {
