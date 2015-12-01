@@ -81,7 +81,9 @@ namespace FT_Driver.Pages
         DispatcherTimer updateLocationTimer = new DispatcherTimer();
 
         //Fot Update Notification
-        string pushChannelURI = "";
+        string pushChannelURI = string.Empty;
+        string notificationReceivedString = string.Empty;
+        string notificationType = string.Empty;
 
         public HomePage()
         {
@@ -129,9 +131,11 @@ namespace FT_Driver.Pages
 
 
 
-
-
-        //Mỗi khi map thay đổi, hai biến currentLat và currentLng sẽ được cập nhật
+        /// <summary>
+        /// Mỗi khi map thay đổi, hai biến currentLat và currentLng sẽ được cập nhật
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void map_DriverMap_CenterChanged(object sender, MapCenterChangedEventArgs e)
         {
             currentLat = map_DriverMap.Center.Latitude;
@@ -149,7 +153,23 @@ namespace FT_Driver.Pages
 
 
 
-        //Nhận thông tin từ Notification
+        /// <summary>
+        /// Display Status
+        /// </summary>
+        private void isGridAcceptRejectOn()
+        {
+            grv_AcceptReject.Visibility = Visibility.Visible;
+            btn_ChangeStatus.Visibility = Visibility.Collapsed;
+        }
+
+
+        /// <summary>
+        /// Nhận thông tin từ Notification
+        /// Mỗi khi App không hoạt động (Ở màn hình Home, Lock, hay tắt màn hình) sẽ hiện thông báo
+        /// khi ta nhấn vào thông báo, sẽ điều hướng tới trang /Pages/HomePage.xaml
+        /// Và OnNavigatedTo là để lấy nội dung của thông báo
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -157,50 +177,17 @@ namespace FT_Driver.Pages
             {
                 if (this.NavigationContext.QueryString["json"].ToString() != null)
                 {
-                    txt_RiderName.Text = this.NavigationContext.QueryString["json"];
+                    notificationReceivedString = this.NavigationContext.QueryString["json"].ToString(); //Gán chuỗi Json 
+                    notificationType = this.NavigationContext.QueryString["notiType"].ToString(); //Gán kiểu noti
+                    //Sau cùng là chạy hàm hiển thị notification
+                    ShowNotification();
                 }
+
             }
-            catch (Exception)
+            catch (KeyNotFoundException)
             {
-
-                //throw;
+                //MessageBox.Show("(Mã lỗi 302) " + ConstantVariable.errServerError);
             }
-
-            //try
-            //{
-            //    //txt1.Text = this.NavigationContext.QueryString["value1"].ToString();
-            //    if (this.NavigationContext.QueryString["json"].ToString() != null)
-            //    {
-            //        //Nếu noti này là noti của New trip thi...
-            //        if (this.NavigationContext.QueryString["notiType"].Equals("NT"))
-            //        {
-            //            var input = this.NavigationContext.QueryString["json"].ToString(); //Nhận chuỗi json truyền vào
-            //            DriverNewtripNotification newTrip = new DriverNewtripNotification();
-            //            try
-            //            {
-            //                newTrip = JsonConvert.DeserializeObject<DriverNewtripNotification>(input);
-
-            //                //Show Rider Information
-            //                txt_RiderName.Text = newTrip.rName;
-            //                txt_RiderMobile.Text = newTrip.mobile;
-            //                txt_RiderAddress.Text = newTrip.sAdd;
-            //            }
-            //            catch (Exception)
-            //            {
-
-            //                MessageBox.Show(ConstantVariable.errServerError);
-            //            }
-
-            //        }
-
-            //        //MessageBox.Show(input);
-            //    }
-
-            //}
-            //catch (KeyNotFoundException)
-            //{
-            //    MessageBox.Show(ConstantVariable.errServerError);
-            //}
 
         }
 
@@ -245,8 +232,6 @@ namespace FT_Driver.Pages
                 var lat = currentLat;
                 var lng = currentLng;
                 var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\"}}", uid, lat, lng);
-
-
                 try
                 {
                     var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
@@ -374,7 +359,7 @@ namespace FT_Driver.Pages
             catch (UnauthorizedAccessException)
             {
                 //Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.
-                MessageBox.Show(ConstantVariable.errServiceIsOff);
+                MessageBox.Show("(Mã lỗi 303) " + ConstantVariable.errServiceIsOff);
             }
             catch (Exception ex)
             {
@@ -408,7 +393,7 @@ namespace FT_Driver.Pages
                 catch (Exception)
                 {
 
-                    MessageBox.Show(ConstantVariable.errInvalidAddress);
+                    MessageBox.Show("(Mã lỗi 304) " + ConstantVariable.errInvalidAddress);
                 }
             }
         }
@@ -467,7 +452,7 @@ namespace FT_Driver.Pages
             }
             else
             {
-                MessageBox.Show(ConstantVariable.errInvalidAddress);
+                MessageBox.Show("(Mã lỗi 305) " + ConstantVariable.errInvalidAddress);
             }
         }
         //------ END route Direction on Map ------//
@@ -697,7 +682,7 @@ namespace FT_Driver.Pages
             catch (Exception)
             {
 
-                MessageBox.Show(ConstantVariable.errInvalidAddress);
+                MessageBox.Show("(Mã lỗi 306) " + ConstantVariable.errInvalidAddress);
             }
         }
 
@@ -773,13 +758,9 @@ namespace FT_Driver.Pages
 
                 pushChannelURI = pushChannel.ChannelUri.ToString();
                 UpdateNotificationURI(pushChannelURI);
-                //MessageBox.Show("Create URI");
-                //tNetAppSetting["NotificationURI"] = pushChannelURI;
                 ///
                 ///CODE UPDATE URI HERE///
                 ///
-
-                //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
 
             }
         }
@@ -793,14 +774,9 @@ namespace FT_Driver.Pages
                 System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
                 pushChannelURI = e.ChannelUri.ToString();
                 UpdateNotificationURI(pushChannelURI);
-                //MessageBox.Show("Updated");
-                //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
                 ///
                 ///CODE LOAD URI HERE///
                 ///
-
-                //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
-                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<
             });
         }
 
@@ -819,7 +795,7 @@ namespace FT_Driver.Pages
         void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
         {
             StringBuilder message = new StringBuilder();
-            string relativeUri = string.Empty;
+            //string relativeUri = string.Empty;
 
             //message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
 
@@ -834,17 +810,89 @@ namespace FT_Driver.Pages
                     System.Globalization.CultureInfo.InvariantCulture,
                     System.Globalization.CompareOptions.IgnoreCase) == 0)
                 {
-                    relativeUri = e.Collection[key];
+                    //Lấy chuối thông báo từ Notification
+                    notificationReceivedString = e.Collection[key];
                 }
             }
 
             // Display a dialog of all the fields in the toast.
-            //Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+            //Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));          
+            Dispatcher.BeginInvoke(() =>
+            {
+                //notificationReceivedString = e.Collection.Keys.;
+                //MessageBox.Show(notificationReceivedString);
+                if (notificationReceivedString != string.Empty)
+                {
+
+                    //Hàm này để lấy ra chuỗi Json trong một String gửi qua notification
+                    int a = notificationReceivedString.IndexOf("json=");
+                    int b = notificationReceivedString.IndexOf("}");
+                    int c = notificationReceivedString.IndexOf("&notiType=");
+                    string tmpStirng = notificationReceivedString.Substring(a, b - a + 1);
+                    //Cái này để lấy kiểu 
+                    notificationType = notificationReceivedString.Substring(c + 10, notificationReceivedString.Length - c - 10);
+                    notificationReceivedString = tmpStirng;
+                }
+            });
 
         }
 
 
-        //Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
+        /// <summary>
+        /// hàm này để hiện thị thông báo lên màn hình
+        /// Tham số sử dụng là chuỗi notificationReceivedString lấy ra từ kênh Notification
+        /// </summary>
+        private void ShowNotification()
+        {
+            //Nếu như có tồn tại chuỗi Json
+            if (notificationReceivedString != string.Empty && notificationType != string.Empty)
+            {
+                switch (notificationType)
+                {
+                    case ConstantVariable.notiTypeNewTrip: //Nếu là "NT" thì sẽ chạy hàm Show New Trip Notification
+                        ShowNotificationNewTrip();
+                        break;
+                    case ConstantVariable.notiTypeUpdateTrip: //Nếu là "UT" thì sẽ chạy hàm Show Update Trip Notification
+                        ShowNotificationUpdateTrip();
+                        break;
+                    case ConstantVariable.notiTypePromotionTeip: //Nếu là "PT" thì sẽ chạy hàm Show Promotion Trip Notification
+                        ShowNotificationPromotionTrip();
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("(Mã lối 308) " + ConstantVariable.errServerError);
+            }
+
+        }
+
+
+
+
+        /// <summary>
+        /// Các trường hợp của thông báo
+        /// </summary>
+        private void ShowNotificationNewTrip()
+        {
+
+        }
+        private void ShowNotificationUpdateTrip()
+        {
+        }
+        private void ShowNotificationPromotionTrip()
+        {
+        }
+
+
+
+
+
+        /// <summary>
+        /// Cái này là để cập nhật URI mỗi khi có thay đổi
+        /// Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
+        /// </summary>
+        /// <param name="uri"></param>
         private async void UpdateNotificationURI(string uri)
         {
             var uid = userId;
@@ -859,7 +907,7 @@ namespace FT_Driver.Pages
             catch (Exception)
             {
                 //Lỗi máy chủ
-                MessageBox.Show(ConstantVariable.errServerError);
+                MessageBox.Show("(Mã lỗi 307) " + ConstantVariable.errServerError);
             }
 
         }

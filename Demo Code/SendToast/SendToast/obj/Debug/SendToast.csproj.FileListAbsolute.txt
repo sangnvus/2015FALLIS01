@@ -99,3 +99,34 @@ E:\FPT Univerdity\Do an tot nghiep\2015FALLIS01\Demo Code\SendToast\SendToast\bi
 E:\FPT Univerdity\Do an tot nghiep\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.csprojResolveAssemblyReference.cache
 E:\FPT Univerdity\Do an tot nghiep\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.dll
 E:\FPT Univerdity\Do an tot nghiep\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.pdb
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\SendToast.dll.config
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\SendToast.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\SendToast.pdb
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\AspNet.ScriptManager.jQuery.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\AspNet.ScriptManager.jQuery.UI.Combined.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.AspNet.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.Core.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.Consumer.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.RelyingParty.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.SqlServer.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.FriendlyUrls.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.Membership.OpenAuth.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.Web.Infrastructure.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Web.Providers.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\EntityFramework.SqlServer.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\System.Web.Providers.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.Core.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OAuth.Consumer.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.OpenId.RelyingParty.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\DotNetOpenAuth.AspNet.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.Membership.OpenAuth.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\bin\Microsoft.AspNet.FriendlyUrls.xml
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.csprojResolveAssemblyReference.cache
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.dll
+H:\Hoc Tap\FPT Univerdity\Do an tot nghiep 2015\2015FALLIS01\Demo Code\SendToast\SendToast\obj\Debug\SendToast.pdb

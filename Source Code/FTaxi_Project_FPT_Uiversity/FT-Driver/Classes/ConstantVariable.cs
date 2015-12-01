@@ -54,5 +54,10 @@ namespace FT_Driver.Classes
 
         //Driver Type
         public const string dRole = "DR";
+
+        //Trip type
+        public const string notiTypeNewTrip = "NT";
+        public const string notiTypeUpdateTrip = "UT";
+        public const string notiTypePromotionTeip = "PT";
     }
 }

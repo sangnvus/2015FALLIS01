@@ -21,7 +21,7 @@ namespace FT_Driver.Pages
         SolidColorBrush mySolidColorBrush = new SolidColorBrush();
         PivotItem pivot = null;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
-        string pushChannelURI = "";
+        //string pushChannelURI = "";
 
 
         public FisrtRunningAppIntro()
