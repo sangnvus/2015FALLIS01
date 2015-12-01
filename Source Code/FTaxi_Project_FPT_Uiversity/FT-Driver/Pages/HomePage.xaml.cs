@@ -114,7 +114,7 @@ namespace FT_Driver.Pages
 
             updateLocationTimer = new DispatcherTimer();
             updateLocationTimer.Tick += new EventHandler(updateLocationTimer_Tick);
-            updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 8); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công            
+            updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 5); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công            
 
             //Cập nhật tọa độ của lái xe lên server
             this.UpdateCurrentLocation();
@@ -162,7 +162,7 @@ namespace FT_Driver.Pages
             }
             catch (Exception)
             {
-                
+
                 //throw;
             }
 
@@ -244,16 +244,21 @@ namespace FT_Driver.Pages
                 var uid = userId;
                 var lat = currentLat;
                 var lng = currentLng;
-                var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\",\"}}", uid, lat, lng);
-                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
+                var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\"}}", uid, lat, lng);
+
+
                 try
                 {
-                    var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
+                    if (output != null)
+                    {
+                        var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    }
                 }
                 catch (Exception)
                 {
 
-                    throw;
+                    ///
                 }
             }
             else
@@ -729,7 +734,7 @@ namespace FT_Driver.Pages
 
 
 
-        
+
         ///NOTIFICATION CHANNEL
         private void CreatePushChannel()
         {
@@ -767,8 +772,8 @@ namespace FT_Driver.Pages
                 System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
 
                 pushChannelURI = pushChannel.ChannelUri.ToString();
-                //UpdateNotificationURI(pushChannelURI);
-                MessageBox.Show("Create URI");
+                UpdateNotificationURI(pushChannelURI);
+                //MessageBox.Show("Create URI");
                 //tNetAppSetting["NotificationURI"] = pushChannelURI;
                 ///
                 ///CODE UPDATE URI HERE///
@@ -787,8 +792,8 @@ namespace FT_Driver.Pages
             {
                 System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
                 pushChannelURI = e.ChannelUri.ToString();
-                //UpdateNotificationURI(pushChannelURI);
-                MessageBox.Show("Updated");
+                UpdateNotificationURI(pushChannelURI);
+                //MessageBox.Show("Updated");
                 //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
                 ///
                 ///CODE LOAD URI HERE///
@@ -816,12 +821,12 @@ namespace FT_Driver.Pages
             StringBuilder message = new StringBuilder();
             string relativeUri = string.Empty;
 
-            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+            //message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
 
             // Parse out the information that was part of the message.
             foreach (string key in e.Collection.Keys)
             {
-                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+                //message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
 
                 if (string.Compare(
                     key,
@@ -834,7 +839,7 @@ namespace FT_Driver.Pages
             }
 
             // Display a dialog of all the fields in the toast.
-            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+            //Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
 
         }
 
@@ -846,7 +851,7 @@ namespace FT_Driver.Pages
             var mType = ConstantVariable.mTypeWIN;
             var role = ConstantVariable.dRole;
             var id = userData.content.driverInfo.did;
-            var input = string.Format("{{\"mid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
+            var input = string.Format("{{\"uid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateRegId, input);
@@ -858,7 +863,7 @@ namespace FT_Driver.Pages
             }
 
         }
-         
+
 
     }
 
