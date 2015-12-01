@@ -1402,7 +1402,7 @@ namespace FT_Rider.Pages
             StringBuilder message = new StringBuilder();
             string relativeUri = string.Empty;
 
-            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
+            //message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
 
             // Parse out the information that was part of the message.
             foreach (string key in e.Collection.Keys)
@@ -1420,7 +1420,7 @@ namespace FT_Rider.Pages
             }
 
             // Display a dialog of all the fields in the toast.
-            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+            //Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
 
         }
 
@@ -1432,7 +1432,7 @@ namespace FT_Rider.Pages
             var mType = ConstantVariable.mTypeWIN;
             var role = ConstantVariable.dRole;
             var id = userData.content.rid;
-            var input = string.Format("{{\"mid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
+            var input = string.Format("{{\"uid\":\"{0}\",\"mid\":\"{1}\",\"mType\":\"{2}\",\"role\":\"{3}\",\"id\":\"{4}\"}}", uid, uri, mType, role, id);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateRegId, input);
