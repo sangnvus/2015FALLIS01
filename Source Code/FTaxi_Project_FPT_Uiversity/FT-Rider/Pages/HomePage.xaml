@@ -203,7 +203,7 @@
                         <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" Width="40" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Tap="img_CloseIcon_Tap" Visibility="Collapsed" />
                     </Grid>
                 </Grid>
-                <Grid x:Name="grv_Step02" Height="356" VerticalAlignment="Bottom">
+                <Grid x:Name="grv_Step02" Height="356" VerticalAlignment="Bottom" d:IsHidden="True">
                     <Image x:Name="img_RequestTaxiBackground" Height="314" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png" VerticalAlignment="Bottom"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg" Margin="0"/>
                     <TextBox x:Name="txt_PickupAddress" HorizontalAlignment="Left" Height="90" Margin="146,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus" Tap="txt_PickupAddress_Tap"/>

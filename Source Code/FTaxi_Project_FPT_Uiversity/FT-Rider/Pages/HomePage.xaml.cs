@@ -1183,6 +1183,7 @@ namespace FT_Rider.Pages
                 didString += ",";
             }
 
+            // Kiểm tra khi không có xe nào xung quanh >> bug
             var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
                 + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
                 + "\"eLat\":\"{7}\",\"eLng\":\"{8}\",\"sCity\":\"{9}\","
