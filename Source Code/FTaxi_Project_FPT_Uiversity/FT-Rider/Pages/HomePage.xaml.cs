@@ -32,6 +32,7 @@ using FT_Rider.Resources;
 using FT_Rider.Classes;
 using Microsoft.Phone.Notification;
 using System.Text;
+using System.Diagnostics;
 
 
 namespace FT_Rider.Pages
@@ -84,7 +85,7 @@ namespace FT_Rider.Pages
         //For near driver
         IDictionary<string, ListDriverDTO> nearDriverCollection = new Dictionary<string, ListDriverDTO>();
         string selectedDid = null; //This variable to detect what car is choosen in map
-        DispatcherTimer getNearDriverTimer = new DispatcherTimer();
+        DispatcherTimer getNearDriverTimer;
 
         //For GET PICK UP & Create Trip
         double pickupLat;
@@ -134,8 +135,6 @@ namespace FT_Rider.Pages
 
             //hide all step screen
             grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
-            this.grv_Step02.Visibility = Visibility.Collapsed;
-            this.grv_Step03.Visibility = Visibility.Collapsed;
             this.lls_AutoComplete.IsEnabled = false;
 
             //default taxi type
@@ -162,8 +161,8 @@ namespace FT_Rider.Pages
 
         private void getNearDriverTimer_Tick(object sender, EventArgs e)
         {
-            GetNearDriver();
-            getNearDriverTimer.Stop();
+            Debug.WriteLine("Bắt đầu chạy Get Near Driver Timer"); //DELETE AFTER FINISHED
+            GetNearDriver();            
             //throw new NotImplementedException();
         }
 
@@ -267,7 +266,7 @@ namespace FT_Rider.Pages
             map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
             GetNearDriver();
-
+            Debug.WriteLine("Lấy địa Rider chỉ thành công"); //DELETE AFTER FINISHED
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -277,6 +276,8 @@ namespace FT_Rider.Pages
 
                 Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
                 riderMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
+
+                Debug.WriteLine("Vị trí Rider thay đổi"); //DELETE AFTER FINISHED
 
             });
 
@@ -335,16 +336,25 @@ namespace FT_Rider.Pages
                         {
                             ShowNearDrivers(tmpIter.Key);
                         }
+
+                        Debug.WriteLine("Lấy xe xuang quanh thành công"); //DELETE AFTER FINISHED
+                        //Sau đó sẽ cho dừng Timer lại
+                        getNearDriverTimer.Stop();
                     }
                     else
                     {
-                        MessageBox.Show("Co loi 1");
+                        // MessageBox.Show("Co loi 1");
+                        Debug.WriteLine("Không có xe nào xung quanh"); //DELETE AFTER FINISHED
+                        //Thêm code cho việc chuyển label ở đây
                     }
+
+                    Debug.WriteLine("Lấy taxi xung quanh OK"); //DELETE AFTER FINISHED
                 }
                 catch (Exception)
                 {
 
-                    MessageBox.Show("Co loi 2");
+                    //MessageBox.Show("Co loi 2");
+                    Debug.WriteLine("Không lấy được chuỗi Json GetNearDriver"); //DELETE AFTER FINISHED
                 }
             }
             else
@@ -386,6 +396,8 @@ namespace FT_Rider.Pages
 
             taxiIcon.Tap += (sender, eventArgs) =>
             {
+                Debug.WriteLine("Chạm vào một Taxi thành công");
+
                 selectedDid = did;
                 txt_OpenPrice.Text = openPrice.ToString();
                 txt_EstimatedCost.Text = estimateCost.ToString();
@@ -984,6 +996,7 @@ namespace FT_Rider.Pages
                 //
             }
             isPickup = false;
+            Debug.WriteLine("map_RiderMap_ResolveCompleted");
         }
 
 
@@ -994,6 +1007,8 @@ namespace FT_Rider.Pages
             //pickupTimer.Stop();
             img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
             isPickup = true;
+
+            Debug.WriteLine("RiderMap_MouseLeftButtonDown");
         }
 
 
@@ -1102,9 +1117,16 @@ namespace FT_Rider.Pages
             return cityNamesDB[cityName].cityId;
         }
 
+
+
+        /// <summary>
+        /// Hàm này để yêu cầu 1 chuyến đi qua bên Driver
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            pb_PleaseWait.Visibility = Visibility.Visible; //Khi bắt đầu nhấn nút "Yêu cầu Taxi" thì hệ thống sẽ hiện ProcessC Bar "Vui lòng đợi"
+            pb_PleaseWait.Visibility = Visibility.Visible; //Khi bắt đầu nhấn nút "Yêu cầu Taxi" thì hệ thống sẽ hiện Process Bar "Vui lòng đợi"
             SwitchToWaitingStatus();
             chk_AutoRecall.IsEnabled = false;
 
@@ -1148,8 +1170,8 @@ namespace FT_Rider.Pages
                 uid = userData.content.uid,
                 rid = userData.content.rid,
                 did = didList,
-                sAddr = txt_PickupAddress.Text,
-                eAddr = txt_DestinationAddress.Text,
+                sAddr = txt_PickupAddress.Text, //Hiện tại Notification đang không gửi được thông báo với input là tiếng việt
+                eAddr = txt_DestinationAddress.Text, //nên sẽ conver hai địa chỉ đi và đón qua tiếng anh
                 sLat = pickupLat,
                 sLng = pickupLng,
                 eLat = destinationLat,
@@ -1178,8 +1200,8 @@ namespace FT_Rider.Pages
                 createTrip.uid,
                 createTrip.rid,
                 didString.Remove(didString.Length - 1),
-                createTrip.sAddr,
-                createTrip.eAddr,
+                ConvertData.ConvertVietnamCharacter(createTrip.sAddr),//Hiện tại Notification đang không gửi được thông báo với input là tiếng việt
+                ConvertData.ConvertVietnamCharacter(createTrip.eAddr),//nên sẽ conver hai địa chỉ đi và đón qua tiếng anh
                 createTrip.sLat.ToString().Replace(',', '.'),
                 createTrip.sLng.ToString().Replace(',', '.'),
                 createTrip.eLat.ToString().Replace(',', '.'),
