@@ -93,9 +93,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\DriverAcceptTripObj.cs" />
     <Compile Include="Classes\DriverBase.cs" />
     <Compile Include="Classes\DriverFunctions.cs" />
     <Compile Include="Classes\DriverNewtripNotification.cs" />
+    <Compile Include="Classes\DriverStartTripObj.cs" />
     <Compile Include="Classes\DriverVehiceInfoObj.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
     <Compile Include="Classes\ConvertData.cs" />
@@ -104,6 +106,9 @@
     <Compile Include="Classes\DriverSelectVehice.cs" />
     <Compile Include="Classes\DriverUpdateCurrentLocation.cs" />
     <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />
+    <Compile Include="Classes\GoogleAPIAddressObj.cs" />
+    <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
+    <Compile Include="Classes\GoogleAPIFunctions.cs" />
     <Compile Include="Classes\GoogleAPIGeocoding.cs" />
     <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
     <Compile Include="Classes\Language.cs" />
