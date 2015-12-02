@@ -1323,7 +1323,7 @@ namespace FT_Driver.Pages
             var endAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(currentLat, currentLng);
             var endAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(endAddressString);
 
-            //Tạo obj Complete Trip 
+            //Tạo obj Complete Trip //
             DriverCompleteTrip completeTrip = new DriverCompleteTrip
             {
                 uid = userId,
