@@ -94,6 +94,8 @@ namespace FT_Rider.Pages
         double destinationLng;
         string pickupType = ConstantVariable.ONE_MANY;
         RiderCreateTrip createTrip;
+        long tlmd;
+        RiderNotificationUpdateTrip updateTrip;
 
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
@@ -104,6 +106,9 @@ namespace FT_Rider.Pages
 
         //For Notification 
         string pushChannelURI = "";
+        string notificationReceivedString = string.Empty;
+        string notificationType = string.Empty;
+        
 
 
         public HomePage()
@@ -1200,8 +1205,8 @@ namespace FT_Rider.Pages
                 createTrip.uid,
                 createTrip.rid,
                 didString.Remove(didString.Length - 1),
-                ConvertData.ConvertVietnamCharacter(createTrip.sAddr),//Hiện tại Notification đang không gửi được thông báo với input là tiếng việt
-                ConvertData.ConvertVietnamCharacter(createTrip.eAddr),//nên sẽ conver hai địa chỉ đi và đón qua tiếng anh
+                createTrip.sAddr, //ConvertData.ConvertVietnamCharacter(),//Hiện tại Notification đang không gửi được thông báo với input là tiếng việt
+                createTrip.eAddr, //ConvertData.ConvertVietnamCharacter(),//nên sẽ conver hai địa chỉ đi và đón qua tiếng anh
                 createTrip.sLat.ToString().Replace(',', '.'),
                 createTrip.sLng.ToString().Replace(',', '.'),
                 createTrip.eLat.ToString().Replace(',', '.'),
@@ -1421,15 +1426,16 @@ namespace FT_Rider.Pages
         // Parse out the information that was part of the message.
         void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
         {
-            StringBuilder message = new StringBuilder();
-            string relativeUri = string.Empty;
+            Debug.WriteLine("f111 Nhận được thông báo"); //DELETE AFTER FINISH
 
+            StringBuilder message = new StringBuilder();
+            //string relativeUri = string.Empty;
             //message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
 
             // Parse out the information that was part of the message.
             foreach (string key in e.Collection.Keys)
             {
-                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
+                //message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
 
                 if (string.Compare(
                     key,
@@ -1437,17 +1443,153 @@ namespace FT_Rider.Pages
                     System.Globalization.CultureInfo.InvariantCulture,
                     System.Globalization.CompareOptions.IgnoreCase) == 0)
                 {
-                    relativeUri = e.Collection[key];
+                    //Lấy chuỗi thông báo từ Notification
+                    notificationReceivedString = e.Collection[key];
                 }
             }
 
             // Display a dialog of all the fields in the toast.
-            //Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
+            Dispatcher.BeginInvoke(() =>
+            {
+                ///Nếu app đang hoạt động thì sẽ chạy hàm này
+                ///Lấy dữ liệu và show lên màn hình
+                if (notificationReceivedString != string.Empty)
+                {
+
+                    //Hàm này để lấy ra chuỗi Json trong một String gửi qua notification
+                    int a = notificationReceivedString.IndexOf("json=");
+                    int b = notificationReceivedString.IndexOf("}");
+                    int c = notificationReceivedString.IndexOf("notiType=");
+                    string tmpStirng = notificationReceivedString.Substring(a + 5, b - a - 4);
+                    //Cái này để lấy kiểu 
+                    notificationType = notificationReceivedString.Substring(c + 9, notificationReceivedString.Length - c - 9);
+                    notificationReceivedString = tmpStirng;
+
+                    //Sau đó chạy thông báo
+                    ShowNotification();
+                }
+            });
 
         }
 
 
-        //Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
+
+        /// <summary>
+        /// hàm này để hiện thị thông báo lên màn hình
+        /// Tham số sử dụng là chuỗi notificationReceivedString lấy ra từ kênh Notification
+        /// </summary>
+        private void ShowNotification()
+        {
+            //Nếu như có tồn tại chuỗi Json
+            if (notificationReceivedString != string.Empty && notificationType != string.Empty)
+            {
+                switch (notificationType)
+                {
+                    case ConstantVariable.notiTypeNewTrip: //Nếu là "NT" thì sẽ chạy hàm Show New Trip Notification
+                        ShowNotificationNewTrip();
+                        break;
+                    case ConstantVariable.notiTypeUpdateTrip: //Nếu là "UT" thì sẽ chạy hàm Show Update Trip Notification
+                        ShowNotificationUpdateTrip();
+                        break;
+                    case ConstantVariable.notiTypePromotionTeip: //Nếu là "PT" thì sẽ chạy hàm Show Promotion Trip Notification
+                        ShowNotificationPromotionTrip();
+                        break;
+                }
+            }
+            else
+            {
+                MessageBox.Show("(Mã lỗi 402) " + ConstantVariable.errServerErr);
+            }
+
+        }
+
+
+
+
+        /// <summary>
+        /// Các trường hợp của thông báo
+        /// </summary>
+        private async void ShowNotificationNewTrip()
+        {
+        }
+        private void ShowNotificationUpdateTrip()
+        {
+            var input = notificationReceivedString;
+            updateTrip = new RiderNotificationUpdateTrip();
+            try
+            {
+                updateTrip = JsonConvert.DeserializeObject<RiderNotificationUpdateTrip>(input);//Tạo đối tượng UpdateTrip từ Json Input                
+
+                ///1. Update LMD để có thể cancel chuyến
+                ///2. Kiểm tra mã Notification để hiện thông báo cho khách hàng
+                ///2.1 RJ - Reject
+                ///2.2 PD - Picked
+                ///2.3 PI - Picking
+                ///2.4 CA - Cancelled
+                ///2.5 TA - Trip Complete
+                tlmd = updateTrip.lmd;
+
+                switch (updateTrip.tStatus) //<<<<< Cái này trả về thông tin bên ông Driver. vd: Nếu nhấn Start thì status là PI
+                {
+                    case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới"
+                        ShowNotificationNewTrip();
+                        break;
+                    case ConstantVariable.notiTypeUpdateTrip: //Nếu là "UT" thì sẽ chạy hàm Show Update Trip Notification
+                        ShowNotificationUpdateTrip();
+                        break;
+                    case ConstantVariable.notiTypePromotionTeip: //Nếu là "PT" thì sẽ chạy hàm Show Promotion Trip Notification
+                        ShowNotificationPromotionTrip();
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 403) " + ConstantVariable.errHasErrInProcess);
+            }
+        }
+        private void ShowNotificationPromotionTrip()
+        {
+        }
+
+
+
+
+        /// <summary>
+        /// Nhận thông tin từ Notification
+        /// Mỗi khi App không hoạt động (Ở màn hình Home, Lock, hay tắt màn hình) sẽ hiện thông báo
+        /// khi ta nhấn vào thông báo, sẽ điều hướng tới trang /Pages/HomePage.xaml
+        /// Và OnNavigatedTo là để lấy nội dung của thông báo
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            try
+            {
+                if (this.NavigationContext.QueryString["json"].ToString() != null)
+                {
+                    notificationReceivedString = this.NavigationContext.QueryString["json"].ToString(); //Gán chuỗi Json 
+                    notificationType = this.NavigationContext.QueryString["notiType"].ToString(); //Gán kiểu noti
+                    //Sau cùng là chạy hàm hiển thị notification
+                    ShowNotification();
+                }
+
+            }
+            catch (KeyNotFoundException)
+            {
+                //MessageBox.Show("(Mã lỗi 302) " + ConstantVariable.errServerError);
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// Cái này là để cập nhật URI mỗi khi có thay đổi
+        /// Cứ mỗi khi URI thay đổi, hệ thống sẽ cập nhật lên sv
+        /// </summary>
+        /// <param name="uri"></param>
         private async void UpdateNotificationURI(string uri)
         {
             var uid = userId;
@@ -1462,7 +1604,7 @@ namespace FT_Rider.Pages
             catch (Exception)
             {
                 //Lỗi máy chủ
-                MessageBox.Show(ConstantVariable.errServerErr);
+                MessageBox.Show("(Mã lỗi 401) " + ConstantVariable.errServerErr);
             }
 
         }

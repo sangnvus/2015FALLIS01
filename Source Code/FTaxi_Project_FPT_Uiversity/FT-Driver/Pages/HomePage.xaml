@@ -35,7 +35,7 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
-    
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Canvas x:Name="canvas" Height="768" Width="480" ManipulationCompleted="canvas_ManipulationCompleted" ManipulationDelta="canvas_ManipulationDelta" ManipulationStarted="canvas_ManipulationStarted" Background="Black">
 
@@ -170,22 +170,6 @@
                 </Grid>
                 <Grid x:Name="grv_AcceptReject" Height="246" VerticalAlignment="Bottom" Width="480" Visibility="Collapsed">
                     <Image x:Name="img_AcceptRejectBG" Source="/Images/Grid_AcceptReject/img_AcceptRejectGridBackgound.png" Width="480" Height="246" Margin="0"/>
-                    <Button x:Name="btn_AcceptTrip" Content="CHẤP NHẬN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" UseLayoutRounding="True" Height="105" Width="245">
-                        <Button.BorderBrush>
-                            <SolidColorBrush Color="White" Opacity="0.2"/>
-                        </Button.BorderBrush>
-                        <Button.Background>
-                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="btn_RejectTrip" Content="TỪ CHỐI" VerticalAlignment="Bottom" Margin="0" HorizontalAlignment="Right" Height="105" Width="245">
-                        <Button.BorderBrush>
-                            <SolidColorBrush Color="White" Opacity="0.2"/>
-                        </Button.BorderBrush>
-                        <Button.Background>
-                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
-                        </Button.Background>
-                    </Button>
                     <Image x:Name="img_RiderAvatarAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="10,15,0,0">
                         <Image.Clip>
                             <EllipseGeometry
@@ -197,6 +181,42 @@
                     <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Right" Margin="0,11,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
                     <TextBlock x:Name="txt_RiderMobile" HorizontalAlignment="Right" Margin="0,49,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
                     <TextBlock x:Name="txt_RiderAddress" HorizontalAlignment="Right" Margin="0,89,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
+                    <Grid x:Name="grv_AcceptRejectbtn" Height="100" VerticalAlignment="Bottom">
+                        <Button x:Name="btn_AcceptTrip" Content="CHẤP NHẬN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" UseLayoutRounding="True" Height="95" Width="245" Tap="btn_AcceptTrip_Tap">
+                            <Button.BorderBrush>
+                                <SolidColorBrush Color="White" Opacity="0.2"/>
+                            </Button.BorderBrush>
+                            <Button.Background>
+                                <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="btn_RejectTrip" Content="TỪ CHỐI" VerticalAlignment="Bottom" Margin="0" HorizontalAlignment="Right" Height="95" Width="245" Tap="btn_RejectTrip_Tap">
+                            <Button.BorderBrush>
+                                <SolidColorBrush Color="White" Opacity="0.2"/>
+                            </Button.BorderBrush>
+                            <Button.Background>
+                                <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
+                            </Button.Background>
+                        </Button>
+                    </Grid>
+                    <Grid x:Name="grv_StartCancelbtn" Height="100" VerticalAlignment="Bottom" Visibility="Collapsed">
+                        <Button x:Name="btn_StartTrip" Content="BẮT ĐẦU" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="245" Height="95" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_StartTrip_Tap">
+                            <Button.BorderBrush>
+                                <SolidColorBrush Color="White" Opacity="0.19"/>
+                            </Button.BorderBrush>
+                            <Button.Background>
+                                <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                            </Button.Background>
+                        </Button>
+                        <Button x:Name="btn_CancelTrip" Content="HỦY BỎ" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="245" Height="95" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_CancelTrip_Tap">
+                            <Button.BorderBrush>
+                                <SolidColorBrush Color="White" Opacity="0.2"/>
+                            </Button.BorderBrush>
+                            <Button.Background>
+                                <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
+                            </Button.Background>
+                        </Button>
+                    </Grid>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed" d:IsHidden="True">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">
@@ -211,6 +231,11 @@
                     </ProgressBar>
                     <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
                 </Grid>
+                <ProgressBar x:Name="pb_ButtonWait" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Visibility="Collapsed">
+                    <ProgressBar.Foreground>
+                        <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
             </Grid>
         </Canvas>
 

@@ -81,7 +81,12 @@ namespace FT_Driver.Pages
         //For timer
         DispatcherTimer updateLocationTimer;
 
-        //Fot Update Notification
+        //For trip
+        //IDictionary<string, DriverNewtripNotification> newTripCollection = new Dictionary<string, DriverNewtripNotification>();
+        DriverNewtripNotification newTrip;
+        long tlmd;
+
+        //For Update Notification
         string pushChannelURI = string.Empty;
         string notificationReceivedString = string.Empty;
         string notificationType = string.Empty;
@@ -800,7 +805,7 @@ namespace FT_Driver.Pages
                     System.Globalization.CultureInfo.InvariantCulture,
                     System.Globalization.CompareOptions.IgnoreCase) == 0)
                 {
-                    //Lấy chuối thông báo từ Notification
+                    //Lấy chuỗi thông báo từ Notification
                     notificationReceivedString = e.Collection[key];
                 }
             }
@@ -865,18 +870,24 @@ namespace FT_Driver.Pages
         /// <summary>
         /// Các trường hợp của thông báo
         /// </summary>
-        private void ShowNotificationNewTrip()
+        private async void ShowNotificationNewTrip()
         {
             var input = notificationReceivedString;
+            newTrip = new DriverNewtripNotification();
             try
             {
-                var newTrip = JsonConvert.DeserializeObject<DriverNewtripNotification>(input); //Tạo đối tượng NewTrip từ Json Input
+                newTrip = JsonConvert.DeserializeObject<DriverNewtripNotification>(input); //Tạo đối tượng NewTrip từ Json Input
+                var addressString = await GoogleAPIFunctions.ConvertLatLngToAddress(newTrip.sLat, newTrip.sLng);
+                var address = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(addressString);
                 //Nạp thông tin new trip vào grid Accept/Reject
-                txt_RiderAddress.Text = newTrip.sAdd;
+                //txt_RiderAddress.Text = newTrip.sAdd;
+                txt_RiderAddress.Text = address.results[0].formatted_address.ToString();
                 txt_RiderMobile.Text = "0" + newTrip.mobile;
                 txt_RiderName.Text = newTrip.rName;
                 //Hiển thị thông tin new trip lên màn hình
                 isGridAcceptRejectOn();
+                ///HIỂN THỊ VỊ TRÍ HÁCH HÀNG CÓ YÊU CẦU
+
 
             }
             catch (Exception)
@@ -891,6 +902,8 @@ namespace FT_Driver.Pages
         private void ShowNotificationPromotionTrip()
         {
         }
+
+
 
 
         /// <summary>
@@ -944,6 +957,198 @@ namespace FT_Driver.Pages
                 MessageBox.Show("(Mã lỗi 307) " + ConstantVariable.errServerError);
             }
 
+        }
+
+
+
+        /// <summary>
+        /// KHI DRIVER CHẤP NHẬN CHUYẾN ĐI
+        /// SẼ CHẠY HÀM NÀY
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btn_AcceptTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ///CODE CHO HIỂN THỊ LOADING
+            ///
+            pb_ButtonWait.Visibility = Visibility.Visible;
+
+            DriverAcceptTripObj acceptTrip = new DriverAcceptTripObj
+            {
+                uid = userId,
+                pw = pwmd5,
+                tid = newTrip.tid,
+                lmd = newTrip.lmd
+            };
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"lmd\":\"{3}\"}}", acceptTrip.uid, acceptTrip.pw, acceptTrip.tid, acceptTrip.lmd);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverAcceptTrip, input);
+                if (output != null)
+                {
+                    var acceptStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (acceptStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    {
+                        //Tắt Process bar sau khi hoàn thành
+                        pb_ButtonWait.Visibility = Visibility.Collapsed;
+                        ///1. CODE CHO HIỂN THỊ MÀN HÌNH BẮT ĐẦU / HỦY BỎ và tắt cái Chấp nhận / Từ chối
+                        ///2. CHO ĐIỆN THOẠI RUNG
+                        ///3. ĐỔ ÂM BÁO CÓ KHÁCH GỌI
+                        ///4. Lưu lmd để sử dụng cho cái sau
+                        ///5. Cập nhật vị trí ce 3 phút một lần
+                        ///6. Trạng thái lái xe chuyên qua BUSY ("BU")
+                        ///7. Chuyển trạng thái của Lái xe qua Picking (PI)
+
+                        //1.
+                        grv_StartCancelbtn.Visibility = Visibility.Visible; //Bật cụm button Start / Cancel
+                        grv_AcceptRejectbtn.Visibility = Visibility.Collapsed; //Tắt cụm button Accept / Reject
+
+                        //4.
+                        tlmd = (long)acceptStatus.lmd;
+
+                    }
+                    else if (acceptStatus.status.Equals(ConstantVariable.responseCodeTaken)) //013
+                    {
+                        ///CODE CHO VIỆC THÔNG BÁO ĐÃ BỊ CHIẾM KHÁCH
+                        ///CHO TRỞ VỀ MÀN HÌNH MAP
+                        ///XÓA NEW TRIP
+                        ///
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Mã lỗi 8fefe ở AcepTrip");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("(Mã lỗi 310) " + ConstantVariable.errServerError);
+            }
+
+        }
+
+
+        /// <summary>
+        /// KHI DRIVER TỪ CHỐI CHUẾN ĐI
+        /// SẼ CHẠY HÀM NÀY
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btn_RejectTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            DriverAcceptTripObj rejectTrip = new DriverAcceptTripObj
+            {
+                uid = userId,
+                pw = pwmd5,
+                tid = newTrip.tid,
+                lmd = newTrip.lmd
+            };
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"lmd\":\"{3}\"}}", rejectTrip.uid, rejectTrip.pw, rejectTrip.tid, rejectTrip.lmd);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverAcceptTrip, input);
+                if (output != null)
+                {
+                    var rejectStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (rejectStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    {
+                        ///1. TRỞ VỀ MÀN HÌNH HOME
+                        ///2. Update lmd
+                        ///3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
+                        ///4. Để lấy lại trạng thái sẵn sàng thì a. THoát và đăng nhập lại b. Lựa chọn (Hình F trong tài liệu)
+
+                        //2. 
+                        tlmd = (long)rejectStatus.lmd;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Mã lỗi 7hgtr4 ở StartTrip");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("(Mã lỗi 312) " + ConstantVariable.errServerError);
+            }
+        }
+
+        private async void btn_StartTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            DriverStartTripObj startTrip = new DriverStartTripObj
+            {
+                uid = userId,
+                pw = pwmd5,
+                tid = newTrip.tid,
+                status = ConstantVariable.startTripStatusPicked, //"PD"
+                lmd = tlmd //Cái này bây giờ không còn là của lmd Create trip nữa. mà của Accept Trip
+            };
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"status\":\"{3}\",\"lmd\":\"{4}\"}}", startTrip.uid, startTrip.pw, startTrip.tid, startTrip.status, startTrip.lmd);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverStartTrip, input);
+                if (output != null)
+                {
+                    var startStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (startStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    {
+                        ///1. TRỞ VỀ MÀN HÌNH HOME
+                        ///2. Update lmd
+                        ///Hiển thị giá, quãng đường, cập nhật sau 20s
+
+                        //2. 
+                        tlmd = (long)startStatus.lmd;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Mã lỗi 7hgtr4 ở StartTrip");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("(Mã lỗi 312) " + ConstantVariable.errServerError);
+            }
+        }
+
+        private async void btn_CancelTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            DriverStartTripObj cancelTrip = new DriverStartTripObj
+            {
+                uid = userId,
+                pw = pwmd5,
+                tid = newTrip.tid,
+                status = "", //không truyền lên status
+                lmd = tlmd //Cái này bây giờ không còn là của lmd Create trip nữa. mà của Accept Trip
+            };
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"lmd\":\"{3}\"}}", cancelTrip.uid, cancelTrip.pw, cancelTrip.tid, cancelTrip.lmd);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverCancelTrip, input);
+                if (output != null)
+                {
+                    var cancelStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (cancelStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    {
+                        ///1. Chuyển trạng thái qua Not Avalable
+                        ///2. update lmd
+
+                        //2. 
+                        tlmd = (long)cancelStatus.lmd;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Mã lỗi 5ew33 ở CancelTrip");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("(Mã lỗi 313) " + ConstantVariable.errServerError);
+            }
         }
 
 
