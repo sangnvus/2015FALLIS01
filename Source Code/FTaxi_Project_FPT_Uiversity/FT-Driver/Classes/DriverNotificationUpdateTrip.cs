@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace FT_Driver.Classes
 {
-    class DriverUpdateCurrentLocation
+    class DriverNotificationUpdateTrip
     {
-        public string status { get; set; }
+        public string tid { get; set; }
+        public string notiType { get; set; }
+        public string tStatus { get; set; }
         public long lmd { get; set; }
-        public string content { get; set; }
     }
 }

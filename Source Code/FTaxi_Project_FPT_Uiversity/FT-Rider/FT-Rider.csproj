@@ -113,6 +113,7 @@
     <Compile Include="Classes\GoogleAPIQueryAutoCompleteObj.cs" />
     <Compile Include="Classes\MapShowMarker.cs" />
     <Compile Include="Classes\RiderBase.cs" />
+    <Compile Include="Classes\RiderCancelTrip.cs" />
     <Compile Include="Classes\RiderCreateTrip.cs" />
     <Compile Include="Classes\RiderDriverStatusDTO.cs" />
     <Compile Include="Classes\RiderFunctions.cs" />

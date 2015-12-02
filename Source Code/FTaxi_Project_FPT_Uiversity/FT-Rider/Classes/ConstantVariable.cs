@@ -38,7 +38,6 @@ namespace FT_Rider.Classes
         public const string errRegisterFailed = "Đăng ký không thành công!";
         public const string strLoginSucess = "Đăng nhập thành công.";
         public const string strLoginSuccessed = "Đăng ký thành công!";
-        public const string strPleseWait = "Vui lòng đợi!";
         public const string errNotEmpty = "Vui lòng điền đầy đủ thông tin!";
         public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
         public const string errServerErr = "Có lỗi máy chủ địa lý, một vài tính năng có thể không thể sử dụng được!"; 
@@ -52,6 +51,8 @@ namespace FT_Rider.Classes
         public const string tNetRiderGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
         public const string tNetRiderCreateTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CreateTrip";
         public const string tNetRiderUpdateRegId = "http://123.30.236.109:8088/TN/restServices/CommonController/updateRegId";
+        public const string tNetRiderCancelTrip = "http://123.30.236.109:8088/TN/restServices/CommonController/CancelTrip";
+
         
 
 
@@ -84,5 +85,15 @@ namespace FT_Rider.Classes
         public const string tripStatusCancelled = "CA";
         public const string tripStatusComplete = "TC";
 
+
+        //Trip message status
+        public const string strPleseWait = "Vui lòng đợi...";
+        public const string strCarAreComming = "Xe đang tới...";
+        public const string strCarRejected = "Yêu cầu bị hủy bỏ!";
+        public const string strCarCanceled = "Chuyến đi bị hủy bỏ!";
+
+        //Response code
+        public const string responseCodeSuccess = "0000";
+        public const string responseCodeTaken = "013";
     }
 }

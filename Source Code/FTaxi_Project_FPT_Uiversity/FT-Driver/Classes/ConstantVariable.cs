@@ -42,6 +42,7 @@ namespace FT_Driver.Classes
         public const string tNetDriverRejectTrip = "http://123.30.236.109:8088/TN/restServices/TripController/RejectTrip";
         public const string tNetDriverStartTrip = "http://123.30.236.109:8088/TN/restServices/TripController/StartTrip";
         public const string tNetDriverCancelTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CancelTrip";
+        public const string tNetDriverCompleteTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CompleteTrip";
 
         
 
@@ -75,11 +76,11 @@ namespace FT_Driver.Classes
         public const string responseCodeTaken = "013";
 
         //Start trip status
-        public const string startTripStatusNewTrip = "NT";
-        public const string startTripStatusReject = "RJ";
-        public const string startTripStatusPicked = "PD";
-        public const string startTripStatusPicking = "PI";
-        public const string startTripStatusCancelled = "CA";
-        public const string startTripStatusComplete = "TC";
+        public const string tripStatusNewTrip = "NT";
+        public const string tripStatusReject = "RJ";
+        public const string tripStatusPicked = "PD";
+        public const string tripStatusPicking = "PI";
+        public const string tripStatusCancelled = "CA";
+        public const string tripStatusComplete = "TC";
     }
 }

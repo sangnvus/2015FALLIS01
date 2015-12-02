@@ -181,7 +181,7 @@
                     <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Right" Margin="0,11,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
                     <TextBlock x:Name="txt_RiderMobile" HorizontalAlignment="Right" Margin="0,49,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
                     <TextBlock x:Name="txt_RiderAddress" HorizontalAlignment="Right" Margin="0,89,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
-                    <Grid x:Name="grv_AcceptRejectbtn" Height="100" VerticalAlignment="Bottom">
+                    <Grid x:Name="grv_AcceptRejectbtn" Height="100" VerticalAlignment="Bottom" d:IsHidden="True">
                         <Button x:Name="btn_AcceptTrip" Content="CHẤP NHẬN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" UseLayoutRounding="True" Height="95" Width="245" Tap="btn_AcceptTrip_Tap">
                             <Button.BorderBrush>
                                 <SolidColorBrush Color="White" Opacity="0.2"/>
@@ -217,8 +217,61 @@
                             </Button.Background>
                         </Button>
                     </Grid>
+                    <Grid x:Name="grv_LoadingGridScreen" Height="246" VerticalAlignment="Bottom" Visibility="Collapsed">
+                        <Rectangle x:Name="rg_PleaseWaitBG" Stroke="Black">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#FF343434" Opacity="0.5"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <ProgressBar x:Name="pb_ButtonPleaseWait" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Background="#19FFFFFF" Foreground="White"/>
+                    </Grid>
+                    <Grid x:Name="grv_RiderCancel" Height="246" VerticalAlignment="Bottom" Visibility="Collapsed">
+                        <Rectangle x:Name="rg_CancelNotificationBG" Stroke="Black">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="Black" Opacity="0.8"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Button x:Name="btn_ConfirmCancelFromRider" Content="KẾT THÚC" VerticalAlignment="Bottom" Height="99" FontSize="{StaticResource Button_FontSize_22}">
+                            <Button.BorderBrush>
+                                <SolidColorBrush Color="White" Opacity="0.1"/>
+                            </Button.BorderBrush>
+                            <Button.Background>
+                                <SolidColorBrush Color="#FF151D32"/>
+                            </Button.Background>
+                        </Button>
+                        <Image x:Name="img_CanceledTrip" HorizontalAlignment="Center" Height="40" Margin="0,20,0,0" VerticalAlignment="Top" Width="40" Source="/Images/Alerts/img_CanceledTrip.png"/>
+                        <TextBlock x:Name="tbl_RiderCanceled" HorizontalAlignment="Center" Margin="35,70,34,104" TextWrapping="Wrap" Text="Hành khách đã hủy yêu cầu gọi xe.&#x0a;Chuyến đi kết thúc tại đây.&#x0a;Chúc bạn ngày làm việc an toàn và hiệu quả!" VerticalAlignment="Center" Width="411" TextAlignment="Center" FontSize="18"/>
+                    </Grid>
                 </Grid>
-                <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed" d:IsHidden="True">
+                <Grid x:Name="grv_StartTrip" Height="296" VerticalAlignment="Bottom" Margin="0" Visibility="Collapsed">
+                    <Grid.Background>
+                        <ImageBrush Stretch="Fill"/>
+                    </Grid.Background>
+                    <Image x:Name="img_StartTripBG" Margin="0" Source="/Images/Grid_StartTrip/img_StartTripBackground.png" VerticalAlignment="Bottom"/>
+                    <Image x:Name="img_PriceBar" Height="68" VerticalAlignment="Top" Width="480" Source="/Images/Grid_StartTrip/img_PriceBar.png"/>
+                    <Button x:Name="btn_TapToPay" Content="CHẠM ĐỂ THANH TOÁN" Width="480" Margin="0,3,0,0" Height="95" VerticalAlignment="Bottom" Tap="btn_TapToPay_Tap">
+                        <Button.BorderBrush>
+                            <SolidColorBrush Color="White" Opacity="0.2"/>
+                        </Button.BorderBrush>
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
+                        </Button.Background>
+                    </Button>
+                    <TextBlock x:Name="txt_DistanceKm" HorizontalAlignment="Left" Margin="42,-5,0,0" TextWrapping="Wrap" Text="0.0" VerticalAlignment="Top" FontSize="35"/>
+                    <TextBlock x:Name="txt_PricePerDistance" HorizontalAlignment="Left" Margin="303,-5,0,0" TextWrapping="Wrap" Text="0.000" VerticalAlignment="Top" FontSize="35"/>
+                    <TextBlock x:Name="txt_RiderNameStartTrip" HorizontalAlignment="Right" Margin="0,44,15,0" TextWrapping="Wrap" Text="Nguyễn Văn Lập" VerticalAlignment="Top" FontSize="30" Width="270" TextAlignment="Right"/>
+                    <TextBlock x:Name="txt_PromotionPrice" HorizontalAlignment="Right" Margin="0,101,15,0" TextWrapping="Wrap" Text="0.0 đ" VerticalAlignment="Top" FontSize="30" Width="270" TextAlignment="Right"/>
+                    <TextBlock x:Name="txt_TotalPrice" HorizontalAlignment="Right" Margin="0,159,15,0" TextWrapping="Wrap" Text="0.0 đ" VerticalAlignment="Top" FontSize="30" Width="270" TextAlignment="Right"/>
+                    <Grid x:Name="grv_TapToPayProcess" Visibility="Collapsed">
+                        <Rectangle x:Name="rt_bg" Height="304">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="#FF323232" Opacity="0.5"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <ProgressBar x:Name="pb_TapToPay" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Background="#19FFFFFF" Foreground="White"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">
                         <Rectangle.Fill>
                             <SolidColorBrush Color="Black" Opacity="0.5"/>
@@ -231,11 +284,6 @@
                     </ProgressBar>
                     <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
                 </Grid>
-                <ProgressBar x:Name="pb_ButtonWait" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Visibility="Collapsed">
-                    <ProgressBar.Foreground>
-                        <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
-                    </ProgressBar.Foreground>
-                </ProgressBar>
             </Grid>
         </Canvas>
 
