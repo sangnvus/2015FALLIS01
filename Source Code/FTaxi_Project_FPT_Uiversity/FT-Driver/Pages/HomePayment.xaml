@@ -147,11 +147,12 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <PasswordBox x:Name="pwd_Password" Margin="211,182,4,0" Grid.Row="2" VerticalAlignment="Top" BorderBrush="{x:Null}">
+            <PasswordBox x:Name="pwd_Password" Margin="211,182,4,0" Grid.Row="2" VerticalAlignment="Top" BorderBrush="{x:Null}" d:IsHidden="True">
                 <PasswordBox.Background>
                     <SolidColorBrush Color="#BFD8D8D8" Opacity="0.3"/>
                 </PasswordBox.Background>
             </PasswordBox>
+            <TextBox x:Name="txt_Password" HorizontalAlignment="Left" Height="72" Margin="211,178,0,0" Grid.Row="2" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="259" Background="#BFDADADA" BorderBrush="{x:Null}" InputScope="Password"/>
             <Button x:Name="btn_Payment" Content="THANH TOÁN" HorizontalAlignment="Left" Margin="0,251,-4,0" Grid.Row="2" VerticalAlignment="Top" Height="95" Width="484" Tap="btn_Payment_Tap" FontSize="23" >
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
@@ -204,7 +205,7 @@
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                 </Rectangle.Fill>
             </Rectangle>
-            <Rectangle x:Name="line1_Copy7" HorizontalAlignment="Left" Height="1" Margin="230,233,0,0" VerticalAlignment="Top" Width="228" Grid.Row="2">
+            <Rectangle x:Name="line1_Copy7" HorizontalAlignment="Left" Height="1" Margin="227,233,0,0" VerticalAlignment="Top" Width="228" Grid.Row="2">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="#FF474747" Opacity="0.8"/>
                 </Rectangle.Fill>

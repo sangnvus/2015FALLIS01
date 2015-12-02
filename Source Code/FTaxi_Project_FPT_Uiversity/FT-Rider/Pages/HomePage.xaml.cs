@@ -1534,6 +1534,7 @@ namespace FT_Rider.Pages
         /// </summary>
         private void ShowNotificationNewTrip()
         {
+
         }
         private void ShowNotificationUpdateTrip()
         {
@@ -1583,26 +1584,48 @@ namespace FT_Rider.Pages
         /// </summary>
         private void SwitchToPikingStatus()
         {
+            ///0.1 CHO ÂM THANH HIỆU ỨNG
+            ///Hiện thông báo
             tbl_DriverStatus.Text = ConstantVariable.strCarAreComming; //HIỆN THÔNG ÁO "XE ĐANG TỚI.."
-            ///CHO ÂM THANH HIỆU ỨNG
+            
         }
 
 
         private void SwitchToRejectStatus()
         {
-            tbl_DriverStatus.Text = ConstantVariable.strCarAreComming; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
+            tbl_DriverStatus.Text = ConstantVariable.strCarRejected; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
             ///1. VIẾT TIẾP HÀM CHO VIỆC LÀM LẠI CHU TRÌNH GỌI XE HOẶC GỌI TỔNG ĐÀI
             ///2. Chuyển qua Button Gọi hãng
-            ///3. CHO ÂM THANH HIỆU ỨNG
+            ///3. CHO ÂM THANH HIỆU ỨNG            
         }
 
         private void SwitchToCanceledStatus()
         {
-            tbl_DriverStatus.Text = ConstantVariable.strCarAreComming; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
+            ///0. Show thoong bao
             ///1. CHO ÂM THANH HIỆU ỨNG
             ///2. Xóa thông tin trip
             ///3. Về màn hình chính
+            
+            //0.
+            tbl_DriverStatus.Text = ConstantVariable.strCarCanceled; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
+
+            //1. 
+
+            //2. 
+            DeleteTripDate();
+
+            //Show messeage
+            MessageBox.Show(ConstantVariable.strCarRejected);
+
+            //3.
+            SetHomeViewState();
+
+            //4. Get near car
+            GetNearDriver();
+
         }
+
+
 
         private void SwitchToCompletedStatus()
         {
@@ -1624,7 +1647,7 @@ namespace FT_Rider.Pages
                 if (this.NavigationContext.QueryString["json"].ToString() != null)
                 {
                     notificationReceivedString = this.NavigationContext.QueryString["json"].ToString(); //Gán chuỗi Json 
-                    notificationType = this.NavigationContext.QueryString["notiType"].ToString(); //Gán kiểu noti
+                    notificationType = this.NavigationContext.QueryString["amp;notiType"].ToString(); //Gán kiểu noti
                     //Sau cùng là chạy hàm hiển thị notification
                     ShowNotification();
                 }
@@ -1638,6 +1661,11 @@ namespace FT_Rider.Pages
         }
 
 
+        private void DeleteTripDate()
+        {
+            myTrip = null;
+            createTrip = null;
+        }
 
         /// <summary>
         /// Cái này là để cập nhật URI mỗi khi có thay đổi
@@ -1705,7 +1733,7 @@ namespace FT_Rider.Pages
                         //SAU KHI HOÀN THÀNH REQ HỦY CHUYẾN THÌ TẮT LOADING
                         grv_ProcessBarButton.Visibility = Visibility.Visible;
                         //Đưa màn hình về trạng thái ban đầu
-                        HomeViewState();
+                        SetHomeViewState();
 
                     }
                     else if (cancelStatus.status.Equals(ConstantVariable.responseCodeTaken)) //013
@@ -1732,11 +1760,22 @@ namespace FT_Rider.Pages
         /// <summary>
         /// HÀM NÀY ĐỂ ĐƯA MÀN HÌNH VỀ BAN ĐẦU
         /// </summary>
-        private void HomeViewState()
+        private void SetHomeViewState()
         {
             grv_Step01.Visibility = Visibility.Visible;
             grv_Step02.Visibility = Visibility.Collapsed;
             grv_Step03.Visibility = Visibility.Collapsed;
+            
+        }
+
+        private void tbl_MyTrips_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderMyTrip.xaml", UriKind.Relative));
+        }
+
+        private void tbl_CompanyInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/CompanyInfo.xaml", UriKind.Relative));
         }
     }
 }

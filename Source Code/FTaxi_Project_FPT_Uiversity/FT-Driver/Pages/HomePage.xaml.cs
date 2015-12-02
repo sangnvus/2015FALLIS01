@@ -35,6 +35,7 @@ namespace FT_Driver.Pages
         //USER DATA
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+        
         DriverLogin userData = new DriverLogin();
         string userId = "";
         string pwmd5 = "";
@@ -101,6 +102,7 @@ namespace FT_Driver.Pages
         //For Distance
         Double distanceKm;
         VehicleInfo mySelectedVehicle = new VehicleInfo();
+        IsolatedStorageSettings tNetTripData = IsolatedStorageSettings.ApplicationSettings;
 
 
         public HomePage()
@@ -1018,7 +1020,7 @@ namespace FT_Driver.Pages
                 if (this.NavigationContext.QueryString["json"].ToString() != null)
                 {
                     notificationReceivedString = this.NavigationContext.QueryString["json"].ToString(); //Gán chuỗi Json 
-                    notificationType = this.NavigationContext.QueryString["notiType"].ToString(); //Gán kiểu noti
+                    notificationType = this.NavigationContext.QueryString["amp;notiType"].ToString(); //Gán kiểu noti
                     //Sau cùng là chạy hàm hiển thị notification
                     ShowNotification();
                 }
@@ -1342,7 +1344,7 @@ namespace FT_Driver.Pages
             ///Có CONFIGM DIALOG            
 
             //Gửi kèm dữ liệu!
-            tNetUserLoginData["CompleteTripBill"] = completeTrip;
+            tNetTripData["CompleteTripBill"] = completeTrip;
 
             //Xóa dữ liệu cũ            
 

@@ -133,6 +133,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\CompanyInfo.xaml.cs">
+      <DependentUpon>CompanyInfo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
     </Compile>
@@ -153,6 +156,9 @@
     </Compile>
     <Compile Include="Pages\RiderLostPassword.xaml.cs">
       <DependentUpon>RiderLostPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RiderMyTrip.xaml.cs">
+      <DependentUpon>RiderMyTrip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\RiderProfile.xaml.cs">
       <DependentUpon>RiderProfile.xaml</DependentUpon>
@@ -179,6 +185,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\CompanyInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\FisrtRunningAppIntro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +214,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\RiderLostPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\RiderMyTrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
