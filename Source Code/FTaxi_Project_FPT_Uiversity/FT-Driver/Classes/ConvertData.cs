@@ -48,5 +48,25 @@ namespace FT_Driver.Classes
             dt = inputDateTime.ToString("ddMMyyyyHHmmss");
             return dt;
         }
+
+
+        /// <summary>
+        /// Chuyển từ tiếng việt có dấu qua tiếng việt không dấu
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string ConvertVietnamCharacter(string input)
+        {
+            const string FindText = "áàảãạâấầẩẫậăắằẳẵặđéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵÁÀẢÃẠÂẤẦẨẪẬĂẮẰẲẴẶĐÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴ";
+            const string ReplText = "aaaaaaaaaaaaaaaaadeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyAAAAAAAAAAAAAAAAADEEEEEEEEEEEIIIIIOOOOOOOOOOOOOOOOOUUUUUUUUUUUYYYYY";
+            int index = -1;
+            char[] arrChar = FindText.ToCharArray();
+            while ((index = input.IndexOfAny(arrChar)) != -1)
+            {
+                int index2 = FindText.IndexOf(input[index]);
+                input = input.Replace(input[index], ReplText[index2]);
+            }
+            return input;
+        } 
     }
 }

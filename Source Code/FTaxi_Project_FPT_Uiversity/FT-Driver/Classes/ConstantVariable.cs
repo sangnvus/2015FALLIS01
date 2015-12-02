@@ -10,9 +10,14 @@ namespace FT_Driver.Classes
     {
         public const string googleAPIQueryAutoCompleteRequestsBaseURI = "https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=";
         public const string googleAPIGeocodingRequestsBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+        public const string googleAPIGeocodingLatLngBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
         //public static string googleGeolocationAPIkey = "AIzaSyAOi7TswVYRlkqvZcQ88Qf9SUHODK67TR0";
         public const string googleGeolocationAPIkey = "AIzaSyD4Y-OfQiAfs9hS_kyrfmzUSs5jY9gEKiY";
         public const string destiationAddressDescription = "Địa chỉ đón";
+
+        public const string googleAPIDistanceMatrixBaseURI1 = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
+        public const string googleAPIDistanceMatrixBaseURI2 = "&destinations=";
+        public const string googleAPIDistanceMatrixBaseURI3 = "&mode=driving&language=vi-VI";
 
         //Messenger
         public const string errInvalidAddress = "Địa chỉ không hợp lệ. Vui lòng thử lại sau!";
@@ -33,6 +38,11 @@ namespace FT_Driver.Classes
         public const string tNetDriverUpdateCurrentLocation = "http://123.30.236.109:8088/TN/restServices/DriverController/UpdateCurrentLocation";
         public const string tNetDriverSelectVehicle = "http://123.30.236.109:8088/TN/restServices/DriverController/selectVehicle";
         public const string tNetDriverUpdateRegId = "http://123.30.236.109:8088/TN/restServices/CommonController/updateRegId";
+        public const string tNetDriverAcceptTrip = "http://123.30.236.109:8088/TN/restServices/TripController/AcceptTrip";
+        public const string tNetDriverRejectTrip = "http://123.30.236.109:8088/TN/restServices/TripController/RejectTrip";
+        public const string tNetDriverStartTrip = "http://123.30.236.109:8088/TN/restServices/TripController/StartTrip";
+        public const string tNetDriverCancelTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CancelTrip";
+
         
 
         //Login Page
@@ -54,5 +64,22 @@ namespace FT_Driver.Classes
 
         //Driver Type
         public const string dRole = "DR";
+
+        //Trip type
+        public const string notiTypeNewTrip = "NT";
+        public const string notiTypeUpdateTrip = "UT";
+        public const string notiTypePromotionTeip = "PT";
+
+        //Response code
+        public const string responseCodeSuccess = "0000";
+        public const string responseCodeTaken = "013";
+
+        //Start trip status
+        public const string startTripStatusNewTrip = "NT";
+        public const string startTripStatusReject = "RJ";
+        public const string startTripStatusPicked = "PD";
+        public const string startTripStatusPicking = "PI";
+        public const string startTripStatusCancelled = "CA";
+        public const string startTripStatusComplete = "TC";
     }
 }

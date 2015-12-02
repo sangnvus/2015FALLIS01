@@ -120,6 +120,7 @@
     <Compile Include="Classes\RiderGetNearDriver.cs" />
     <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
+    <Compile Include="Classes\RiderNotificationUpdateTrip.cs" />
     <Compile Include="Classes\RiderPaymentDTO.cs" />
     <Compile Include="Classes\RiderUpdateAddress.cs" />
     <Compile Include="Classes\RiderUpdateDriverStatusDTO.cs" />

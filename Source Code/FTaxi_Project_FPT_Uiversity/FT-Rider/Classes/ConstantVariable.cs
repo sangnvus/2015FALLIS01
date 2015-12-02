@@ -71,6 +71,18 @@ namespace FT_Rider.Classes
         //Noti Type
         public const string dRole = "RD";
 
-       
+        //Trip type
+        public const string notiTypeNewTrip = "NT";
+        public const string notiTypeUpdateTrip = "UT";
+        public const string notiTypePromotionTeip = "PT";
+
+        //Start trip status
+        public const string tripStatusNewTrip = "NT";
+        public const string tripStatusReject = "RJ";
+        public const string tripStatusPicked = "PD";
+        public const string tripStatusPicking = "PI";
+        public const string tripStatusCancelled = "CA";
+        public const string tripStatusComplete = "TC";
+
     }
 }

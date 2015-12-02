@@ -30,7 +30,7 @@ namespace SendToast
                     "<wp:Toast>" +
                         "<wp:Title>" + TextBoxTitle.Text.ToString() + "</wp:Title>" +
                         "<wp:SubTitle>" + TextBoxSubTitle.Text.ToString() + "</wp:SubTitle>" +
-                        "<wp:Param>/Page2.xaml?NavigatedFrom=Toast Notification</wp:Param>" +
+                        "<wp:Param>/Pages/HomePage.xaml?json=0988707727&amp;name=Apolong</wp:Param>" +
                     "</wp:Toast>" +
                     "</wp:Notification>";
                 byte[] notificationMessage = Encoding.Default.GetBytes(toastMessage);
