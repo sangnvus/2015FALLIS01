@@ -91,6 +91,7 @@ namespace FT_Rider.Classes
         public const string strCarAreComming = "Xe đang tới...";
         public const string strCarRejected = "Yêu cầu bị hủy bỏ!";
         public const string strCarCanceled = "Chuyến đi bị hủy bỏ!";
+        public const string strCarAreStarting = "Chúc bạn một chuyến đi vui vẻ";
 
         //Response code
         public const string responseCodeSuccess = "0000";

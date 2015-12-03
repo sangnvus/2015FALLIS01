@@ -1558,6 +1558,9 @@ namespace FT_Rider.Pages
                     case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới"
                         SwitchToPikingStatus();
                         break;
+                    case ConstantVariable.tripStatusPicked: //Nếu là "PD" Thì chuyến đi đã bắt đầu
+                        SwitchToStartedStatus();
+                        break;
                     case ConstantVariable.tripStatusReject: //Nếu là "RJ" thì sẽ chạy hàm Thông báo xe bị hủy
                         SwitchToRejectStatus();
                         break;
@@ -1574,6 +1577,8 @@ namespace FT_Rider.Pages
                 MessageBox.Show("(Mã lỗi 403) " + ConstantVariable.errHasErrInProcess);
             }
         }
+
+
         private void ShowNotificationPromotionTrip()
         {
         }
@@ -1590,6 +1595,24 @@ namespace FT_Rider.Pages
             
         }
 
+        private void SwitchToStartedStatus()
+        {
+            ///1. Hiện mess
+            ///2. chờ sau 3 giây tắt grid
+            ///3. hiện vị trí xe
+            
+            //1.
+            tbl_DriverStatus.Text = ConstantVariable.strCarAreStarting;
+
+            //2.
+            Thread.Sleep(3000);
+
+            //3.
+
+            
+
+        }
+
 
         private void SwitchToRejectStatus()
         {
@@ -1597,6 +1620,19 @@ namespace FT_Rider.Pages
             ///1. VIẾT TIẾP HÀM CHO VIỆC LÀM LẠI CHU TRÌNH GỌI XE HOẶC GỌI TỔNG ĐÀI
             ///2. Chuyển qua Button Gọi hãng
             ///3. CHO ÂM THANH HIỆU ỨNG            
+
+            //2. 
+            DeleteTripDate();
+
+            //Show messeage
+            MessageBox.Show(ConstantVariable.strCarRejected);
+
+            //3.
+            grv_Step02.Visibility = Visibility.Collapsed;
+            SetHomeViewState();
+
+            //4. Get near car
+            GetNearDriver();
         }
 
         private void SwitchToCanceledStatus()
@@ -1615,9 +1651,10 @@ namespace FT_Rider.Pages
             DeleteTripDate();
 
             //Show messeage
-            MessageBox.Show(ConstantVariable.strCarRejected);
+            MessageBox.Show(ConstantVariable.strCarCanceled);
 
             //3.
+            grv_Step02.Visibility = Visibility.Collapsed;
             SetHomeViewState();
 
             //4. Get near car

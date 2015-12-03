@@ -81,8 +81,8 @@ namespace FT_Driver.Pages
 
         //For trip
         //IDictionary<string, DriverNewtripNotification> newTripCollection = new Dictionary<string, DriverNewtripNotification>();
-        DriverNewtripNotification newTrip;
-        DriverNotificationUpdateTrip myTrip;
+        DriverNewtripNotification newTrip = null;
+        DriverNotificationUpdateTrip myTrip = null;
         long tlmd;
 
         //For Update Notification
