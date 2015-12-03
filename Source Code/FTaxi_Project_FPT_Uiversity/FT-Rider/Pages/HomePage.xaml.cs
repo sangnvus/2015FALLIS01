@@ -1814,5 +1814,16 @@ namespace FT_Rider.Pages
         {
             NavigationService.Navigate(new Uri("/Pages/CompanyInfo.xaml", UriKind.Relative));
         }
+
+
+        /// <summary>
+        /// Nhấn vào avatar để truy cập vào Profile
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void img_MenuAvatar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
+        }
     }
 }

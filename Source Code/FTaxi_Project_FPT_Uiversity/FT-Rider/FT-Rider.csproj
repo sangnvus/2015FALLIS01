@@ -105,6 +105,7 @@
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
     <Compile Include="Classes\Md5Hash\helper.cs" />
     <Compile Include="Classes\Md5Hash\MD5.cs" />
+    <Compile Include="Classes\MyTripObj.cs" />
     <Compile Include="Classes\OLDFUNCTION.cs" />
     <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\GoogleAPIFunction.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Classes\RiderGetNearDriver.cs" />
     <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
+    <Compile Include="Classes\RiderMyTrip.cs" />
     <Compile Include="Classes\RiderNotificationUpdateTrip.cs" />
     <Compile Include="Classes\RiderPaymentDTO.cs" />
     <Compile Include="Classes\RiderUpdateAddress.cs" />

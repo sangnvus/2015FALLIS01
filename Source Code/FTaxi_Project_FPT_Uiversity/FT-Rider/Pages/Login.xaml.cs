@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
 using Microsoft.Phone.Notification;
+using System.Diagnostics;
 
 namespace FT_Rider.Pages
 {
@@ -36,8 +37,7 @@ namespace FT_Rider.Pages
         {
             InitializeComponent();
 
-            //Create Push notification Channel
-            //CreatePushChannel();
+            //Create Push notification Channel            
         }
 
 
@@ -53,50 +53,44 @@ namespace FT_Rider.Pages
                 var pwmd5 = pw.FingerPrint.ToLower();
                 var mid = "";//pushChannelURI;
                 var mType = ConstantVariable.mTypeWIN;
-
-                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
-                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
-                if (output != null)
+                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);                
+                try
                 {
-                    try
+                    //Thử xem có lấy đc JSON về ko, nếu ko thì bắn ra Lối kết nối / lỗi server
+                    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
+                    var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
+                    if (riderLogin != null)
                     {
-                        var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
-                        if (riderLogin != null)
+                        if (riderLogin.status.Equals(ConstantVariable.responseCodeSuccess)) //0000 Code
                         {
-                            if (riderLogin.content != null)
-                            {
-                                tNetAppSetting["isLogin"] = "WasLogined";
-                                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                                tNetUserLoginData["UserId"] = uid;
-                                tNetUserLoginData["PasswordMd5"] = pwmd5;
-                                tNetUserLoginData["UserLoginData"] = riderLogin;
-                                tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
-                            }
-                            else
-                            {
-                                MessageBox.Show(ConstantVariable.errLoginFailed);
-                                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
-                            }
+                            tNetAppSetting["isLogin"] = "WasLogined";
+                            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                            tNetUserLoginData["UserId"] = uid;
+                            tNetUserLoginData["PasswordMd5"] = pwmd5;
+                            tNetUserLoginData["UserLoginData"] = riderLogin;
+                            tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
                         }
                         else
                         {
                             MessageBox.Show(ConstantVariable.errLoginFailed);
                             grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                            Debug.WriteLine("(Mã lỗi 1103) " + ConstantVariable.errLoginFailed);
                         }
-
                     }
-                    catch (Exception)
+                    else
                     {
                         MessageBox.Show(ConstantVariable.errLoginFailed);
                         grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                        Debug.WriteLine("(Mã lỗi 1102) " + ConstantVariable.errLoginFailed);
                     }
+
                 }
-                else
+                catch (Exception)
                 {
                     MessageBox.Show(ConstantVariable.errConnectingError);
                     grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                    Debug.WriteLine("(Mã lỗi 1101) " + ConstantVariable.errConnectingError);
                 }
-
             }
             else
             {
@@ -104,103 +98,7 @@ namespace FT_Rider.Pages
                 grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
             }
         }
-
-
-        /*
-        private void CreatePushChannel()
-        {
-            HttpNotificationChannel pushChannel;
-            string channelName = "FtaxiChannel";
-            pushChannel = HttpNotificationChannel.Find(channelName);
-
-            if (pushChannel == null)
-            {
-                pushChannel = new HttpNotificationChannel(channelName);
-
-                // Register for all the events before attempting to open the channel.
-                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
-
-                // Register for this notification only if you need to receive the notifications while your application is running.
-                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
-
-                pushChannel.Open();
-
-                // Bind this new channel for toast events.
-                pushChannel.BindToShellToast();
-
-            }
-            else
-            {
-                // The channel was already open, so just register for all the events.
-                pushChannel.ChannelUriUpdated += new EventHandler<NotificationChannelUriEventArgs>(PushChannel_ChannelUriUpdated);
-                pushChannel.ErrorOccurred += new EventHandler<NotificationChannelErrorEventArgs>(PushChannel_ErrorOccurred);
-
-                // Register for this notification only if you need to receive the notifications while your application is running.
-                pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
-
-                // Display the URI for testing purposes. Normally, the URI would be passed back to your web service at this point.
-                System.Diagnostics.Debug.WriteLine(pushChannel.ChannelUri.ToString());
-
-                pushChannelURI = pushChannel.ChannelUri.ToString();
-                //MessageBox.Show(String.Format("Channel Uri is {0}", pushChannel.ChannelUri.ToString()));
-
-            }
-        }
-
-        // Display the new URI for testing purposes.   Normally, the URI would be passed back to your web service at this point.
-        void PushChannel_ChannelUriUpdated(object sender, NotificationChannelUriEventArgs e)
-        {
-
-            Dispatcher.BeginInvoke(() =>
-            {
-                System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
-                pushChannelURI = e.ChannelUri.ToString();
-                //MessageBox.Show(String.Format("Channel Uri is {0}",e.ChannelUri.ToString()));
-
-                //>>>>>>>>>>>>>>>>>>>>>>>>> Chan URI HERE <<<<<<<<<<<<<<<<<<<<<<
-            });
-        }
-
-
-        // Error handling logic for your particular application would be here.
-        void PushChannel_ErrorOccurred(object sender, NotificationChannelErrorEventArgs e)
-        {
-            Dispatcher.BeginInvoke(() =>
-                MessageBox.Show(String.Format("A push notification {0} error occurred.  {1} ({2}) {3}",
-                    e.ErrorType, e.Message, e.ErrorCode, e.ErrorAdditionalData))
-                    );
-        }
-
-
-        // Parse out the information that was part of the message.
-        void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
-        {
-            StringBuilder message = new StringBuilder();
-            string relativeUri = string.Empty;
-
-            message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
-
-            // Parse out the information that was part of the message.
-            foreach (string key in e.Collection.Keys)
-            {
-                message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
-
-                if (string.Compare(
-                    key,
-                    "wp:Param",
-                    System.Globalization.CultureInfo.InvariantCulture,
-                    System.Globalization.CompareOptions.IgnoreCase) == 0)
-                {
-                    relativeUri = e.Collection[key];
-                }
-            }
-
-            // Display a dialog of all the fields in the toast.
-            Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));
-
-        }
-        */
+      
 
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
         {

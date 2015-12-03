@@ -83,7 +83,7 @@
                         <SolidColorBrush Color="{StaticResource Menu_BackgroundColor_BlackGray}"/>
                     </Border.Background>
                 </Border>
-                <Image x:Name="img_MenuAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="50,20,0,0">
+                <Image x:Name="img_MenuAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="50,20,0,0" Tap="img_MenuAvatar_Tap">
                     <Image.Clip>
                         <EllipseGeometry
                 			Center="50,50"

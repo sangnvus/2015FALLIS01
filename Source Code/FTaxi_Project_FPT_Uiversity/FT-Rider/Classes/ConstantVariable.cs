@@ -52,6 +52,7 @@ namespace FT_Rider.Classes
         public const string tNetRiderCreateTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CreateTrip";
         public const string tNetRiderUpdateRegId = "http://123.30.236.109:8088/TN/restServices/CommonController/updateRegId";
         public const string tNetRiderCancelTrip = "http://123.30.236.109:8088/TN/restServices/CommonController/CancelTrip";
+        public const string tNetRiderGetMyTrip = "http://123.30.236.109:8088/TN/restServices/TripController/getCompletedTripRider";
 
         
 
