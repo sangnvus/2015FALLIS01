@@ -36,8 +36,12 @@ namespace FT_Driver.Classes
 
             var returnString = await ReqAndRes.GetJsonString(URL);
             var distance = JsonConvert.DeserializeObject<GoogleAPIDistanceMatrixObj>(returnString);
-            var rawDistance = double.Parse(distance.rows[0].elements[0].distance.value.ToString()) / 1000;
-            return rawDistance;
+            var rawDistance = distance.rows[0].elements[0].distance.text.ToString();
+            rawDistance = rawDistance.ToLower();
+            rawDistance.Replace("km", "");
+            rawDistance.Replace(",", ".");
+            var kilo = double.Parse(rawDistance);
+            return kilo;
             //{
             //"destination_addresses" : [ "143 Kim Mã, Kim Mã, Ba Đình, Hà Nội, Việt Nam" ],
             //"origin_addresses" : [ "50 Liễu Giai, Ngọc Khánh, Ba Đình, Hà Nội, Việt Nam" ],

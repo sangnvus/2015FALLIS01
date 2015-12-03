@@ -35,10 +35,11 @@ namespace FT_Driver.Pages
         //USER DATA
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+        
         DriverLogin userData = new DriverLogin();
         string userId = "";
         string pwmd5 = "";
-
+        
 
         //For Store Points
         List<GeoCoordinate> driverCoordinates = new List<GeoCoordinate>();
@@ -58,9 +59,6 @@ namespace FT_Driver.Pages
 
         //VibrateController
         VibrateController vibrateController = VibrateController.Default;
-
-        //For Distance
-        Double distanceMeter;
 
         //Rider Destination Icon Overlay
         MapOverlay driverDestinationIconOverlay;
@@ -83,13 +81,29 @@ namespace FT_Driver.Pages
 
         //For trip
         //IDictionary<string, DriverNewtripNotification> newTripCollection = new Dictionary<string, DriverNewtripNotification>();
-        DriverNewtripNotification newTrip;
+        DriverNewtripNotification newTrip = null;
+        DriverNotificationUpdateTrip myTrip = null;
         long tlmd;
 
         //For Update Notification
         string pushChannelURI = string.Empty;
         string notificationReceivedString = string.Empty;
         string notificationType = string.Empty;
+
+
+        //For Trip Complete
+        double startLatitude = 0;
+        double startLongitude = 0;
+        double endLatitude = 0;
+        double endLongitude = 0;
+        bool isTrack = false;
+        double estimateCost = 0;
+        double totalFare = 0;
+        //For Distance
+        Double distanceKm;
+        VehicleInfo mySelectedVehicle = new VehicleInfo();
+        IsolatedStorageSettings tNetTripData = IsolatedStorageSettings.ApplicationSettings;
+
 
         public HomePage()
         {
@@ -109,6 +123,7 @@ namespace FT_Driver.Pages
                 userData = (DriverLogin)tNetUserLoginData["UserLoginData"];
                 userId = (string)tNetUserLoginData["UserId"];
                 pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
+                mySelectedVehicle = (VehicleInfo)tNetUserLoginData["MySelectedVehicle"];
             }
 
 
@@ -122,7 +137,7 @@ namespace FT_Driver.Pages
 
             updateLocationTimer = new DispatcherTimer();
             updateLocationTimer.Tick += new EventHandler(updateLocationTimer_Tick);
-            updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 10); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công    
+            updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 20); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công    
 
             //Cập nhật tọa độ của lái xe lên server
             this.UpdateCurrentLocation(currentLat, currentLng);
@@ -160,17 +175,6 @@ namespace FT_Driver.Pages
 
 
 
-        /// <summary>
-        /// Display Status
-        /// </summary>
-        private void isGridAcceptRejectOn()
-        {
-            grv_AcceptReject.Visibility = Visibility.Visible;
-            btn_ChangeStatus.Visibility = Visibility.Collapsed;
-        }
-
-
-
         //------ BEGIN Update Driver Status ------//
         private async void UpdateDriverStatus(string stt) //Chưa check try catch
         {
@@ -182,9 +186,9 @@ namespace FT_Driver.Pages
             var pw = pwmd5;
             var status = stt;
             var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"status\":\"{2}\"}}", uid, pw, status);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
             try
             {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
                 var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
             }
             catch (Exception)
@@ -207,8 +211,6 @@ namespace FT_Driver.Pages
             //{"uid":"dao@gmail.com","lat":"21.038993","lng":"105.799242"}
             if (Math.Round(lat, 0) != 0 && Math.Round(lng, 0) != 0)
             {
-                //Chuyển qua replace
-                //Chưa chuẩn
                 var uid = userId;
                 var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'));
                 try
@@ -216,11 +218,11 @@ namespace FT_Driver.Pages
                     var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateCurrentLocation, input);
                     if (output != null)
                     {
-                        var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+                        var driverUpdate = JsonConvert.DeserializeObject<DriverUpdateCurrentLocation>(output);
                         //Sau khi chạy OK sẽ tắt Thread
                         updateLocationTimer.Stop();
                         Debug.WriteLine("Cập nhật vị trí xe cho Driver OK");
-                        MessageBox.Show("Cập nhật vị trí ve thành công");
+                        //MessageBox.Show("Cập nhật vị trí ve thành công");
                     }
                 }
                 catch (Exception)
@@ -294,7 +296,7 @@ namespace FT_Driver.Pages
 
         }
 
-        private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        private  void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
             Debug.WriteLine("Thay đổi vị trí map"); //DELETE AFTER FINISH
             Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -313,14 +315,38 @@ namespace FT_Driver.Pages
                     UpdateCurrentLocation(geocoordinate.Latitude, geocoordinate.Longitude);
                     countForUpdateLocation = 0;
                 }
+
+                //Lấy tọa độ điểm cuối cùng của hành trình
+                //isTrack sẽ được chuyển qua TRUE ở button Start
+                if (isTrack)
+                {
+                    SetEndCoordinateOfTrip(geocoordinate.Latitude, geocoordinate.Longitude);
+                    CalculateTripDistanceAndCost();
+                }
             });
 
         }
+
+
         //------ END get current Position ------//
+        private async void CalculateTripDistanceAndCost()
+        {
+            distanceKm = await GoogleAPIFunctions.GetDistance(startLatitude, startLongitude, endLatitude, endLongitude);
+            estimateCost = DriverFunctions.CostCalculate(mySelectedVehicle, distanceKm);////
+        }
 
 
+        private void SetEndCoordinateOfTrip(double lat, double lng)
+        {
+            endLatitude = lat;
+            endLongitude = lng;
+        }
 
-
+        private void SetStartCoordinateOfTrip(double lat, double lng)
+        {
+            startLatitude = lat;
+            startLongitude = lng;
+        }
 
 
         //------ BEGIN route Direction on Map ------//
@@ -438,7 +464,7 @@ namespace FT_Driver.Pages
                 map_DriverMap.Layers.Add(driverMapLayer);
 
                 //Calculate Distance
-                distanceMeter = Math.Round(GetTotalDistance(driverCoordinates), 0); //Round double in zero decimal places
+                distanceKm = Math.Round(GetTotalDistance(driverCoordinates), 0); //Round double in zero decimal places
             }
             else
             {
@@ -867,11 +893,18 @@ namespace FT_Driver.Pages
 
 
 
+
         /// <summary>
         /// Các trường hợp của thông báo
         /// </summary>
         private async void ShowNotificationNewTrip()
         {
+
+            //Hiển thị Grid thông tin Trip lên màn hình
+            ShowAcceptRejectGrid();
+            //Đồng thời hiện thị Loading Grid screen
+            ShowLoadingGridScreen();
+
             var input = notificationReceivedString;
             newTrip = new DriverNewtripNotification();
             try
@@ -879,14 +912,21 @@ namespace FT_Driver.Pages
                 newTrip = JsonConvert.DeserializeObject<DriverNewtripNotification>(input); //Tạo đối tượng NewTrip từ Json Input
                 var addressString = await GoogleAPIFunctions.ConvertLatLngToAddress(newTrip.sLat, newTrip.sLng);
                 var address = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(addressString);
-                //Nạp thông tin new trip vào grid Accept/Reject
-                //txt_RiderAddress.Text = newTrip.sAdd;
+
+                ///1. Nạp thông tin lên grid
+                ///2. tắt Loading grid screen
+                ///3. Hiển thị vị trí khách hàng có yêu cầu 
+                
+                //1. Nạp thông tin lên grid
                 txt_RiderAddress.Text = address.results[0].formatted_address.ToString();
                 txt_RiderMobile.Text = "0" + newTrip.mobile;
                 txt_RiderName.Text = newTrip.rName;
-                //Hiển thị thông tin new trip lên màn hình
-                isGridAcceptRejectOn();
-                ///HIỂN THỊ VỊ TRÍ HÁCH HÀNG CÓ YÊU CẦU
+
+                //2. tắt Loading grid screen
+                HideLoadingGridScreen();
+
+                //3. Hiển thị vị trí khách hàng có yêu cầu 
+                ///NOTDONE///
 
 
             }
@@ -898,10 +938,69 @@ namespace FT_Driver.Pages
         }
         private void ShowNotificationUpdateTrip()
         {
+            var input = notificationReceivedString;
+            myTrip = new DriverNotificationUpdateTrip();
+            try
+            {
+                myTrip = JsonConvert.DeserializeObject<DriverNotificationUpdateTrip>(input);//Tạo đối tượng UpdateTrip từ Json Input                
+
+                ///1. Update LMD để có thể cancel chuyến
+                ///2. Kiểm tra mã Notification để hiện thông báo cho khách hàng
+                ///2.1 RJ - Reject
+                ///2.2 PD - Picked
+                ///2.3 PI - Picking
+                ///2.4 CA - Cancelled
+                ///2.5 TA - Trip Complete
+                tlmd = myTrip.lmd;
+
+                switch (myTrip.tStatus) //<<<<< Cái này trả về thông tin bên ông Driver. vd: Nếu nhấn Start thì status là PI
+                {
+                    case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới"
+                        SwitchToPikingStatus();
+                        break;
+                    case ConstantVariable.tripStatusReject: //Nếu là "RJ" thì sẽ chạy hàm Thông báo xe bị hủy
+                        SwitchToRejectStatus();
+                        break;
+                    case ConstantVariable.tripStatusCancelled: //Nếu là "CA" thì sẽ chạy hàm Thông báo hủy chuyến
+                        SwitchToCanceledStatus();
+                        break;
+                    case ConstantVariable.tripStatusComplete: //Nếu là "TC" thì sẽ chạy hàm Hoàn thành chuyến đi
+                        SwitchToCompletedStatus();
+                        break;
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("(Mã lỗi 403) " + ConstantVariable.errHasErrInProcess);
+            }
         }
         private void ShowNotificationPromotionTrip()
         {
         }
+
+        private void SwitchToPikingStatus()
+        {
+            
+        }
+        private void SwitchToRejectStatus()
+        {
+
+        }
+        private void SwitchToCanceledStatus()
+        {
+            ///HÀM NÀY ĐỂ XỬ LÝ KHI KHÁCH HÀNG HỦY CHUYẾN ĐI
+            ///0. CÓ ÂM THANH CẢNH BÁO, CHIA BUỒN
+            ///1. Hiện thông báo hủy chuyến
+            ///2. Xóa toàn bộ thông tin trip
+            ///3. Về màn hình chính
+
+        }
+        private void SwitchToCompletedStatus()
+        {
+
+        }
+
+
 
 
 
@@ -921,7 +1020,7 @@ namespace FT_Driver.Pages
                 if (this.NavigationContext.QueryString["json"].ToString() != null)
                 {
                     notificationReceivedString = this.NavigationContext.QueryString["json"].ToString(); //Gán chuỗi Json 
-                    notificationType = this.NavigationContext.QueryString["notiType"].ToString(); //Gán kiểu noti
+                    notificationType = this.NavigationContext.QueryString["amp;notiType"].ToString(); //Gán kiểu noti
                     //Sau cùng là chạy hàm hiển thị notification
                     ShowNotification();
                 }
@@ -961,6 +1060,9 @@ namespace FT_Driver.Pages
 
 
 
+
+
+
         /// <summary>
         /// KHI DRIVER CHẤP NHẬN CHUYẾN ĐI
         /// SẼ CHẠY HÀM NÀY
@@ -970,8 +1072,8 @@ namespace FT_Driver.Pages
         private async void btn_AcceptTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ///CODE CHO HIỂN THỊ LOADING
-            ///
-            pb_ButtonWait.Visibility = Visibility.Visible;
+            ///Bắt đầu req lên Server, sẽ hiện loading page
+            ShowLoadingGridScreen();
 
             DriverAcceptTripObj acceptTrip = new DriverAcceptTripObj
             {
@@ -991,22 +1093,29 @@ namespace FT_Driver.Pages
                     if (acceptStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
                     {
                         //Tắt Process bar sau khi hoàn thành
-                        pb_ButtonWait.Visibility = Visibility.Collapsed;
+                        //pb_ButtonWait.Visibility = Visibility.Collapsed;
                         ///1. CODE CHO HIỂN THỊ MÀN HÌNH BẮT ĐẦU / HỦY BỎ và tắt cái Chấp nhận / Từ chối
                         ///2. CHO ĐIỆN THOẠI RUNG
                         ///3. ĐỔ ÂM BÁO CÓ KHÁCH GỌI
                         ///4. Lưu lmd để sử dụng cho cái sau
                         ///5. Cập nhật vị trí ce 3 phút một lần
                         ///6. Trạng thái lái xe chuyên qua BUSY ("BU")
+                        ///6.2 CHẠY TIMER CẬP NHẬT VỊ TRÍ XE
                         ///7. Chuyển trạng thái của Lái xe qua Picking (PI)
 
+                        //0. Tắt loading screen
+                        HideLoadingGridScreen();
+
                         //1.
-                        grv_StartCancelbtn.Visibility = Visibility.Visible; //Bật cụm button Start / Cancel
-                        grv_AcceptRejectbtn.Visibility = Visibility.Collapsed; //Tắt cụm button Accept / Reject
+                        ShowStartCancelGird();
 
                         //4.
                         tlmd = (long)acceptStatus.lmd;
 
+                        //5.
+
+                        //6. Trạng thái lái xe chuyên qua BUSY ("BU")
+                        UpdateDriverStatus(ConstantVariable.dStatusBusy);
                     }
                     else if (acceptStatus.status.Equals(ConstantVariable.responseCodeTaken)) //013
                     {
@@ -1037,6 +1146,9 @@ namespace FT_Driver.Pages
         /// <param name="e"></param>
         private async void btn_RejectTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //Show loading Sceen
+            ShowLoadingGridScreen();
+
             DriverAcceptTripObj rejectTrip = new DriverAcceptTripObj
             {
                 uid = userId,
@@ -1054,17 +1166,33 @@ namespace FT_Driver.Pages
                     var rejectStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
                     if (rejectStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
                     {
-                        ///1. TRỞ VỀ MÀN HÌNH HOME
-                        ///2. Update lmd
+                        ///1. Update lmd
+                        ///2. Xóa toàn bộ thông tin Trip
                         ///3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
-                        ///4. Để lấy lại trạng thái sẵn sàng thì a. THoát và đăng nhập lại b. Lựa chọn (Hình F trong tài liệu)
+                        ///4. TRỞ VỀ MÀN HÌNH HOME
+                        ///note. Để lấy lại trạng thái sẵn sàng thì a. THoát và đăng nhập lại b. Lựa chọn (Hình F trong tài liệu)
 
-                        //2. 
+                        //1.  Update lmd
                         tlmd = (long)rejectStatus.lmd;
+                                               
+
+                        //2. Xóa toàn bộ thông tin Trip
+                        DeleteTrip();
+
+                        //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
+                        UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Để chuyển thành Not Available thì gửi lên "AC"
+
+                        //Trước khi về màn hình home thì tắt loading screen
+                        HideLoadingGridScreen();
+                        grv_AcceptReject.Visibility = Visibility.Collapsed;
+
+                        //4.TRỞ VỀ MÀN HÌNH HOME
+                        SetViewAtHomeState();
+
                     }
                     else
                     {
-                        Debug.WriteLine("Mã lỗi 7hgtr4 ở StartTrip");
+                        Debug.WriteLine("Mã lỗi 5frt ở RejectTrip");
                     }
                 }
             }
@@ -1076,16 +1204,25 @@ namespace FT_Driver.Pages
 
         private async void btn_StartTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //Hiển thị Loading grid
+            ShowLoadingGridScreen();
+
+            //Kích hoạt lấy tọa độ điểm cuối
+            isTrack = true;
+
+            //Và khai báo tọa độ điểm đầu
+            SetStartCoordinateOfTrip(currentLat, currentLng);
+
             DriverStartTripObj startTrip = new DriverStartTripObj
             {
                 uid = userId,
-                pw = pwmd5,
+                //pw = pwmd5,
                 tid = newTrip.tid,
-                status = ConstantVariable.startTripStatusPicked, //"PD"
+                //status = ConstantVariable.tripStatusPicked, //"PD"
                 lmd = tlmd //Cái này bây giờ không còn là của lmd Create trip nữa. mà của Accept Trip
             };
 
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"status\":\"{3}\",\"lmd\":\"{4}\"}}", startTrip.uid, startTrip.pw, startTrip.tid, startTrip.status, startTrip.lmd);
+            var input = string.Format("{{\"uid\":\"{0}\",\"tid\":\"{1}\",\"lmd\":\"{2}\"}}", startTrip.uid, startTrip.tid, startTrip.lmd);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverStartTrip, input);
@@ -1093,13 +1230,21 @@ namespace FT_Driver.Pages
                 {
                     var startStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
                     if (startStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
-                    {
-                        ///1. TRỞ VỀ MÀN HÌNH HOME
-                        ///2. Update lmd
-                        ///Hiển thị giá, quãng đường, cập nhật sau 20s
+                    {         
+                        ///1. Update lmd
+                        ///2 Hiện Button "chạm để thanh toán"
+                        ///3. Hiển thị giá, quãng đường, cập nhật sau 20s
 
-                        //2. 
+                        //1.  Update lmd
                         tlmd = (long)startStatus.lmd;
+
+                        //2. Tắt loading grid
+                        HideLoadingGridScreen();
+
+                        //Hiện button "Tap to pay"
+                        ShowStartTripScreen();
+
+                        
                     }
                     else
                     {
@@ -1115,16 +1260,19 @@ namespace FT_Driver.Pages
 
         private async void btn_CancelTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //Hiện màn hình Loading
+            ShowLoadingGridScreen();
+
             DriverStartTripObj cancelTrip = new DriverStartTripObj
             {
                 uid = userId,
-                pw = pwmd5,
+                //pw = pwmd5,
                 tid = newTrip.tid,
-                status = "", //không truyền lên status
+                //status = "", //không truyền lên status
                 lmd = tlmd //Cái này bây giờ không còn là của lmd Create trip nữa. mà của Accept Trip
             };
 
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"lmd\":\"{3}\"}}", cancelTrip.uid, cancelTrip.pw, cancelTrip.tid, cancelTrip.lmd);
+            var input = string.Format("{{\"uid\":\"{0}\",\"tid\":\"{1}\",\"lmd\":\"{2}\"}}", cancelTrip.uid, cancelTrip.tid, cancelTrip.lmd);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverCancelTrip, input);
@@ -1133,11 +1281,22 @@ namespace FT_Driver.Pages
                     var cancelStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
                     if (cancelStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
                     {
-                        ///1. Chuyển trạng thái qua Not Avalable
-                        ///2. update lmd
+                        ///1. Update lmd
+                        ///2. Xóa toàn bộ thông tin Trip
+                        ///3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
+                        ///4. TRỞ VỀ MÀN HÌNH HOME
 
-                        //2. 
+                        //1. Update lmd
                         tlmd = (long)cancelStatus.lmd;
+
+                        //2. Xóa toàn bộ thông tin trip
+                        DeleteTrip();
+
+                        //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
+                        UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Chuyển qua không phục vụ - gửi lên AC
+
+                        //4. Về màn hình Home
+                        SetViewAtHomeState();
                     }
                     else
                     {
@@ -1151,6 +1310,126 @@ namespace FT_Driver.Pages
             }
         }
 
+
+        /// <summary>
+        /// NHẤN NÚT NÀY ĐỂ CHUYỂN QUA TRANG THANH TOÁN
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btn_TapToPay_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Hiện loading grid screen
+            ShowTapToPayLoadingScreen();
+
+            //Chuyển đổi tọa độ qua địa chỉ
+            var endAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(currentLat, currentLng);
+            var endAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(endAddressString);
+
+            //Tạo obj Complete Trip //
+            DriverCompleteTrip completeTrip = new DriverCompleteTrip
+            {
+                uid = userId,
+                pw = "",
+                tid = newTrip.tid,
+                eAdd = endAddress.results[0].formatted_address.ToString(),//Cái này để lấy địa chỉ từ tọa độ
+                eCityName = endAddress.results[0].address_components[endAddress.results[0].address_components.Count - 2].long_name, //"Hà Nội"
+                eLat = endLatitude,
+                eLng = endLongitude,
+                dis = 0, //Cập nhật Discount vào đây
+                fare = estimateCost,
+                lmd = tlmd
+
+            };
+
+            ///Có CONFIGM DIALOG            
+
+            //Gửi kèm dữ liệu!
+            tNetTripData["CompleteTripBill"] = completeTrip;
+
+            //Xóa dữ liệu cũ            
+
+            //Sau cùng, chuyển qua trang thanh toán
+            NavigationService.Navigate(new Uri("/Pages/HomePayment.xaml", UriKind.Relative));
+        }
+
+
+        private void ShowInforWhenStartTrip()
+        {
+            txt_DistanceKm.Text = distanceKm.ToString();
+            txt_PricePerDistance.Text = estimateCost.ToString();
+            txt_PromotionPrice.Text = "0.0";
+            txt_RiderNameStartTrip.Text = newTrip.rName;
+            txt_TotalPrice.Text = estimateCost.ToString();
+
+        }
+
+
+
+        private void DeleteTrip()
+        {
+            Debug.WriteLine("Đã xóa dữ liệu chuyến đi");
+            myTrip = null;
+            newTrip = null;
+        }
+
+
+        /// <summary>
+        /// TẤT CẢ CÁC HÀM SHOW và HIDE trạng thái màn hình
+        /// </summary>
+        private void ShowLoadingGridScreen()
+        {
+            Debug.WriteLine("ShowLoadingGridScreen");
+            grv_LoadingGridScreen.Visibility = Visibility.Visible;
+        }
+
+        private void HideLoadingGridScreen()
+        {
+            Debug.WriteLine("HideLoadingGridScreen");
+            grv_LoadingGridScreen.Visibility = Visibility.Collapsed;
+        }
+        private void ShowAcceptRejectGrid()
+        {
+            Debug.WriteLine("ShowAcceptRejectGrid");
+            grv_AcceptReject.Visibility = Visibility.Visible;
+            btn_ChangeStatus.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowStartCancelGird()
+        {
+            Debug.WriteLine("ShowStartCancelGird");
+            grv_StartCancelbtn.Visibility = Visibility.Visible; //Bật cụm button Start / Cancel
+            grv_AcceptRejectbtn.Visibility = Visibility.Collapsed; //Tắt cụm button Accept / Reject
+        }
+
+        private void ShowStartTripScreen()
+        {
+            Debug.WriteLine("ShowStartTripScreen");
+            grv_AcceptReject.Visibility = Visibility.Collapsed;
+            btn_ChangeStatus.Visibility = Visibility.Collapsed;
+            grv_StartTrip.Visibility = Visibility.Visible;
+        }
+
+        private void ShowTapToPayLoadingScreen()
+        {
+            Debug.WriteLine("ShowTapToPayLoadingScreen");
+            grv_TapToPayProcess.Visibility = Visibility.Visible;
+        }
+
+        private void HideTapToPayLoadingScreen()
+        {
+            Debug.WriteLine("HideTapToPayLoadingScreen");
+            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
+        }
+
+
+        /// <summary>
+        /// HÀM NÀY ĐỂ ĐƯA DRIVER VỀ MÀN HÌNH CHÍNH
+        /// </summary>
+        private void SetViewAtHomeState()
+        {            
+            grv_AcceptReject.Visibility = Visibility.Collapsed;
+            btn_ChangeStatus.Visibility = Visibility.Visible;
+        }
 
     }
 

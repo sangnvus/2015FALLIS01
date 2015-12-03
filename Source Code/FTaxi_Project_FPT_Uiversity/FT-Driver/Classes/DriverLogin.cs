@@ -54,6 +54,9 @@ namespace FT_Driver.Classes
         public object vRegDate { get; set; }
         public string manuYear { get; set; }
         public string status { get; set; }
+        public long lmd { get; set; }
+        public object content { get; set; }
+        public int cap { get; set; }
     }
 
     public class CityName

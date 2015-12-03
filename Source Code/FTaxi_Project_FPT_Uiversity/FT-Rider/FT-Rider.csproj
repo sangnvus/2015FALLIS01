@@ -105,6 +105,7 @@
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
     <Compile Include="Classes\Md5Hash\helper.cs" />
     <Compile Include="Classes\Md5Hash\MD5.cs" />
+    <Compile Include="Classes\MyTripObj.cs" />
     <Compile Include="Classes\OLDFUNCTION.cs" />
     <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\GoogleAPIFunction.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Classes\GoogleAPIQueryAutoCompleteObj.cs" />
     <Compile Include="Classes\MapShowMarker.cs" />
     <Compile Include="Classes\RiderBase.cs" />
+    <Compile Include="Classes\RiderCancelTrip.cs" />
     <Compile Include="Classes\RiderCreateTrip.cs" />
     <Compile Include="Classes\RiderDriverStatusDTO.cs" />
     <Compile Include="Classes\RiderFunctions.cs" />
@@ -120,6 +122,7 @@
     <Compile Include="Classes\RiderGetNearDriver.cs" />
     <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
+    <Compile Include="Classes\RiderMyTrip.cs" />
     <Compile Include="Classes\RiderNotificationUpdateTrip.cs" />
     <Compile Include="Classes\RiderPaymentDTO.cs" />
     <Compile Include="Classes\RiderUpdateAddress.cs" />
@@ -131,6 +134,9 @@
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CompanyInfo.xaml.cs">
+      <DependentUpon>CompanyInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
@@ -152,6 +158,9 @@
     </Compile>
     <Compile Include="Pages\RiderLostPassword.xaml.cs">
       <DependentUpon>RiderLostPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RiderMyTrip.xaml.cs">
+      <DependentUpon>RiderMyTrip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\RiderProfile.xaml.cs">
       <DependentUpon>RiderProfile.xaml</DependentUpon>
@@ -178,6 +187,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\CompanyInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\FisrtRunningAppIntro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -203,6 +216,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\RiderLostPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\RiderMyTrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

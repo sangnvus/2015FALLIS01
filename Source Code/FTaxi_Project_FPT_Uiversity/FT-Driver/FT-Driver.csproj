@@ -95,8 +95,10 @@
     </Compile>
     <Compile Include="Classes\DriverAcceptTripObj.cs" />
     <Compile Include="Classes\DriverBase.cs" />
+    <Compile Include="Classes\DriverCompleteTrip.cs" />
     <Compile Include="Classes\DriverFunctions.cs" />
     <Compile Include="Classes\DriverNewtripNotification.cs" />
+    <Compile Include="Classes\DriverNotificationUpdateTrip.cs" />
     <Compile Include="Classes\DriverStartTripObj.cs" />
     <Compile Include="Classes\DriverVehiceInfoObj.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
@@ -230,6 +232,7 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Alerts\img_CanceledTrip.png" />
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
@@ -257,6 +260,8 @@
     <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiGridBackground.png" />
+    <Content Include="Images\Grid_StartTrip\img_PriceBar.png" />
+    <Content Include="Images\Grid_StartTrip\img_StartTripBackground.png" />
     <Content Include="Images\Icons\icon-OpenMenu.png" />
     <Content Include="Images\Icons\icon-OpenMenu_OnTab.png" />
     <Content Include="Images\Icons\icon_Address.jpg" />
@@ -276,11 +281,15 @@
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
     <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Email.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_FromIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Language.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_Money.png" />
     <Content Include="Images\Icons\PNG\iconPNG_NewUserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_PhoneNumber.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_ToIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
+    <Content Include="Images\Icons\PNG\icon_Count.png" />
     <Content Include="Images\LeftMenu\icon_Menu_About.png" />
     <Content Include="Images\LeftMenu\icon_Menu_Feedback.png" />
     <Content Include="Images\LeftMenu\icon_Menu_MyTrip.png" />

@@ -30,6 +30,7 @@ namespace FT_Driver.Pages
         //Vibrate
         VibrateController vibrateController = VibrateController.Default;
 
+        VehicleInfo myVehicle;
 
 
         public DriverCarList()
@@ -98,18 +99,18 @@ namespace FT_Driver.Pages
                 return;
 
             //Else Update Vehicle Id to Server
-            SelectVahicle(selectedCar.VehicleId);
+            SelectVehicle(selectedCar.VehicleId);
 
             //vibrate phone
             TouchFeedback();
         }
 
-        private async void SelectVahicle(int vehicleId)
+        private async void SelectVehicle(int myVehicleId)
         {
             var did = userData.content.driverInfo.did.ToString();
             var uid = userId;
 
-            var input = string.Format("{{\"did\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\"}}", did, uid, vehicleId);
+            var input = string.Format("{{\"did\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\"}}", did, uid, myVehicleId);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverSelectVehicle, input);
             if (output != null)
             {
@@ -119,6 +120,40 @@ namespace FT_Driver.Pages
                     var selectVehicle = JsonConvert.DeserializeObject<DriverLogin>(output);
                     if (selectVehicle != null)
                     {
+                        //Lấy thông tin  giá xe                        
+                        foreach (var car in userData.content.vehicleInfos)
+                        {
+                            if (car.vehicleId == myVehicleId)
+                            {
+                                myVehicle = new VehicleInfo
+                                {
+                                    status = car.status,
+                                    lmd = car.lmd,
+                                    content = car.content,
+                                    oPrice = car.oPrice,
+                                    oKm = car.oKm,
+                                    f1Price = car.f1Price,
+                                    f1Km = car.f1Km,
+                                    f2Price = car.f2Price,
+                                    f2Km = car.f2Km,
+                                    f3Price = car.f3Price,
+                                    f3Km = car.f3Km,
+                                    f4Price = car.f4Price,
+                                    f4Km = car.f4Km,
+                                    vehicleId = car.vehicleId,
+                                    plate = car.plate,
+                                    carTitle = car.carTitle,
+                                    carLevel = car.carLevel,
+                                    vRegDate = car.vRegDate,
+                                    manuYear = car.manuYear,
+                                    cap = car.cap
+                                };
+
+                                //
+                                tNetUserLoginData["MySelectedVehicle"] = myVehicle;
+                            }
+                        }
+
                         NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
                         Thread.Sleep(1000);
                         grv_ProcessScreen.Visibility = Visibility.Collapsed;//Disable Process bar

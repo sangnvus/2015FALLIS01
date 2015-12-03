@@ -90,12 +90,12 @@ namespace FT_Rider.Pages
         //For GET PICK UP & Create Trip
         double pickupLat;
         double pickupLng;
-        double destinationLat; //Why Double? because destinationLat can be null
-        double destinationLng;
+        double destinationLat = 0; //Why Double? because destinationLat can be null
+        double destinationLng = 0;
         string pickupType = ConstantVariable.ONE_MANY;
         RiderCreateTrip createTrip;
         long tlmd;
-        RiderNotificationUpdateTrip updateTrip;
+        RiderNotificationUpdateTrip myTrip;
 
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
@@ -294,6 +294,11 @@ namespace FT_Rider.Pages
 
 
         //------ BEGIN get near Driver ------//
+        /// <summary>
+        /// LƯU Ý: SẼ TẠO TIMER CHO VIỆC 30s lấy vị trí một lần
+        /// NHƯNG SAU KHI CRETE TRIP THÀNH CÔNG THÌ HỦY TIMER
+        /// THAY VÀO ĐÓ LÀ CẬP NHẬT VỊ TRÍ CỦA DRIVER SAU MỖI 30s
+        /// </summary>
         private async void GetNearDriver()
         {
             if (pickupLat != 0 && pickupLng != 0)
@@ -1109,7 +1114,7 @@ namespace FT_Rider.Pages
 
 
         //Focus to "PickupType"
-        private async void img_RequestTaxiButton_Tap(object sender, System.Windows.Input.GestureEventArgs e) //Check null input
+        private void img_RequestTaxiButton_Tap(object sender, System.Windows.Input.GestureEventArgs e) //Check null input
         {
 
         }
@@ -1123,6 +1128,18 @@ namespace FT_Rider.Pages
         }
 
 
+        /// <summary>
+        /// HIỆN TRẠNG THÁI LOADING
+        /// </summary>
+        private void ShowButtonRequestLoadingState()
+        {
+            grv_ProcessBarButton.Visibility = Visibility.Visible; //Khi bắt đầu nhấn nút "Yêu cầu Taxi" thì hệ thống sẽ hiện Process Bar "Vui lòng đợi"
+        }
+
+        private void HideButtonRequestLoadingState()
+        {
+            grv_ProcessBarButton.Visibility = Visibility.Collapsed;
+        }
 
         /// <summary>
         /// Hàm này để yêu cầu 1 chuyến đi qua bên Driver
@@ -1131,7 +1148,9 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            pb_PleaseWait.Visibility = Visibility.Visible; //Khi bắt đầu nhấn nút "Yêu cầu Taxi" thì hệ thống sẽ hiện Process Bar "Vui lòng đợi"
+            //HIỆN LOADING
+            ShowButtonRequestLoadingState();
+
             SwitchToWaitingStatus();
             chk_AutoRecall.IsEnabled = false;
 
@@ -1226,6 +1245,10 @@ namespace FT_Rider.Pages
                 //btn_RequestTaxi.Content = "Vui lòng đợi...";
                 //btn_RequestTaxi.BorderBrush.Opacity = 0;
                 //SwitchToWaitingStatus();
+
+                //SAU KHI REQ XONG THÌ CHUYỂN QUA MÀN HÌNH "VUI LÒNG ĐỢI", đồng thời tắt LOADING
+                grv_CancelTaxi.Visibility = Visibility.Visible; //Hiện màn hình "Vui lòng đợi" kèm Button "Hủy Chuyến"
+                grv_ProcessBarButton.Visibility = Visibility.Collapsed; //Đóng màn hình loading
 
             }
         }
@@ -1509,16 +1532,17 @@ namespace FT_Rider.Pages
         /// <summary>
         /// Các trường hợp của thông báo
         /// </summary>
-        private async void ShowNotificationNewTrip()
+        private void ShowNotificationNewTrip()
         {
+
         }
         private void ShowNotificationUpdateTrip()
         {
             var input = notificationReceivedString;
-            updateTrip = new RiderNotificationUpdateTrip();
+            myTrip = new RiderNotificationUpdateTrip();
             try
             {
-                updateTrip = JsonConvert.DeserializeObject<RiderNotificationUpdateTrip>(input);//Tạo đối tượng UpdateTrip từ Json Input                
+                myTrip = JsonConvert.DeserializeObject<RiderNotificationUpdateTrip>(input);//Tạo đối tượng UpdateTrip từ Json Input                
 
                 ///1. Update LMD để có thể cancel chuyến
                 ///2. Kiểm tra mã Notification để hiện thông báo cho khách hàng
@@ -1527,33 +1551,123 @@ namespace FT_Rider.Pages
                 ///2.3 PI - Picking
                 ///2.4 CA - Cancelled
                 ///2.5 TA - Trip Complete
-                tlmd = updateTrip.lmd;
+                tlmd = myTrip.lmd;
 
-                switch (updateTrip.tStatus) //<<<<< Cái này trả về thông tin bên ông Driver. vd: Nếu nhấn Start thì status là PI
+                switch (myTrip.tStatus) //<<<<< Cái này trả về thông tin bên ông Driver. vd: Nếu nhấn Start thì status là PI
                 {
                     case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới"
-                        ShowNotificationNewTrip();
+                        SwitchToPikingStatus();
                         break;
-                    case ConstantVariable.notiTypeUpdateTrip: //Nếu là "UT" thì sẽ chạy hàm Show Update Trip Notification
-                        ShowNotificationUpdateTrip();
+                    case ConstantVariable.tripStatusPicked: //Nếu là "PD" Thì chuyến đi đã bắt đầu
+                        SwitchToStartedStatus();
                         break;
-                    case ConstantVariable.notiTypePromotionTeip: //Nếu là "PT" thì sẽ chạy hàm Show Promotion Trip Notification
-                        ShowNotificationPromotionTrip();
+                    case ConstantVariable.tripStatusReject: //Nếu là "RJ" thì sẽ chạy hàm Thông báo xe bị hủy
+                        SwitchToRejectStatus();
+                        break;
+                    case ConstantVariable.tripStatusCancelled: //Nếu là "CA" thì sẽ chạy hàm Thông báo hủy chuyến
+                        SwitchToCanceledStatus();
+                        break;
+                    case ConstantVariable.tripStatusComplete: //Nếu là "TC" thì sẽ chạy hàm Hoàn thành chuyến đi
+                        SwitchToCompletedStatus();
                         break;
                 }
             }
             catch (Exception)
             {
-
                 MessageBox.Show("(Mã lỗi 403) " + ConstantVariable.errHasErrInProcess);
             }
         }
+
+
         private void ShowNotificationPromotionTrip()
         {
         }
 
 
+        /// <summary>
+        /// CÁC TRƯỜNG HỢP CỦA UPDATE TRIP
+        /// </summary>
+        private void SwitchToPikingStatus()
+        {
+            ///0.1 CHO ÂM THANH HIỆU ỨNG
+            ///Hiện thông báo
+            tbl_DriverStatus.Text = ConstantVariable.strCarAreComming; //HIỆN THÔNG ÁO "XE ĐANG TỚI.."
+            
+        }
 
+        private void SwitchToStartedStatus()
+        {
+            ///1. Hiện mess
+            ///2. chờ sau 3 giây tắt grid
+            ///3. hiện vị trí xe
+            
+            //1.
+            tbl_DriverStatus.Text = ConstantVariable.strCarAreStarting;
+
+            //2.
+            Thread.Sleep(3000);
+
+            //3.
+
+            
+
+        }
+
+
+        private void SwitchToRejectStatus()
+        {
+            tbl_DriverStatus.Text = ConstantVariable.strCarRejected; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
+            ///1. VIẾT TIẾP HÀM CHO VIỆC LÀM LẠI CHU TRÌNH GỌI XE HOẶC GỌI TỔNG ĐÀI
+            ///2. Chuyển qua Button Gọi hãng
+            ///3. CHO ÂM THANH HIỆU ỨNG            
+
+            //2. 
+            DeleteTripDate();
+
+            //Show messeage
+            MessageBox.Show(ConstantVariable.strCarRejected);
+
+            //3.
+            grv_Step02.Visibility = Visibility.Collapsed;
+            SetHomeViewState();
+
+            //4. Get near car
+            GetNearDriver();
+        }
+
+        private void SwitchToCanceledStatus()
+        {
+            ///0. Show thoong bao
+            ///1. CHO ÂM THANH HIỆU ỨNG
+            ///2. Xóa thông tin trip
+            ///3. Về màn hình chính
+            
+            //0.
+            tbl_DriverStatus.Text = ConstantVariable.strCarCanceled; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
+
+            //1. 
+
+            //2. 
+            DeleteTripDate();
+
+            //Show messeage
+            MessageBox.Show(ConstantVariable.strCarCanceled);
+
+            //3.
+            grv_Step02.Visibility = Visibility.Collapsed;
+            SetHomeViewState();
+
+            //4. Get near car
+            GetNearDriver();
+
+        }
+
+
+
+        private void SwitchToCompletedStatus()
+        {
+            ///CHO ÂM THANH HIỆU ỨNG
+        }
 
         /// <summary>
         /// Nhận thông tin từ Notification
@@ -1570,7 +1684,7 @@ namespace FT_Rider.Pages
                 if (this.NavigationContext.QueryString["json"].ToString() != null)
                 {
                     notificationReceivedString = this.NavigationContext.QueryString["json"].ToString(); //Gán chuỗi Json 
-                    notificationType = this.NavigationContext.QueryString["notiType"].ToString(); //Gán kiểu noti
+                    notificationType = this.NavigationContext.QueryString["amp;notiType"].ToString(); //Gán kiểu noti
                     //Sau cùng là chạy hàm hiển thị notification
                     ShowNotification();
                 }
@@ -1584,6 +1698,11 @@ namespace FT_Rider.Pages
         }
 
 
+        private void DeleteTripDate()
+        {
+            myTrip = null;
+            createTrip = null;
+        }
 
         /// <summary>
         /// Cái này là để cập nhật URI mỗi khi có thay đổi
@@ -1609,5 +1728,102 @@ namespace FT_Rider.Pages
 
         }
 
+
+        /// <summary>
+        /// VIẾT HÀM HỦY BỎ YÊU CẦU VÀO ĐÂY
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btn_CancelTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //HIỆN LOADING PROCESS
+            grv_ProcessBarButton.Visibility = Visibility.Visible;
+
+
+            RiderCancelTrip cancelTrip = new RiderCancelTrip
+            {
+                uid = userId,
+                pw = pwmd5,
+                tid = myTrip.tid
+            };
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\"}}", cancelTrip.uid, cancelTrip.pw, cancelTrip.tid);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCancelTrip, input);
+                if (output != null)
+                {
+                    var cancelStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (cancelStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    {
+                        ///Nếu như hủy bỏ chuyển thành công                        
+                        ///1. Update lmd
+                        ///2. Xóa tât cả các biến về Tạo một Trip
+                        ///3. Trở về màn hình đầu tiên
+                       
+                        //1. Update LMD cho phiên làm việc tiếp theo
+                        tlmd = (long)cancelStatus.lmd;
+
+                        //2. Xóa các thông tin liên quan đến trip
+                        createTrip = null;
+
+                        //3. Về màn hình đầu tiên
+                        //SAU KHI HOÀN THÀNH REQ HỦY CHUYẾN THÌ TẮT LOADING
+                        grv_ProcessBarButton.Visibility = Visibility.Visible;
+                        //Đưa màn hình về trạng thái ban đầu
+                        SetHomeViewState();
+
+                    }
+                    else if (cancelStatus.status.Equals(ConstantVariable.responseCodeTaken)) //013
+                    {
+                        ///CODE CHO VIỆC THÔNG BÁO ĐÃ BỊ CHIẾM KHÁCH
+                        ///CHO TRỞ VỀ MÀN HÌNH MAP
+                        ///XÓA NEW TRIP
+                        ///
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Mã lỗi 576fg ở Cancel Trip");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("(Mã lỗi 408) " + ConstantVariable.errServerErr);
+            }
+        }
+
+
+
+        /// <summary>
+        /// HÀM NÀY ĐỂ ĐƯA MÀN HÌNH VỀ BAN ĐẦU
+        /// </summary>
+        private void SetHomeViewState()
+        {
+            grv_Step01.Visibility = Visibility.Visible;
+            grv_Step02.Visibility = Visibility.Collapsed;
+            grv_Step03.Visibility = Visibility.Collapsed;
+            
+        }
+
+        private void tbl_MyTrips_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderMyTrip.xaml", UriKind.Relative));
+        }
+
+        private void tbl_CompanyInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/CompanyInfo.xaml", UriKind.Relative));
+        }
+
+
+        /// <summary>
+        /// Nhấn vào avatar để truy cập vào Profile
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void img_MenuAvatar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
+        }
     }
 }
