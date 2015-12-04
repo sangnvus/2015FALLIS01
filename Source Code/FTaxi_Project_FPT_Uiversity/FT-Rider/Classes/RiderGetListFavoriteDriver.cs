@@ -13,7 +13,7 @@ namespace FT_Rider.Classes
         public string lName { get; set; }
         public string mobile { get; set; }
         public string firm { get; set; }
-        public string img { get; set; }
+        public Uri img { get; set; }
     }
 
     public class Content

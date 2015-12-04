@@ -51,11 +51,19 @@ namespace FT_Rider.Classes
             set { _img = value; }
         }
 
+        private string _fullName;
+
+        public string FullName
+        {
+            get { return _fullName; }
+            set { _fullName = value; }
+        }
+
+
         public RiderListFavoriteDriverLLSObj(string fid, string fName, string lName, string mobile, string firm, Uri img)
         {
             this.Fid = fid;
-            this.FName = fName;
-            this.LName = lName;
+            this.FullName = fName + lName;
             this.Mobile = mobile;
             this.Firm = firm;
             this.Img = img;
