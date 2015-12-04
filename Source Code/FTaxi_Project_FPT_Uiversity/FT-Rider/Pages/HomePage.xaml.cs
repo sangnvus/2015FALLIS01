@@ -1845,5 +1845,15 @@ namespace FT_Rider.Pages
         {
             NavigationService.Navigate(new Uri("/Pages/RiderMyFavoriteDriver.xaml", UriKind.Relative));
         }
+
+        private void tbl_LastName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
+        }
+
+        private void tbl_FirstName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
+        }
     }
 }

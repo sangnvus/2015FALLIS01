@@ -91,8 +91,8 @@
                 			RadiusY="45" />
                     </Image.Clip>
                 </Image>
-                <TextBlock x:Name="tbl_LastName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27"/>
-                <TextBlock x:Name="tbl_FirstName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27"/>
+                <TextBlock x:Name="tbl_LastName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27" Tap="tbl_LastName_Tap"/>
+                <TextBlock x:Name="tbl_FirstName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27" Tap="tbl_FirstName_Tap"/>
                 <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,164,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,233,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,296,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>

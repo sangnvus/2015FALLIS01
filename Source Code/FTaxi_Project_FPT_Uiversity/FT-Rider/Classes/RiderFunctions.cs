@@ -58,7 +58,7 @@ namespace FT_Rider.Classes
         public static void CallToNumber(string name, string number)
         {
             PhoneCallTask makePhone = new PhoneCallTask();
-            makePhone.DisplayName = "tài xế" + " " + name;
+            makePhone.DisplayName = name;
             makePhone.PhoneNumber = number;
             makePhone.Show();
         }

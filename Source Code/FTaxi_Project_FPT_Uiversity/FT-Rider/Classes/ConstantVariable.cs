@@ -42,8 +42,9 @@ namespace FT_Rider.Classes
         public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
         public const string errServerErr = "Có lỗi máy chủ địa lý, một vài tính năng có thể không thể sử dụng được!";
         public const string strNoTripInfo = "Bạn chưa có chuyến đi nào cả!";
+        public const string strNoFavoriteInfo = "Chưa có thông tin!";
 
-        
+
         //Rider Controller
         public const string tNetWsParameterName = "json";
         public const string tNetRiderLoginAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider";
@@ -55,8 +56,9 @@ namespace FT_Rider.Classes
         public const string tNetRiderCancelTrip = "http://123.30.236.109:8088/TN/restServices/CommonController/CancelTrip";
         public const string tNetRiderGetMyTrip = "http://123.30.236.109:8088/TN/restServices/TripController/getCompletedTripRider";
         public const string tNetRiderGetMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/getListFavoriteDriver";
+        public const string tNetRiderDeleteMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/deleteFavoriteDriver";
 
-        
+
 
 
         //Card type
