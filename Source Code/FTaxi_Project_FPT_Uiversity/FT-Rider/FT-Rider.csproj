@@ -122,7 +122,7 @@
     <Compile Include="Classes\RiderGetNearDriver.cs" />
     <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
-    <Compile Include="Classes\RiderMyTrip.cs" />
+    <Compile Include="Classes\RiderGetMyTrip.cs" />
     <Compile Include="Classes\RiderNotificationUpdateTrip.cs" />
     <Compile Include="Classes\RiderPaymentDTO.cs" />
     <Compile Include="Classes\RiderUpdateAddress.cs" />
@@ -130,6 +130,7 @@
     <Compile Include="Classes\RiderUpdatePayment.cs" />
     <Compile Include="Classes\RiderUpdateRegId.cs" />
     <Compile Include="Classes\TaxiTypes.cs" />
+    <Compile Include="Classes\URI.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -320,8 +321,11 @@
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
+    <Content Include="Images\MyFavorite\img_MyFovarite.png" />
+    <Content Include="Images\MyTrip\img_MyTrip.png" />
     <Content Include="Images\Others\img_DefaultAvatar.png" />
     <Content Include="Images\Others\img_AppNavbar.png" />
+    <Content Include="Images\Others\img_default_avatar_dark.png" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />

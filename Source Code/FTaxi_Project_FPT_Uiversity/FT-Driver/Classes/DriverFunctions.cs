@@ -17,35 +17,7 @@ namespace FT_Driver.Classes
             return DeviceIDAsString;
         }
 
-        public async void UpdateDriverStatus(string uid, string pwmd5, string status)
-        {
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"status\":\"{2}\"}}", uid, pwmd5, status);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
-            try
-            {
-                 var driverStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-            }
-            catch (Exception)
-            {
-                
-                throw;
-            }
-        }
 
-        public async void UpdateCurrentPosition(string uid, double lat, double lng)
-        {
-            var input = string.Format("{{\"uid\":\"{0}\",\"lat\":\"{1}\",\"lng\":\"{2}\"}}", uid, lat, lng);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateCurrentLocation, input);
-            try
-            {
-                var driverStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
 
         //Fare Cal
         public static Double CostCalculate(VehicleInfo taxiInput, double kmInput)
@@ -82,9 +54,5 @@ namespace FT_Driver.Classes
             return price;
         }
 
-        public static double ConvertMeterToKilometer(int meter)
-        {
-            return meter * 1.609344;
-        }
     }
 }

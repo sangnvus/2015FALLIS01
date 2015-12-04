@@ -12,6 +12,9 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+    <phone:PhoneApplicationPage.Resources>
+        <Color x:Key="processbar_Color">#FF1FBAD6</Color>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
@@ -26,11 +29,65 @@
         <!--TitlePanel contains the name of the application and page title-->
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock x:Name="tbl_intro" HorizontalAlignment="Right" Margin="0,21,10,0" TextWrapping="Wrap" Text="&quot;Chúng ta đi xa bao nhiêu trong đời ít quan trọng bằng những người chúng ta gặp dọc đường.&quot; Les Brown" VerticalAlignment="Top" Height="87" Width="436" Foreground="#FFEEEEEE" FontSize="{StaticResource Layout_TextSize}" TextAlignment="Center"/>
-            <Image x:Name="img_PageBreak" HorizontalAlignment="Center" Margin="10,115,12,0" VerticalAlignment="Top" Source="/Images/Others/img_PageContentBreak.png" Height="43"/>
-            <phone:LongListSelector x:Name="lls_MyTrip" HorizontalAlignment="Left" Height="510" Margin="10,163,0,0" VerticalAlignment="Top" Width="434"/>
-
+        <Grid x:Name="ContentPanel" Margin="0,47,0,0" Grid.RowSpan="2">
+            <TextBlock x:Name="tbl_intro" HorizontalAlignment="Center" Margin="0,21,0,0" TextWrapping="Wrap" Text="&quot;Chúng ta đi xa bao nhiêu trong đời ít quan trọng bằng những người chúng ta gặp dọc đường.&quot; Les Brown" VerticalAlignment="Top" Height="87" Width="436" Foreground="#FFEEEEEE" FontSize="{StaticResource Layout_TextSize}" TextAlignment="Center"/>
+            <Image x:Name="img_PageBreak" HorizontalAlignment="Center" Margin="0,115,0,0" VerticalAlignment="Top" Source="/Images/Others/img_PageContentBreak.png" Height="43"/>
+            <phone:LongListSelector x:Name="lls_MyTrip" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollBarVisibility="Hidden" HorizontalAlignment="Center" Height="517" Margin="0,158,0,0" VerticalAlignment="Top" Width="434">
+                <phone:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel VerticalAlignment="Center">
+                            <Grid Margin="0" Width="434" HorizontalAlignment="Center">
+                                <Image Height="260" VerticalAlignment="Top" Source="/Images/MyTrip/img_MyTrip.png"/>
+                                <Image HorizontalAlignment="Left" Height="101" VerticalAlignment="Top" Width="101" Margin="166,6,0,0" Source="/Images/Others/img_default_avatar_dark.png">
+                                    <Image.Clip>
+                                        <EllipseGeometry
+                			                Center="50,50"
+                			                RadiusX="50"
+                			                RadiusY="50" />
+                                    </Image.Clip>
+                                </Image>
+                                <TextBlock HorizontalAlignment="Left" Margin="10,55,0,0" TextWrapping="Wrap" Text="{Binding DName}" VerticalAlignment="Top">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Left" Margin="10,82,0,0" TextWrapping="Wrap" Text="{Binding Plate}" VerticalAlignment="Top">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Left" Margin="349,70,0,0" TextWrapping="Wrap" Text="{Binding Rate}" VerticalAlignment="Top" FontSize="23">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Left" Margin="115,122,0,0" TextWrapping="Wrap" Text="{Binding From}" VerticalAlignment="Top" Width="309" FontSize="15" Height="38" TextAlignment="Right">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Left" Margin="115,170,0,0" TextWrapping="Wrap" Text="{Binding To}" VerticalAlignment="Top" Width="309" FontSize="15" Height="38" TextAlignment="Right">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Left" Margin="10,216,0,0" TextWrapping="Wrap" Text="{Binding ETime}" VerticalAlignment="Top"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="412,216,0,0" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" TextAlignment="Right"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="288,216,0,0" TextWrapping="Wrap" Text="{Binding Fare}" VerticalAlignment="Top" TextAlignment="Right" Width="119"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </phone:LongListSelector.ItemTemplate>
+            </phone:LongListSelector>
+            <TextBlock x:Name="txt_MyTripStatus" HorizontalAlignment="Center" Margin="0,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <Grid x:Name="grv_ProcessScreen" Margin="0,0,0,-47" Visibility="Collapsed">
+                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                    <ProgressBar.Foreground>
+                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+            </Grid>
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
         <TextBlock x:Name="tbl_MyTrip" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="LỘ TRÌNH CỦA TÔI" VerticalAlignment="Top" FontSize="24" Width="204"/>
