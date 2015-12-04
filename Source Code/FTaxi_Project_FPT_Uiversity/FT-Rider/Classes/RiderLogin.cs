@@ -45,7 +45,7 @@ namespace FT_Rider.Classes
 
     public class RiderLogin
     {
-        public int status { get; set; }
+        public string status { get; set; }
         public long lmd { get; set; }
         public RiderLoginContent content { get; set; }
     }

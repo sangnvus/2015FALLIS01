@@ -41,6 +41,8 @@ namespace FT_Rider.Pages
     {
         //USER DATA PASS FROM LOGIN PAGE
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+        
         RiderLogin userData = new RiderLogin();
         string userId = "";
         string pwmd5 = "";
@@ -756,12 +758,12 @@ namespace FT_Rider.Pages
                 GoogleAPIQueryAutoCompleteObj places = new GoogleAPIQueryAutoCompleteObj();
                 places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoCompleteObj>(e.Result);
                 //2. Create Place list
-                ObservableCollection<AutoCompletePlace> autoCompleteDataSource = new ObservableCollection<AutoCompletePlace>();
+                ObservableCollection<AutoCompletePlaceLLSObj> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceLLSObj>();
                 lls_AutoComplete.ItemsSource = autoCompleteDataSource;
                 //3. Loop to list all item in object
                 foreach (var obj in places.predictions)
                 {
-                    autoCompleteDataSource.Add(new AutoCompletePlace(obj.description.ToString()));
+                    autoCompleteDataSource.Add(new AutoCompletePlaceLLSObj(obj.description.ToString()));
                 }
             }
             catch (Exception)
@@ -773,7 +775,7 @@ namespace FT_Rider.Pages
         //LonglistSelector selection event
         private void lls_AutoComplete_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedPlace = ((AutoCompletePlace)(sender as LongListSelector).SelectedItem);
+            var selectedPlace = ((AutoCompletePlaceLLSObj)(sender as LongListSelector).SelectedItem);
             // If selected item is null, do nothing
             if (lls_AutoComplete.SelectedItem == null)
                 return;
@@ -1824,6 +1826,18 @@ namespace FT_Rider.Pages
         private void img_MenuAvatar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
+        }
+
+        private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (tNetAppSetting.Contains("isLogin"))
+            {
+                tNetAppSetting.Remove("isLogin");
+                tNetUserLoginData.Remove("UserId");
+                tNetUserLoginData.Remove("PasswordMd5");
+                tNetUserLoginData.Remove("RawPassword");
+                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FT_Rider.Classes
 {
-    class MyTripObj
+    class RiderMyTripLLSObj
     {
         private string _tid;
 
@@ -150,7 +150,7 @@ namespace FT_Rider.Classes
             set { _favorite = value; }
         }
 
-        public MyTripObj(string tid, string did, string dName, string dMobile, string plate, string cLvl, string from, string to, string sTime, string eTime, Double? distance, Double? fare, Double? payment, string currency, string fNam, string lName, Double? rate, string interCode, bool favorite)
+        public RiderMyTripLLSObj(string tid, string did, string dName, string dMobile, string plate, string cLvl, string from, string to, string sTime, string eTime, Double? distance, Double? fare, Double? payment, string currency, string fNam, string lName, Double? rate, string interCode, bool favorite)
         {
             this.Tid = tid; 
             this.Did = did; 

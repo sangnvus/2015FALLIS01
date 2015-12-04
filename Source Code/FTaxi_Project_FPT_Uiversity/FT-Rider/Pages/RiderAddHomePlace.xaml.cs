@@ -105,12 +105,12 @@ namespace FT_Rider.Pages
                 placesObj = await GoogleAPIFunction.ConvertAutoCompleteToLLS(inputAddress);
 
                 //2. Create Place list
-                ObservableCollection<AutoCompletePlace> autoCompleteDataSource = new ObservableCollection<AutoCompletePlace>();
+                ObservableCollection<AutoCompletePlaceLLSObj> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceLLSObj>();
                 lls_AutoComplete.ItemsSource = autoCompleteDataSource;
                 //3. Loop to list all item in object
                 foreach (var obj in placesObj.predictions)
                 {
-                    autoCompleteDataSource.Add(new AutoCompletePlace(obj.description.ToString()));
+                    autoCompleteDataSource.Add(new AutoCompletePlaceLLSObj(obj.description.ToString()));
                 }
             }
             catch (Exception)
@@ -122,7 +122,7 @@ namespace FT_Rider.Pages
 
         private async void lls_AutoComplete_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedPlace = ((AutoCompletePlace)(sender as LongListSelector).SelectedItem);
+            var selectedPlace = ((AutoCompletePlaceLLSObj)(sender as LongListSelector).SelectedItem);
             // If selected item is null, do nothing
             if (lls_AutoComplete.SelectedItem == null)
             {

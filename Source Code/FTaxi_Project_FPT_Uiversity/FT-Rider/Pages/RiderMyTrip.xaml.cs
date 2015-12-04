@@ -80,7 +80,7 @@ namespace FT_Rider.Pages
                     try
                     {
                         //1. Parse Object and Load to LLS
-                        ObservableCollection<MyTripObj> myTripDataSource = new ObservableCollection<MyTripObj>();
+                        ObservableCollection<RiderMyTripLLSObj> myTripDataSource = new ObservableCollection<RiderMyTripLLSObj>();
                         lls_MyTrip.ItemsSource = myTripDataSource;
 
 
@@ -102,7 +102,7 @@ namespace FT_Rider.Pages
                             //        carLelvel = "Sang trọng";
                             //        break;
                             //}
-                            myTripDataSource.Add(new MyTripObj(trip.tid, trip.did, trip.dName, trip.dMobile, trip.plate, trip.cLvl, trip.from, trip.to, trip.sTime, trip.eTime, trip.distance, trip.fare, trip.payment, trip.currency, trip.fName, trip.lName, trip.rate, trip.interCode, trip.favorite));
+                            myTripDataSource.Add(new RiderMyTripLLSObj(trip.tid, trip.did, trip.dName, trip.dMobile, trip.plate, trip.cLvl, trip.from, trip.to, trip.sTime, trip.eTime, trip.distance, trip.fare, trip.payment, trip.currency, trip.fName, trip.lName, trip.rate, trip.interCode, trip.favorite));
                         }
                         //Tắt loading data
                         HideLoadingScreen();
