@@ -97,7 +97,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\AutoCompletePlace.cs" />
+    <Compile Include="Classes\AutoCompletePlaceLLSObj.cs" />
     <Compile Include="Classes\Base.cs" />
     <Compile Include="Classes\GetCurrentPosition.cs" />
     <Compile Include="Classes\ConvertData.cs" />
@@ -105,8 +105,8 @@
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
     <Compile Include="Classes\Md5Hash\helper.cs" />
     <Compile Include="Classes\Md5Hash\MD5.cs" />
-    <Compile Include="Classes\MyTripObj.cs" />
-    <Compile Include="Classes\OLDFUNCTION.cs" />
+    <Compile Include="Classes\RiderListFavoriteDriverLLSObj.cs" />
+    <Compile Include="Classes\RiderMyTripLLSObj.cs" />
     <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\GoogleAPIFunction.cs" />
     <Compile Include="Classes\GoogleAPIAddressObj.cs" />
@@ -119,6 +119,7 @@
     <Compile Include="Classes\RiderDriverStatusDTO.cs" />
     <Compile Include="Classes\RiderFunctions.cs" />
     <Compile Include="Classes\RiderGetCityNames.cs" />
+    <Compile Include="Classes\RiderGetListFavoriteDriver.cs" />
     <Compile Include="Classes\RiderGetNearDriver.cs" />
     <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
@@ -130,7 +131,6 @@
     <Compile Include="Classes\RiderUpdatePayment.cs" />
     <Compile Include="Classes\RiderUpdateRegId.cs" />
     <Compile Include="Classes\TaxiTypes.cs" />
-    <Compile Include="Classes\URI.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -159,6 +159,9 @@
     </Compile>
     <Compile Include="Pages\RiderLostPassword.xaml.cs">
       <DependentUpon>RiderLostPassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RiderMyFavoriteDriver.xaml.cs">
+      <DependentUpon>RiderMyFavoriteDriver.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\RiderMyTrip.xaml.cs">
       <DependentUpon>RiderMyTrip.xaml</DependentUpon>
@@ -217,6 +220,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\RiderLostPassword.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\RiderMyFavoriteDriver.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -38,7 +38,7 @@ namespace FT_Rider.Classes
 
     public class RiderGetNearDriver
     {
-        public int status { get; set; }
+        public string status { get; set; }
         public long lmd { get; set; }
         public RiderGetNearDriverContent content { get; set; }
     }

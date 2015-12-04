@@ -79,7 +79,7 @@ namespace FT_Driver.Classes
 
     public class DriverLogin
     {
-        public int status { get; set; }
+        public string status { get; set; }
         public long lmd { get; set; }
         public DriverLoginContent content { get; set; }
     }
