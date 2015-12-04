@@ -54,6 +54,7 @@ namespace FT_Rider.Classes
         public const string tNetRiderUpdateRegId = "http://123.30.236.109:8088/TN/restServices/CommonController/updateRegId";
         public const string tNetRiderCancelTrip = "http://123.30.236.109:8088/TN/restServices/CommonController/CancelTrip";
         public const string tNetRiderGetMyTrip = "http://123.30.236.109:8088/TN/restServices/TripController/getCompletedTripRider";
+        public const string tNetRiderGetMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/getListFavoriteDriver";
 
         
 
@@ -98,5 +99,8 @@ namespace FT_Rider.Classes
         //Response code
         public const string responseCodeSuccess = "0000";
         public const string responseCodeTaken = "013";
+
+        //Other String
+        public const string phoneCallDriverSubject = "Tài xế";
     }
 }

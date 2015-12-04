@@ -50,7 +50,7 @@ namespace FT_Driver.Pages
         private void GetCarListToLLS()
         {
             string carLelvel = "";
-            Uri imgUrl = new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative); ;
+            Uri imgUrl = new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative); 
             ///{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}
             try
             {

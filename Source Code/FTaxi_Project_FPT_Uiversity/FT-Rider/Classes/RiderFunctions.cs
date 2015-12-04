@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Phone.Tasks;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,15 @@ namespace FT_Rider.Classes
                 price = oPrice + (f1Km * f1Price) + (f2Km * f2Price) + (f3Km * f3Price) + (kmInput - (oKm + f1Km + f2Km + f3Km)) * f4Price;
             }
             return price;
+        }
+
+
+        public static void CallToNumber(string name, string number)
+        {
+            PhoneCallTask makePhone = new PhoneCallTask();
+            makePhone.DisplayName = "tài xế" + " " + name;
+            makePhone.PhoneNumber = number;
+            makePhone.Show();
         }
 
 

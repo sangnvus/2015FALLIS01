@@ -168,7 +168,7 @@ namespace FT_Rider.Pages
 
         private void getNearDriverTimer_Tick(object sender, EventArgs e)
         {
-            Debug.WriteLine("Bắt đầu chạy Get Near Driver Timer"); //DELETE AFTER FINISHED
+            Debug.WriteLine("4433222 Bắt đầu chạy Get Near Driver Timer"); //DELETE AFTER FINISHED
             GetNearDriver();            
             //throw new NotImplementedException();
         }
@@ -273,7 +273,7 @@ namespace FT_Rider.Pages
             map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
             GetNearDriver();
-            Debug.WriteLine("Lấy địa Rider chỉ thành công"); //DELETE AFTER FINISHED
+            Debug.WriteLine("87wuyw Lấy địa Rider chỉ thành công"); //DELETE AFTER FINISHED
         }
 
         private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
@@ -284,7 +284,7 @@ namespace FT_Rider.Pages
                 Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
                 riderMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
 
-                Debug.WriteLine("Vị trí Rider thay đổi"); //DELETE AFTER FINISHED
+                Debug.WriteLine("35625 geolocator_PositionChanged"); //DELETE AFTER FINISHED
 
             });
 
@@ -349,24 +349,24 @@ namespace FT_Rider.Pages
                             ShowNearDrivers(tmpIter.Key);
                         }
 
-                        Debug.WriteLine("Lấy xe xuang quanh thành công"); //DELETE AFTER FINISHED
+                        Debug.WriteLine("473625 Nhảy vào hàm lấy xe"); //DELETE AFTER FINISHED
                         //Sau đó sẽ cho dừng Timer lại
                         getNearDriverTimer.Stop();
                     }
                     else
                     {
                         // MessageBox.Show("Co loi 1");
-                        Debug.WriteLine("Không có xe nào xung quanh"); //DELETE AFTER FINISHED
+                        Debug.WriteLine("87653 Không có xe nào xung quanh"); //DELETE AFTER FINISHED
                         //Thêm code cho việc chuyển label ở đây
                     }
 
-                    Debug.WriteLine("Lấy taxi xung quanh OK"); //DELETE AFTER FINISHED
+                    Debug.WriteLine("987253 Lấy taxi xung quanh OK"); //DELETE AFTER FINISHED
                 }
                 catch (Exception)
                 {
 
                     //MessageBox.Show("Co loi 2");
-                    Debug.WriteLine("Không lấy được chuỗi Json GetNearDriver"); //DELETE AFTER FINISHED
+                    Debug.WriteLine("87763355  lấy được chuỗi Json GetNearDriver"); //DELETE AFTER FINISHED
                 }
             }
             else
@@ -991,6 +991,7 @@ namespace FT_Rider.Pages
         //Event này để bắt trường hợp sau mỗi lần di chuyển map
         private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
         {
+
             if (new GeoCoordinate(Math.Round(map_RiderMap.Center.Latitude, 5), Math.Round(map_RiderMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
             {
                 grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
@@ -1838,6 +1839,11 @@ namespace FT_Rider.Pages
                 tNetUserLoginData.Remove("RawPassword");
                 NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
             }
+        }
+
+        private void tbl_VipRider_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderMyFavoriteDriver.xaml", UriKind.Relative));
         }
     }
 }
