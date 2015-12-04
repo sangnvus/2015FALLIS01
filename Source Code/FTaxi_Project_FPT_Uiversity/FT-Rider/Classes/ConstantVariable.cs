@@ -40,7 +40,8 @@ namespace FT_Rider.Classes
         public const string strLoginSuccessed = "Đăng ký thành công!";
         public const string errNotEmpty = "Vui lòng điền đầy đủ thông tin!";
         public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
-        public const string errServerErr = "Có lỗi máy chủ địa lý, một vài tính năng có thể không thể sử dụng được!"; 
+        public const string errServerErr = "Có lỗi máy chủ địa lý, một vài tính năng có thể không thể sử dụng được!";
+        public const string strNoTripInfo = "Bạn chưa có chuyến đi nào cả!";
 
         
         //Rider Controller

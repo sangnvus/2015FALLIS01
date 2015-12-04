@@ -96,7 +96,7 @@
                 <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,164,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,233,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,296,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
-                <TextBlock x:Name="tbl_VipRider" Text="Khách hàng VIP" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,361,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_VipRider" Text="Tài xế ưa thích" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,361,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_CompanyInfo" Text="Thông tin công ty" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,429,0,0" FontSize="22" Tap="tbl_CompanyInfo_Tap"/>
                 <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,492,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,560,0,0" FontSize="22"/>

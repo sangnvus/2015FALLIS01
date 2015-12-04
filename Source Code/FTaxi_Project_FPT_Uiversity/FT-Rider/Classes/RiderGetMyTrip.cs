@@ -36,7 +36,7 @@ namespace FT_Rider.Classes
         public int totalResult { get; set; }
     }
 
-    public class RiderMyTrip
+    public class RiderGetMyTrip
     {
         public string status { get; set; }
         public long lmd { get; set; }
