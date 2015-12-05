@@ -34,6 +34,7 @@
         <Color x:Key="icoBGColor">#FFE6E6E6</Color>
         <Color x:Key="Button_AcceptColor">#FF59B747</Color>
         <Color x:Key="button_Cancel_Color_Gray">#FFB0B0B0</Color>
+        <Color x:Key="color_DetailPanelBackground">#FFEAEAEA</Color>
 
     </Application.Resources>
 

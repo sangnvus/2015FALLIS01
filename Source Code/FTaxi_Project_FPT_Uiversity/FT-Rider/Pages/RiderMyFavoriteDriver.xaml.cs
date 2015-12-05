@@ -112,8 +112,7 @@ namespace FT_Rider.Pages
             ///2. Truyền tham số vào
             ///3. ?
 
-            //1. Show menu
-            (this.Resources["showMenu"] as Storyboard).Begin();
+            //1. Show menu            
             ShowBottomMenu();
 
             //2. Truyền tham số, đúng hơn là set tham số
@@ -123,7 +122,7 @@ namespace FT_Rider.Pages
                 return;
             driverName = selectedDriver.FullName;
             driverMobile = selectedDriver.Mobile;
-            //driverId = selectedDriver.
+            driverId = selectedDriver.Fid;
 
             // Reset selected item to null
             lls_MyFavoriteDriver.SelectedItem = null;
@@ -133,13 +132,13 @@ namespace FT_Rider.Pages
         /// <summary>
         /// HÀM NÀY ĐỂ XÓA 1 DRIVER RA KHỎI DANH SÁCH YÊU THÍCH
         /// </summary>
-        private async void DeleteFovariteDriver(string did)
+        private async void DeleteFovariteDriver(string did) //did này chính là FID
         {
             ShowButtonLoadingScreen();
 
             var uid = userData.content.uid;
             var rid = userData.content.rid;
-            var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":\"{1}\"}}", uid, rid, did);
+            var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":\"{2}\"}}", uid, rid, did);
             try
             {
                 //Thử xem có lấy đc JSON về ko, nếu ko thì bắn ra Lối kết nối / lỗi server
@@ -159,7 +158,7 @@ namespace FT_Rider.Pages
                 }
                 else
                 {
-                    txt_MyTripStatus.Text = ConstantVariable.errHasErrInProcess;
+                    MessageBox.Show("(Mã lỗi 1310) " + ConstantVariable.errHasErrInProcess);
                     Debug.WriteLine("Có lỗi 43fdfd ở Delete Favorite Info");
                 }
             }
@@ -182,7 +181,12 @@ namespace FT_Rider.Pages
 
         private void btn_Remove_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            DeleteFovariteDriver(driverId);
 
+            //Sau khi xóa xong thì ẩn menu bên dưới
+            HideBottomMenu();
+
+            //Và load lại lls            
         }
 
         private void btn_Cancel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -212,11 +216,12 @@ namespace FT_Rider.Pages
         /// </summary>
         private void ShowBottomMenu()
         {
+            (this.Resources["showMenu"] as Storyboard).Begin();
             grv_FunctionMenu.Visibility = Visibility.Visible;
         }
 
         private void HideBottomMenu()
-        {
+        {            
             grv_FunctionMenu.Visibility = Visibility.Collapsed;
         }
 
