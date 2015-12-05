@@ -12,6 +12,7 @@ using FT_Rider.Classes;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using System.Windows.Media.Animation;
 
 namespace FT_Rider.Pages
 {
@@ -21,6 +22,12 @@ namespace FT_Rider.Pages
         RiderLogin userData;
         string password = string.Empty;
         RiderGetMyTrip myTrip = null;
+
+        //For store trip data
+        IDictionary<string, RiderMyTripItemObj> myTripCollection = new Dictionary<string, RiderMyTripItemObj>();
+
+        //For view trip detail
+        string selectedTripId = string.Empty;
 
         public RiderMyTrip()
         {
@@ -38,28 +45,11 @@ namespace FT_Rider.Pages
             GetMyTripData();
         }
 
-        /// <summary>
-        /// HÀM NÀY ĐỂ HIỆN LOADING
-        /// </summary>
-        private void ShowLoadingScreen()
-        {
-            grv_ProcessScreen.Visibility = Visibility.Visible;
-        }
-
-
-        /// <summary>
-        /// HÀM NÀY ĐỂ TẮT LOADING
-        /// </summary>
-        private void HideLoadingScreen()
-        {
-            grv_ProcessScreen.Visibility = Visibility.Collapsed;
-        }
-
         private async void GetMyTripData()
         {
             ShowLoadingScreen();
             //Hiện Loading
-            
+
 
             var uid = userData.content.uid;
             var pw = password;
@@ -72,7 +62,7 @@ namespace FT_Rider.Pages
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetMyTrip, input);
                 myTrip = new RiderGetMyTrip();
                 myTrip = JsonConvert.DeserializeObject<RiderGetMyTrip>(output);
-                
+
 
                 if (myTrip.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
                 {
@@ -87,22 +77,28 @@ namespace FT_Rider.Pages
                         //2. Loop to list all item in object
                         foreach (var trip in myTrip.content.list)
                         {
-                            //switch (trip.carLevel)
-                            //{
-                            //    case "ECO":
-                            //        carLelvel = "Kinh tế";
-                            //        imgUrl = new Uri("/Images/CarList/img_CarItemECO.png", UriKind.Relative);
-                            //        break;
-                            //    case "SAV":
-                            //        carLelvel = "Tiết kiệm";
-                            //        imgUrl = new Uri("/Images/CarList/img_CarItemSAV.png", UriKind.Relative);
-                            //        break;
-                            //    case "LUX":
-                            //        imgUrl = new Uri("/Images/CarList/img_CarItemLUX.png", UriKind.Relative);
-                            //        carLelvel = "Sang trọng";
-                            //        break;
-                            //}
                             myTripDataSource.Add(new RiderMyTripLLSObj(trip.tid, trip.did, trip.dName, trip.dMobile, trip.plate, trip.cLvl, trip.from, trip.to, trip.sTime, trip.eTime, trip.distance, trip.fare, trip.payment, trip.currency, trip.fName, trip.lName, trip.rate, trip.interCode, trip.favorite));
+                            myTripCollection[trip.tid.ToString()] = new RiderMyTripItemObj
+                            {
+                                tid = trip.tid,
+                                did = trip.did,
+                                dName = trip.dName,
+                                plate = trip.plate,
+                                cLvl = trip.cLvl,
+                                from = trip.from,
+                                to = trip.to,
+                                sTime = trip.sTime,
+                                eTime = trip.eTime,
+                                distance = trip.distance,
+                                fare = trip.fare,
+                                payment = trip.payment,
+                                currency = trip.currency,
+                                fName = trip.fName,
+                                lName = trip.lName,
+                                rate = trip.rate,
+                                interCode = trip.interCode,
+                                favorite = trip.favorite
+                            };
                         }
                         //Tắt loading data
                         HideLoadingScreen();
@@ -126,7 +122,122 @@ namespace FT_Rider.Pages
                 MessageBox.Show("(Mã lỗi 1201) " + ConstantVariable.errConnectingError);
                 Debug.WriteLine("Có lỗi 4hfffsf ở Get Trip Info");
             }
+
+        }
+
+
+        /// <summary>
+        /// Khi nhấn vào 1 trip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lls_MyTrip_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ///1. Hiện Menu lựa chọn chức năng
+            ///2. Truyền tham số vào
+            ///3. ?
+            ///
+
+            // Hiện menu
+            ShowBottomMenu();
+            var selectedTrip = ((RiderMyTripLLSObj)(sender as LongListSelector).SelectedItem);
+            // If selected item is null, do nothing
+            if (lls_MyTrip.SelectedItem == null)
+                return;
+
+            selectedTripId = selectedTrip.Tid; // Khai báo rằng con Trip Id này đã được chọn
+
+            // Reset selected item to null
+            lls_MyTrip.SelectedItem = null;
+        }
+
+
+
+
+        private void btn_ViewTripDetail_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Ẩn menu bên dưới
+            HideBottomMenu();
+
+            //hiện Grid Detail Trip
+            ShowTripDetailScreen();
+
             
         }
+
+        private void btn_CallToDriver_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void btn_Remove_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void btn_Cancel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            HideBottomMenu();
+        }
+
+        /// HÀM NÀY ĐỂ HIỆN LOADING
+        /// </summary>
+        private void ShowLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Visible;
+        }
+
+
+        /// <summary>
+        /// HÀM NÀY ĐỂ TẮT LOADING
+        /// </summary>
+        private void HideLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// HIEN MENU
+        /// </summary>
+        private void ShowBottomMenu()
+        {
+            (this.Resources["showMenu"] as Storyboard).Begin();
+            grv_FunctionMenu.Visibility = Visibility.Visible;
+        }
+
+        private void HideBottomMenu()
+        {
+            grv_FunctionMenu.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowButtonLoadingScreen()
+        {
+            grv_ButtonLoadingScreen.Visibility = Visibility.Visible;
+        }
+
+        private void HideButtonLoadingScreen()
+        {
+            grv_ButtonLoadingScreen.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void ShowTripDetailScreen()
+        {
+            grv_TripDetail.Visibility = Visibility.Visible;
+        }
+
+
+        private void HideTripDetailScreen()
+        {
+            grv_TripDetail.Visibility = Visibility.Collapsed;
+        }
+
+        private void btn_Close_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Hide Detail Trip Screen
+            HideTripDetailScreen();
+        }
+
+
     }
 }

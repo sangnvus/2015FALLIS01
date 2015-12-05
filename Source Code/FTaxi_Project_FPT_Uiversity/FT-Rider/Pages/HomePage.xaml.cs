@@ -921,6 +921,9 @@ namespace FT_Rider.Pages
             img_PickerLabel.Visibility = Visibility.Collapsed;
             img_PickerPin.Visibility = Visibility.Collapsed;
 
+            //Display Close icon
+            img_CloseIcon.Visibility = Visibility.Visible;
+
             //Enable Auto Complete
             loadAutoCompletePlace("");
             enableAutoComplateGrid();
@@ -937,8 +940,6 @@ namespace FT_Rider.Pages
                 txt_InputAddress.Text = string.Empty;
             }
 
-            //Display Close icon
-            img_CloseIcon.Visibility = Visibility.Visible;
 
             //hide close icon
             //if (txt_InputAddress.Text == String.Empty)
@@ -957,7 +958,11 @@ namespace FT_Rider.Pages
         {
             disenableAutoComplateGrid();
 
+            //bật lại picker pin
+            img_PickerPin.Visibility = Visibility.Visible;
+            //Ẩn close icon
             img_CloseIcon.Visibility = Visibility.Collapsed;
+
             if (txt_InputAddress.Text == String.Empty)
             {
                 txt_InputAddress.Text = ConstantVariable.destiationAddressDescription;
@@ -1844,6 +1849,16 @@ namespace FT_Rider.Pages
         private void tbl_VipRider_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/RiderMyFavoriteDriver.xaml", UriKind.Relative));
+        }
+
+        private void tbl_LastName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
+        }
+
+        private void tbl_FirstName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
         }
     }
 }

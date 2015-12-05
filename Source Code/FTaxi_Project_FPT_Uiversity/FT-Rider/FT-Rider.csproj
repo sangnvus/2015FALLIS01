@@ -106,6 +106,7 @@
     <Compile Include="Classes\Md5Hash\helper.cs" />
     <Compile Include="Classes\Md5Hash\MD5.cs" />
     <Compile Include="Classes\RiderListFavoriteDriverLLSObj.cs" />
+    <Compile Include="Classes\RiderMyTripItemObj.cs" />
     <Compile Include="Classes\RiderMyTripLLSObj.cs" />
     <Compile Include="Classes\ReqAndRes.cs" />
     <Compile Include="Classes\GoogleAPIFunction.cs" />
