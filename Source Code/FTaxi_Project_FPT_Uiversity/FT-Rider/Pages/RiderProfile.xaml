@@ -42,6 +42,7 @@
         <DataTemplate x:Name="lpkFullItemTemplate">
             <TextBlock Text="{Binding Country}" Style="{StaticResource PhoneTextTitle2Style}"/>
         </DataTemplate>
+        <Color x:Key="processbar_Color">#FF1FBAD6</Color>
     </phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
@@ -86,15 +87,7 @@
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
-            <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="5,311,0,0" VerticalAlignment="Top"  Tap="btn__Tap_Logout" Grid.Row="2" HorizontalAlignment="Left" Width="475" FontSize="{StaticResource Textbox_FontSize}" Height="104">
-                <Button.Background>
-                    <SolidColorBrush Color="{StaticResource Button_Background_Color_Red}"/>
-                </Button.Background>
-                <Button.BorderBrush>
-                    <SolidColorBrush Color="White" Opacity="0.2"/>
-                </Button.BorderBrush>
-            </Button>
-            <TextBlock x:Name="tbl_ChangePassword" HorizontalAlignment="Center" Margin="173,259,170,0" TextWrapping="Wrap" Text="Đổi mật khẩu" VerticalAlignment="Top" FontSize="23" Tap="tbl_Tap_ChangePassword" Grid.Row="2" TextDecorations="Underline"/>
+            <TextBlock x:Name="tbl_ChangePassword" HorizontalAlignment="Center" Margin="174,374,169,0" TextWrapping="Wrap" Text="Đổi mật khẩu" VerticalAlignment="Top" FontSize="23" Tap="tbl_Tap_ChangePassword" Grid.Row="2" TextDecorations="Underline"/>
             <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" Margin="82,68,0,0" VerticalAlignment="Top" Width="234" Grid.Row="1">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
@@ -115,16 +108,15 @@
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                 </Rectangle.Fill>
             </Rectangle>
-            <TextBlock x:Name="tbl_HomeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" Text="118/8/1 Nguyễn Khánh Toàn &#xA;Cầu Giấy &#xA;Hà Nội" VerticalAlignment="Top" Margin="82,34,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
-            <TextBlock x:Name="tbl_OfficeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Sô 14, Khu biệt thự 1&#xA;Hoàng Mai&#xA;Hà Nội" VerticalAlignment="Top" Margin="82,144,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
-            <Button Content="Button" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <TextBlock x:Name="tbl_HomeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,34,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
+            <TextBlock x:Name="tbl_OfficeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,144,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
             <Image x:Name="img_EditIcon_HomeAddress" HorizontalAlignment="Left" Height="100" Margin="425,29,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_HomeAddress_Tap"/>
             <Image x:Name="img_EditIcon_OfficeAddress" HorizontalAlignment="Left" Height="100" Margin="425,139,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_OfficeAddress_Tap"/>
             <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">
                 <Grid Height="430">
                     <toolkit:ListPicker FullModeItemTemplate="{Binding lpkFullItemTemplate}"
-                		x:Name="lpk_Language" Margin="84,297,0,-52" Background="{x:Null}" BorderBrush="{x:Null}" DisplayMemberPath="" Foreground="Black"/>
-                    <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,79,0,0" Source="/Images/Others/img_DemoAvatar2.jpg">
+                		x:Name="lpk_Language" Margin="84,297,0,-52" Background="{x:Null}" BorderBrush="{x:Null}" DisplayMemberPath="" Foreground="Black" d:IsHidden="True"/>
+                    <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,79,0,0" Source="/Images/Others/img_default_avatar_dark.png">
                         <Image.Clip>
                             <EllipseGeometry
                 				Center="50,50"
@@ -132,10 +124,11 @@
                 				RadiusY="45" />
                         </Image.Clip>
                     </Image>
-                    <TextBox x:Name="txt_userId" Text="lapnvse02314@fpt.edu.vn" HorizontalAlignment="Left" Height="72" Margin="5,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
-                    <TextBox x:Name="txt_FirstName" Text="Lập" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}"/>
-                    <TextBox x:Name="txt_Mobile" Text="+84988707727" HorizontalAlignment="Left" Height="72" Margin="5,244,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2"/>
-                    <TextBox x:Name="txt_LastName" Text="Nguyễn Văn" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}"/>
+                    <TextBox x:Name="txt_Email" HorizontalAlignment="Left" Height="72" Margin="5,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" Tap="txt_Email_Tap" GotFocus="txt_Email_GotFocus" LostFocus="txt_Email_LostFocus"/>
+                    <TextBox x:Name="txt_FirstName" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Tap="txt_FirstName_Tap" GotFocus="txt_FirstName_GotFocus" LostFocus="txt_FirstName_LostFocus"/>
+                    <TextBox x:Name="txt_Mobile" HorizontalAlignment="Left" Height="72" Margin="5,244,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" Tap="txt_Mobile_Tap" GotFocus="txt_Mobile_GotFocus" LostFocus="txt_Mobile_LostFocus"/>
+                    <TextBox x:Name="txt_LastName" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Tap="txt_LastName_Tap" GotFocus="txt_LastName_GotFocus" LostFocus="txt_LastName_LostFocus"/>
+                    <TextBox x:Name="txt_Lang" HorizontalAlignment="Left" Height="72" Margin="5,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" Text="Tiếng Việt"/>
                 </Grid>
             </StackPanel>
             <Image x:Name="img_UserFName" HorizontalAlignment="Left" Height="50" Margin="9,16,0,0" Grid.Row="1" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
@@ -144,11 +137,25 @@
             <Image x:Name="img_UserFName_Copy2" HorizontalAlignment="Left" Height="50" Margin="5,53,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Address.png"/>
             <Image x:Name="img_UserFName_Copy3" HorizontalAlignment="Left" Height="50" Margin="5,154,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
             <Image x:Name="img_UserFName_Copy4" HorizontalAlignment="Left" Height="50" Margin="5,248,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Language.png" Grid.RowSpan="2"/>
+            <Grid x:Name="grv_ProcessScreen" Grid.RowSpan="3" Visibility="Collapsed">
+                <Rectangle x:Name="rt_processBar" Stroke="Black">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="Black" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                    <ProgressBar.Foreground>
+                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+            </Grid>
 
 
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
         <TextBlock x:Name="tbl_Profile" HorizontalAlignment="Center" Margin="146,10,145,0" TextWrapping="Wrap" Text="HỒ SƠ CÁ NHÂN" VerticalAlignment="Top" FontSize="24" Width="189"/>
+        <Button x:Name="btn_Save" Content="Lưu" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-15,-15,0" BorderBrush="{x:Null}" Foreground="#FF004F91" Background="{x:Null}" Height="83" Width="113" Visibility="Collapsed" Tap="btn_Save_Tap"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

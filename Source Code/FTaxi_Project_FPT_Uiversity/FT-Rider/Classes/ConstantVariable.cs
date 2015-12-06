@@ -43,7 +43,14 @@ namespace FT_Rider.Classes
         public const string errServerErr = "Có lỗi máy chủ địa lý, một vài tính năng có thể không thể sử dụng được!";
         public const string strNoTripInfo = "Bạn chưa có chuyến đi nào cả!";
         public const string strNoFavoriteInfo = "Chưa có thông tin!";
+        public const string strNoDriverNumber = "Tài xế không có số điện thoại!";
+        public const string strRiderUpdateSuccess = "Cập nhật thông tin cá nhân thành công!";
 
+
+        //valid
+        public const string validMobile = "Số điện phải có 10 hoặc 11 số!";
+        public const string validName = "Vui lòng nhập tên!";
+        public const string validEmail = "Vui lòng Kiểm tra lại email!";
 
         //Rider Controller
         public const string tNetWsParameterName = "json";
@@ -57,6 +64,7 @@ namespace FT_Rider.Classes
         public const string tNetRiderGetMyTrip = "http://123.30.236.109:8088/TN/restServices/TripController/getCompletedTripRider";
         public const string tNetRiderGetMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/getListFavoriteDriver";
         public const string tNetRiderDeleteMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/deleteFavoriteDriver";
+        public const string tNetRiderUpdateProfile = "http://123.30.236.109:8088/TN/restServices/RiderController/UpdateRider";
 
 
 
@@ -104,5 +112,10 @@ namespace FT_Rider.Classes
 
         //Other String
         public const string phoneCallDriverSubject = "Tài xế";
+
+        //Confirmboz
+        public const string cfbLogOut = "Bạn có chắc là bạn muốn thoát tài khoản không?";
+        public const string cfbYes = "Có";
+        public const string cfbNo = "Không";
     }
 }

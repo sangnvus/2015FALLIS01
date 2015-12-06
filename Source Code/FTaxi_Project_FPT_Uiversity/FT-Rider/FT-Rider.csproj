@@ -137,9 +137,6 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\CompanyInfo.xaml.cs">
-      <DependentUpon>CompanyInfo.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
     </Compile>
@@ -173,9 +170,6 @@
     <Compile Include="Pages\RiderRegister.xaml.cs">
       <DependentUpon>RiderRegister.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\RiderRegisterPayment.xaml.cs">
-      <DependentUpon>RiderRegisterPayment.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -191,10 +185,6 @@
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\CompanyInfo.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\FisrtRunningAppIntro.xaml">
       <SubType>Designer</SubType>
@@ -240,10 +230,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\RiderRegisterPayment.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
@@ -274,6 +260,9 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="iconPNG_FromIcon.png" />
+    <Content Include="iconPNG_ToIcon.png" />
+    <Content Include="icon_Count.png" />
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
@@ -315,11 +304,14 @@
     <Content Include="Images\Icons\PNG\iconPNG_Address.png" />
     <Content Include="Images\Icons\PNG\iconPNG_AddressOffice.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Email.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_FromIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_Language.png" />
     <Content Include="Images\Icons\PNG\iconPNG_NewUserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_PhoneNumber.png" />
+    <Content Include="Images\Icons\PNG\iconPNG_ToIcon.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
+    <Content Include="Images\Icons\PNG\icon_Count.png" />
     <Content Include="Images\LeftMenu\icon_Menu_About.png" />
     <Content Include="Images\LeftMenu\icon_Menu_Feedback.png" />
     <Content Include="Images\LeftMenu\icon_Menu_MyTrip.png" />

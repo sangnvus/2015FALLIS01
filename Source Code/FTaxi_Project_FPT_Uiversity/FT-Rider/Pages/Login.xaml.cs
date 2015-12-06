@@ -69,6 +69,7 @@ namespace FT_Rider.Pages
                             tNetUserLoginData["PasswordMd5"] = pwmd5;
                             tNetUserLoginData["UserLoginData"] = riderLogin;
                             tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
+                            tNetUserLoginData["UserLmd"] = riderLogin.content.olmd; //Cái này là để cập nhật lmd cho việc update thông tin
                         }
                         else
                         {

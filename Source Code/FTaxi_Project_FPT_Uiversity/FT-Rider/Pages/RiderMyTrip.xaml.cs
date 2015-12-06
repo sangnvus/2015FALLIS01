@@ -83,6 +83,7 @@ namespace FT_Rider.Pages
                                 tid = trip.tid,
                                 did = trip.did,
                                 dName = trip.dName,
+                                dMobile = trip.dMobile,
                                 plate = trip.plate,
                                 cLvl = trip.cLvl,
                                 from = trip.from,
@@ -162,18 +163,52 @@ namespace FT_Rider.Pages
             //hiện Grid Detail Trip
             ShowTripDetailScreen();
 
+            //Show infor
+            ShowInforOnDeteilPanel();
             
+        }
+
+        private void ShowInforOnDeteilPanel()
+        {
+            var carLevel = "";
+            switch (myTripCollection[selectedTripId].cLvl)
+            {
+                case "ECO":
+                    carLevel = "Kinh tế";
+                    break;
+                case "SAV":
+                    carLevel = "Tiết kiệm";
+                    break;
+                case "LUX":
+                    carLevel = "Sang trọng";
+                    break;
+            }
+
+            txt_DriverName.Text = myTripCollection[selectedTripId].dName;
+            txt_Mobile.Text = myTripCollection[selectedTripId].dMobile;
+            txt_From.Text = myTripCollection[selectedTripId].from;
+            txt_To.Text = myTripCollection[selectedTripId].to;
+
+            txt_CarLevel.Text = carLevel;
+            txt_Distance.Text = myTripCollection[selectedTripId].distance.ToString();
+            txt_TotalCost.Text = myTripCollection[selectedTripId].rate.ToString();
         }
 
         private void btn_CallToDriver_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            //Quay số cho tài xế
+            if (myTripCollection[selectedTripId].dMobile != null)
+            {
+                RiderFunctions.CallToNumber(myTripCollection[selectedTripId].dName, myTripCollection[selectedTripId].dMobile);
+            }
+            else
+            {
+                MessageBox.Show("(Mã lỗi 1202) " + ConstantVariable.strNoDriverNumber);
+                Debug.WriteLine("Mã lỗi dfef444 ở btn_CallToDriver_Tap");
+            }
+            
         }
 
-        private void btn_Remove_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-
-        }
 
         private void btn_Cancel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -236,6 +271,11 @@ namespace FT_Rider.Pages
         {
             //Hide Detail Trip Screen
             HideTripDetailScreen();
+        }
+
+        private void btn_AlertAssets_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
         }
 
 

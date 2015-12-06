@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using FT_Driver.Classes;
 using Microsoft.Devices;
 using System.Threading;
+using System.Diagnostics;
 
 
 namespace FT_Driver.Pages
@@ -31,7 +32,7 @@ namespace FT_Driver.Pages
         VibrateController vibrateController = VibrateController.Default;
 
         VehicleInfo myVehicle;
-
+        string pushChannelURI = "";
 
         public DriverCarList()
         {
@@ -43,6 +44,11 @@ namespace FT_Driver.Pages
             }
 
 
+            if (tNetUserLoginData.Contains("PushChannelURI"))
+            {
+                pushChannelURI = (string)tNetUserLoginData["PushChannelURI"];
+            }
+
             GetCarListToLLS();
 
         }
@@ -50,7 +56,7 @@ namespace FT_Driver.Pages
         private void GetCarListToLLS()
         {
             string carLelvel = "";
-            Uri imgUrl = new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative); 
+            Uri imgUrl = new Uri("Images/CarList/img_CarItemSAV.png", UriKind.Relative);
             ///{\"uid\":\"driver2@gmail.com\",\"pw\":\"b65bd772c3b0dfebf0a189efd420352d\",\"mid\":\"123\",\"mType\":\"iOS\"}
             try
             {
@@ -98,6 +104,7 @@ namespace FT_Driver.Pages
             if (lls_CarList.SelectedItem == null)
                 return;
 
+
             //Else Update Vehicle Id to Server
             SelectVehicle(selectedCar.VehicleId);
 
@@ -109,76 +116,72 @@ namespace FT_Driver.Pages
         {
             var did = userData.content.driverInfo.did.ToString();
             var uid = userId;
-
-            var input = string.Format("{{\"did\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\"}}", did, uid, myVehicleId);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverSelectVehicle, input);
-            if (output != null)
+            var mid = pushChannelURI;
+            var mType = ConstantVariable.mTypeWIN;
+            var input = string.Format("{{\"did\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\",\"mid\":\"{3}\",\"mType\":\"{4}\"}}", did, uid, myVehicleId, mid, mType);     
+       
+            try
             {
-                try
+                //Thử xem có lấy được thông tin về ko, nếu không thì do lỗi máy chủ
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverSelectVehicle, input);                
+                var selectVehicle = JsonConvert.DeserializeObject<DriverLogin>(output);
+                if (selectVehicle.status.Equals("0000")) //0000
                 {
-
-                    var selectVehicle = JsonConvert.DeserializeObject<DriverLogin>(output);
-                    if (selectVehicle != null)
+                    //Lấy thông tin  giá xe                        
+                    foreach (var car in userData.content.vehicleInfos)
                     {
-                        //Lấy thông tin  giá xe                        
-                        foreach (var car in userData.content.vehicleInfos)
+                        if (car.vehicleId == myVehicleId)
                         {
-                            if (car.vehicleId == myVehicleId)
+                            myVehicle = new VehicleInfo
                             {
-                                myVehicle = new VehicleInfo
-                                {
-                                    status = car.status,
-                                    lmd = car.lmd,
-                                    content = car.content,
-                                    oPrice = car.oPrice,
-                                    oKm = car.oKm,
-                                    f1Price = car.f1Price,
-                                    f1Km = car.f1Km,
-                                    f2Price = car.f2Price,
-                                    f2Km = car.f2Km,
-                                    f3Price = car.f3Price,
-                                    f3Km = car.f3Km,
-                                    f4Price = car.f4Price,
-                                    f4Km = car.f4Km,
-                                    vehicleId = car.vehicleId,
-                                    plate = car.plate,
-                                    carTitle = car.carTitle,
-                                    carLevel = car.carLevel,
-                                    vRegDate = car.vRegDate,
-                                    manuYear = car.manuYear,
-                                    cap = car.cap
-                                };
+                                status = car.status,
+                                lmd = car.lmd,
+                                content = car.content,
+                                oPrice = car.oPrice,
+                                oKm = car.oKm,
+                                f1Price = car.f1Price,
+                                f1Km = car.f1Km,
+                                f2Price = car.f2Price,
+                                f2Km = car.f2Km,
+                                f3Price = car.f3Price,
+                                f3Km = car.f3Km,
+                                f4Price = car.f4Price,
+                                f4Km = car.f4Km,
+                                vehicleId = car.vehicleId,
+                                plate = car.plate,
+                                carTitle = car.carTitle,
+                                carLevel = car.carLevel,
+                                vRegDate = car.vRegDate,
+                                manuYear = car.manuYear,
+                                cap = car.cap
+                            };
 
-                                //
-                                tNetUserLoginData["MySelectedVehicle"] = myVehicle;
-                            }
+                            //
+                            tNetUserLoginData["MySelectedVehicle"] = myVehicle;
                         }
-
-                        NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                        Thread.Sleep(1000);
-                        grv_ProcessScreen.Visibility = Visibility.Collapsed;//Disable Process bar
-                    }
-                    else
-                    {
-                        MessageBox.Show(ConstantVariable.errServerError);
-                        grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
                     }
 
+                    NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                    Thread.Sleep(1000);
+                    grv_ProcessScreen.Visibility = Visibility.Collapsed;//Disable Process bar
                 }
-                catch (Exception)
+                else
                 {
-
-                    //Login Failed | Đăng nhập không thành công
-                    MessageBox.Show(ConstantVariable.errServerError);
+                    MessageBox.Show("(Mã lỗi 1802) " + ConstantVariable.errServerError);
                     grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                    Debug.WriteLine("Mã lối ght67 ở SelectVehicle");
                 }
+
             }
-            else
+            catch (Exception)
             {
-                //Có lỗi kết nối với Server
-                MessageBox.Show(ConstantVariable.errConnectingError);
+
+                //máy chủ lỗi
+                MessageBox.Show("(Mã lỗi 1801) " + ConstantVariable.errServerError);
                 grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                Debug.WriteLine("Mã lối 7hgtr3 ở SelectVehicle");
             }
+
 
         }
 

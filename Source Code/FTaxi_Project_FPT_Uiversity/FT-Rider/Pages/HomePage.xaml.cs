@@ -44,8 +44,8 @@ namespace FT_Rider.Pages
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
         
         RiderLogin userData = new RiderLogin();
-        string userId = "";
-        string pwmd5 = "";
+        string userId = string.Empty;
+        string pwmd5 = string.Empty;
         string rawPassword;
 
         //For Store Points
@@ -1132,7 +1132,17 @@ namespace FT_Rider.Pages
         //This function to get City Code From City Name in City Dictionary
         private int GetCityCodeFromCityName(string cityName)
         {
-            return cityNamesDB[cityName].cityId;
+            int cityCode=0;
+            try
+            {
+                cityCode =  cityNamesDB[cityName].cityId;
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 1601) " + ConstantVariable.errServerErr);
+            }
+            return cityCode;
         }
 
 
@@ -1414,6 +1424,10 @@ namespace FT_Rider.Pages
 
                 pushChannelURI = pushChannel.ChannelUri.ToString();
                 UpdateNotificationURI(pushChannelURI);
+                if (tNetAppSetting.Contains("PushChannelURI"))
+                {
+                    tNetAppSetting["PushChannelURI"] = pushChannelURI.ToString(); //Cái này để lưu lại uri
+                }  
                 //tNetAppSetting["NotificationURI"] = pushChannelURI;
                 ///
                 ///CODE UPDATE URI HERE///
@@ -1433,6 +1447,10 @@ namespace FT_Rider.Pages
                 System.Diagnostics.Debug.WriteLine(e.ChannelUri.ToString());
                 pushChannelURI = e.ChannelUri.ToString();
                 UpdateNotificationURI(pushChannelURI);
+                if (tNetAppSetting.Contains("PushChannelURI"))
+                {
+                    tNetAppSetting["PushChannelURI"] = pushChannelURI.ToString(); //Cái này để lưu lại uri
+                }                
                 //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
                 ///
                 ///CODE LOAD URI HERE///
@@ -1836,15 +1854,55 @@ namespace FT_Rider.Pages
 
         private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (tNetAppSetting.Contains("isLogin"))
-            {
-                tNetAppSetting.Remove("isLogin");
-                tNetUserLoginData.Remove("UserId");
-                tNetUserLoginData.Remove("PasswordMd5");
-                tNetUserLoginData.Remove("RawPassword");
-                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
-            }
+            LogOut();
         }
+
+
+
+        private void LogOut()
+        {
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                //set the properties                
+                Message = ConstantVariable.cfbLogOut, // "Bạn có chắc là bạn muốn thoát tài khoản không?";
+                LeftButtonContent = ConstantVariable.cfbYes,
+                RightButtonContent = ConstantVariable.cfbNo
+            };
+
+            //Add the dismissed event handler
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        if (tNetAppSetting.Contains("isLogin"))
+                        {
+                            tNetAppSetting.Remove("isLogin");
+                            tNetUserLoginData.Remove("UserId");
+                            tNetUserLoginData.Remove("PasswordMd5");
+                            tNetUserLoginData.Remove("RawPassword");
+                            tNetUserLoginData.Remove("UserLmd");
+                            NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+                        }
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        messageBox.Dismiss();
+
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            //add the show method
+            messageBox.Show();
+
+        }
+
+
 
         private void tbl_VipRider_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -1857,6 +1915,11 @@ namespace FT_Rider.Pages
         }
 
         private void tbl_FirstName_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
+        }
+
+        private void tbl_MyProfile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
         }

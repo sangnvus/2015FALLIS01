@@ -73,7 +73,7 @@
             <TextBlock x:Name="tbl_LostPassword" Margin="0,0,0,10" TextWrapping="Wrap" Text="Quên mật khẩu?" VerticalAlignment="Bottom" FontSize="{StaticResource Text_LinkTextFontSize}" RenderTransformOrigin="0.511,8.773" Tap="tbl_Tap_LostPassword" HorizontalAlignment="Center" TextDecorations="Underline"/>
             <Button x:Name="btn_Register" HorizontalAlignment="Left" Margin="10,312,0,0"   VerticalAlignment="Top" FontSize="{StaticResource Button_FontSize}" Width="460" Height="90" Content="Đăng ký" Tap="tbn_Tap_Register" >
                 <Button.Background>
-                    <SolidColorBrush Color="#FFE28C01"/>
+                    <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                 </Button.Background>
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="0.2"/>

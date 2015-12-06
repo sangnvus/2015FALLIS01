@@ -93,14 +93,13 @@
                 </Image>
                 <TextBlock x:Name="tbl_LastName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27" Tap="tbl_LastName_Tap"/>
                 <TextBlock x:Name="tbl_FirstName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27" Tap="tbl_FirstName_Tap"/>
-                <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,164,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,233,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,296,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
-                <TextBlock x:Name="tbl_VipRider" Text="Tài xế ưa thích" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,361,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
-                <TextBlock x:Name="tbl_CompanyInfo" Text="Thông tin công ty" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,429,0,0" FontSize="22" Tap="tbl_CompanyInfo_Tap"/>
-                <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,492,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,560,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,631,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,234,0,0" FontSize="22" Foreground="Black"/>
+                <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,300,0,0" FontSize="22" Foreground="Black"/>
+                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,363,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
+                <TextBlock x:Name="tbl_VipRider" Text="Tài xế ưa thích" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,430,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
+                <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,496,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,562,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,632,0,0" FontSize="22"/>
                 <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize}" Tap="btn_Logout_Tap">
                     <Button.BorderBrush>
                         <SolidColorBrush Color="White" Opacity="0.2"/>
@@ -109,14 +108,13 @@
                         <SolidColorBrush Color="{StaticResource Button_Background_Color_Red}"/>
                     </Button.Background>
                 </Button>
-                <Image x:Name="img_MenuIcon1" Margin="29,164,356,569" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png"/>
-                <Image x:Name="img_MenuIcon2" Margin="29,233,356,500" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png"/>
-                <Image x:Name="img_MenuIcon3" Margin="29,296,356,437" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
-                <Image x:Name="img_MenuIcon4" Margin="29,361,356,372" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png"/>
-                <Image x:Name="img_MenuIcon5" Margin="29,429,356,304" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
-                <Image x:Name="img_MenuIcon6" Margin="29,492,356,241" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png"/>
-                <Image x:Name="img_MenuIcon7" Margin="29,560,356,173" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
-                <Image x:Name="img_MenuIcon8" Margin="29,631,356,102" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
+                <Image x:Name="img_MenuIcon1" Margin="29,228,356,505" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
+                <Image x:Name="img_MenuIcon2" Margin="29,297,356,436" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
+                <Image x:Name="img_MenuIcon3" Margin="29,361,356,372" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
+                <Image x:Name="img_MenuIcon4" Margin="29,427,356,306" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png"/>
+                <Image x:Name="img_MenuIcon6" Margin="29,493,356,240" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png"/>
+                <Image x:Name="img_MenuIcon7" Margin="29,561,356,172" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
+                <Image x:Name="img_MenuIcon8" Margin="29,632,356,101" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
                 <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,137,0,0">
                     <Rectangle.Fill>
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
@@ -167,6 +165,8 @@
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                     </Rectangle.Fill>
                 </Rectangle>
+                <Image x:Name="img_MenuIcon1_Copy" Margin="29,162,356,571" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                <TextBlock x:Name="tbl_MyProfile" Text="Hồ sơ cá nhân" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,162,0,0" FontSize="22" Tap="tbl_MyProfile_Tap"/>
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
                 <Grid x:Name="grv_navbar" Margin="0" VerticalAlignment="Top">
