@@ -52,7 +52,7 @@
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBlock x:Name="tbl_intro" HorizontalAlignment="Center" Margin="22,27,22,0" TextWrapping="Wrap" Text="Bạn có thể đề xuất tính năng, báo cáo sự cố hoặc gửi phản hồi khác về F-Taxi. Mặc dù không thể trả lời riêng cho bạn nhưng chúng tôi sẽ sử dụng phản hồi của bạn để cải thiện trải nghiệm F-TAxi" VerticalAlignment="Top" Height="145" Width="436" FontSize="{StaticResource Layout_TextSize}" TextAlignment="Center">
+            <TextBlock x:Name="tbl_intro" HorizontalAlignment="Center" Margin="22,27,22,0" TextWrapping="Wrap" Text="Bạn có thể đề xuất tính năng, báo cáo sự cố hoặc gửi phản hồi khác về F-Taxi. Mặc dù không thể trả lời riêng cho bạn nhưng chúng tôi sẽ sử dụng phản hồi của bạn để cải thiện trải nghiệm F-Taxi" VerticalAlignment="Top" Height="145" Width="436" FontSize="{StaticResource Layout_TextSize}" TextAlignment="Center">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </TextBlock.Foreground>
