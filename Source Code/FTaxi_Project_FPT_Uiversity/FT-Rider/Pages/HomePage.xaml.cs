@@ -224,6 +224,9 @@ namespace FT_Rider.Pages
                         lng = item.lng
                     };
                 }
+
+                //Sau khi load xing thì đẩy vào isolate
+                tNetUserLoginData["CityNamesDB"] = cityNamesDB;
             }
             catch (NullReferenceException)
             {
@@ -931,7 +934,7 @@ namespace FT_Rider.Pages
             TextBox addressTextbox = (TextBox)sender;
             addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
             addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent); ;
+            //addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent); ;
 
             //img_CloseIcon.Visibility = Visibility.Visible;
 

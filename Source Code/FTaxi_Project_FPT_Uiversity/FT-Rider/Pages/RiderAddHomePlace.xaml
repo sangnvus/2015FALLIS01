@@ -13,6 +13,7 @@
     shell:SystemTray.IsVisible="True">
     <phone:PhoneApplicationPage.Resources>
         <Thickness x:Key="textbox_Padding_60">60,2,2,2</Thickness>
+        <Color x:Key="processbar_Color">#FF1FBAD6</Color>
     </phone:PhoneApplicationPage.Resources>
 
 
@@ -62,7 +63,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
 
-            <TextBox x:Name="txt_Address" HorizontalAlignment="Center" Height="129" Margin="0,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" Background="White" Tap="txt_Address_Tap" KeyUp="txt_Address_KeyUp">
+            <TextBox x:Name="txt_Address" HorizontalAlignment="Center" Height="129" Margin="0,14,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Background="White" Tap="txt_Address_Tap" KeyUp="txt_Address_KeyUp" Padding="60,2,40,2" KeyDown="txt_Address_KeyDown">
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Textbox_BorderColor_Cyan}" Opacity="0.2"/>
                 </TextBox.BorderBrush>
@@ -70,7 +71,7 @@
                     <SolidColorBrush Color="{StaticResource textbox_TextColor_SpaceGray}"/>
                 </TextBox.Foreground>
             </TextBox>
-            <TextBox x:Name="txt_City" HorizontalAlignment="Center" Height="72" Margin="0,133,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" IsReadOnly="True">
+            <TextBox x:Name="txt_City" HorizontalAlignment="Center" Height="72" Margin="0,133,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="{StaticResource textbox_Padding_60}" IsReadOnly="True" d:IsHidden="True" Visibility="Collapsed">
                 <TextBox.Foreground>
                     <SolidColorBrush Color="{StaticResource textbox_TextColor_SpaceGray}"/>
                 </TextBox.Foreground>
@@ -95,9 +96,9 @@
                 </Rectangle.Fill>
             </Rectangle>
             <Image x:Name="img_TextboxIcon" HorizontalAlignment="Left" Height="42" Margin="15,55,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
-            <Image x:Name="img_TextboxIcon_Copy1" HorizontalAlignment="Left" Height="42" Margin="15,148,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg"/>
-            <maps:Map x:Name="map_RiderHome" HorizontalAlignment="Left" Margin="13,208,0,0" VerticalAlignment="Top" Height="423" Width="431"/>
-            <phone:LongListSelector x:Name="lls_AutoComplete" HorizontalAlignment="Left" Height="202" Margin="12,128,0,0" VerticalAlignment="Top" Width="432" SelectionChanged="lls_AutoComplete_SelectionChanged">
+            <Image x:Name="img_TextboxIcon_Copy1" HorizontalAlignment="Left" Height="42" Margin="15,148,0,0" VerticalAlignment="Top" Width="42" Source="/Images/Icons/icon_Address.jpg" d:IsHidden="True" Visibility="Collapsed"/>
+            <maps:Map x:Name="map_RiderHome" HorizontalAlignment="Left" Margin="13,148,0,0" VerticalAlignment="Top" Height="483" Width="431"/>
+            <phone:LongListSelector x:Name="lls_AutoComplete" HorizontalAlignment="Left" Height="202" Margin="12,128,0,0" VerticalAlignment="Top" Width="432" SelectionChanged="lls_AutoComplete_SelectionChanged" Visibility="Collapsed">
                 <phone:LongListSelector.Background>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </phone:LongListSelector.Background>
@@ -114,7 +115,20 @@
                     </DataTemplate>
                 </phone:LongListSelector.ItemTemplate>
             </phone:LongListSelector>
-            <Image x:Name="img_ClearText" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" Source="/Images/SearchBar/img_PNG_CloseIcon_Black.png" Margin="396,86,0,0" Tap="img_ClearText_Tap"/>
+            <Image x:Name="img_ClearText" HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" Source="/Images/SearchBar/img_PNG_CloseIcon_Black.png" Margin="400,60,0,0" Tap="img_ClearText_Tap" Visibility="Collapsed"/>
+            <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed" Margin="0,0,-24,-42">
+                <Rectangle x:Name="rt_processBar" Stroke="Black">
+                    <Rectangle.Fill>
+                        <SolidColorBrush Color="Black" Opacity="0.5"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                    <ProgressBar.Foreground>
+                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+            </Grid>
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbl_AddHomePlace" HorizontalAlignment="Center" Margin="177.834,10,177.166,0" TextWrapping="Wrap" Text="NHÀ RIÊNG" VerticalAlignment="Top" FontSize="24"/>

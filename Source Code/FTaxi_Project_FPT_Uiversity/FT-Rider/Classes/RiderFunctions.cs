@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +11,6 @@ namespace FT_Rider.Classes
 {
     class RiderFunctions
     {
-        //Return Near Taxi as Object
-        public static RiderGetNearDriver ReturnTaxisPosition(string jsonInput)
-        {
-            RiderGetNearDriver nearTaxisPosition;
-            nearTaxisPosition = JsonConvert.DeserializeObject<RiderGetNearDriver>(jsonInput);
-            return nearTaxisPosition;
-        }
 
 
         //Fare Cal

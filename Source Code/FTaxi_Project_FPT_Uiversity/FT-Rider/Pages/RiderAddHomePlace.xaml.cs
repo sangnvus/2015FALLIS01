@@ -14,17 +14,47 @@ using Newtonsoft.Json;
 using System.Device.Location;
 using System.Collections.ObjectModel;
 using Microsoft.Devices;
+using System.IO.IsolatedStorage;
+using System.Diagnostics;
 
 namespace FT_Rider.Pages
 {
     public partial class RiderAddHomePlace : PhoneApplicationPage
     {
+        IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
+        RiderLogin userData = null;
+        string pwmd5 = string.Empty;
+        long preOlmd;
+
+        IDictionary<string, RiderGetCityList> cityNamesDB = null;
+
+
+        //For Update
+        double myLat;
+        double myLng;
+        int myCityId;
+        string myCntry;
+        
+
         VibrateController vibrateController = VibrateController.Default;
         public RiderAddHomePlace()
         {
             InitializeComponent();
 
             //Input lat & lng Parameter in this function to load address
+
+
+            if (tNetUserLoginData.Contains("UserLoginData"))
+            {
+                userData = new RiderLogin();
+                cityNamesDB = new Dictionary<string, RiderGetCityList>();
+                userData = (RiderLogin)tNetUserLoginData["UserLoginData"];
+                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
+                preOlmd = (long)tNetUserLoginData["UserLmd"];
+                cityNamesDB = (IDictionary<string, RiderGetCityList>)tNetUserLoginData["CityNamesDB"];
+
+            }
+
             this.LoadLocationOnMap(21.038472, 105.8014108);
 
 
@@ -32,8 +62,6 @@ namespace FT_Rider.Pages
             //Set status of control
             //this.lls_AutoComplete.IsEnabled = false;
             //txt_City.IsEnabled = false;
-            isLlsOff();
-            this.img_ClearText.Visibility = Visibility.Collapsed;
 
         }
 
@@ -155,5 +183,132 @@ namespace FT_Rider.Pages
             txtBox.SelectionLength = 0;
         }
 
+        private void txt_Address_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+        }
+
+        private async void txt_Address_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            //check if input is "Enter" key
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                //Show Loading
+                ShowLoadingScreen();
+
+                //Lấy thông tin tọa độ
+                var input = ConstantVariable.googleAPIGeocodingAddressBaseURI + txt_Address.Text + "&key=" + ConstantVariable.googleGeolocationAPIkey;
+                try
+                {
+                    var output = await ReqAndRes.GetJsonString(input);
+                    var myLocation = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(output);
+                    if (myLocation.status.Equals(ConstantVariable.googleResponseStatusOK)) //OK
+                    {
+                       myCntry = myLocation.results[0].address_components[myLocation.results[0].address_components.Count-1].short_name.ToString();
+
+                        //Trả về cityCode
+                       myCityId = (GetCityCodeFromCityName(myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name.ToString()));
+
+                        //Tra ve lat long
+                       myLat = myLocation.results[0].geometry.location.lat;
+                       myLng = myLocation.results[0].geometry.location.lng;
+                    }
+                    else
+                    {
+                        MessageBox.Show("(Mã lỗi 2603) " + ConstantVariable.errServerErr);
+                        Debug.WriteLine("Có lỗi 56ght ở get Google String");
+                    }
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("(Mã lỗi 2602) " + ConstantVariable.errServerErr);
+                    Debug.WriteLine("Có lỗi 256ftgh ở get Google String");
+                }
+
+
+                //Lay xong thong tin thi:...
+                //Chạy hàm cập nhật địa chỉ nhả
+                UpdateHomeAddress();
+
+                //Update xong thi tat
+            }
+        }
+
+        private async void UpdateHomeAddress()
+        {
+            var id = userData.content.rid;
+            var nCity = txt_City.Text;
+            var nAdd = txt_Address.Text;
+            double lat = myLat;
+            double lng = myLng;
+            var addrType = ConstantVariable.addrTypeHOME;
+            long lmd = preOlmd;
+            var role = ConstantVariable.dRole;
+            var cityId = myCityId;
+            var cntry = myCntry;
+            var uid = userData.content.uid;
+            var pw = pwmd5;
+
+            var input = string.Format("{{\"id\":\"{0}\",\"nCity\":\"{1}\",\"nAdd\":\"{2}\",\"lat\":\"{3}\",\"lng\":\"{4}\",\"addrType\":\"{5}\",\"olmd\":\"{6}\",\"role\":\"{7}\",\"cityId\":\"{8}\",\"cntry\":\"{9}\",\"uid\":\"{10}\",\"pw\":\"{11}\"}}", id, nCity, nAdd, lat, lng, addrType, lmd, role, cityId, cntry, uid, pw);
+            try
+            {
+                //Thủ xem có lấy đc gì k
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateAddress, input);
+                var updateStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (updateStatus.content.Equals(ConstantVariable.responseCodeSuccess)) //ok 0000
+                {
+                    //Neu ok thi se
+                    ///2. cap nhat lmd
+                    ///3. tat loading
+                    ///4. mess
+                    ///
+
+                    //2.
+                    tNetUserLoginData["UserLmd"] = lmd;
+
+                    //3.
+                    HideLoadingScreen();
+
+                    //4.
+                    MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //ok
+                }
+            }
+            catch (Exception)
+            {
+                HideLoadingScreen();
+                MessageBox.Show("(Mã lỗi 2605) " + ConstantVariable.errServerErr); //Co loi may chu
+                Debug.WriteLine("Có lỗi 58565dfg ở update home address");    
+            }
+
+        }
+
+        //This function to get City Code From City Name in City Dictionary
+        private int GetCityCodeFromCityName(string cityName)
+        {
+            int cityCode = 0;
+            try
+            {
+                cityCode = cityNamesDB[cityName].cityId;
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 2601) " + ConstantVariable.errHasErrInProcess);
+            }
+            return cityCode;
+        }
+
+
+        private void ShowLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Visible;
+        }
+        private void HideLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Collapsed;
+        }
     }
 }

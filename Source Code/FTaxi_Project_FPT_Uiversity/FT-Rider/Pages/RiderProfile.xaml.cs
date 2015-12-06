@@ -102,6 +102,11 @@ namespace FT_Rider.Pages
             btn_Save.Visibility = Visibility.Visible;
         }
 
+        private void HideSaveButton()
+        {
+            btn_Save.Visibility = Visibility.Collapsed;
+        }
+
         private void txt_LastName_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox addressTextbox = (TextBox)sender;
@@ -159,6 +164,7 @@ namespace FT_Rider.Pages
 
                     //3
                     HideLoadingSreen();
+                    HideSaveButton();
 
                     //2
                     MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //Cập nhật thành công
@@ -168,7 +174,7 @@ namespace FT_Rider.Pages
             {
                 HideLoadingSreen();
                 MessageBox.Show("(Mã lỗi 2201) " + ConstantVariable.errServerErr); //Co loi may chu
-                Debug.WriteLine("Có lỗi 7hsgt54 ở update profile");
+                Debug.WriteLine("Có lỗi 7hsgt54 ở update profile");               
             }
         }
 

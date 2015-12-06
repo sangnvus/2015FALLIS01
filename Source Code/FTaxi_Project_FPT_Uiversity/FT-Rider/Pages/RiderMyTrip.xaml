@@ -111,7 +111,7 @@
                 </phone:LongListSelector.ItemTemplate>
             </phone:LongListSelector>
             <TextBlock x:Name="txt_MyTripStatus" HorizontalAlignment="Center" Margin="0,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-            <Grid x:Name="grv_TripDetail">
+            <Grid x:Name="grv_TripDetail" Visibility="Collapsed">
                 <Grid.Background>
                     <SolidColorBrush Color="{StaticResource color_DetailPanelBackground}"/>
                 </Grid.Background>

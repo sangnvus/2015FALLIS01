@@ -15,6 +15,7 @@ namespace FT_Rider.Classes
         //public static string googleGeolocationAPIkey = "AIzaSyAOi7TswVYRlkqvZcQ88Qf9SUHODK67TR0";
         public const string googleGeolocationAPIkey = "AIzaSyD4Y-OfQiAfs9hS_kyrfmzUSs5jY9gEKiY";
         public const string googleAPIGeocodingLatLngBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+        public const string googleResponseStatusOK = "OK";
 
 
         //https://maps.googleapis.com/maps/api/distancematrix/json?
@@ -40,11 +41,16 @@ namespace FT_Rider.Classes
         public const string strLoginSuccessed = "Đăng ký thành công!";
         public const string errNotEmpty = "Vui lòng điền đầy đủ thông tin!";
         public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
-        public const string errServerErr = "Có lỗi máy chủ địa lý, một vài tính năng có thể không thể sử dụng được!";
+        public const string errServerErr = "Có lỗi xảy ra ở máy chủ. Vui lòng thử lại sau!";
         public const string strNoTripInfo = "Bạn chưa có chuyến đi nào cả!";
         public const string strNoFavoriteInfo = "Chưa có thông tin!";
         public const string strNoDriverNumber = "Tài xế không có số điện thoại!";
         public const string strRiderUpdateSuccess = "Cập nhật thông tin cá nhân thành công!";
+        public const string strResetPasswordSuccess = "Mật khẩu đã được gửi về hôm thư của bạn. Vui lòng kiếm tra và đăng nhập lại!";
+        public const string strOldPassNotCorrect = "Mật khẩu cũ không chính xác. Vui lòng kiếm tra lại!";
+        public const string strPassNotValid = "Mật khẩu phải lớn hơn 6 ký tự!";
+        public const string strPassNotLike = "Mật khẩu không giống nhau!";
+        public const string strChangePassSuccess = "Đổi mật khẩu thành công!";
 
 
         //valid
@@ -65,9 +71,9 @@ namespace FT_Rider.Classes
         public const string tNetRiderGetMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/getListFavoriteDriver";
         public const string tNetRiderDeleteMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/deleteFavoriteDriver";
         public const string tNetRiderUpdateProfile = "http://123.30.236.109:8088/TN/restServices/RiderController/UpdateRider";
-
-
-
+        public const string tNetRiderUpdateAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/UpdateAddress";
+        public const string tNetRiderResetPassword = "http://123.30.236.109:8088/TN/restServices/RiderController/ResetPassword";
+        public const string tNetRiderChangePassword = "http://123.30.236.109:8088/TN/restServices/RiderController/ChangePassword";
 
         //Card type
         public const String DIRECT = "DI";
@@ -117,5 +123,11 @@ namespace FT_Rider.Classes
         public const string cfbLogOut = "Bạn có chắc là bạn muốn thoát tài khoản không?";
         public const string cfbYes = "Có";
         public const string cfbNo = "Không";
+
+
+        //Address Type
+        public const string addrTypeHOME = "home";
+        public const string addrTypeOFFICE = "office";
+
     }
 }
