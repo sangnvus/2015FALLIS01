@@ -8,13 +8,27 @@
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:imagetools="clr-namespace:ImageTools.Controls;assembly=ImageTools.Controls"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     x:Class="FT_Rider.Pages.HomePage"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+
+
+    <phone:PhoneApplicationPage.Resources>
+        <Color x:Key="processbar_Color">#FF1FBAD6</Color>
+    </phone:PhoneApplicationPage.Resources>
+
+
+    <phone:PhoneApplicationPage.FontFamily>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+    </phone:PhoneApplicationPage.FontFamily>
+    <phone:PhoneApplicationPage.FontSize>
+        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+    </phone:PhoneApplicationPage.FontSize>
+    <phone:PhoneApplicationPage.Foreground>
+        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+    </phone:PhoneApplicationPage.Foreground>
 
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -36,11 +50,6 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
-
-
-    <phone:PhoneApplicationPage.Resources>
-        <Color x:Key="processbar_Color">#FF1FBAD6</Color>
-    </phone:PhoneApplicationPage.Resources>
 
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -86,9 +95,9 @@
                 <Image x:Name="img_MenuAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="50,20,0,0" Tap="img_MenuAvatar_Tap">
                     <Image.Clip>
                         <EllipseGeometry
-                			Center="50,50"
-                			RadiusX="45"
-                			RadiusY="45" />
+							Center="50,50"
+							RadiusX="45"
+							RadiusY="45" />
                     </Image.Clip>
                 </Image>
                 <TextBlock x:Name="tbl_LastName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27" Tap="tbl_LastName_Tap"/>
@@ -97,9 +106,15 @@
                 <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,300,0,0" FontSize="22" Foreground="Black"/>
                 <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,363,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
                 <TextBlock x:Name="tbl_VipRider" Text="Tài xế ưa thích" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,430,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
-                <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,496,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,562,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,632,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,496,0,0" FontSize="22" Visibility="Collapsed" d:IsHidden="True"/>
+                <TextBlock x:Name="tbl_About" Text="Thông tin" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,497,0,0" FontSize="22" Tap="tbl_About_Tap"/>
+                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,563,0,0" FontSize="22">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="MouseLeftButtonDown">
+							<ec:NavigateToPageAction TargetPage="/Pages/RiderFeedback.xaml"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+                </TextBlock>
                 <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize}" Tap="btn_Logout_Tap">
                     <Button.BorderBrush>
                         <SolidColorBrush Color="White" Opacity="0.2"/>
@@ -112,9 +127,9 @@
                 <Image x:Name="img_MenuIcon2" Margin="29,297,356,436" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
                 <Image x:Name="img_MenuIcon3" Margin="29,361,356,372" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
                 <Image x:Name="img_MenuIcon4" Margin="29,427,356,306" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png"/>
-                <Image x:Name="img_MenuIcon6" Margin="29,493,356,240" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png"/>
-                <Image x:Name="img_MenuIcon7" Margin="29,561,356,172" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
-                <Image x:Name="img_MenuIcon8" Margin="29,632,356,101" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
+                <Image x:Name="img_MenuIcon6" Margin="29,493,356,240" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png" Visibility="Collapsed"/>
+                <Image x:Name="img_MenuIcon7" Margin="29,496,356,237" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
+                <Image x:Name="img_MenuIcon8" Margin="29,563,356,170" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
                 <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,137,0,0">
                     <Rectangle.Fill>
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
@@ -184,8 +199,7 @@
                         <RowDefinition Height="7*"/>
                         <RowDefinition Height="82*"/>
                     </Grid.RowDefinitions>
-                    <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2" ResolveCompleted="map_RiderMap_ResolveCompleted" MouseLeftButtonUp="map_RiderMap_MouseLeftButtonUp" MouseLeftButtonDown="map_RiderMap_MouseLeftButtonDown">
-                    </maps:Map>
+                    <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2" ResolveCompleted="map_RiderMap_ResolveCompleted" MouseLeftButtonUp="map_RiderMap_MouseLeftButtonUp" MouseLeftButtonDown="map_RiderMap_MouseLeftButtonDown"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
                     <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Center" Height="73" VerticalAlignment="Bottom" Width="480" Margin="0,0,0,75"/>
@@ -238,9 +252,9 @@
                     <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="10,156,0,0">
                         <Image.Clip>
                             <EllipseGeometry
-                				Center="50,50"
-                				RadiusX="45"
-                				RadiusY="45" />
+								Center="50,50"
+								RadiusX="45"
+								RadiusY="45" />
                         </Image.Clip>
                     </Image>
                     <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Left" Margin="10,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>

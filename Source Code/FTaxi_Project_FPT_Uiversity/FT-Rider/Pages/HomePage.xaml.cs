@@ -1926,5 +1926,10 @@ namespace FT_Rider.Pages
         {
             NavigationService.Navigate(new Uri("/Pages/RiderProfile.xaml", UriKind.Relative));
         }
+
+        private void tbl_About_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/About.xaml", UriKind.Relative));
+        }
     }
 }

@@ -137,6 +137,9 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
     </Compile>
@@ -154,6 +157,9 @@
     </Compile>
     <Compile Include="Pages\RiderChangePassword.xaml.cs">
       <DependentUpon>RiderChangePassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\RiderFeedback.xaml.cs">
+      <DependentUpon>RiderFeedback.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\RiderLostPassword.xaml.cs">
       <DependentUpon>RiderLostPassword.xaml</DependentUpon>
@@ -186,6 +192,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\FisrtRunningAppIntro.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -209,6 +219,10 @@
     <Page Include="Pages\RiderChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\RiderFeedback.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\RiderLostPassword.xaml">
       <SubType>Designer</SubType>
@@ -263,6 +277,7 @@
     <Content Include="iconPNG_FromIcon.png" />
     <Content Include="iconPNG_ToIcon.png" />
     <Content Include="icon_Count.png" />
+    <Content Include="Images\About\img_About.png" />
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_HomePageBackground.jpg" />
@@ -328,6 +343,7 @@
     <Content Include="Images\Others\img_default_avatar_dark.png" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
+    <Content Include="Images\Others\img_PageContentBreak_dark.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />
     <Content Include="Images\Picker\img_Picker_CallTaxi.png" />
     <Content Include="Images\Picker\img_Picker_CarGoing.png" />

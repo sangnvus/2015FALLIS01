@@ -23,6 +23,7 @@ namespace FT_Rider.Pages
 
         string pwmd5 = string.Empty;
         string userId = string.Empty;
+        string rawPassword = string.Empty;
         public RiderChangePassword()
         {
             InitializeComponent();
@@ -31,8 +32,8 @@ namespace FT_Rider.Pages
             //Get User data from login
             if (tNetUserLoginData.Contains("UserLoginData"))
             {
-                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
                 userId = (string)tNetUserLoginData["UserId"];
+                rawPassword = (string)tNetUserLoginData["RawPassword"];
             }
         }
 
@@ -86,12 +87,9 @@ namespace FT_Rider.Pages
             //Show
             ShowLoadingScreen();
 
-            var opw = pwmd5;
-            MD5.MD5 mypw = new MD5.MD5();
-            mypw.Value = txt_NewPassWordAgain.Password;
-            var npw = mypw.FingerPrint.ToLower();
+            var opw = txt_OldPassword.Password;
             var uid = userId;
-
+            var npw = txt_NewPassWordAgain.Password;
             var input = string.Format("{{\"opw\":\"{0}\",\"npw\":\"{1}\",\"uid\":\"{2}\"}}", opw, npw, uid);
             try
             {
@@ -161,10 +159,8 @@ namespace FT_Rider.Pages
 
         private bool CheckOldPassword()
         {
-            MD5.MD5 pw = new MD5.MD5();
-            pw.Value = txt_OldPassword.Password;
-            string mypw = pw.FingerPrint.ToLower();
-            if (mypw.Equals(pwmd5))
+            var mypw = txt_OldPassword.Password;
+            if (mypw.Equals(rawPassword))
             {
                 return true;
             }

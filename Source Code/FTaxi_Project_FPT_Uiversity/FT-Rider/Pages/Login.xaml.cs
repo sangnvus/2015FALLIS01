@@ -31,7 +31,7 @@ namespace FT_Rider.Pages
         //string pushChannelURI = null;
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
-
+        RiderLogin riderLogin = null;
 
         public Login()
         {
@@ -58,7 +58,8 @@ namespace FT_Rider.Pages
                 {
                     //Thử xem có lấy đc JSON về ko, nếu ko thì bắn ra Lối kết nối / lỗi server
                     var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderLoginAddress, input);
-                    var riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
+                    riderLogin = new RiderLogin();
+                    riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
                     if (riderLogin != null)
                     {
                         if (riderLogin.status.Equals(ConstantVariable.responseCodeSuccess)) //0000 Code
