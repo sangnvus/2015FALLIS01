@@ -44,7 +44,7 @@ namespace FT_Rider.Pages
 
         private void txt_Email_LostFocus(object sender, RoutedEventArgs e)
         {
-           
+            ValidateEmail();
         }
 
         private async void btn_ResetPassword_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -61,7 +61,7 @@ namespace FT_Rider.Pages
                 ///
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderResetPassword, input);
                 var resetStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                if (resetStatus.status.Equals(ConstantVariable.responseCodeSuccess))//Code 0000
+                if (resetStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//Code 0000
                 {
                     //Nếu ok
                     ///2. dis screen

@@ -192,7 +192,7 @@
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                     </Rectangle.Fill>
                 </Rectangle>
-                <Button x:Name="btn_AddFavorite" Content="THÊM VÀO YÊU THÍCH" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="480" Height="90" BorderBrush="{x:Null}" Tap="btn_Close_Tap" Margin="0,0,0,74">
+                <Button x:Name="btn_AddFavorite" Content="THÊM VÀO YÊU THÍCH" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="480" Height="90" BorderBrush="{x:Null}" Tap="btn_AddFavorite_Tap" Margin="0,0,0,74">
                     <Button.Background>
                         <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                     </Button.Background>

@@ -28,6 +28,7 @@ namespace FT_Rider.Pages
 
         //For view trip detail
         string selectedTripId = string.Empty;
+        string selectedDriverId = string.Empty;
 
         public RiderMyTrip()
         {
@@ -64,7 +65,7 @@ namespace FT_Rider.Pages
                 myTrip = JsonConvert.DeserializeObject<RiderGetMyTrip>(output);
 
 
-                if (myTrip.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                if (myTrip.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                 {
                     //Nếu có thông tin chuyến đi thì bắt đầu lấy về
                     try
@@ -147,6 +148,7 @@ namespace FT_Rider.Pages
                 return;
 
             selectedTripId = selectedTrip.Tid; // Khai báo rằng con Trip Id này đã được chọn
+            selectedDriverId = selectedTrip.Did;
 
             // Reset selected item to null
             lls_MyTrip.SelectedItem = null;
@@ -277,6 +279,47 @@ namespace FT_Rider.Pages
         {
 
         }
+
+        private async void btn_AddFavorite_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowLoadingScreen();
+
+            //Code thêm vào yêu thích
+            var uid = userData.content.uid;
+            var rid = userData.content.rid;
+            var did = selectedDriverId;
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":\"{2}\"}}", uid, rid, did);
+            try
+            {
+                //Thử xem có lấy đc JSON về ko, nếu ko thì bắn ra Lối kết nối / lỗi server
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderAddMyFarvoriteDriver, input);                
+                var addStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+
+
+                if (addStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
+                {
+                    //Nếu OK thi
+                    HideLoadingScreen();
+
+                    MessageBox.Show(ConstantVariable.strAddFavoriteSuccess); //Thêm lái xe thành công
+
+                }
+                else
+                {
+                    
+                    Debug.WriteLine("Có lỗi 25696635ggg ở Add driver favorite");
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 1229) " + ConstantVariable.errConnectingError);
+                Debug.WriteLine("Có lỗi 65fgh2676 ở Add driver favorite");
+            }
+
+        }
+        
 
 
     }

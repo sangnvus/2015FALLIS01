@@ -258,7 +258,7 @@ namespace FT_Rider.Pages
                 //Thủ xem có lấy đc gì k
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateAddress, input);
                 var updateStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                if (updateStatus.content.Equals(ConstantVariable.responseCodeSuccess)) //ok 0000
+                if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //ok 0000
                 {
                     //Neu ok thi se
                     ///2. cap nhat lmd
@@ -267,13 +267,19 @@ namespace FT_Rider.Pages
                     ///
 
                     //2.
-                    tNetUserLoginData["UserLmd"] = lmd;
+                    tNetUserLoginData["UserLmd"] = updateStatus.lmd;
 
                     //3.
                     HideLoadingScreen();
 
                     //4.
                     MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //ok
+                }
+                else
+                {
+                    HideLoadingScreen();
+                    MessageBox.Show("(Mã lỗi 2689) " + ConstantVariable.errServerErr); //Co loi may chu
+                    Debug.WriteLine("Có lỗi 2565568 ở update home address");    
                 }
             }
             catch (Exception)

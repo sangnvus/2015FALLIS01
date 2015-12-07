@@ -50,7 +50,7 @@ namespace FT_Driver.Pages
                     if (output != null)
                     {
                         var completeStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                        if (completeStatus.status.Equals(ConstantVariable.responseCodeSuccess))
+                        if (completeStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))
                         {
                             ///1. HIện thông báo thành ôcng
                             ///2. xóa toàn bộ thôn tin trip

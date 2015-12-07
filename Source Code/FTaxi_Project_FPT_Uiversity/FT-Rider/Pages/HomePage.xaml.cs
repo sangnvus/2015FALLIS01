@@ -43,7 +43,7 @@ namespace FT_Rider.Pages
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
         
-        RiderLogin userData = new RiderLogin();
+        RiderLogin userData;
         string userId = string.Empty;
         string pwmd5 = string.Empty;
         string rawPassword;
@@ -118,13 +118,10 @@ namespace FT_Rider.Pages
 
             InitializeComponent();
 
-            //Tạo kênh Notification
-            CreatePushChannel();
-
-
             //Get User data from login
             if (tNetUserLoginData.Contains("UserLoginData"))
             {
+                userData = new RiderLogin();
                 userData = (RiderLogin)tNetUserLoginData["UserLoginData"];
             }
             if (tNetUserLoginData.Contains("UserId") && tNetUserLoginData.Contains("PasswordMd5"))
@@ -136,6 +133,10 @@ namespace FT_Rider.Pages
             {
                 rawPassword = (string)tNetUserLoginData["RawPassword"];
             }
+
+            //Tạo kênh Notification
+            CreatePushChannel();
+
 
             //get First Local Position
             GetCurrentCoordinate();
@@ -394,8 +395,19 @@ namespace FT_Rider.Pages
             string driverName = nearDriverCollection[did].lName + ", " + nearDriverCollection[did].fName;
             if (destinationLat != 0 && destinationLng != 0)
             {
-                estimateKm = await GoogleAPIFunction.GetDistance(pickupLat, pickupLng, destinationLat, destinationLng);
-                estimateCost = RiderFunctions.EstimateCostCalculate(nearDriverCollection, did, estimateCost);
+                try
+                {
+                    //thử xem có tính tiền đc ko?
+
+                    estimateKm = await GoogleAPIFunction.GetDistance(pickupLat, pickupLng, destinationLat, destinationLng);
+                    estimateCost = RiderFunctions.EstimateCostCalculate(nearDriverCollection, did, estimateCost);
+                }
+                catch (Exception)
+                {
+
+                    //Nếu ko tính đc thì...
+                    Debug.WriteLine("Có lỗi 689rggg ở Tính km và tính tiền");
+                }
             }
             var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
             var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
@@ -1782,7 +1794,7 @@ namespace FT_Rider.Pages
                 if (output != null)
                 {
                     var cancelStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                    if (cancelStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    if (cancelStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
                         ///Nếu như hủy bỏ chuyển thành công                        
                         ///1. Update lmd
@@ -1802,7 +1814,7 @@ namespace FT_Rider.Pages
                         SetHomeViewState();
 
                     }
-                    else if (cancelStatus.status.Equals(ConstantVariable.responseCodeTaken)) //013
+                    else if (cancelStatus.status.Equals(ConstantVariable.RESPONSECODE_TRIP_TAKEN)) //013
                     {
                         ///CODE CHO VIỆC THÔNG BÁO ĐÃ BỊ CHIẾM KHÁCH
                         ///CHO TRỞ VỀ MÀN HÌNH MAP

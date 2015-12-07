@@ -20,6 +20,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.Phone.Notification;
 using System.Text;
+using System.Diagnostics;
 
 namespace FT_Driver.Pages
 {
@@ -38,6 +39,12 @@ namespace FT_Driver.Pages
            // CreatePushChannel();
         }
 
+
+        private void HideLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+        }
+
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if (txt_UserId.Text != "" && txt_Password.ActionButtonCommandParameter.ToString() != "")
@@ -49,58 +56,52 @@ namespace FT_Driver.Pages
                 var pwmd5 = pw.FingerPrint.ToLower();
                 var mid = "";//pushChannelURI; //HttpUtility.UrlEncode(pushChannelURI); ;
                 var mType = ConstantVariable.mTypeWIN;
-
                 var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
-                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
-                if (output != null)
+
+                try
                 {
-                    try
+                    //Thử xem có lấy đc dữ liệu ko
+                    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverLoginAddress, input);
+                    var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
+                    if (driverLogin != null)
                     {
-
-                        var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
-                        if (driverLogin != null)
+                        if (driverLogin.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))// neu ok 0000
                         {
-                            if (driverLogin.content != null)
-                            {
-                                tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
+                            tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
 
-                                NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
-                                tNetUserLoginData["UserId"] = uid;
-                                tNetUserLoginData["PasswordMd5"] = pwmd5;
-                                tNetUserLoginData["UserLoginData"] = driverLogin;                                
-                            }
-                            else
-                            {
-                                MessageBox.Show(ConstantVariable.errLoginFailed);
-                                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
-                            }
+                            NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
+                            tNetUserLoginData["UserId"] = uid;
+                            tNetUserLoginData["PasswordMd5"] = pwmd5;
+                            tNetUserLoginData["UserLoginData"] = driverLogin;
                         }
                         else
                         {
-                            MessageBox.Show(ConstantVariable.errLoginFailed);
-                            grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                            MessageBox.Show("(Mã lỗi 3101) " + ConstantVariable.errLoginFailed);
+                            HideLoadingScreen();
+                            Debug.WriteLine("Có lỗi 265fgt67 ở Driver Login");
                         }
-
                     }
-                    catch (Exception)
+                    else
                     {
-
-                        //Login Failed | Đăng nhập không thành công
-                        MessageBox.Show(ConstantVariable.errLoginFailed);
-                        grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                        MessageBox.Show("(Mã lỗi 3102) " + ConstantVariable.errServerError);
+                        HideLoadingScreen();
+                        Debug.WriteLine("Có lỗi 693fgh10 ở Driver Login");
                     }
                 }
-                else
+                catch (Exception)
                 {
-                    MessageBox.Show(ConstantVariable.errConnectingError);
-                    grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                    //Nếu không thì
+                    MessageBox.Show("(Mã lỗi 3103) " + ConstantVariable.errConnectingError);
+                    HideLoadingScreen();
+                    Debug.WriteLine("Có lỗi 78s558 ở Driver Login");
                 }
 
             }
             else
             {
-                MessageBox.Show(ConstantVariable.errNotEmpty);
-                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                MessageBox.Show("(Mã lỗi 3104) " + ConstantVariable.errNotEmpty);
+                HideLoadingScreen();
+                Debug.WriteLine("Có lỗi 68dfghr ở Driver Login");
             }
 
         }

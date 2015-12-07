@@ -62,7 +62,7 @@ namespace FT_Rider.Pages
                     riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
                     if (riderLogin != null)
                     {
-                        if (riderLogin.status.Equals(ConstantVariable.responseCodeSuccess)) //0000 Code
+                        if (riderLogin.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 Code
                         {
                             tNetAppSetting["isLogin"] = "WasLogined";
                             NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));

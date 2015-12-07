@@ -60,7 +60,7 @@ namespace FT_Rider.Pages
                 myFavorite = JsonConvert.DeserializeObject<RiderGetListFavoriteDriver>(output);
 
 
-                if (myFavorite.status.Equals(ConstantVariable.responseCodeSuccess)) //0000 Code tra về ok
+                if (myFavorite.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 Code tra về ok
                 {
                     //Nếu có thông tin Taxi farvorite
                     try
@@ -147,7 +147,7 @@ namespace FT_Rider.Pages
                 deleteFavorite = JsonConvert.DeserializeObject<BaseResponse>(output);
 
                 //Nếu như xóa thành công
-                if (deleteFavorite.status.Equals(ConstantVariable.responseCodeSuccess)) //0000 Code tra về ok
+                if (deleteFavorite.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 Code tra về ok
                 {
                     //Tắt loading ở menu
                     HideButtonLoadingScreen();

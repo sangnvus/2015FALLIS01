@@ -71,9 +71,42 @@ namespace FT_Driver.Classes
         public const string notiTypeUpdateTrip = "UT";
         public const string notiTypePromotionTeip = "PT";
 
+
         //Response code
-        public const string responseCodeSuccess = "0000";
-        public const string responseCodeTaken = "013";
+        public const string RESPONSECODE_SUCCESS = "0000";
+        public const string RESPONSECODE_FAIL = "1111";
+        public const string RESPONSECODE_ACCOUNT_NOT_ACTIVE = "101";
+        public const string RESPONSECODE_USERNAME_NOT_CORRECT = "102";
+        public const string RESPONSECODE_PASSWORD_NOT_CORRECT = "103";
+
+        public const string RESPONSECODE_LMD_NOT_EQUAL = "201";
+        public const string RESPONSECODE_OLD_PASSWORD_WRONG = "301";
+        public const string RESPONSECODE_ERR_SYSTEM = "001";
+        public const string RESPONSECODE_DUPLICATED = "002";
+        public const string RESPONSECODE_INVALID_NUMBER = "003";
+        public const string RESPONSECODE_INVALID_CARD_NO = "004";
+        public const string RESPONSECODE_DUPPLICATED_PHONE_NUMBER = "005";
+        public const string RESPONSECODE_USERNAME_NOT_FOUND = "006";
+        public const string RESPONSECODE_INVALID_USER_GROUP = "007";
+        public const string RESPONSECODE_INVALID_PASSWORD = "008";
+
+        public const string RESPONSECODE_INVALID_DATA = "-1";
+        public const string RESPONSECODE_PROMOTION_CODE_NOT_FOUND = "009";
+        public const string RESPONSECODE_PROGRAM_OUT_OF_DATE = "010";
+        public const string RESPONSECODE_INVALID_PROMOTION_CODE = "011";
+        public const string RESPONSECODE_CANT_SEND_APNS = "012";
+        public const string RESPONSECODE_TRIP_TAKEN = "013";
+        public const string RESPONSECODE_CANT_SEND_GCM = "014";
+        public const string RESPONSECODE_NOT_ENOUGH_SEATS = "015";
+        public const string RESPONSECODE_UNREGISTERED_FACEBOOK_ACCOUNT = "016";
+        public const string RESPONSECODE_CAR_ALREADY_SELECTED = "017";
+        public const string RESPONSECODE_INVALID_VERIFY_CODE = "018";
+        public const string RESPONSECODE_INVALID_EMAIL = "019";
+        public const string RESPONSECODE_CAR_BUSY = "MS036";
+
+        public const string RESPONSECODE_TRIP_CANCELLED = "901";
+        public const string RESPONSECODE_TRIP_COMPLETED = "902";
+        public const string RESPONSECODE_TRIP_NO_RESPONSE = "903";
 
         //Start trip status
         public const string tripStatusNewTrip = "NT";

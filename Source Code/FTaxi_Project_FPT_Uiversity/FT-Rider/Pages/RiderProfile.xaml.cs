@@ -50,12 +50,65 @@ namespace FT_Rider.Pages
 
         private void LoadRiderProfile()
         {
-            txt_FirstName.Text = userData.content.fName;
-            txt_LastName.Text = userData.content.lName;
-            txt_Mobile.Text = "0" + userData.content.mobile;
-            txt_Email.Text = userData.content.email;
-            tbl_HomeAddress.Text = userData.content.hAdd;
-            tbl_OfficeAddress.Text = userData.content.oAdd;
+            if (userData.content.fName != null)
+            {
+                txt_FirstName.Text = userData.content.fName;
+            }
+            else
+            {
+                txt_FirstName.Text = string.Empty;
+            }
+
+            if (userData.content.lName != null)
+            {
+                txt_LastName.Text = userData.content.lName;
+            }
+            else
+            {
+                txt_LastName.Text = string.Empty;
+            }
+
+            if (userData.content.mobile != null)
+            {
+                txt_Mobile.Text = userData.content.mobile;
+            }
+            else
+            {
+                txt_Mobile.Text = string.Empty;
+            }
+
+            if (userData.content.hAdd != null)
+            {
+                tbl_HomeAddress.Text = userData.content.hAdd;
+            }
+            else
+            {
+                tbl_HomeAddress.Text = string.Empty;
+            }
+
+
+            if (userData.content.oAdd != null)
+            {
+                tbl_OfficeAddress.Text = userData.content.oAdd;
+            }
+            else
+            {
+                tbl_OfficeAddress.Text = string.Empty;
+            }
+            if (userData.content.email != null)
+            {
+                txt_Email.Text = userData.content.email;
+            }
+            else
+            {
+                txt_Email.Text = string.Empty;
+            }
+            
+           
+            
+            
+            
+            
         }
 
 
@@ -146,14 +199,14 @@ namespace FT_Rider.Pages
             var lName = txt_LastName.Text;
             var mobile = txt_Mobile.Text;
             var uid = userData.content.uid;
-            var olmd = preOlmd;; //Cái này là dùng lmd của Login
+            var olmd = preOlmd; ; //Cái này là dùng lmd của Login
             var pw = pwmd5;
             var input = string.Format("{{\"rid\":\"{0}\",\"email\":\"{1}\",\"fName\":\"{2}\",\"lName\":\"{3}\",\"mobile\":\"{4}\",\"uid\":\"{5}\",\"pw\":\"{6}\",\"olmd\":\"{7}\"}}", rid, email, fName, lName, mobile, uid, pw, olmd);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateProfile, input);
                 var updateStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                if (updateStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //Neu tra ve 0000
+                if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //Neu tra ve 0000
                 {
                     ///1. Cập nhật lmd
                     ///2. show messenger box
@@ -174,7 +227,7 @@ namespace FT_Rider.Pages
             {
                 HideLoadingSreen();
                 MessageBox.Show("(Mã lỗi 2201) " + ConstantVariable.errServerErr); //Co loi may chu
-                Debug.WriteLine("Có lỗi 7hsgt54 ở update profile");               
+                Debug.WriteLine("Có lỗi 7hsgt54 ở update profile");
             }
         }
 
@@ -241,6 +294,7 @@ namespace FT_Rider.Pages
             if (PhoneNumberEmpty || txt_Mobile.Text.Length != 10 || txt_Mobile.Text.Length != 11)
             {
                 MessageBox.Show(ConstantVariable.validMobile);
+                txt_Mobile.Focus();
                 return false;
             }
             else
@@ -251,22 +305,22 @@ namespace FT_Rider.Pages
 
         private void txt_LastName_LostFocus(object sender, RoutedEventArgs e)
         {
-            ValidateLastName();
+            //ValidateLastName();
         }
 
         private void txt_FirstName_LostFocus(object sender, RoutedEventArgs e)
         {
-            ValidateName();
+            //ValidateName();
         }
 
         private void txt_Email_LostFocus(object sender, RoutedEventArgs e)
         {
-            ValidateEmail();
+            //ValidateEmail();
         }
 
         private void txt_Mobile_LostFocus(object sender, RoutedEventArgs e)
         {
-            ValidatePhoneNumber();
+            //ValidatePhoneNumber();
         }
 
     }

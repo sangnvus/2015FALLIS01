@@ -1090,7 +1090,7 @@ namespace FT_Driver.Pages
                 if (output != null)
                 {
                     var acceptStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                    if (acceptStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    if (acceptStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
                         //Tắt Process bar sau khi hoàn thành
                         //pb_ButtonWait.Visibility = Visibility.Collapsed;
@@ -1117,7 +1117,7 @@ namespace FT_Driver.Pages
                         //6. Trạng thái lái xe chuyên qua BUSY ("BU")
                         UpdateDriverStatus(ConstantVariable.dStatusBusy);
                     }
-                    else if (acceptStatus.status.Equals(ConstantVariable.responseCodeTaken)) //013
+                    else if (acceptStatus.status.Equals(ConstantVariable.RESPONSECODE_TRIP_TAKEN)) //013
                     {
                         ///CODE CHO VIỆC THÔNG BÁO ĐÃ BỊ CHIẾM KHÁCH
                         ///CHO TRỞ VỀ MÀN HÌNH MAP
@@ -1164,7 +1164,7 @@ namespace FT_Driver.Pages
                 if (output != null)
                 {
                     var rejectStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                    if (rejectStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    if (rejectStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
                         ///1. Update lmd
                         ///2. Xóa toàn bộ thông tin Trip
@@ -1229,7 +1229,7 @@ namespace FT_Driver.Pages
                 if (output != null)
                 {
                     var startStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                    if (startStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    if (startStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {         
                         ///1. Update lmd
                         ///2 Hiện Button "chạm để thanh toán"
@@ -1279,7 +1279,7 @@ namespace FT_Driver.Pages
                 if (output != null)
                 {
                     var cancelStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                    if (cancelStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                    if (cancelStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
                         ///1. Update lmd
                         ///2. Xóa toàn bộ thông tin Trip

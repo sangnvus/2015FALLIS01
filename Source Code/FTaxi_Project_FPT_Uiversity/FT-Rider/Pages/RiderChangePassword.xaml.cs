@@ -95,7 +95,7 @@ namespace FT_Rider.Pages
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderChangePassword, input);
                 var changePassStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                if (changePassStatus.status.Equals(ConstantVariable.responseCodeSuccess)) //0000
+                if (changePassStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                 {
                     ///1. update lmd
                     ///2. tat loading screen
