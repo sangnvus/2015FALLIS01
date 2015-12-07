@@ -136,6 +136,9 @@
     <Compile Include="Pages\DriverFeedback.xaml.cs">
       <DependentUpon>DriverFeedback.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DriverLostPassword.xaml.cs">
+      <DependentUpon>DriverLostPassword.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\DriverMyTrip.xaml.cs">
       <DependentUpon>DriverMyTrip.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\DriverFeedback.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverLostPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

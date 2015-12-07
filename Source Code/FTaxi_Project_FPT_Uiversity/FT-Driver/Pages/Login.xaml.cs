@@ -73,6 +73,8 @@ namespace FT_Driver.Pages
                             tNetUserLoginData["UserId"] = uid;
                             tNetUserLoginData["PasswordMd5"] = pwmd5;
                             tNetUserLoginData["UserLoginData"] = driverLogin;
+                            tNetUserLoginData["UserLmd"] = driverLogin.lmd;
+                            tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
                         }
                         else
                         {

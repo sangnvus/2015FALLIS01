@@ -28,6 +28,11 @@ namespace FT_Driver.Classes
         public const string errConnectingError = "Xảy ra lỗi khi kết nối đến máy chủ. Vui lòng thử lại sau!";
         public const string errNotEmpty = "Vui lòng điền đầy đủ thông tin!";
         public const string errServerError = "Đang có lỗi máy chủ, vui lòng thử lại sau!";
+        public const string strResetPasswordSuccess = "Mật khẩu đã được gửi về hôm thư của bạn. Vui lòng kiếm tra và đăng nhập lại!";
+        public const string strOldPassNotCorrect = "Mật khẩu cũ không chính xác. Vui lòng kiếm tra lại!";
+        public const string strPassNotValid = "Mật khẩu phải lớn hơn 6 ký tự!";
+        public const string strPassNotLike = "Mật khẩu không giống nhau!";
+        public const string strChangePassSuccess = "Đổi mật khẩu thành công!";
 
 
         public const string tNetWsParameterName = "json";
@@ -43,8 +48,13 @@ namespace FT_Driver.Classes
         public const string tNetDriverStartTrip = "http://123.30.236.109:8088/TN/restServices/TripController/StartTrip";
         public const string tNetDriverCancelTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CancelTrip";
         public const string tNetDriverCompleteTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CompleteTrip";
+        public const string tNetDriverChangePassword = "http://123.30.236.109:8088/TN/restServices/DriverController/ChangePassword";
 
-        
+
+        //valid
+        public const string validMobile = "Số điện phải có 10 hoặc 11 số!";
+        public const string validName = "Vui lòng nhập tên!";
+        public const string validEmail = "Vui lòng Kiểm tra lại email!";
 
         //Login Page
         public const string strLoginSucess = "Đăng nhập thành công!";
