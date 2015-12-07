@@ -176,6 +176,9 @@
     <Compile Include="Pages\RiderRegister.xaml.cs">
       <DependentUpon>RiderRegister.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\TaxiList.xaml.cs">
+      <DependentUpon>TaxiList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -243,6 +246,10 @@
     <Page Include="Pages\RiderRegister.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\TaxiList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +354,7 @@
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="Images\Others\img_PageContentBreak_dark.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />
+    <Content Include="Images\Picker\img_Picker_CallCenter.png" />
     <Content Include="Images\Picker\img_Picker_CallTaxi.png" />
     <Content Include="Images\Picker\img_Picker_CarGoing.png" />
     <Content Include="Images\Picker\img_Picker_NoCarYet.png" />

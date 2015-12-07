@@ -89,6 +89,7 @@ namespace FT_Driver.Pages
             tNetUserLoginData.Remove("RawPassword");
             tNetUserLoginData.Remove("UserLmd");
             tNetUserLoginData.Remove("UserLoginData");
+            tNetUserLoginData.Remove("PushChannelURI");
             //tNetUserLoginData.Remove("cityNamesDB");
         }
 

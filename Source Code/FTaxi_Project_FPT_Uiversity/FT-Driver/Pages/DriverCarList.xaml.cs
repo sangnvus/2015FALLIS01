@@ -32,7 +32,7 @@ namespace FT_Driver.Pages
         VibrateController vibrateController = VibrateController.Default;
 
         VehicleInfo myVehicle;
-        string pushChannelURI = "";
+        string pushChannelURI = string.Empty;
 
         public DriverCarList()
         {

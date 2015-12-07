@@ -33,6 +33,7 @@ namespace FT_Driver.Classes
         public const string strPassNotValid = "Mật khẩu phải lớn hơn 6 ký tự!";
         public const string strPassNotLike = "Mật khẩu không giống nhau!";
         public const string strChangePassSuccess = "Đổi mật khẩu thành công!";
+        public const string strStatusNotAvaiable = "Trạng thái của bạn đã được chuyển qua 'Không Hoạt Động'!";
 
 
         public const string tNetWsParameterName = "json";
@@ -50,6 +51,12 @@ namespace FT_Driver.Classes
         public const string tNetDriverCompleteTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CompleteTrip";
         public const string tNetDriverChangePassword = "http://123.30.236.109:8088/TN/restServices/DriverController/ChangePassword";
 
+
+        //Confirmboz
+        public const string cfbLogOut = "Bạn có chắc là bạn muốn thoát tài khoản không?";
+        public const string cfbChangeStatus = "Bạn có chắc là bạn muốn đổi trạng thái không?";
+        public const string cfbYes = "Có";
+        public const string cfbNo = "Không";
 
         //valid
         public const string validMobile = "Số điện phải có 10 hoặc 11 số!";

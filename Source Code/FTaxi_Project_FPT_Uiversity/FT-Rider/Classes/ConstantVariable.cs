@@ -51,7 +51,7 @@ namespace FT_Rider.Classes
         public const string strPassNotValid = "Mật khẩu phải lớn hơn 6 ký tự!";
         public const string strPassNotLike = "Mật khẩu không giống nhau!";
         public const string strChangePassSuccess = "Đổi mật khẩu thành công!";
-        public const string strAddFavoriteSuccess = "Bạn đã thêm thành công láy xe yêu thích!";
+        public const string strAddFavoriteSuccess = "Bạn đã thêm thành công lái xe yêu thích!";
 
 
         //valid

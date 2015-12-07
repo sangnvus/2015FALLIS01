@@ -35,11 +35,11 @@ namespace FT_Driver.Pages
         //USER DATA
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
-        
+
         DriverLogin userData = new DriverLogin();
         string userId = "";
         string pwmd5 = "";
-        
+
 
         //For Store Points
         List<GeoCoordinate> driverCoordinates = new List<GeoCoordinate>();
@@ -109,14 +109,6 @@ namespace FT_Driver.Pages
         {
             InitializeComponent();
 
-            //Tạo kênh Notification
-            CreatePushChannel();
-
-
-            //get First Local Position
-            GetCurrentCorrdinate();
-
-
             //Get User data from login
             if (tNetUserLoginData.Contains("UserLoginData"))
             {
@@ -126,14 +118,17 @@ namespace FT_Driver.Pages
                 mySelectedVehicle = (VehicleInfo)tNetUserLoginData["MySelectedVehicle"];
             }
 
+            //Tạo kênh Notification
+            CreatePushChannel();
+
+            //get First Local Position
+            GetCurrentCorrdinate();
 
             //Open Status Screen
             grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
 
-
             this.LoadDriverProfile();
             this.UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
-
 
             updateLocationTimer = new DispatcherTimer();
             updateLocationTimer.Tick += new EventHandler(updateLocationTimer_Tick);
@@ -190,14 +185,21 @@ namespace FT_Driver.Pages
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateStatus, input);
                 var driverUpdate = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (driverUpdate.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //Neu chuyen thanh cong
+                {
+                    Debug.WriteLine("256fght Chuyen thanh cong");
+                }
+                else
+                {
+                    MessageBox.Show("(Mã lỗi 3301) " + ConstantVariable.errServerError); //Có lỗi máy chủ
+                }
             }
             catch (Exception)
             {
-                Debug.WriteLine("Update Driver Status không thành công"); //DELETE AFTER FINISH
-                //throw; //Exc here <<<<<<<<<<<<<<<<<<
+                Debug.WriteLine("1256ghn Update Driver Status không thành công"); //DELETE AFTER FINISH
             }
 
-            Debug.WriteLine("Update Driver Status OK"); //DELETE AFTER FINISH
+            Debug.WriteLine("879s233 Update Driver Status OK"); //DELETE AFTER FINISH
         }
         //------ END Update Driver Status ------//
 
@@ -296,7 +298,7 @@ namespace FT_Driver.Pages
 
         }
 
-        private  void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        private void geolocator_PositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
             Debug.WriteLine("Thay đổi vị trí map"); //DELETE AFTER FINISH
             Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -463,8 +465,7 @@ namespace FT_Driver.Pages
                 // Add the MapLayer to the Map.
                 map_DriverMap.Layers.Add(driverMapLayer);
 
-                //Calculate Distance
-                distanceKm = Math.Round(GetTotalDistance(driverCoordinates), 0); //Round double in zero decimal places
+              
             }
             else
             {
@@ -508,95 +509,6 @@ namespace FT_Driver.Pages
         //    }
         //}
 
-
-
-
-
-
-
-        //------ BEGIN calculate Distance ------//
-        private static double GetTotalDistance(IEnumerable<GeoCoordinate> coordinates)
-        {
-            double result = 0;
-
-            if (coordinates.Count() > 1)
-            {
-                GeoCoordinate previous = coordinates.First();
-
-                foreach (var current in coordinates)
-                {
-                    result += previous.GetDistanceTo(current);
-                }
-            }
-
-            return result;
-        }
-        //------ END calculate Distance ------//
-
-
-
-
-
-        //------ BEGIN show and Design UI 3 taxi near current position ------//
-        private void ShowNearDrivers(double lat, double lng, string tName)
-        {
-            GeoCoordinate TaxiCoordinate = new GeoCoordinate(lat, lng);
-
-            //Create taxi icon on map
-            Image taxiIcon = new Image();
-            taxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
-
-            //Add a tapped event
-            taxiIcon.Tap += taxiIcon_Tap;
-
-            //Create Taxi Name 
-            TextBlock taxiName = new TextBlock();
-            taxiName.HorizontalAlignment = HorizontalAlignment.Center;
-            taxiName.Text = tName;
-            taxiName.FontSize = 12;
-            taxiName.Foreground = new SolidColorBrush(Color.FromArgb(255, (byte)46, (byte)159, (byte)255)); //RBG color for #2e9fff
-
-            //Create Stack Panel to group icon, taxi name, ...            
-            Rectangle taxiNameBackground = new Rectangle();
-            taxiNameBackground.Height = 18;
-            taxiNameBackground.Width = taxiName.ToString().Length + 20;
-            taxiNameBackground.RadiusX = 9;
-            taxiNameBackground.RadiusY = 7;
-            //taxiNameBackground.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)171, (byte)171, (byte)171)); //RBG color for #ababab
-            taxiNameBackground.Fill = new SolidColorBrush(Color.FromArgb(255, (byte)213, (byte)235, (byte)255)); //RBG color for #d5ebff
-
-            Grid taxiNameGrid = new Grid();
-            taxiNameGrid.Margin = new Thickness(0, 4, 0, 4); //Margin Top and Bottom 4px
-            taxiNameGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            taxiNameGrid.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            taxiNameGrid.Children.Add(taxiNameBackground);
-            taxiNameGrid.Children.Add(taxiName);
-
-            StackPanel taxiStackPanel = new StackPanel();
-            //taxiStackPanel.Margin  = new Thickness(5, 0, 5, 0);
-            taxiStackPanel.Children.Add(taxiIcon);
-            taxiStackPanel.Children.Add(taxiNameGrid);
-
-            // Create a MapOverlay to contain the circle.
-            MapOverlay myTaxiOvelay = new MapOverlay();
-            //myTaxiOvelay.Content = myCircle;
-            myTaxiOvelay.Content = taxiStackPanel;
-            myTaxiOvelay.PositionOrigin = new Point(0.5, 0.5);
-            myTaxiOvelay.GeoCoordinate = TaxiCoordinate;
-
-            //Add to Map's Layer
-            driverMapLayer = new MapLayer();
-            driverMapLayer.Add(myTaxiOvelay);
-
-            map_DriverMap.Layers.Add(driverMapLayer);
-        }
-
-        //Tapped event
-        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-
-        }
-        //------ END show and Design UI 3 taxi near current position ------//
 
 
 
@@ -711,27 +623,67 @@ namespace FT_Driver.Pages
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
 
-        private void btn_ChangeStatus_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+
+
+        private void SetChangeStatusButtonIsGreen()
         {
-            // Update Status here
-            // Change Button Color Here after change 
+            btn_ChangeStatus_Red.Visibility = Visibility.Collapsed;
+            btn_ChangeStatus_Green.Visibility = Visibility.Visible;
         }
 
-
-
+        private void SetChangeStatusButtonIsRed()
+        {
+            btn_ChangeStatus_Red.Visibility = Visibility.Visible;
+            btn_ChangeStatus_Green.Visibility = Visibility.Collapsed;
+        }
 
         private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (tNetAppSetting.Contains("isLogin"))
-            {
-                tNetAppSetting.Remove("isLogin");
-                tNetUserLoginData.Remove("UserId");
-                tNetUserLoginData.Remove("PasswordMd5");
-                NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
-            }
+            LogOut();
+
         }
 
+        private void LogOut()
+        {
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                //set the properties                
+                Message = ConstantVariable.cfbLogOut, // "Bạn có chắc là bạn muốn thoát tài khoản không?";
+                LeftButtonContent = ConstantVariable.cfbYes,
+                RightButtonContent = ConstantVariable.cfbNo
+            };
 
+            //Add the dismissed event handler
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        if (tNetAppSetting.Contains("isLogin"))
+                        {
+                            tNetAppSetting.Remove("isLogin");
+                            tNetUserLoginData.Remove("UserId");
+                            tNetUserLoginData.Remove("PasswordMd5");
+                            tNetUserLoginData.Remove("RawPassword");
+                            tNetUserLoginData.Remove("UserLmd");
+                            tNetUserLoginData.Remove("PushChannelURI");
+                            NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+                        }
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        messageBox.Dismiss();
+
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+            //add the show method
+            //messageBox.Show();
+        }
 
 
 
@@ -916,7 +868,7 @@ namespace FT_Driver.Pages
                 ///1. Nạp thông tin lên grid
                 ///2. tắt Loading grid screen
                 ///3. Hiển thị vị trí khách hàng có yêu cầu 
-                
+
                 //1. Nạp thông tin lên grid
                 txt_RiderAddress.Text = address.results[0].formatted_address.ToString();
                 txt_RiderMobile.Text = "0" + newTrip.mobile;
@@ -980,7 +932,7 @@ namespace FT_Driver.Pages
 
         private void SwitchToPikingStatus()
         {
-            
+
         }
         private void SwitchToRejectStatus()
         {
@@ -1174,7 +1126,7 @@ namespace FT_Driver.Pages
 
                         //1.  Update lmd
                         tlmd = (long)rejectStatus.lmd;
-                                               
+
 
                         //2. Xóa toàn bộ thông tin Trip
                         DeleteTrip();
@@ -1230,7 +1182,7 @@ namespace FT_Driver.Pages
                 {
                     var startStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
                     if (startStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
-                    {         
+                    {
                         ///1. Update lmd
                         ///2 Hiện Button "chạm để thanh toán"
                         ///3. Hiển thị giá, quãng đường, cập nhật sau 20s
@@ -1244,7 +1196,7 @@ namespace FT_Driver.Pages
                         //Hiện button "Tap to pay"
                         ShowStartTripScreen();
 
-                        
+
                     }
                     else
                     {
@@ -1391,7 +1343,7 @@ namespace FT_Driver.Pages
         {
             Debug.WriteLine("ShowAcceptRejectGrid");
             grv_AcceptReject.Visibility = Visibility.Visible;
-            btn_ChangeStatus.Visibility = Visibility.Collapsed;
+            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
         }
 
         private void ShowStartCancelGird()
@@ -1405,7 +1357,7 @@ namespace FT_Driver.Pages
         {
             Debug.WriteLine("ShowStartTripScreen");
             grv_AcceptReject.Visibility = Visibility.Collapsed;
-            btn_ChangeStatus.Visibility = Visibility.Collapsed;
+            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
             grv_StartTrip.Visibility = Visibility.Visible;
         }
 
@@ -1426,9 +1378,62 @@ namespace FT_Driver.Pages
         /// HÀM NÀY ĐỂ ĐƯA DRIVER VỀ MÀN HÌNH CHÍNH
         /// </summary>
         private void SetViewAtHomeState()
-        {            
+        {
             grv_AcceptReject.Visibility = Visibility.Collapsed;
-            btn_ChangeStatus.Visibility = Visibility.Visible;
+            grv_ChangeStatus.Visibility = Visibility.Visible;
+        }
+
+        private void btn_ChangeStatus_Red_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Chuyển qua trang chọn xe để kích hoạt trạng thái
+            NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
+        }
+
+        private void btn_ChangeStatus_Green_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ChangeDriverStatus();
+        }
+
+        private void ChangeDriverStatus()
+        {
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                //set the properties                
+                Message = ConstantVariable.cfbChangeStatus,
+                LeftButtonContent = ConstantVariable.cfbYes,
+                RightButtonContent = ConstantVariable.cfbNo
+            };
+
+            //Add the dismissed event handler
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        ShowLoadingGridScreen();
+                        // Update Status here
+                        // Change Button Color Here after change 
+                        UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Truyền lên AC để chuyển qua NotAvailable
+
+                        //2 CHuyển trạng thái button 
+                        SetChangeStatusButtonIsRed();
+
+                        HideLoadingGridScreen();
+
+                        MessageBox.Show(ConstantVariable.strStatusNotAvaiable);// Không hoạt động
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        messageBox.Dismiss();
+
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+            messageBox.Show();
         }
 
     }
