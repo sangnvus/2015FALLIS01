@@ -296,8 +296,15 @@ namespace FT_Rider.Pages
         //------ END get current Position ------//
 
 
+        private void ShowCallTaxiCenterPicker()
+        {
+            img_PickerLabel_Red.Visibility = Visibility.Visible;
+        }
 
-
+        private void HideCallTaxiCenterPicker()
+        {
+            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
+        }
 
         //------ BEGIN get near Driver ------//
         /// <summary>
@@ -307,6 +314,8 @@ namespace FT_Rider.Pages
         /// </summary>
         private async void GetNearDriver()
         {
+            HideCallTaxiCenterPicker();
+
             if (pickupLat != 0 && pickupLng != 0)
             {
                 var uid = userData.content.uid;
@@ -346,6 +355,13 @@ namespace FT_Rider.Pages
                                 lat = item.lat,
                                 lng = item.lng
                             };
+                        }
+
+                        //Nếu như không có xe nào thì hiện nút gọi hãng
+                        if (nearDriverCollection.Count == 0)
+                        {
+                            Thread.Sleep(2000);
+                            ShowCallTaxiCenterPicker();
                         }
 
                         foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
@@ -1039,6 +1055,7 @@ namespace FT_Rider.Pages
             //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
             //pickupTimer.Stop();
             img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
+            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
             isPickup = true;
 
             Debug.WriteLine("RiderMap_MouseLeftButtonDown");
@@ -1300,6 +1317,7 @@ namespace FT_Rider.Pages
         private void map_RiderMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             img_PickerLabel.Visibility = Visibility.Visible;
+            img_PickerLabel_Red.Visibility = Visibility.Visible;
         }
 
         private void TouchFeedback()
@@ -1307,97 +1325,12 @@ namespace FT_Rider.Pages
             vibrateController.Start(TimeSpan.FromSeconds(0.1));
         }
 
-        private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            btn_RequestTaxi.IsEnabled = false;
-            TouchFeedback();
-            grv_Picker.Visibility = Visibility.Collapsed;
-            SwitchToWaitingStatus();
-
-
-            //Prepare for req service
-            int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
-            string eCityName;
-            int eCity;
-            if (destinationLat == 0 && destinationLng == 0)
-            {
-                eCity = 0;
-                eCityName = "";
-            }
-            else
-            {
-                eCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng));
-                eCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng);
-            }
-            string sCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng);
-            string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
-            string proCode = "";
-            pickupType = ConstantVariable.MANY;
-            List<string> didList = new List<string>();
-            foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
-            {
-                didList.Add(tmpIter.Key);
-            }
-
-            //Create Request Trip Onject 
-            RiderCreateTrip createTrip = new RiderCreateTrip
-            {
-                uid = userData.content.uid,
-                rid = userData.content.rid,
-                did = didList,///
-                sAddr = txt_PickupAddress.Text,
-                eAddr = txt_DestinationAddress.Text,
-                sLat = pickupLat,
-                sLng = pickupLng,
-                eLat = destinationLat,
-                eLng = destinationLng,
-                sCity = sCity,
-                eCity = eCity,
-                sCityName = sCityName,
-                eCityName = eCityName,
-                cntry = cntry,
-                proCode = proCode,
-                rType = pickupType///
-            };
-
-            string didString = "";
-            for (int i = 0; i < createTrip.did.Count; i++)
-            {
-                didString += didList[i];
-                didString += ",";
-            }
-
-            // Kiểm tra khi không có xe nào xung quanh >> bug
-            var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
-                + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
-                + "\"eLat\":\"{7}\",\"eLng\":\"{8}\",\"sCity\":\"{9}\","
-                + "\"eCity\":\"{10}\",\"sCityName\":\"{11}\",\"eCityName\":\"{12}\","
-                + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
-                createTrip.uid,
-                createTrip.rid,
-                didString.Remove(didString.Length - 1), //.Remove(didString.Length-1) to cut "," character at the end of string // ["a","b","c"]
-                createTrip.sAddr,
-                createTrip.eAddr,
-                createTrip.sLat.ToString().Replace(',', '.'),
-                createTrip.sLng.ToString().Replace(',', '.'),
-                createTrip.eLat.ToString().Replace(',', '.'),
-                createTrip.eLng.ToString().Replace(',', '.'),
-                createTrip.sCity,
-                createTrip.eCity,
-                createTrip.sCityName,
-                createTrip.eCityName,
-                createTrip.cntry,
-                createTrip.proCode,
-                createTrip.rType);
-            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCreateTrip, input);
-            var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
-            if (createTripResponse.lmd != 0) //check if create trip ok
-            {
-
-                /* btn_RequestTaxi.Content = "";*/
-                ///Code for create trip successed//
-            }
-
+            chk_AutoRecall.IsChecked = true;
+            grv_Step02.Visibility = Visibility.Visible;
+            btn_RequestTaxiMN.Visibility = Visibility.Visible;
+            btn_RequestTaxi.Visibility = Visibility.Collapsed;
         }
 
 
@@ -1641,13 +1574,16 @@ namespace FT_Rider.Pages
             ///1. Hiện mess
             ///2. chờ sau 3 giây tắt grid
             ///3. hiện vị trí xe
+            ///
+            MessageBox.Show(ConstantVariable.strCarAreStarting);
             
             //1.
             tbl_DriverStatus.Text = ConstantVariable.strCarAreStarting;
 
             //2.
-            Thread.Sleep(3000);
+            Thread.Sleep(1500);
 
+            grv_Step02.Visibility = Visibility.Collapsed;
             //3.
 
             
@@ -1897,6 +1833,7 @@ namespace FT_Rider.Pages
                             tNetUserLoginData.Remove("PasswordMd5");
                             tNetUserLoginData.Remove("RawPassword");
                             tNetUserLoginData.Remove("UserLmd");
+                            //tNetUserLoginData.Remove("PushChannelURI");
                             NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
                         }
                         break;
@@ -1942,6 +1879,107 @@ namespace FT_Rider.Pages
         private void tbl_About_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/About.xaml", UriKind.Relative));
+        }
+
+        private async void btn_RequestTaxiMN_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            btn_RequestTaxi.IsEnabled = false;
+            TouchFeedback();
+            grv_Picker.Visibility = Visibility.Collapsed;
+            SwitchToWaitingStatus();
+
+
+            //Prepare for req service
+            int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
+            string eCityName;
+            int eCity;
+            if (destinationLat == 0 && destinationLng == 0)
+            {
+                eCity = 0;
+                eCityName = "";
+            }
+            else
+            {
+                eCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng));
+                eCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng);
+            }
+            string sCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng);
+            string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
+            string proCode = "";
+            pickupType = ConstantVariable.MANY;
+            List<string> didList = new List<string>();
+            foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+            {
+                didList.Add(tmpIter.Key);
+            }
+
+            //Create Request Trip Onject 
+            RiderCreateTrip createTrip = new RiderCreateTrip
+            {
+                uid = userData.content.uid,
+                rid = userData.content.rid,
+                did = didList,///
+                sAddr = txt_PickupAddress.Text,
+                eAddr = txt_DestinationAddress.Text,
+                sLat = pickupLat,
+                sLng = pickupLng,
+                eLat = destinationLat,
+                eLng = destinationLng,
+                sCity = sCity,
+                eCity = eCity,
+                sCityName = sCityName,
+                eCityName = eCityName,
+                cntry = cntry,
+                proCode = proCode,
+                rType = pickupType///
+            };
+
+            string didString = "";
+            for (int i = 0; i < createTrip.did.Count; i++)
+            {
+                didString += didList[i];
+                didString += ",";
+            }
+
+            // Kiểm tra khi không có xe nào xung quanh >> bug
+            try
+            {
+                var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
+                + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
+                + "\"eLat\":\"{7}\",\"eLng\":\"{8}\",\"sCity\":\"{9}\","
+                + "\"eCity\":\"{10}\",\"sCityName\":\"{11}\",\"eCityName\":\"{12}\","
+                + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
+                createTrip.uid,
+                createTrip.rid,
+                didString.Remove(didString.Length - 1), //.Remove(didString.Length-1) to cut "," character at the end of string // ["a","b","c"]
+                createTrip.sAddr,
+                createTrip.eAddr,
+                createTrip.sLat.ToString().Replace(',', '.'),
+                createTrip.sLng.ToString().Replace(',', '.'),
+                createTrip.eLat.ToString().Replace(',', '.'),
+                createTrip.eLng.ToString().Replace(',', '.'),
+                createTrip.sCity,
+                createTrip.eCity,
+                createTrip.sCityName,
+                createTrip.eCityName,
+                createTrip.cntry,
+                createTrip.proCode,
+                createTrip.rType);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCreateTrip, input);
+                var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (createTripResponse.lmd != 0) //check if create trip ok
+                {
+
+                    /* btn_RequestTaxi.Content = "";*/
+                    ///Code for create trip successed//
+                }
+            }
+            catch (Exception)
+            {
+                
+               //Code thong bao, khong co xe nao xung quanh
+                MessageBox.Show("Rất tiếc, không có xe nào xung quanh!");
+            }
         }
     }
 }

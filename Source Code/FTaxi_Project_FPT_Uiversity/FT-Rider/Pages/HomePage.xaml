@@ -115,10 +115,7 @@
 						</i:EventTrigger>
 					</i:Interaction.Triggers>
                 </TextBlock>
-                <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize}" Tap="btn_Logout_Tap">
-                    <Button.BorderBrush>
-                        <SolidColorBrush Color="White" Opacity="0.2"/>
-                    </Button.BorderBrush>
+                <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize}" Tap="btn_Logout_Tap" Height="90" VerticalAlignment="Bottom" BorderBrush="{x:Null}">
                     <Button.Background>
                         <SolidColorBrush Color="{StaticResource Button_Background_Color_Red}"/>
                     </Button.Background>
@@ -175,7 +172,7 @@
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                     </Rectangle.Fill>
                 </Rectangle>
-                <Rectangle x:Name="line1_Copy8" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,681,0,0">
+                <Rectangle x:Name="line1_Copy8" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,673,0,0">
                     <Rectangle.Fill>
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                     </Rectangle.Fill>
@@ -267,6 +264,14 @@
                             <SolidColorBrush Color="White" Opacity="0.2"/>
                         </Button.BorderBrush>
                     </Button>
+                    <Button x:Name="btn_RequestTaxiMN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="480" Content="YÊU CẦU TAXI" Visibility="Collapsed" Tap="btn_RequestTaxiMN_Tap">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
+                        </Button.Background>
+                        <Button.BorderBrush>
+                            <SolidColorBrush Color="White" Opacity="0.2"/>
+                        </Button.BorderBrush>
+                    </Button>
                     <Grid x:Name="grv_CancelTaxi" Height="100" VerticalAlignment="Bottom" Visibility="Collapsed">
                         <Button x:Name="btn_CancelTaxi" Content="CHẠM ĐỂ HỦY" VerticalAlignment="Bottom" Height="90" Padding="10,25,10,6" Margin="0" Tap="btn_CancelTaxi_Tap">
                             <Button.BorderBrush>
@@ -293,6 +298,13 @@
                 <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="141" Margin="76,273,75,0" VerticalAlignment="Top" Width="305.3">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
                     <Image x:Name="img_PickerLabel" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallTaxi.png" Stretch="None" Tap="img_PickerLabel_Tap"/>
+                    <Image x:Name="img_PickerLabel_Red" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallCenter.png" Stretch="None" Visibility="Collapsed">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <ec:NavigateToPageAction TargetPage="/Pages/TaxiList.xaml"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">

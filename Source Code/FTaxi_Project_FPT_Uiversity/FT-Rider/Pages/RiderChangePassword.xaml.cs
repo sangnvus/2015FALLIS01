@@ -63,6 +63,7 @@ namespace FT_Rider.Pages
             tNetUserLoginData.Remove("UserLmd");
             tNetUserLoginData.Remove("UserLoginData");
             tNetUserLoginData.Remove("cityNamesDB");
+            //tNetUserLoginData.Remove("PushChannelURI");
         }
 
 
