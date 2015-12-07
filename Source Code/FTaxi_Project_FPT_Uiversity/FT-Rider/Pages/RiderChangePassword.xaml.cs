@@ -70,7 +70,7 @@ namespace FT_Rider.Pages
         {
             if (txt_OldPassword.Password.Equals(null))
             {
-                MessageBox.Show("Vui long");
+                MessageBox.Show("Lòng điền thông tin cần thiết!");
             }
             else
             {
