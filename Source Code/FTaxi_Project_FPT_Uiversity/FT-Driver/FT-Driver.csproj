@@ -124,20 +124,26 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\CompanyInfo.xaml.cs">
       <DependentUpon>CompanyInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DriverCarList.xaml.cs">
       <DependentUpon>DriverCarList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\DriverFeedback.xaml.cs">
+      <DependentUpon>DriverFeedback.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DriverMyTrip.xaml.cs">
+      <DependentUpon>DriverMyTrip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FisrtRunningAppIntro.xaml.cs">
       <DependentUpon>FisrtRunningAppIntro.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\HomePayment.xaml.cs">
-      <DependentUpon>HomePayment.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -167,11 +173,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\CompanyInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\DriverCarList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverFeedback.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DriverMyTrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -182,10 +200,6 @@
     <Page Include="Pages\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\HomePayment.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Login.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -232,6 +246,7 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\About\img_About.png" />
     <Content Include="Images\Alerts\img_CanceledTrip.png" />
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
@@ -301,11 +316,13 @@
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
+    <Content Include="Images\MyTrip\img_MyTrip.png" />
     <Content Include="Images\Others\img_AppNavbar.png" />
     <Content Include="Images\Others\img_DefaultAvatar.png" />
     <Content Include="Images\Others\img_default_avatar_dark.png" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
+    <Content Include="Images\Others\img_PageContentBreak_dark.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />
     <Content Include="Images\Picker\img_Picker_CallTaxi.png" />
     <Content Include="Images\Picker\img_Picker_CarGoing.png" />
@@ -318,6 +335,9 @@
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />
     <Content Include="Images\Taxis\img_CarIcon_Vertical_Down.png" />
     <Content Include="Images\Taxis\img_CarIcon_Vertical_Up.png" />
+    <Content Include="img_About.png" />
+    <Content Include="img_MyTrip.png" />
+    <Content Include="img_PageContentBreak_dark.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
@@ -367,6 +387,7 @@
       <HintPath>..\packages\ImageTools.0.3.1\lib\sl3-wp\ImageTools.Utils.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=8.0.1.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\wp8\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
@@ -392,6 +413,7 @@
       <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Telerik.Windows.Controls.Data, Version=2013.2.718.3040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Reference\Telerik\Telerik.Windows.Controls.Data.dll</HintPath>
