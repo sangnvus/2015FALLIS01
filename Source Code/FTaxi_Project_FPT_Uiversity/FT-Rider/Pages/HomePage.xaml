@@ -199,7 +199,6 @@
                     <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2" ResolveCompleted="map_RiderMap_ResolveCompleted" MouseLeftButtonUp="map_RiderMap_MouseLeftButtonUp" MouseLeftButtonDown="map_RiderMap_MouseLeftButtonDown"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
-                    <Grid x:Name="grv_CallTaxi" HorizontalAlignment="Center" Height="73" VerticalAlignment="Bottom" Width="480" Margin="0,0,0,75"/>
                     <Grid x:Name="grv_CarsBar" HorizontalAlignment="Center" Height="76" VerticalAlignment="Bottom" Width="480" Margin="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="31*"/>
@@ -218,19 +217,19 @@
                         </Rectangle>
                         <Rectangle x:Name="line" HorizontalAlignment="Left" Height="1" Margin="19,60,0,0" VerticalAlignment="Top" Width="396" Fill="#FFA8A8A8"/>
                         <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp" LostFocus="txt_InputAddress_LostFocus" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="25" FontWeight="Light" FontStretch="SemiCondensed" SelectionForeground="{x:Null}" GotFocus="txt_InputAddress_GotFocus" Foreground="White" Width="480" Padding="2,2,30,2"/>
-                        <phone:LongListSelector x:Name="lls_AutoComplete" Margin="10,66,10,-291" Width="{StaticResource Longlistselector_WidthSize}" SelectionChanged="lls_AutoComplete_SelectionChanged" Visibility="Collapsed">
+                        <phone:LongListSelector x:Name="lls_AutoComplete" Margin="10,66,10,-291" Width="{StaticResource Longlistselector_WidthSize}" SelectionChanged="lls_AutoComplete_SelectionChanged" Visibility="Collapsed" IsEnabled="False">
                             <phone:LongListSelector.Background>
                                 <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                             </phone:LongListSelector.Background>
                             <phone:LongListSelector.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="20"/>
-                                        <Rectangle HorizontalAlignment="Center" Height="1" Width="456">
+                                        <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="28"/>
+                                        <!--<Rectangle HorizontalAlignment="Center" Height="1" Width="456">
                                             <Rectangle.Fill>
                                                 <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                                             </Rectangle.Fill>
-                                        </Rectangle>
+                                        </Rectangle>-->
                                     </StackPanel>
                                 </DataTemplate>
                             </phone:LongListSelector.ItemTemplate>
@@ -292,19 +291,10 @@
                         <ProgressBar x:Name="pb_PleaseWait" HorizontalAlignment="Left" Height="10" VerticalAlignment="Bottom" Width="448" Margin="0" IsIndeterminate="True" Foreground="White"/>
                     </Grid>
                 </Grid>
-                <Grid x:Name="grv_Step03" Height="62" VerticalAlignment="Bottom" Width="480" Margin="0,668,0,0" Visibility="Collapsed">
-                    <Image x:Name="img_noCarYet" HorizontalAlignment="Left" Height="62" VerticalAlignment="Top" Width="480" Source="/Images/Grid_NoCarYet/img_CallCenter.jpg"/>
-                </Grid>
                 <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="141" Margin="76,273,75,0" VerticalAlignment="Top" Width="305.3">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
                     <Image x:Name="img_PickerLabel" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallTaxi.png" Stretch="None" Tap="img_PickerLabel_Tap"/>
-                    <Image x:Name="img_PickerLabel_Red" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallCenter.png" Stretch="None" Visibility="Collapsed">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                <ec:NavigateToPageAction TargetPage="/Pages/TaxiList.xaml"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Image>
+                    <Image x:Name="img_PickerLabel_Red" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallCenter.png" Stretch="None" Visibility="Collapsed" Tap="img_PickerLabel_Red_Tap"/>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">

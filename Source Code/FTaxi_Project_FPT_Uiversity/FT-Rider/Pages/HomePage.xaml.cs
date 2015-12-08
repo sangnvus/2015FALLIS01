@@ -89,6 +89,7 @@ namespace FT_Rider.Pages
         string selectedDid = null; //This variable to detect what car is choosen in map
         DispatcherTimer getNearDriverTimer;
 
+
         //For GET PICK UP & Create Trip
         double pickupLat;
         double pickupLng;
@@ -110,6 +111,9 @@ namespace FT_Rider.Pages
         string pushChannelURI = "";
         string notificationReceivedString = string.Empty;
         string notificationType = string.Empty;
+
+        //For change label
+        DispatcherTimer changeLabelRedTimer;
         
 
 
@@ -118,34 +122,21 @@ namespace FT_Rider.Pages
 
             InitializeComponent();
 
-            //Get User data from login
-            if (tNetUserLoginData.Contains("UserLoginData"))
-            {
-                userData = new RiderLogin();
-                userData = (RiderLogin)tNetUserLoginData["UserLoginData"];
-            }
-            if (tNetUserLoginData.Contains("UserId") && tNetUserLoginData.Contains("PasswordMd5"))
-            {
-                userId = (string)tNetUserLoginData["UserId"];
-                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
-            }
-            if (tNetUserLoginData.Contains("RawPassword"))
-            {
-                rawPassword = (string)tNetUserLoginData["RawPassword"];
-            }
+            //Hiện loading screen
+            ShowLoadingScreen();
+
+            //Lấy dữ liệu login
+            GetUserLoginData();
 
             //Tạo kênh Notification
             CreatePushChannel();
 
 
-            //get First Local Position
+            //Lấy tọa độ hiện tại
             GetCurrentCoordinate();
 
-            //hide all step screen
-            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
-            this.lls_AutoComplete.IsEnabled = false;
 
-            //default taxi type
+            //Đặt kiểu mặc định cho taxi là Kinh tế
             taxiType = TaxiTypes.Type.ECO.ToString();
 
             //Load Rider Profile on Left Menu
@@ -153,10 +144,6 @@ namespace FT_Rider.Pages
 
             //Create CityName DB
             LoadCityNameDataBase();
-            //
-            //pickupTimer = new DispatcherTimer();
-            //pickupTimer.Tick += new EventHandler(pickupTimer_Tick);
-            //pickupTimer.Interval = new TimeSpan(0, 0, 0, 2);
 
 
             //Cái này để chạy Getneardriver. 
@@ -176,6 +163,25 @@ namespace FT_Rider.Pages
 
 
 
+
+        private void GetUserLoginData()
+        {
+            //Get User data from login
+            if (tNetUserLoginData.Contains("UserLoginData"))
+            {
+                userData = new RiderLogin();
+                userData = (RiderLogin)tNetUserLoginData["UserLoginData"];
+            }
+            if (tNetUserLoginData.Contains("UserId") && tNetUserLoginData.Contains("PasswordMd5"))
+            {
+                userId = (string)tNetUserLoginData["UserId"];
+                pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
+            }
+            if (tNetUserLoginData.Contains("RawPassword"))
+            {
+                rawPassword = (string)tNetUserLoginData["RawPassword"];
+            }
+        }
 
 
         private void pickupTimer_Tick(object sender, EventArgs e)
@@ -296,15 +302,7 @@ namespace FT_Rider.Pages
         //------ END get current Position ------//
 
 
-        private void ShowCallTaxiCenterPicker()
-        {
-            img_PickerLabel_Red.Visibility = Visibility.Visible;
-        }
 
-        private void HideCallTaxiCenterPicker()
-        {
-            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
-        }
 
         //------ BEGIN get near Driver ------//
         /// <summary>
@@ -357,11 +355,15 @@ namespace FT_Rider.Pages
                             };
                         }
 
+                        
                         //Nếu như không có xe nào thì hiện nút gọi hãng
                         if (nearDriverCollection.Count == 0)
                         {
-                            Thread.Sleep(2000);
-                            ShowCallTaxiCenterPicker();
+                            changeLabelRedTimer = new DispatcherTimer();
+                            changeLabelRedTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
+                            changeLabelRedTimer.Interval = new TimeSpan(0,0,0,2);
+
+                            changeLabelRedTimer.Start();
                         }
 
                         foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
@@ -396,6 +398,18 @@ namespace FT_Rider.Pages
 
 
 
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY LÀ ĐỂ ĐỔI LABEL RED
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void changeLabelRedTimer_Tick(object sender, EventArgs e)
+        {
+            ShowCallTaxiCenterPicker();
+            changeLabelRedTimer.Stop();
         }
         //------ END get near Driver ------//
 
@@ -730,6 +744,10 @@ namespace FT_Rider.Pages
 
 
         //------ BEGIN Convert Lat & Lng from Address for Bing map Input ------//
+        /// <summary>
+        /// HÀM NÀY TRẢ VỀ TỌA ĐỘ CỦA MỘT ĐIỂM KHI NHẬP VÀO
+        /// </summary>
+        /// <param name="inputAddress"></param>
         private void searchCoordinateFromAddress(string inputAddress)
         {
             //GoogleAPIGeocoding URL
@@ -772,7 +790,7 @@ namespace FT_Rider.Pages
         private void loadAutoCompletePlace(string inputAddress)
         {
             //GoogleAPIQueryAutoComplete URL
-            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&input=" + inputAddress;
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&language=vi_VI" + "&input=" + inputAddress;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -832,21 +850,16 @@ namespace FT_Rider.Pages
         //------ END Auto Complete ------//
 
 
-        private void enableAutoComplateGrid()
-        {
-            lls_AutoComplete.IsEnabled = true;
-            lls_AutoComplete.Visibility = Visibility.Visible;
-        }
-        private void disenableAutoComplateGrid()
-        {
-            lls_AutoComplete.IsEnabled = false;
-            lls_AutoComplete.Visibility = Visibility.Collapsed;
-        }
+
 
 
 
 
         //------ BEGIN set Pickup Address from address search ------//
+        /// <summary>
+        /// CÁI NÀY ĐỂ SAU KHI CHỌN ĐIỂM ĐÓN THÌ MAP SẼ CHẠY LẠI ĐỊA CHỈ ĐÓ
+        /// </summary>
+        /// <param name="inputAddress"></param>
         private void setPickupAddressFromSearchBar(string inputAddress)
         {
             //GoogleAPIGeocoding URL
@@ -885,29 +898,39 @@ namespace FT_Rider.Pages
 
 
         //------ BEGIN Search Bar EVENT ------//
+        /// <summary>
+        /// HÀM NÀY ĐỂ CHẠY AUTOCOMPLETE, CỨ SAU KHI NHẤN VÀO 1 PHÍM THÌ SẼ CHẠY AC
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txt_InputAddress_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            img_CloseIcon.Visibility = Visibility.Visible;
+            //Hiện nút xóa / đóng trên ô search
+            ShowSearchCloseIcon();
 
-            //enable lls
-            enableAutoComplateGrid();
-            string queryAddress = txt_InputAddress.Text;
-            //lls_AutoComplete.Background = new SolidColorBrush(Color.FromArgb(255, (byte)16, (byte)15, (byte)39)); //RBG color for #060f27
-            //Call Auto Complete function
+            //mở long list search
+            EnableSearchLongList();
+
+            //Chạy autocomplete và load dữ liệu vào Longlistselector
+            string queryAddress = txt_InputAddress.Text;            
             loadAutoCompletePlace(queryAddress);
-
         }
 
+
+
+        /// <summary>
+        /// Trong ô tìm kiếm, nếu như nhấn phím Enter trên bàn phím ảo, thì sẽ chạy sự kiện này
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void tb_InputAddress_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            //check if input is "Enter" key
+            //Kiểm tra xem phím nhấn có phải là phím Enter ko
             if (e.Key == System.Windows.Input.Key.Enter)
             {
                 string destinationAddress;
                 destinationAddress = txt_InputAddress.Text;
                 this.searchCoordinateFromAddress(destinationAddress);
-                //showMapRoute(21.031579, 105.779560);
-                //Hide keyboard
                 this.Focus();
             }
         }
@@ -915,112 +938,130 @@ namespace FT_Rider.Pages
 
         private void txt_InputAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //check if text is "Địa chỉ đón"
-            if (txt_InputAddress.Text == ConstantVariable.destiationAddressDescription)
-            {
-                txt_InputAddress.Text = string.Empty;
-            }
+            //KIÊM TRA XEM, NẾU LÀ TỪ "ĐỊA CHỈ ĐÓN" thì xóa
+            CheckInputAddressTap();
+
             txt_InputAddress.Background = new SolidColorBrush(Colors.Transparent);
+
             //Show end of address
             setCursorAtLast(txt_InputAddress);
         }
 
+
+
+        /// <summary>
+        /// KIÊM TRA XEM, NẾU LÀ TỪ "ĐỊA CHỈ ĐÓN" thì xóa
+        /// </summary>
+        private void CheckInputAddressTap()
+        {
+            if (txt_InputAddress.Text == ConstantVariable.destiationAddressDescription)
+            {
+                txt_InputAddress.Text = string.Empty;
+            }
+        }
+
+
+
+        /// <summary>
+        /// KHI NHẤN VÀO NÚT CLOSE TRÊN SEARCH BAR
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void img_CloseIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            //Nếu như textbox đang không có gì thì:
             if (txt_InputAddress.Text == string.Empty)
             {
+                //Trở về màn hình chính
                 map_RiderMap.Focus();
-                img_PickerLabel.Visibility = Visibility.Visible;
-                img_PickerPin.Visibility = Visibility.Visible;
+
+                //Hiện cụm picker
+                ShowGridPiker();
             }
             else
             {
+                //Nếu không thì xóa text đi rồi cho nhập lại
                 txt_InputAddress.Text = String.Empty;
                 txt_InputAddress.Focus();
             }
-            //lls_AutoComplete.Visibility = Visibility.Collapsed;
-            //img_CloseIcon.Visibility = Visibility.Collapsed;
-            //lls_AutoComplete.IsEnabled = false;
-
         }
 
-        //Textbox background focus transparent
+        /// <summary>
+        /// Cái này để xử lý tình huống khi ô tìm kiếm điểm đón được sử dụng
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txt_InputAddress_GotFocus(object sender, RoutedEventArgs e)
         {
-            //Hide Pickup icon
-            img_PickerLabel.Visibility = Visibility.Collapsed;
-            img_PickerPin.Visibility = Visibility.Collapsed;
+            //Khi nhấn vào ô search thì picker bị ẩn đi
+            HideGridPicker();
 
-            //Display Close icon
-            img_CloseIcon.Visibility = Visibility.Visible;
+            //Hiện icon xóa trên thanh Search
+            ShowSearchCloseIcon();
 
             //Enable Auto Complete
             loadAutoCompletePlace("");
-            enableAutoComplateGrid();
+            EnableSearchLongList();
 
+
+            //Cái này để làm cho textbox trong suốt khi tap vào
             TextBox addressTextbox = (TextBox)sender;
             addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
             addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            //addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent); ;
 
-            //img_CloseIcon.Visibility = Visibility.Visible;
-
+            //Nếu khi tap vào mà nội dung là "Chọn điểm đón thì sẽ xóa đi
             if (txt_InputAddress.Text == ConstantVariable.destiationAddressDescription)
             {
                 txt_InputAddress.Text = string.Empty;
             }
 
-
-            //hide close icon
-            //if (txt_InputAddress.Text == String.Empty)
-            //{
-            //    img_CloseIcon.Visibility = Visibility.Collapsed;
-            //}
-            //else
-            //{
-            //    img_CloseIcon.Visibility = Visibility.Visible;
-            //}
-            //Show end of address
+            //Đặt con trỏ chuột ở cuối dòng khi tap vào           
             setCursorAtLast(txt_InputAddress);
         }
 
+
+
         private void txt_InputAddress_LostFocus(object sender, RoutedEventArgs e)
         {
-            disenableAutoComplateGrid();
+            //Tắt long list
+            DisableSearchLongList();
 
             //bật lại picker pin
-            img_PickerPin.Visibility = Visibility.Visible;
+            ShowGridPiker();
+
+            //Nhưng tắt Red picker
+            HideCallTaxiCenterPicker();
+
             //Ẩn close icon
-            img_CloseIcon.Visibility = Visibility.Collapsed;
+            HideSearchCloseIcon();
 
             if (txt_InputAddress.Text == String.Empty)
             {
                 txt_InputAddress.Text = ConstantVariable.destiationAddressDescription;
             }
-            //Show first of address
+
+            //Đặt con trò chuột lên đầu tiên của search box
             setCursorAtFirst(txt_InputAddress);
         }
 
-        //Setting cursor at the end of any text of a textbox
-        private void setCursorAtLast(TextBox txtBox)
-        {
-            txtBox.SelectionStart = txtBox.Text.Length; // add some logic if length is 0
-            txtBox.SelectionLength = 0;
-        }
 
-        //Setting cursor at the first of any text of a textbox
-        private void setCursorAtFirst(TextBox txtBox)
-        {
-            txtBox.SelectionStart = 0;
-            txtBox.SelectionLength = 0;
-        }
 
+        /// <summary>
+        /// Cái này để hiện thông tin sau khi picker di chuyển lên thanh search
+        /// </summary>
         private async void ShowPickerAddress()
         {
-            var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
-            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
-            txt_InputAddress.Text = address.results[0].formatted_address.ToString();
+            try
+            {
+                var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
+                var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+                txt_InputAddress.Text = address.results[0].formatted_address.ToString();
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 35604) "+ConstantVariable.errConnectingError);
+            }
         }
 
 
@@ -1778,8 +1819,6 @@ namespace FT_Rider.Pages
         {
             grv_Step01.Visibility = Visibility.Visible;
             grv_Step02.Visibility = Visibility.Collapsed;
-            grv_Step03.Visibility = Visibility.Collapsed;
-            
         }
 
         private void tbl_MyTrips_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -1981,5 +2020,104 @@ namespace FT_Rider.Pages
                 MessageBox.Show("Rất tiếc, không có xe nào xung quanh!");
             }
         }
+
+        private void img_PickerLabel_Red_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/TaxiList.xaml", UriKind.Relative));
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ HIỆN CỤM PICKER
+        /// </summary>
+        private void ShowGridPiker()
+        {
+            grv_Picker.Visibility = Visibility.Visible;
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ ẨN CỤM PICKER
+        /// </summary>
+        private void HideGridPicker()
+        {
+            grv_Picker.Visibility = Visibility.Collapsed;
+        }
+
+
+        /// <summary>
+        /// Cái này để bật và tắt longlist trên màn hình search
+        /// </summary>
+        private void DisableSearchLongList()
+        {
+            lls_AutoComplete.IsEnabled = false;
+            lls_AutoComplete.Visibility = Visibility.Collapsed;
+        }
+
+        private void EnableSearchLongList()
+        {
+            lls_AutoComplete.IsEnabled = true;
+            lls_AutoComplete.Visibility = Visibility.Visible;
+        }
+
+
+        /// <summary>
+        /// Cái này để hiện cái nút màu đỏ (Gọi hãng)
+        /// </summary>
+        private void ShowCallTaxiCenterPicker()
+        {
+            img_PickerLabel_Red.Visibility = Visibility.Visible;
+        }
+
+        private void HideCallTaxiCenterPicker()
+        {
+            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
+        }
+
+
+        /// <summary>
+        /// Cái này để hiện màn hình loading
+        /// </summary>
+        private void ShowLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Visible;
+        }
+
+        private void HideLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Collapsed;
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ HIỆN NÚT TẮT TRONG SEARCH BAR
+        /// </summary>
+        private void ShowSearchCloseIcon()
+        {
+            img_CloseIcon.Visibility = Visibility.Visible;
+        }
+
+        private void HideSearchCloseIcon()
+        {
+            img_CloseIcon.Visibility = Visibility.Collapsed;
+        }
+
+
+
+        /// <summary>
+        /// HAI HÀM NÀY ĐỂ ĐĂT TRỎ CHUỘT VÀO ĐẦU VÀ CUỐI DÒNG
+        /// </summary>
+        /// <param name="txtBox"></param>
+        private void setCursorAtLast(TextBox txtBox)
+        {
+            txtBox.SelectionStart = txtBox.Text.Length; 
+            txtBox.SelectionLength = 0;
+        }
+        private void setCursorAtFirst(TextBox txtBox)
+        {
+            txtBox.SelectionStart = 0;
+            txtBox.SelectionLength = 0;
+        }
+
     }
 }
