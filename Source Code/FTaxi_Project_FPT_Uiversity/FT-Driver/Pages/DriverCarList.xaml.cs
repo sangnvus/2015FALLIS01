@@ -117,8 +117,8 @@ namespace FT_Driver.Pages
             var did = userData.content.driverInfo.did.ToString();
             var uid = userId;
             var mid = pushChannelURI;
-            var mType = ConstantVariable.mTypeWIN;
-            var input = string.Format("{{\"did\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\",\"mid\":\"{3}\",\"mType\":\"{4}\"}}", did, uid, myVehicleId, mid, mType);     
+            var mType = ConstantVariable.mTypeWIN; //Chuyển did thành id
+            var input = string.Format("{{\"id\":\"{0}\",\"uid\":\"{1}\",\"vehicleId\":\"{2}\",\"mid\":\"{3}\",\"mType\":\"{4}\"}}", did, uid, myVehicleId, mid, mType);     
        
             try
             {

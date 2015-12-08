@@ -27,10 +27,10 @@ namespace FT_Driver.Classes
     public class CompanyInfo
     {
         public string cName { get; set; }
-        public object phone { get; set; }
+        public string phone { get; set; }
         public string postal { get; set; }
         public string add { get; set; }
-        public object vat { get; set; }
+        public Double? vat { get; set; }
         public string city { get; set; }
         public string currency { get; set; }
     }
@@ -51,7 +51,7 @@ namespace FT_Driver.Classes
         public string plate { get; set; }
         public string carTitle { get; set; }
         public string carLevel { get; set; }
-        public object vRegDate { get; set; }
+        public string vRegDate { get; set; }
         public string manuYear { get; set; }
         public string status { get; set; }
         public long lmd { get; set; }
