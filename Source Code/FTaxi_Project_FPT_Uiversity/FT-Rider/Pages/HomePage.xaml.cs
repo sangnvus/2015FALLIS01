@@ -829,22 +829,18 @@ namespace FT_Rider.Pages
             if (lls_AutoComplete.SelectedItem == null)
                 return;
 
-            //else route direction
-            ///searchCoordinateFromAddress(selectedPlace.Name.ToString());
+            //Khi nhấn vào 1 đỉa chỉ trong danh sách tự động tìm địa chỉ thì sẽ đặt địa chỉ đón
             setPickupAddressFromSearchBar(selectedPlace.Name.ToString());
-            //showMapRoute(21.031579, 105.779560);
 
-
-
-            //and fill to address textbox on search bar
+            //Và điền địa chỉ vào ô tìm kiếm
             txt_InputAddress.Text = selectedPlace.Name.ToString();
             setCursorAtLast(txt_InputAddress);
 
-            //vibrate phone
-            //vibrateController.Start(TimeSpan.FromSeconds(0.1));
+            //rung phản hồi
             TouchFeedback();
 
-            //clear lls
+            //Xóa lls
+            lls_AutoComplete = null;
         }
 
         //------ END Auto Complete ------//
@@ -873,17 +869,21 @@ namespace FT_Rider.Pages
         }
         private void proxy_setPickupAddressFromSearchBar(object sender, DownloadStringCompletedEventArgs e)
         {
-            //1. Convert Json String to an Object
+            //1. Convert chuối json lấy về thành object
             GoogleAPIAddressObj places = new GoogleAPIAddressObj();
             places = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(e.Result);
             try
             {
+                //Lấy tọa độ của điểm mới tìm được
                 double lat = places.results[0].geometry.location.lat;
                 double lng = places.results[0].geometry.location.lng;
 
-                //route direction on map
+                //Và dời vị trí map về đó
                 map_RiderMap.SetView(new GeoCoordinate(lat, lng), 16, MapAnimationKind.Linear);
-                img_PickerPin.Visibility = Visibility.Visible;
+                //Hiện picker
+                ShowGridPiker();
+                //Get near Driver
+                GetNearDriver();
             }
             catch (Exception)
             {
@@ -1066,6 +1066,11 @@ namespace FT_Rider.Pages
 
 
         //Event này để bắt trường hợp sau mỗi lần di chuyển map
+        /// <summary>
+        /// SAU KHI MAP DI CHUỂN
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void map_RiderMap_ResolveCompleted(object sender, MapResolveCompletedEventArgs e)
         {
 
@@ -1075,7 +1080,8 @@ namespace FT_Rider.Pages
             }
 
             img_PickerLabel.Visibility = Visibility.Visible; //Enable Pickup label
-            //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_CallTaxi.png", UriKind.Relative));
+
+            //Nạp tọa độ đón
             pickupLat = map_RiderMap.Center.Latitude;
             pickupLng = map_RiderMap.Center.Longitude;
             if (isPickup == true)
@@ -1092,20 +1098,18 @@ namespace FT_Rider.Pages
 
         private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            //((Storyboard)FindName("animate")).Begin(img_PickerLabel);
-            //img_PickerLabel.Source = new BitmapImage(new Uri("/Images/Picker/img_Picker_SetPickup.png", UriKind.Relative));
-            //pickupTimer.Stop();
-            img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
-            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
+
+            //Tắt timer của change red label
+            changeLabelRedTimer.Stop();
+
+            //Ẩn picker label khi di chuyển map
+            HideAllPickerLabel();
+
+            //Đặt trạng thái picker là true
             isPickup = true;
 
             Debug.WriteLine("RiderMap_MouseLeftButtonDown");
         }
-
-
-
-
-        //------ END Search Bar EVENT ------//
 
 
 
@@ -1357,8 +1361,10 @@ namespace FT_Rider.Pages
 
         private void map_RiderMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            img_PickerLabel.Visibility = Visibility.Visible;
-            img_PickerLabel_Red.Visibility = Visibility.Visible;
+            //Sau khi buông tay thì cho hiện black picker
+            ShowGridPiker();
+            //trong khi vẫn ẩn picker gọi hãng
+            HideCallTaxiCenterPicker();
         }
 
         private void TouchFeedback()
@@ -2119,5 +2125,11 @@ namespace FT_Rider.Pages
             txtBox.SelectionLength = 0;
         }
 
+
+        private void HideAllPickerLabel()
+        {
+            img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
+            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
+        }
     }
 }
