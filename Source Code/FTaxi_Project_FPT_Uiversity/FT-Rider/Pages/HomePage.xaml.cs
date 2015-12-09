@@ -42,7 +42,7 @@ namespace FT_Rider.Pages
         //USER DATA PASS FROM LOGIN PAGE
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
-        
+
         RiderLogin userData;
         string userId = string.Empty;
         string pwmd5 = string.Empty;
@@ -114,7 +114,6 @@ namespace FT_Rider.Pages
 
         //For change label
         DispatcherTimer changeLabelRedTimer;
-        
 
 
         public HomePage()
@@ -152,12 +151,16 @@ namespace FT_Rider.Pages
             getNearDriverTimer.Tick += new EventHandler(getNearDriverTimer_Tick);
             getNearDriverTimer.Interval = new TimeSpan(0, 0, 0, 3);
 
+            //For change red label
+            changeLabelRedTimer = new DispatcherTimer();
+            changeLabelRedTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
+            changeLabelRedTimer.Interval = new TimeSpan(0, 0, 0, 2);
         }
 
         private void getNearDriverTimer_Tick(object sender, EventArgs e)
         {
             Debug.WriteLine("4433222 Bắt đầu chạy Get Near Driver Timer"); //DELETE AFTER FINISHED
-            GetNearDriver();            
+            GetNearDriver();
             //throw new NotImplementedException();
         }
 
@@ -355,13 +358,10 @@ namespace FT_Rider.Pages
                             };
                         }
 
-                        
+
                         //Nếu như không có xe nào thì hiện nút gọi hãng
                         if (nearDriverCollection.Count == 0)
                         {
-                            changeLabelRedTimer = new DispatcherTimer();
-                            changeLabelRedTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
-                            changeLabelRedTimer.Interval = new TimeSpan(0,0,0,2);
 
                             changeLabelRedTimer.Start();
                         }
@@ -790,7 +790,7 @@ namespace FT_Rider.Pages
         private void loadAutoCompletePlace(string inputAddress)
         {
             //GoogleAPIQueryAutoComplete URL
-            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&language=vi_VI" + "&input=" + inputAddress;
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&types=geocode&language=vi" + "&input=" + inputAddress;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -840,7 +840,7 @@ namespace FT_Rider.Pages
             TouchFeedback();
 
             //Xóa lls
-            lls_AutoComplete = null;
+            //lls_AutoComplete = null;
         }
 
         //------ END Auto Complete ------//
@@ -909,10 +909,10 @@ namespace FT_Rider.Pages
             ShowSearchCloseIcon();
 
             //mở long list search
-            EnableSearchLongList();
+            //EnableSearchLongList();
 
             //Chạy autocomplete và load dữ liệu vào Longlistselector
-            string queryAddress = txt_InputAddress.Text;            
+            string queryAddress = txt_InputAddress.Text;
             loadAutoCompletePlace(queryAddress);
         }
 
@@ -993,15 +993,25 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private void txt_InputAddress_GotFocus(object sender, RoutedEventArgs e)
         {
+            EnableSearchLongList();
+
             //Khi nhấn vào ô search thì picker bị ẩn đi
             HideGridPicker();
 
             //Hiện icon xóa trên thanh Search
             ShowSearchCloseIcon();
-
+            
             //Enable Auto Complete
-            loadAutoCompletePlace("");
-            EnableSearchLongList();
+            if (txt_InputAddress.Text.Length > 0)
+            {
+                loadAutoCompletePlace(txt_InputAddress.Text);
+            }
+            else
+            {
+                loadAutoCompletePlace("");
+            }
+            
+            
 
 
             //Cái này để làm cho textbox trong suốt khi tap vào
@@ -1023,9 +1033,6 @@ namespace FT_Rider.Pages
 
         private void txt_InputAddress_LostFocus(object sender, RoutedEventArgs e)
         {
-            //Tắt long list
-            DisableSearchLongList();
-
             //bật lại picker pin
             ShowGridPiker();
 
@@ -1042,6 +1049,14 @@ namespace FT_Rider.Pages
 
             //Đặt con trò chuột lên đầu tiên của search box
             setCursorAtFirst(txt_InputAddress);
+
+            //Tắt long list
+            HideSearchLongList();
+        }
+
+        private void HideSearchLongList()
+        {
+            lls_AutoComplete.Visibility = Visibility.Collapsed;
         }
 
 
@@ -1060,7 +1075,7 @@ namespace FT_Rider.Pages
             catch (Exception)
             {
 
-                MessageBox.Show("(Mã lỗi 35604) "+ConstantVariable.errConnectingError);
+                MessageBox.Show("(Mã lỗi 35604) " + ConstantVariable.errConnectingError);
             }
         }
 
@@ -1100,6 +1115,7 @@ namespace FT_Rider.Pages
         {
 
             //Tắt timer của change red label
+            //changeLabelRedTimer.Start();
             changeLabelRedTimer.Stop();
 
             //Ẩn picker label khi di chuyển map
@@ -1174,14 +1190,14 @@ namespace FT_Rider.Pages
             }
         }
 
-        private void txt_PickupAddress_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //Trong suốt texbox
-            TextBox addressTextbox = (TextBox)sender;
-            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
-            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
-        }
+        //private void txt_PickupAddress_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    //Trong suốt texbox
+        //    TextBox addressTextbox = (TextBox)sender;
+        //    addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+        //    addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+        //    addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+        //}
         //------ END For open menu ------//
 
 
@@ -1209,10 +1225,10 @@ namespace FT_Rider.Pages
         //This function to get City Code From City Name in City Dictionary
         private int GetCityCodeFromCityName(string cityName)
         {
-            int cityCode=0;
+            int cityCode = 0;
             try
             {
-                cityCode =  cityNamesDB[cityName].cityId;
+                cityCode = cityNamesDB[cityName].cityId;
             }
             catch (Exception)
             {
@@ -1422,7 +1438,7 @@ namespace FT_Rider.Pages
                 if (tNetAppSetting.Contains("PushChannelURI"))
                 {
                     tNetAppSetting["PushChannelURI"] = pushChannelURI.ToString(); //Cái này để lưu lại uri
-                }  
+                }
                 //tNetAppSetting["NotificationURI"] = pushChannelURI;
                 ///
                 ///CODE UPDATE URI HERE///
@@ -1445,7 +1461,7 @@ namespace FT_Rider.Pages
                 if (tNetAppSetting.Contains("PushChannelURI"))
                 {
                     tNetAppSetting["PushChannelURI"] = pushChannelURI.ToString(); //Cái này để lưu lại uri
-                }                
+                }
                 //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
                 ///
                 ///CODE LOAD URI HERE///
@@ -1613,7 +1629,7 @@ namespace FT_Rider.Pages
             ///0.1 CHO ÂM THANH HIỆU ỨNG
             ///Hiện thông báo
             tbl_DriverStatus.Text = ConstantVariable.strCarAreComming; //HIỆN THÔNG ÁO "XE ĐANG TỚI.."
-            
+
         }
 
         private void SwitchToStartedStatus()
@@ -1623,7 +1639,7 @@ namespace FT_Rider.Pages
             ///3. hiện vị trí xe
             ///
             MessageBox.Show(ConstantVariable.strCarAreStarting);
-            
+
             //1.
             tbl_DriverStatus.Text = ConstantVariable.strCarAreStarting;
 
@@ -1633,7 +1649,7 @@ namespace FT_Rider.Pages
             grv_Step02.Visibility = Visibility.Collapsed;
             //3.
 
-            
+
 
         }
 
@@ -1665,7 +1681,7 @@ namespace FT_Rider.Pages
             ///1. CHO ÂM THANH HIỆU ỨNG
             ///2. Xóa thông tin trip
             ///3. Về màn hình chính
-            
+
             //0.
             tbl_DriverStatus.Text = ConstantVariable.strCarCanceled; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
 
@@ -1758,11 +1774,45 @@ namespace FT_Rider.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void btn_CancelTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void btn_CancelTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                //Thiết lập messagebox                
+                Message = ConstantVariable.cfbCancelTaxi, // "Bạn sẽ phải trả tiền gọi xe theo giá mở cửa nếu hủy chuyến."
+                LeftButtonContent = ConstantVariable.cfbYes,
+                RightButtonContent = ConstantVariable.cfbNo
+            };
+
+            //Add the dismissed event handler
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        CancelTaxiTrip();
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        messageBox.Dismiss();
+
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            //add the show method
+            messageBox.Show();
+
+        }
+
+        private async void CancelTaxiTrip()
         {
             //HIỆN LOADING PROCESS
             grv_ProcessBarButton.Visibility = Visibility.Visible;
-
 
             RiderCancelTrip cancelTrip = new RiderCancelTrip
             {
@@ -1783,7 +1833,7 @@ namespace FT_Rider.Pages
                         ///1. Update lmd
                         ///2. Xóa tât cả các biến về Tạo một Trip
                         ///3. Trở về màn hình đầu tiên
-                       
+
                         //1. Update LMD cho phiên làm việc tiếp theo
                         tlmd = (long)cancelStatus.lmd;
 
@@ -1814,6 +1864,7 @@ namespace FT_Rider.Pages
             {
                 MessageBox.Show("(Mã lỗi 408) " + ConstantVariable.errServerErr);
             }
+            
         }
 
 
@@ -2021,8 +2072,8 @@ namespace FT_Rider.Pages
             }
             catch (Exception)
             {
-                
-               //Code thong bao, khong co xe nao xung quanh
+
+                //Code thong bao, khong co xe nao xung quanh
                 MessageBox.Show("Rất tiếc, không có xe nào xung quanh!");
             }
         }
@@ -2031,6 +2082,191 @@ namespace FT_Rider.Pages
         {
             NavigationService.Navigate(new Uri("/Pages/TaxiList.xaml", UriKind.Relative));
         }
+
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //Cái này để làm cho textbox trong suốt khi tap vào
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY LÀ KHI NHẤN VÀO NÚT CLOSE Ở DESTINATION SEARCH
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void img_CloseClearIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Kiểm tra xem nếu lúc nhấn icon Close mà chưa có nội dung gì. thì sẽ đóng Grid Search
+            if (txt_DestinationSearchAddress.Text.Equals(string.Empty))
+            {
+                HideGridDestinationAddressSearch();
+            }
+
+            //Nếu lúc đó có text thì xóa đi
+            if (txt_DestinationSearchAddress.Text.Length > 0)
+            {
+                txt_DestinationSearchAddress.Text = string.Empty;
+            }
+        }
+        /// <summary>
+        /// CÁI NÀY ĐỂ CỨ SAU KHI NHẤN 1 PHÍM SẼ CHẠY AUTOCOMPLETE
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            //Chạy autocomplete và load dữ liệu vào Longlistselector
+            string queryAddress = txt_DestinationSearchAddress.Text;
+            AutoCompleteDestinationSearch(queryAddress);
+        }
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// HIỆN ĐỊA CHỈ GỢI Ý
+        /// </summary>
+        private void AutoCompleteDestinationSearch(string inputAddress)
+        {
+            //GoogleAPIQueryAutoComplete URL
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&types=geocode&language=vi" + "&input=" + inputAddress;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_AutoCompleteDestinationSearch);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+        private void proxy_AutoCompleteDestinationSearch(object sender, DownloadStringCompletedEventArgs e)
+        {
+            try
+            {
+                //1. Convert Json String to an Object
+                GoogleAPIQueryAutoCompleteObj places = new GoogleAPIQueryAutoCompleteObj();
+                places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoCompleteObj>(e.Result);
+                //2. Create Place list
+                ObservableCollection<AutoCompletePlaceLLSObj> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceLLSObj>();
+                lls_DestinationAddress.ItemsSource = autoCompleteDataSource;
+                //3. Loop to list all item in object
+                foreach (var obj in places.predictions)
+                {
+                    autoCompleteDataSource.Add(new AutoCompletePlaceLLSObj(obj.description.ToString()));
+                }
+            }
+            catch (Exception)
+            {
+                txt_DestinationSearchAddress.Focus();
+            }
+        }
+        /// <summary>
+        /// KHI NHẤN VÀO MỘT ĐỊA CHỈ TRONG LONGLIST
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lls_DestinationAddress_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedPlace = ((AutoCompletePlaceLLSObj)(sender as LongListSelector).SelectedItem);
+            // If selected item is null, do nothing
+            if (lls_DestinationAddress.SelectedItem == null)
+                return;
+
+            //Rung phản hồi
+            TouchFeedback();
+
+            //Khi nhấn vào 1 đỉa chỉ trong danh sách tự động tìm địa chỉ thì sẽ đặt địa chỉ đến
+            txt_DestinationAddress.Text = selectedPlace.Name.ToString();
+
+            setDestinationAddressFromSearchBar(selectedPlace.Name.ToString());
+
+            //Tắt grid tìm điểm đến
+            HideGridDestinationAddressSearch();
+
+            //Xóa lls
+            lls_DestinationAddress = null;
+        }
+        private void setDestinationAddressFromSearchBar(string inputAddress)
+        {
+            //GoogleAPIGeocoding URL
+            string URL = ConstantVariable.googleAPIGeocodingAddressBaseURI + inputAddress + "&key=" + ConstantVariable.googleGeolocationAPIkey;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_setDestinationAddressFromSearchBar);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+        private void proxy_setDestinationAddressFromSearchBar(object sender, DownloadStringCompletedEventArgs e)
+        {
+            //1. Convert chuối json lấy về thành object
+            GoogleAPIAddressObj places = new GoogleAPIAddressObj();
+            places = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(e.Result);
+            try
+            {
+                //Lấy tọa độ của điểm mới tìm được
+                double lat = places.results[0].geometry.location.lat;
+                double lng = places.results[0].geometry.location.lng;
+
+                //Và dời vị trí map về đó
+                map_RiderMap.SetView(new GeoCoordinate(lat, lng), 16, MapAnimationKind.Linear);
+                //Hiện picker
+                ShowGridPiker();
+
+
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show(ConstantVariable.errInvalidAddress);
+            }
+        }
+        /// <summary>
+        /// CÁI NÀY ĐỂ HIỆN MARKER ĐIỂM ĐẾN
+        /// </summary>
+        private void ShowDestinationMarkerOnMap()
+        {
+
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ VÔ HIỆU HÓA NÚT BACK Ở HOME
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            //base.OnBackKeyPress(e);
+            //MessageBox.Show("You can not use Hardware back button");
+            e.Cancel = true;
+        }
+
+
+
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ HIỆN / Ẩn MÀN HÌNH TÌM KIẾM ĐIỂM ĐẾN
+        /// </summary>
+        private void ShowGridDestinationAddressSearch()
+        {
+            (this.Resources["showDestinationSearch"] as Storyboard).Begin();
+            grv_DestinationSearch.Visibility = Visibility.Visible;
+        }
+        private void HideGridDestinationAddressSearch()
+        {
+            grv_DestinationSearch.Visibility = Visibility.Collapsed;
+        }
+
+
+
+
 
 
         /// <summary>
@@ -2056,8 +2292,8 @@ namespace FT_Rider.Pages
         /// </summary>
         private void DisableSearchLongList()
         {
-            lls_AutoComplete.IsEnabled = false;
             lls_AutoComplete.Visibility = Visibility.Collapsed;
+            lls_AutoComplete.IsEnabled = false;
         }
 
         private void EnableSearchLongList()
@@ -2116,7 +2352,7 @@ namespace FT_Rider.Pages
         /// <param name="txtBox"></param>
         private void setCursorAtLast(TextBox txtBox)
         {
-            txtBox.SelectionStart = txtBox.Text.Length; 
+            txtBox.SelectionStart = txtBox.Text.Length;
             txtBox.SelectionLength = 0;
         }
         private void setCursorAtFirst(TextBox txtBox)
@@ -2131,5 +2367,38 @@ namespace FT_Rider.Pages
             img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
             img_PickerLabel_Red.Visibility = Visibility.Collapsed;
         }
+
+
+
+        /// <summary>
+        /// KHI NHẤN VÀO TEXTBOX ĐIỂM ĐẾN SẼ HIỆN GRID SEARCH ĐIỂM ĐẾN
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void txt_DestinationAddress_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowGridDestinationAddressSearch();
+            txt_DestinationSearchAddress.Focus();
+        }
+
+
+
+        private void txt_DestinationSearchAddress_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //Xóa text khi mở grid lên
+            txt_DestinationAddress.Text = string.Empty;
+
+            //Trong suốt texbox
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            //addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+        }
+
+
+
+
+
     }
 }

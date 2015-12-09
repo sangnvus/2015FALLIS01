@@ -17,6 +17,19 @@
 
     <phone:PhoneApplicationPage.Resources>
         <Color x:Key="processbar_Color">#FF1FBAD6</Color>
+
+        <!--CÁI NÀY CHO HIỆU ỨNG MỞ LÊN CỦA MENU-->
+        <Storyboard x:Key="showDestinationSearch">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_DestinationSearch">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        
     </phone:PhoneApplicationPage.Resources>
 
 
@@ -104,7 +117,7 @@
                 <TextBlock x:Name="tbl_FirstName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27" Tap="tbl_FirstName_Tap"/>
                 <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,234,0,0" FontSize="22" Foreground="Black"/>
                 <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,300,0,0" FontSize="22" Foreground="Black"/>
-                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,363,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
+                <TextBlock x:Name="tbl_MyTrips" Text="Lịch sử chuyến đi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,363,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
                 <TextBlock x:Name="tbl_VipRider" Text="Tài xế ưa thích" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,430,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
                 <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,496,0,0" FontSize="22" Visibility="Collapsed" d:IsHidden="True"/>
                 <TextBlock x:Name="tbl_About" Text="Thông tin" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,497,0,0" FontSize="22" Tap="tbl_About_Tap"/>
@@ -240,8 +253,8 @@
                 <Grid x:Name="grv_Step02" Height="356" VerticalAlignment="Bottom" Visibility="Collapsed">
                     <Image x:Name="img_RequestTaxiBackground" Height="314" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png" VerticalAlignment="Bottom"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg" Margin="0"/>
-                    <TextBox x:Name="txt_PickupAddress" HorizontalAlignment="Left" Height="90" Margin="146,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus" Tap="txt_PickupAddress_Tap"/>
-                    <TextBox x:Name="txt_DestinationAddress" HorizontalAlignment="Left" Height="87" Margin="146,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" GotFocus="txt_PickupAddress_GotFocus"/>
+                    <TextBox x:Name="txt_PickupAddress" HorizontalAlignment="Left" Height="90" Margin="146,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" Tap="txt_PickupAddress_Tap"/>
+                    <TextBlock x:Name="txt_DestinationAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="146,102,0,0" Height="53" Width="324" TextAlignment="Right" Tap="txt_DestinationAddress_Tap_1"/>
                     <TextBlock x:Name="txt_EstimatedCost" HorizontalAlignment="Right" Margin="0,7,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18"/>
                     <TextBlock x:Name="txt_OpenPrice" HorizontalAlignment="Right" Margin="0,7,245,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18"/>
                     <TextBlock x:Name="txt_PromoteCode" HorizontalAlignment="Right" Margin="0,172,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="28" Width="100" TextAlignment="Right" FontSize="19"/>
@@ -295,6 +308,39 @@
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
                     <Image x:Name="img_PickerLabel" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallTaxi.png" Stretch="None" Tap="img_PickerLabel_Tap"/>
                     <Image x:Name="img_PickerLabel_Red" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallCenter.png" Stretch="None" Visibility="Collapsed" Tap="img_PickerLabel_Red_Tap"/>
+                </Grid>
+                <Grid x:Name="grv_DestinationSearch" Visibility="Collapsed">
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Grid.RenderTransform>
+                    <Grid.Background>
+                        <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                    </Grid.Background>
+                    <Rectangle HorizontalAlignment="Left" Height="79" VerticalAlignment="Top" Width="480">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="White"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBox x:Name="txt_DestinationSearchAddress" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Padding="60,2,2,2" FontSize="30" KeyUp="TextBox_KeyUp" GotFocus="txt_DestinationSearchAddress_GotFocus"/>
+                    <Image x:Name="img_SearchIcon" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="68" Source="/Images/SearchBar/icon_Search.jpg" Margin="0,8,0,0"/>
+                    <Image x:Name="img_CloseClearIcon" HorizontalAlignment="Right" Height="62" Margin="408,10,0,0" VerticalAlignment="Top" Width="62" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearIcon_Tap"/>
+                    <phone:LongListSelector x:Name="lls_DestinationAddress" HorizontalAlignment="Left" Height="687" Margin="0,81,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="lls_DestinationAddress_SelectionChanged">
+                        <phone:LongListSelector.Background>
+                            <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                        </phone:LongListSelector.Background>
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="28"/>
+                                    <!--<Rectangle HorizontalAlignment="Center" Height="1" Width="456">
+                                            <Rectangle.Fill>
+                                                <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                                            </Rectangle.Fill>
+                                        </Rectangle>-->
+                                </StackPanel>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">
