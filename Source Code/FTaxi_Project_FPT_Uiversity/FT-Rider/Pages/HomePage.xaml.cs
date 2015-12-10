@@ -122,6 +122,10 @@ namespace FT_Rider.Pages
 
         //For effect
         bool isStep2 = false;
+        bool isEffect = false;
+
+        //For Lock taxi icon tap
+        bool isTapableTaxiIcon = true; //Mặc định là true
 
 
         public HomePage()
@@ -490,21 +494,26 @@ namespace FT_Rider.Pages
             {
                 Debug.WriteLine("Chạm vào một Taxi thành công");
 
-                //Khóa ko cho lấy điểm pickup
-                isGetPickupAddress = false;
+                //Cái này để khóa lại hành động sau khi Người dùng nhấn vào picker nhưng lại chọn icon taxi trên màn hình
+                if (isTapableTaxiIcon == true)
+                {
+                    //Khóa ko cho lấy điểm pickup
+                    //isGetPickupAddress = false; //<<<< Tạm thời vẫn cho lấy pickup nên là tắt đi
 
-                selectedDid = did;
-                txt_OpenPrice.Text = openPrice.ToString();
-                txt_EstimatedCost.Text = estimateCost.ToString();
-                txt_RiderName.Text = driverName;
-                txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
+                    selectedDid = did;
+                    txt_OpenPrice.Text = openPrice.ToString();
+                    txt_EstimatedCost.Text = estimateCost.ToString();
+                    txt_RiderName.Text = driverName;
+                    txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
 
-                //Hide Step 01
-                this.grv_Step01.Visibility = Visibility.Collapsed;
+                    //Tắt Car bar
+                    HideCarsBar();
 
-                //Show Step 02
-                this.grv_Step02.Visibility = Visibility.Visible;
-                this.grv_Picker.Visibility = Visibility.Collapsed;
+                    ////và hiện step 02
+                    //ShowStep02Screen();
+                    //Hiện màn hình step 02
+                    ShowFirstStep02Grid();
+                }
             };
 
 
@@ -1136,16 +1145,27 @@ namespace FT_Rider.Pages
             //Hiện picker label chọn điểm đón
             img_PickerLabel.Visibility = Visibility.Visible; //Enable Pickup label
 
-            //Hiện mapf hình step 01
-            ShowStep01Screen();
 
-            //Nếu ở Step 02 thì hiện màn hình Step 02
-            if (isStep2 == true) //Cái này cần thiến để tránh việc Step 02 bị nhảy ra ở Step 01
+
+            //Cái này là effect
+            if (isEffect == true)
             {
-                ShowStep02Screen();
+                //Hiện màn hình step 01
+                ShowStep01Screen();
+                //Nếu ở Step 02 thì hiện màn hình Step 02
+                if (isStep2 == true) //Cái này cần thiến để tránh việc Step 02 bị nhảy ra ở Step 01
+                {
+                    ShowStep02Screen();
+                }
+
+                //Sau đó tôi sẽ cho nó trở về false luôn
+                //Để trong trường hợp nhấn nút "HỦY TRIP"
+                //Map sẽ Resolved nhưng ko chạy effect
+                isEffect = false;
             }
 
             //Nạp tọa độ đón
+            //Nếu cho phép lấy tọa độ thì sẽ lấy tọa độ ở giữa màn hình
             if (isGetPickupAddress)
             {
                 //Nếu trạng thái cho nạp điểm đón đc kích hoạt thì cho phép
@@ -1166,6 +1186,11 @@ namespace FT_Rider.Pages
 
         private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (isEffect == false)
+            {
+                isEffect = true;
+            }
+
 
             //Tắt timer của change red label
             //changeLabelRedTimer.Start();
@@ -1316,6 +1341,10 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //Không cho lấy điểm đón nữa
+            //Có nghĩa là mỗi khi map di chuyển, sẽ ko lấy center map nữa
+            isGetPickupAddress = false;
+
             //HIỆN LOADING
             ShowButtonRequestLoadingState();
 
@@ -1436,6 +1465,7 @@ namespace FT_Rider.Pages
             //Sau khi buông tay thì cho hiện black picker
             //ShowGridPiker();
 
+
             //trong khi vẫn ẩn picker gọi hãng
             HideCallTaxiCenterPicker();
         }
@@ -1454,6 +1484,9 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //Không cho nhấn icon taxi trê nmàn hình maps nữa
+            isTapableTaxiIcon = false;           
+            
             //Kích hoạt tự động gọi xe khác
             ActiveAutoRecall();
 
@@ -1462,7 +1495,7 @@ namespace FT_Rider.Pages
 
             //Không cho lấy điểm đón nữa
             //Có nghĩa là mỗi khi map di chuyển, sẽ ko lấy center map nữa
-            isGetPickupAddress = false;
+            //isGetPickupAddress = false; //<<<<<<<<<<< TẠP THỜI VẪN ĐANG CHO NẠP PICKUP COORDINATE
 
             //lấy địa chỉ tại trung tâm ma và đẩy lên grid
             //txt_PickupAddress.Text = await getNameAddressFromCoordinate(this.map_RiderMap.Center.Latitude, this.map_RiderMap.Center.Longitude);
@@ -1906,6 +1939,10 @@ namespace FT_Rider.Pages
 
         private async void CancelTaxiTrip()
         {
+            //Sau khi nhấn hủy bỏ thì lại cho phép chạm vào icon taxi
+            isTapableTaxiIcon = true;
+
+
             //HIỆN LOADING PROCESS
             grv_ProcessBarButton.Visibility = Visibility.Visible;
 
@@ -2077,6 +2114,11 @@ namespace FT_Rider.Pages
 
         private async void btn_RequestTaxiMN_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+
+            //Không cho lấy điểm đón nữa
+            //Có nghĩa là mỗi khi map di chuyển, sẽ ko lấy center map nữa
+            isGetPickupAddress = false;
+            
             btn_RequestTaxi.IsEnabled = false;
             TouchFeedback();
             grv_Picker.Visibility = Visibility.Collapsed;
@@ -2613,7 +2655,7 @@ namespace FT_Rider.Pages
 
         private void txt_DestinationAddress_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //Khi chuyenr  isGetPickupAddress qua failse thì sẽ không cho nạp pickupLat và pickupLng nữa
+            //Khi chuyển isGetPickupAddress qua failse thì sẽ không cho nạp pickupLat và pickupLng nữa
             isGetPickupAddress = false;
             isGetDestinationAddress = true;
 
@@ -2758,6 +2800,9 @@ namespace FT_Rider.Pages
 
         private async void btn_Close_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //Sau khi nhấn hủy bỏ thì lại cho phép chạm vào icon taxi
+            isTapableTaxiIcon = true;
+
             LoadHomePageView();
 
             //Xóa trạng thái step
@@ -2886,6 +2931,19 @@ namespace FT_Rider.Pages
 
             HidePromotionCodeGird();
         }
+
+
+
+
+        private void HideCarsBar()
+        {
+            grv_CarsBar.Visibility = Visibility.Collapsed;
+        }
+        private void ShowCarsBar()
+        {
+            grv_CarsBar.Visibility = Visibility.Visible;
+        }
+
 
         private void txt_DestinationSearchAddress_LostFocus(object sender, RoutedEventArgs e)
         {

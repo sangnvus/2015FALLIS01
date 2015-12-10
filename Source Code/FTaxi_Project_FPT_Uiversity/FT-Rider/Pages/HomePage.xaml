@@ -238,15 +238,6 @@
                 <Image x:Name="img_MenuIcon4_Copy" Margin="29,362,356,371" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png"/>
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
-                <Grid x:Name="grv_navbar" Margin="0" VerticalAlignment="Top">
-                    <Image x:Name="img_Navbar" Height="64" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Margin="0"/>
-                    <Image x:Name="img_FtaxiLogo" HorizontalAlignment="Center" Height="41" Margin="0,6,0,0" VerticalAlignment="Top" Width="107" Source="/Images/Logos/img_Ftaxi_logo_whileBG.png"/>
-                    <Button x:Name="btn_OpenMenu" Content="" HorizontalAlignment="Left" Margin="-11,-15,0,0" VerticalAlignment="Top" Width="86" BorderBrush="{x:Null}" Height="83" Click="btn_OpenMenu_Click">
-                        <Button.Background>
-                            <ImageBrush Stretch="Fill" ImageSource="/Images/Icons/icon-OpenMenu.png"/>
-                        </Button.Background>
-                    </Button>
-                </Grid>
 
                 <Grid x:Name="grv_Map" VerticalAlignment="Top" Width="480" Height="712" Margin="0,56,0,0">
                     <Grid.RowDefinitions>
@@ -446,6 +437,15 @@
                     <Button x:Name="btn_ApplyCode" Content="XÁC NHẬN" Margin="10,266,10,0" VerticalAlignment="Top" Height="90" Tap="btn_ApplyCode_Tap">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                        </Button.Background>
+                    </Button>
+                </Grid>
+                <Grid x:Name="grv_navbar" Margin="0" VerticalAlignment="Top">
+                    <Image x:Name="img_Navbar" Height="64" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Margin="0"/>
+                    <Image x:Name="img_FtaxiLogo" HorizontalAlignment="Center" Height="41" Margin="0,6,0,0" VerticalAlignment="Top" Width="107" Source="/Images/Logos/img_Ftaxi_logo_whileBG.png"/>
+                    <Button x:Name="btn_OpenMenu" Content="" HorizontalAlignment="Left" Margin="-11,-15,0,0" VerticalAlignment="Top" Width="86" BorderBrush="{x:Null}" Height="83" Click="btn_OpenMenu_Click">
+                        <Button.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="/Images/Icons/icon-OpenMenu.png"/>
                         </Button.Background>
                     </Button>
                 </Grid>

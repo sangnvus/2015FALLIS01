@@ -253,15 +253,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <None Include="ClassDiagram1.cd" />
-=======
-<<<<<<< HEAD
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram2.cd" />
-=======
->>>>>>> dec801736bd8dc6313c4b572244f006736a94c25
->>>>>>> 9c999586fbd8fc63151a2b1c360b5d0e1096bce7
     <None Include="DataFiles\riderLogin.json" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
