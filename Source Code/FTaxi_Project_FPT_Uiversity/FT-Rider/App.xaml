@@ -35,6 +35,9 @@
         <Color x:Key="Button_AcceptColor">#FF59B747</Color>
         <Color x:Key="button_Cancel_Color_Gray">#FFB0B0B0</Color>
         <Color x:Key="color_DetailPanelBackground">#FFEAEAEA</Color>
+        <Color x:Key="Color_StepGridColor">White</Color>
+        <Color x:Key="Color_TextGridColor">#FF333333</Color>
+        <Color x:Key="Color_BaseGridColor">#FFF2F2F4</Color>
 
     </Application.Resources>
 

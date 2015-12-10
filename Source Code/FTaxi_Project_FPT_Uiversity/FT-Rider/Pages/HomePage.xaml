@@ -29,7 +29,49 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        
+        <Storyboard x:Key="showStep02">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_Step02">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="showStep01SearchBar">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_SearchBar">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="-100"/>
+                <!---100 để trượt từ trên xuống-->
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="showStep01Carbar">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_CarsBar">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <!--100 để trượt từ dưới lên-->
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="showEnterPromotionGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_EnterPromotionCode">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
     </phone:PhoneApplicationPage.Resources>
 
 
@@ -115,13 +157,13 @@
                 </Image>
                 <TextBlock x:Name="tbl_LastName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27" Tap="tbl_LastName_Tap"/>
                 <TextBlock x:Name="tbl_FirstName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27" Tap="tbl_FirstName_Tap"/>
-                <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,234,0,0" FontSize="22" Foreground="Black"/>
-                <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,300,0,0" FontSize="22" Foreground="Black"/>
-                <TextBlock x:Name="tbl_MyTrips" Text="Lịch sử chuyến đi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,363,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
-                <TextBlock x:Name="tbl_VipRider" Text="Tài xế ưa thích" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,430,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
+                <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,564,0,0" FontSize="22" Foreground="Black"/>
+                <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,630,0,0" FontSize="22" Foreground="Black"/>
+                <TextBlock x:Name="tbl_MyTrips" Text="Lịch sử chuyến đi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,235,0,0" FontSize="22" Tap="tbl_MyTrips_Tap"/>
+                <TextBlock x:Name="tbl_VipRider" Text="Tài xế ưa thích" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,302,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
                 <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,496,0,0" FontSize="22" Visibility="Collapsed" d:IsHidden="True"/>
-                <TextBlock x:Name="tbl_About" Text="Thông tin" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,497,0,0" FontSize="22" Tap="tbl_About_Tap"/>
-                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,563,0,0" FontSize="22">
+                <TextBlock x:Name="tbl_About" Text="Thông tin" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,430,0,0" FontSize="22" Tap="tbl_About_Tap"/>
+                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,496,0,0" FontSize="22">
 					<i:Interaction.Triggers>
 						<i:EventTrigger EventName="MouseLeftButtonDown">
 							<ec:NavigateToPageAction TargetPage="/Pages/RiderFeedback.xaml"/>
@@ -133,13 +175,13 @@
                         <SolidColorBrush Color="{StaticResource Button_Background_Color_Red}"/>
                     </Button.Background>
                 </Button>
-                <Image x:Name="img_MenuIcon1" Margin="29,228,356,505" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
-                <Image x:Name="img_MenuIcon2" Margin="29,297,356,436" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
-                <Image x:Name="img_MenuIcon3" Margin="29,361,356,372" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
-                <Image x:Name="img_MenuIcon4" Margin="29,427,356,306" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png"/>
+                <Image x:Name="img_MenuIcon1" Margin="29,558,356,175" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
+                <Image x:Name="img_MenuIcon2" Margin="29,627,356,106" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
+                <Image x:Name="img_MenuIcon3" Margin="29,233,356,500" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
+                <Image x:Name="img_MenuIcon4" Margin="29,299,356,434" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png"/>
                 <Image x:Name="img_MenuIcon6" Margin="29,493,356,240" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png" Visibility="Collapsed"/>
-                <Image x:Name="img_MenuIcon7" Margin="29,496,356,237" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
-                <Image x:Name="img_MenuIcon8" Margin="29,563,356,170" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
+                <Image x:Name="img_MenuIcon7" Margin="29,429,356,304" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
+                <Image x:Name="img_MenuIcon8" Margin="29,496,356,237" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
                 <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,137,0,0">
                     <Rectangle.Fill>
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
@@ -192,6 +234,8 @@
                 </Rectangle>
                 <Image x:Name="img_MenuIcon1_Copy" Margin="29,162,356,571" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
                 <TextBlock x:Name="tbl_MyProfile" Text="Hồ sơ cá nhân" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,162,0,0" FontSize="22" Tap="tbl_MyProfile_Tap"/>
+                <TextBlock x:Name="tbl_CallTaxiCenter" Text="Gọi hãng Taxi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,365,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
+                <Image x:Name="img_MenuIcon4_Copy" Margin="29,362,356,371" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png"/>
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
                 <Grid x:Name="grv_navbar" Margin="0" VerticalAlignment="Top">
@@ -210,9 +254,13 @@
                         <RowDefinition Height="82*"/>
                     </Grid.RowDefinitions>
                     <maps:Map x:Name="map_RiderMap" Height="712" Width="480" Loaded="map_RiderMap_Loaded" Grid.RowSpan="2" ResolveCompleted="map_RiderMap_ResolveCompleted" MouseLeftButtonUp="map_RiderMap_MouseLeftButtonUp" MouseLeftButtonDown="map_RiderMap_MouseLeftButtonDown"/>
+                    <phone:LongListSelector x:Name="lls_LockMap" HorizontalAlignment="Left" Height="712" VerticalAlignment="Top" Width="480" Grid.RowSpan="2" Visibility="Collapsed" IsEnabled="False"/>
                 </Grid>
                 <Grid x:Name="grv_Step01" HorizontalAlignment="Center" Height="712" VerticalAlignment="Top" Width="480" Margin="0,56,0,0">
                     <Grid x:Name="grv_CarsBar" HorizontalAlignment="Center" Height="76" VerticalAlignment="Bottom" Width="480" Margin="0">
+                        <Grid.RenderTransform>
+                            <TranslateTransform Y="0"/>
+                        </Grid.RenderTransform>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="31*"/>
                             <ColumnDefinition Width="29*"/>
@@ -223,6 +271,9 @@
                         <Image x:Name="img_CarBar_LuxuryCar" Height="65" VerticalAlignment="Bottom" Source="/Images/CarsBar/img_Carbar_Luxury_NotSelected.png" Tap="img_CarBar_LuxuryCar_Tap" Grid.Column="1" HorizontalAlignment="Right" Width="160"/>
                     </Grid>
                     <Grid x:Name="grv_SearchBar" HorizontalAlignment="Center" Height="72" VerticalAlignment="Top" Width="480">
+                        <Grid.RenderTransform>
+                            <TranslateTransform Y="0"/>
+                        </Grid.RenderTransform>
                         <Rectangle x:Name="rt_inputAddressBg" HorizontalAlignment="Center" Height="57" VerticalAlignment="Top" Width="460" Margin="0,10,0,0">
                             <Rectangle.Fill>
                                 <SolidColorBrush Color="Black" Opacity="0.6"/>
@@ -250,15 +301,33 @@
                         <Image x:Name="img_CloseIcon" HorizontalAlignment="Right" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" Width="40" Source="/Images/SearchBar/img_PNG_CloseIcon.png" Tap="img_CloseIcon_Tap" Visibility="Collapsed" />
                     </Grid>
                 </Grid>
-                <Grid x:Name="grv_Step02" Height="356" VerticalAlignment="Bottom" Visibility="Collapsed">
-                    <Image x:Name="img_RequestTaxiBackground" Height="314" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png" VerticalAlignment="Bottom"/>
-                    <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.jpg" Margin="0"/>
-                    <TextBox x:Name="txt_PickupAddress" HorizontalAlignment="Left" Height="90" Margin="146,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" TextAlignment="Right" FontSize="18" Tap="txt_PickupAddress_Tap"/>
-                    <TextBlock x:Name="txt_DestinationAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="146,102,0,0" Height="53" Width="324" TextAlignment="Right" Tap="txt_DestinationAddress_Tap_1"/>
-                    <TextBlock x:Name="txt_EstimatedCost" HorizontalAlignment="Right" Margin="0,7,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18"/>
-                    <TextBlock x:Name="txt_OpenPrice" HorizontalAlignment="Right" Margin="0,7,245,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="110" FontSize="18"/>
-                    <TextBlock x:Name="txt_PromoteCode" HorizontalAlignment="Right" Margin="0,172,15,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="28" Width="100" TextAlignment="Right" FontSize="19"/>
-                    <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="10,156,0,0">
+                <Grid x:Name="grv_Step02" Height="228" VerticalAlignment="Bottom" Visibility="Collapsed">
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Grid.RenderTransform>
+                    <Image x:Name="img_RequestTaxiBackground" Height="200" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png" VerticalAlignment="Bottom"/>
+                    <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.png" Margin="0"/>
+                    <TextBlock x:Name="tbl_DestinationAddressBgText" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Nhấn để thêm điểm đến" VerticalAlignment="Top" Margin="125,44,169,0" Width="186" FontSize="17" Opacity="0.5">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_PickupAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="146,44,0,0" Height="53" Width="324" TextAlignment="Right" Tap="txt_PickupAddress_Tap" d:IsHidden="True" Visibility="Collapsed">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_DestinationAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="70,32,0,0" Height="53" Width="296" Tap="txt_DestinationAddress_Tap_1">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_EstimatedCost" HorizontalAlignment="Right" Margin="0,1,47,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="65" FontSize="18" Text="0" TextAlignment="Right"/>
+                    <TextBlock x:Name="txt_OpenPrice" HorizontalAlignment="Right" Margin="0,1,279,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="77" FontSize="18" Text="0" TextAlignment="Right"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="206,4,0,0" FontSize="15"/>
+                    <TextBlock x:Name="txt_PromoteCode" HorizontalAlignment="Right" Margin="0,105,123,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="156" FontSize="19" Text="KM1235" Visibility="Collapsed"/>
+                    <Image x:Name="img_PromotionCode" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="176" Source="/Images/Grid_RequestTaxi/img_Button_PromotionCode.jpg" Margin="192,87,0,0" KeyDown="img_PromotionCode_KeyDown" KeyUp="img_PromotionCode_KeyUp" Tap="img_PromotionCode_Tap"/>
+                    <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_default_avatar_dark.png" Margin="368,27,0,0">
                         <Image.Clip>
                             <EllipseGeometry
 								Center="50,50"
@@ -266,23 +335,27 @@
 								RadiusY="45" />
                         </Image.Clip>
                     </Image>
-                    <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Left" Margin="10,251,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center"/>
-                    <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Right" Margin="0,205,0,0" VerticalAlignment="Top" Width="61"/>
-                    <Button x:Name="btn_RequestTaxi" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="480" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxi_Tap">
+                    <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Left" Margin="368,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Right" Margin="0,72,294,0" VerticalAlignment="Top" Width="61" Visibility="Collapsed"/>
+                    <Image x:Name="img_AutoRecall" HorizontalAlignment="Left" Height="57" Margin="15,87,0,0" VerticalAlignment="Top" Width="176" Source="/Images/Grid_RequestTaxi/img_Button_AutoRecall.jpg" Tap="img_AutoRecall_Tap"/>
+                    <Button x:Name="btn_RequestTaxi" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="247" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxi_Tap" BorderBrush="{x:Null}">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </Button.Background>
-                        <Button.BorderBrush>
-                            <SolidColorBrush Color="White" Opacity="0.2"/>
-                        </Button.BorderBrush>
                     </Button>
-                    <Button x:Name="btn_RequestTaxiMN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="480" Content="YÊU CẦU TAXI" Visibility="Collapsed" Tap="btn_RequestTaxiMN_Tap">
+                    <Button x:Name="btn_Close" Content="Đóng" Margin="240,0,0,0" VerticalAlignment="Bottom" Height="90" BorderBrush="{x:Null}" Width="247" HorizontalAlignment="Right" Tap="btn_Close_Tap">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource button_Cancel_Color_Gray}"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="btn_RequestTaxiMN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="247" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxiMN_Tap" BorderBrush="{x:Null}" Visibility="Collapsed">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </Button.Background>
-                        <Button.BorderBrush>
-                            <SolidColorBrush Color="White" Opacity="0.2"/>
-                        </Button.BorderBrush>
                     </Button>
                     <Grid x:Name="grv_CancelTaxi" Height="100" VerticalAlignment="Bottom" Visibility="Collapsed">
                         <Button x:Name="btn_CancelTaxi" Content="CHẠM ĐỂ HỦY" VerticalAlignment="Bottom" Height="90" Padding="10,25,10,6" Margin="0" Tap="btn_CancelTaxi_Tap">
@@ -303,6 +376,7 @@
                         </Rectangle>
                         <ProgressBar x:Name="pb_PleaseWait" HorizontalAlignment="Left" Height="10" VerticalAlignment="Bottom" Width="448" Margin="0" IsIndeterminate="True" Foreground="White"/>
                     </Grid>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="439,4,0,0" FontSize="15"/>
                 </Grid>
                 <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="141" Margin="76,273,75,0" VerticalAlignment="Top" Width="305.3">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
@@ -321,7 +395,7 @@
                             <SolidColorBrush Color="White"/>
                         </Rectangle.Fill>
                     </Rectangle>
-                    <TextBox x:Name="txt_DestinationSearchAddress" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Padding="60,2,2,2" FontSize="30" KeyUp="TextBox_KeyUp" GotFocus="txt_DestinationSearchAddress_GotFocus"/>
+                    <TextBox x:Name="txt_DestinationSearchAddress" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Padding="60,2,2,2" FontSize="25" KeyUp="TextBox_KeyUp" GotFocus="txt_DestinationSearchAddress_GotFocus" Tap="txt_DestinationSearchAddress_Tap" LostFocus="txt_DestinationSearchAddress_LostFocus"/>
                     <Image x:Name="img_SearchIcon" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="68" Source="/Images/SearchBar/icon_Search.jpg" Margin="0,8,0,0"/>
                     <Image x:Name="img_CloseClearIcon" HorizontalAlignment="Right" Height="62" Margin="408,10,0,0" VerticalAlignment="Top" Width="62" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearIcon_Tap"/>
                     <phone:LongListSelector x:Name="lls_DestinationAddress" HorizontalAlignment="Left" Height="687" Margin="0,81,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="lls_DestinationAddress_SelectionChanged">
@@ -341,6 +415,39 @@
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>
                     </phone:LongListSelector>
+                </Grid>
+                <Grid x:Name="grv_EnterPromotionCode" Visibility="Collapsed">
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Grid.RenderTransform>
+                    <Grid.Background>
+                        <SolidColorBrush Color="{StaticResource Color_BaseGridColor}"/>
+                    </Grid.Background>
+                    <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/Images/PromotionCode/img_PromotionCodeGridBG.jpg" Stretch="Fill"/>
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="NHẬP MÃ GIẢM GIÁ" VerticalAlignment="Top" Margin="103,26,103,0" FontSize="30">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Image x:Name="img_ClosePromotionCode" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="11,10,0,0" Tap="img_ClosePromotionCode_Tap"/>
+                    <TextBox x:Name="txt_PromotionCode" HorizontalAlignment="Center" Height="78" Margin="0,188,0,0" TextWrapping="Wrap" Text="Nhập mã khuyến mại" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" GotFocus="txt_PromotionCode_GotFocus">
+                        <TextBox.Foreground>
+                            <SolidColorBrush Color="#FFB9B9B9"/>
+                        </TextBox.Foreground>
+                        <TextBox.BorderBrush>
+                            <SolidColorBrush Color="#FFBAC6E6"/>
+                        </TextBox.BorderBrush>
+                    </TextBox>
+                    <TextBlock HorizontalAlignment="Center" Margin="26,125,25,0" TextWrapping="Wrap" Text="Nếu bạn có mã khuyến mại, vui lòng nhập để nhận được ưu đãi từ F-Taxi" VerticalAlignment="Top" Width="429" Height="47" FontSize="17" TextAlignment="Center">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Button x:Name="btn_ApplyCode" Content="XÁC NHẬN" Margin="10,266,10,0" VerticalAlignment="Top" Height="90" Tap="btn_ApplyCode_Tap">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                        </Button.Background>
+                    </Button>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">

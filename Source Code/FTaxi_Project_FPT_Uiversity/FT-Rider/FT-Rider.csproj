@@ -103,8 +103,8 @@
     <Compile Include="Classes\ConvertData.cs" />
     <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
-    <Compile Include="Classes\GuestRegistration.cs" />
     <Compile Include="Classes\Md5Hash\helper.cs" />
+    <Compile Include="Classes\Md5Hash\MD5.cs" />
     <Compile Include="Classes\RiderListFavoriteDriverLLSObj.cs" />
     <Compile Include="Classes\RiderMyTripItemObj.cs" />
     <Compile Include="Classes\RiderMyTripLLSObj.cs" />
@@ -253,6 +253,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="DataFiles\riderLogin.json" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -280,9 +281,6 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="iconPNG_FromIcon.png" />
-    <Content Include="iconPNG_ToIcon.png" />
-    <Content Include="icon_Count.png" />
     <Content Include="Images\About\img_About.png" />
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
     <Content Include="Images\BackgroundImages\img_AppSettingsBackground.jpg" />
@@ -305,7 +303,12 @@
     <Content Include="Images\FirstPage\img_TutPage05.jpg" />
     <Content Include="Images\FirstPage\img_TutPagebg.jpg" />
     <Content Include="Images\Grid_NoCarYet\img_CallCenter.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_Button_AutoRecall.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_Button_AutoRecall_Clicked.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_Button_PromotionCode.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_Button_PromotionCode_Clicked.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
+    <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.png" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiGridBackground.png" />
     <Content Include="Images\Icons\icon-OpenMenu.png" />
@@ -335,6 +338,7 @@
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
     <Content Include="Images\Icons\PNG\icon_Count.png" />
+    <Content Include="Images\Icons\PNG\img_DestinationLocation.png" />
     <Content Include="Images\LeftMenu\icon_Menu_About.png" />
     <Content Include="Images\LeftMenu\icon_Menu_Feedback.png" />
     <Content Include="Images\LeftMenu\icon_Menu_MyTrip.png" />
@@ -350,6 +354,7 @@
     <Content Include="Images\Others\img_AppNavbar.png" />
     <Content Include="Images\Others\img_default_avatar_dark.png" />
     <Content Include="Images\Others\img_DemoAvatar2.jpg" />
+    <Content Include="Images\Others\img_LockMap.png" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="Images\Others\img_PageContentBreak_dark.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />
@@ -358,6 +363,8 @@
     <Content Include="Images\Picker\img_Picker_CarGoing.png" />
     <Content Include="Images\Picker\img_Picker_NoCarYet.png" />
     <Content Include="Images\Picker\img_Picker_SetPickup.png" />
+    <Content Include="Images\PromotionCode\img_PromotionCodeCLOSE.jpg" />
+    <Content Include="Images\PromotionCode\img_PromotionCodeGridBG.jpg" />
     <Content Include="Images\SearchBar\icon_CloseClear.jpg" />
     <Content Include="Images\SearchBar\icon_Search.jpg" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
