@@ -158,7 +158,9 @@ namespace FT_Rider.Classes
         //Confirmboz
         public const string cfbLogOut = "Bạn có chắc là bạn muốn thoát tài khoản không?";
         public const string cfbYes = "Có";
+        public const string cfbCancel = "Hủy chuyến";
         public const string cfbNo = "Không";
+        public const string cfbCancelTaxi = "Bạn sẽ phải trả tiền gọi xe theo giá mở cửa nếu hủy chuyến.";
 
 
         //Address Type

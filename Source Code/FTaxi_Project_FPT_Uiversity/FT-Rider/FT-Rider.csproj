@@ -103,8 +103,8 @@
     <Compile Include="Classes\ConvertData.cs" />
     <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
+    <Compile Include="Classes\GuestRegistration.cs" />
     <Compile Include="Classes\Md5Hash\helper.cs" />
-    <Compile Include="Classes\Md5Hash\MD5.cs" />
     <Compile Include="Classes\RiderListFavoriteDriverLLSObj.cs" />
     <Compile Include="Classes\RiderMyTripItemObj.cs" />
     <Compile Include="Classes\RiderMyTripLLSObj.cs" />
@@ -253,8 +253,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
+=======
+>>>>>>> dec801736bd8dc6313c4b572244f006736a94c25
     <None Include="DataFiles\riderLogin.json" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
@@ -360,6 +363,8 @@
     <Content Include="Images\Picker\img_Picker_CarGoing.png" />
     <Content Include="Images\Picker\img_Picker_NoCarYet.png" />
     <Content Include="Images\Picker\img_Picker_SetPickup.png" />
+    <Content Include="Images\SearchBar\icon_CloseClear.jpg" />
+    <Content Include="Images\SearchBar\icon_Search.jpg" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon_Black.png" />
     <Content Include="Images\Taxis\img_CarIcon.png" />
