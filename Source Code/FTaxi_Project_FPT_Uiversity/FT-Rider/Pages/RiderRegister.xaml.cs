@@ -105,7 +105,7 @@ namespace FT_Rider.Pages
                 txt_UserId.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
-            else
+            
             {
                 txt_UserId.ChangeValidationState(ValidationState.Invalid, "Nhập lại Email");
                 return false;
@@ -118,9 +118,18 @@ namespace FT_Rider.Pages
             var passwordEmpty = string.IsNullOrEmpty(txt_Password.Password);
             //tbPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
             //pbPassword.Opacity = passwordEmpty ? 0 : 100;
-            if (passwordEmpty || txt_Password.Password.Length < 6)
+            if (txt_Password.Password.Length < 6)
             {
 
+                txt_Password.ChangeValidationState(ValidationState.Invalid, "Mật khẩu ít nhất 6 ký tự ");
+                return false;
+            }
+            else if (txt_Password.Password.Length > 24)
+            {
+                txt_Password.ChangeValidationState(ValidationState.Invalid, "Mật khẩu lớn nhất 24 ký tự ");
+                return false;
+            }
+            else if (passwordEmpty){
                 txt_Password.ChangeValidationState(ValidationState.Invalid, "Vui lòng nhập mật khẩu");
                 return false;
             }
@@ -136,10 +145,14 @@ namespace FT_Rider.Pages
             var passwordEmpty = string.IsNullOrEmpty(txt_PasswordAgain.Password);
             //tbVerifyPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
             //pbVerifyPassword.Opacity = passwordEmpty ? 0 : 100;
-            if (passwordEmpty || txt_PasswordAgain.Password.Length < 6)
+            if (txt_PasswordAgain.Password.Length < 6)
             {
 
                 txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu ít nhất 6 kí tự !");
+                return false;
+            }
+            else if (passwordEmpty) {
+                txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Vui lòng nhập mật khẩu");
                 return false;
             }
             else if (!txt_PasswordAgain.Password.Equals(txt_Password.Password))
@@ -159,7 +172,7 @@ namespace FT_Rider.Pages
         private bool ValidateName()
         {
             var NameEmpty = string.IsNullOrEmpty(txt_FirstName.Text);
-            if (NameEmpty)
+            if (NameEmpty )
             {
                 txt_FirstName.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập tên");
                 return false;
