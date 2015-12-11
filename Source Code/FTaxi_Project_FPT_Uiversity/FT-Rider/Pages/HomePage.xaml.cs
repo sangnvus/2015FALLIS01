@@ -100,6 +100,8 @@ namespace FT_Rider.Pages
         RiderCreateTrip createTrip;
         long tlmd;
         RiderNotificationUpdateTrip myTrip;
+        double tripEstimateCost = 0;
+        double tripEstimateKm = 0;
 
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
@@ -126,6 +128,7 @@ namespace FT_Rider.Pages
 
         //For Lock taxi icon tap
         bool isTapableTaxiIcon = true; //Mặc định là true
+        bool isTaxiTaped = false; //Cái này để biết khi nào ta nhấn vào taxi
 
 
         public HomePage()
@@ -323,7 +326,7 @@ namespace FT_Rider.Pages
 
 
 
-        
+
 
 
 
@@ -462,22 +465,7 @@ namespace FT_Rider.Pages
             double estimateCost = 0;
             double estimateKm = 0;
             string driverName = nearDriverCollection[did].lName + ", " + nearDriverCollection[did].fName;
-            if (destinationLat != 0 && destinationLng != 0)
-            {
-                try
-                {
-                    //thử xem có tính tiền đc ko?
 
-                    estimateKm = await GoogleAPIFunction.GetDistance(pickupLat, pickupLng, destinationLat, destinationLng);
-                    estimateCost = RiderFunctions.EstimateCostCalculate(nearDriverCollection, did, estimateCost);
-                }
-                catch (Exception)
-                {
-
-                    //Nếu ko tính đc thì...
-                    Debug.WriteLine("Có lỗi 689rggg ở Tính km và tính tiền");
-                }
-            }
             var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
             var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
 
@@ -490,9 +478,14 @@ namespace FT_Rider.Pages
             //Show taxi and trip infor
             //taxiIcon.Tap += taxiIcon_Tap;
 
-            taxiIcon.Tap += (sender, eventArgs) =>
+            taxiIcon.Tap += (object sender, System.Windows.Input.GestureEventArgs e) =>
             {
                 Debug.WriteLine("Chạm vào một Taxi thành công");
+
+                TouchFeedback(); //Rung phản hồi
+
+                //Đánh dấu là một em taxi đã được nhấn rồi
+                isTaxiTaped = true;
 
                 //Cái này để khóa lại hành động sau khi Người dùng nhấn vào picker nhưng lại chọn icon taxi trên màn hình
                 if (isTapableTaxiIcon == true)
@@ -513,6 +506,9 @@ namespace FT_Rider.Pages
                     //ShowStep02Screen();
                     //Hiện màn hình step 02
                     ShowFirstStep02Grid();
+
+                    //Show label picker
+                    ShowPickerLabel();
                 }
             };
 
@@ -563,16 +559,7 @@ namespace FT_Rider.Pages
 
 
 
-        //Tapped event
-        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //Hide Step 01
-            this.grv_Step01.Visibility = Visibility.Collapsed;
 
-            //Show Step 02
-            this.grv_Step02.Visibility = Visibility.Visible;
-            this.grv_Picker.Visibility = Visibility.Collapsed;
-        }
         //------ END show and Design UI 3 taxi near current position ------//
 
 
@@ -1148,7 +1135,7 @@ namespace FT_Rider.Pages
 
 
             //Cái này là effect
-            if (isEffect == true)
+            if (isEffect == true )
             {
                 //Hiện màn hình step 01
                 ShowStep01Screen();
@@ -1170,8 +1157,15 @@ namespace FT_Rider.Pages
             {
                 //Nếu trạng thái cho nạp điểm đón đc kích hoạt thì cho phép
                 pickupLat = map_RiderMap.Center.Latitude;
-                pickupLng = map_RiderMap.Center.Longitude;
+                pickupLng = map_RiderMap.Center.Longitude;                
             }
+
+            if (destinationLat != 0 && destinationLng != 0 && isTaxiTaped == true)
+            {
+                EstimateCostCalculate(); //Hàm này chỉ hợp lệ trước lúc bắt đầu đi xe. còn sau đó thì dùng hàm khác. sử dụng vị trí hiện tại
+            }
+
+            //Nếu cho phép pickup và đang ở màn lấy địa chỉ đón thì cho phép lạy get nearDriver
             if (isPickup == true)
             {
                 //pickupTimer.Start();
@@ -1457,7 +1451,7 @@ namespace FT_Rider.Pages
                 grv_Step02.Visibility = Visibility.Visible;
             }
             btn_RequestTaxi.IsEnabled = false;
-            btn_RequestTaxi.Content = ConstantVariable.strPleseWait;            
+            btn_RequestTaxi.Content = ConstantVariable.strPleseWait;
         }
 
         private void map_RiderMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -1484,9 +1478,9 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //Không cho nhấn icon taxi trê nmàn hình maps nữa
-            isTapableTaxiIcon = false;           
-            
+            //không bật tính phí 
+            isTaxiTaped = false;
+
             //Kích hoạt tự động gọi xe khác
             ActiveAutoRecall();
 
@@ -1518,6 +1512,7 @@ namespace FT_Rider.Pages
 
         private void ShowFirstStep02Grid()
         {
+            (this.Resources["showStep02"] as Storyboard).Begin();
             isStep2 = true;
             grv_Step02.Visibility = Visibility.Visible;
             btn_RequestTaxiMN.Visibility = Visibility.Visible;
@@ -1797,7 +1792,8 @@ namespace FT_Rider.Pages
 
             //3.
             grv_Step02.Visibility = Visibility.Collapsed;
-            SetHomeViewState();
+            //SetHomeViewState();
+            LoadHomePageView();
 
             //4. Get near car
             GetNearDriver();
@@ -1823,7 +1819,8 @@ namespace FT_Rider.Pages
 
             //3.
             grv_Step02.Visibility = Visibility.Collapsed;
-            SetHomeViewState();
+            //SetHomeViewState();
+            LoadHomePageView();
 
             //4. Get near car
             GetNearDriver();
@@ -1979,7 +1976,8 @@ namespace FT_Rider.Pages
                         //SAU KHI HOÀN THÀNH REQ HỦY CHUYẾN THÌ TẮT LOADING
                         grv_ProcessBarButton.Visibility = Visibility.Visible;
                         //Đưa màn hình về trạng thái ban đầu
-                        SetHomeViewState();
+                        LoadHomePageView();
+                        //SetHomeViewState();
 
                     }
                     else if (cancelStatus.status.Equals(ConstantVariable.RESPONSECODE_TRIP_TAKEN)) //013
@@ -2118,7 +2116,7 @@ namespace FT_Rider.Pages
             //Không cho lấy điểm đón nữa
             //Có nghĩa là mỗi khi map di chuyển, sẽ ko lấy center map nữa
             isGetPickupAddress = false;
-            
+
             btn_RequestTaxi.IsEnabled = false;
             TouchFeedback();
             grv_Picker.Visibility = Visibility.Collapsed;
@@ -2250,6 +2248,7 @@ namespace FT_Rider.Pages
             if (txt_DestinationSearchAddress.Text.Length > 0)
             {
                 txt_DestinationSearchAddress.Text = string.Empty;
+                txt_DestinationSearchAddress.Focus();
             }
         }
         /// <summary>
@@ -2259,9 +2258,18 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private void TextBox_KeyUp(object sender, KeyEventArgs e)
         {
-            //Chạy autocomplete và load dữ liệu vào Longlistselector
             string queryAddress = txt_DestinationSearchAddress.Text;
-            AutoCompleteDestinationSearch(queryAddress);
+            //Chạy autocomplete và load dữ liệu vào Longlistselector
+            if (txt_DestinationSearchAddress.Text.Equals(string.Empty))
+            {
+                AutoCompleteDestinationSearch("");
+
+            }
+            else
+            {
+                AutoCompleteDestinationSearch(queryAddress);
+            }
+           
         }
 
 
@@ -2276,6 +2284,7 @@ namespace FT_Rider.Pages
         /// </summary>
         private void AutoCompleteDestinationSearch(string inputAddress)
         {
+            //lls_AutoComplete = null;
             //GoogleAPIQueryAutoComplete URL
             string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&types=geocode&language=vi" + "&input=" + inputAddress;
 
@@ -2294,12 +2303,13 @@ namespace FT_Rider.Pages
                 places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoCompleteObj>(e.Result);
                 //2. Create Place list
                 ObservableCollection<AutoCompletePlaceLLSObj> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceLLSObj>();
-                lls_DestinationAddress.ItemsSource = autoCompleteDataSource;
+               
                 //3. Loop to list all item in object
                 foreach (var obj in places.predictions)
                 {
                     autoCompleteDataSource.Add(new AutoCompletePlaceLLSObj(obj.description.ToString()));
                 }
+                lls_DestinationAddress.ItemsSource = autoCompleteDataSource;
             }
             catch (Exception)
             {
@@ -2331,8 +2341,14 @@ namespace FT_Rider.Pages
             //Tắt grid tìm điểm đến
             HideGridDestinationAddressSearch();
 
+            //Không cho nhấn icon taxi trê nmàn hình maps nữa
+            isTapableTaxiIcon = false;
+
+            //Tắt effect
+            isEffect = false;
+
             //Xóa lls
-            lls_DestinationAddress = null;
+            //lls_DestinationAddress = null;
 
             //Ẩn picker pin
             HideAllPickerLabel();
@@ -2359,16 +2375,23 @@ namespace FT_Rider.Pages
                 double lat = places.results[0].geometry.location.lat;
                 double lng = places.results[0].geometry.location.lng;
 
-                //Kẻ một đường đi tới đó
-                getRouteOnMap(new GeoCoordinate(pickupLat, pickupLng), new GeoCoordinate(lat, lng));
-
-                //Và thêm icon điểm đich
-                ShowDestinationMarkerOnMap(lat, lng);
+                //Load tọa độ vào biến Destination lat, lng
+                LoadDestinationCoordinate(lat, lng);
 
                 //Sau đó thay đổi setview
                 map_RiderMap.SetView(new GeoCoordinate(lat - 0.005, lng), 14, MapAnimationKind.Parabolic); //-0.002 để dịch map lên bên trên
 
-                //SetMapCenterToUp(lat, lng);
+
+                //Và chạy hàm tính chi phí
+                EstimateCostCalculate();
+
+
+                //Kẻ một đường đi tới đó
+                getRouteOnMap(new GeoCoordinate(pickupLat, pickupLng), new GeoCoordinate(lat, lng));
+
+                //Và thêm icon điểm đich
+                ShowStartAndEndMarkersOnMap(pickupLat, pickupLng, lat, lng);
+
 
                 HideGridPicker();
 
@@ -2387,6 +2410,44 @@ namespace FT_Rider.Pages
         }
 
 
+        /// <summary>
+        /// Hàm này để nạp dữ liệu vào cho điểm đến
+        /// </summary>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        private void LoadDestinationCoordinate(double lat, double lng)
+        {
+            destinationLat = lat;
+            destinationLng = lng;
+        }
+
+
+        /// <summary>
+        /// Hàm này để tính quãng đường, giá ước tính sau khi chọn điểm đến
+        /// </summary>
+        private async void EstimateCostCalculate()
+        {
+            if (destinationLat != 0 && destinationLng != 0)
+            {
+                try
+                {
+                    //thử xem có tính tiền đc ko?
+
+                    tripEstimateKm = await GoogleAPIFunction.GetDistance(pickupLat, pickupLng, destinationLat, destinationLng);
+                    if (tripEstimateKm != 0)
+                    {
+                        tripEstimateCost = RiderFunctions.EstimateCostCalculate(nearDriverCollection, selectedDid, tripEstimateKm);
+                        txt_EstimatedCost.Text = tripEstimateCost.ToString();
+                    }
+                }
+                catch (Exception)
+                {
+
+                    //Nếu ko tính đc thì...
+                    Debug.WriteLine("Có lỗi 689rggg ở Tính km và tính tiền");
+                }
+            }
+        }
 
 
         /// <summary>
@@ -2404,7 +2465,7 @@ namespace FT_Rider.Pages
         /// <summary>
         /// CÁI NÀY ĐỂ HIỆN MARKER ĐIỂM ĐẾN
         /// </summary>
-        private void ShowDestinationMarkerOnMap(double lat, double lng)
+        private void ShowStartAndEndMarkersOnMap(double sLat, double sLng, double eLat, double eLng)
         {
             //Nếu trước đó đã có route rồi thì giờ xóa icon đi
             if (riderMapRoute != null)
@@ -2413,18 +2474,20 @@ namespace FT_Rider.Pages
             }
 
             // Create a small Point to mark the current location.
-            Image myPositionIcon = new Image();
-            myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/PNG/img_DestinationLocation.png", UriKind.Relative));
-            myPositionIcon.Height = 27;
-            myPositionIcon.Width = 25;
+            Image destinationIcon = new Image();
+            destinationIcon.Source = new BitmapImage(new Uri("/Images/Icons/PNG/img_DestinationLocation.png", UriKind.Relative));
+            destinationIcon.Height = 27;
+            destinationIcon.Width = 25;
+
+
 
             // Create a MapOverlay to contain the circle.
             riderDestinationIconOverlay = new MapOverlay();
-            riderDestinationIconOverlay.Content = myPositionIcon;
+            riderDestinationIconOverlay.Content = destinationIcon;
 
             //MapOverlay PositionOrigin to 0.3, 0.9 MapOverlay will align it's center towards the GeoCoordinate
             riderDestinationIconOverlay.PositionOrigin = new Point(0.5, 0.5);
-            riderDestinationIconOverlay.GeoCoordinate = new GeoCoordinate(lat, lng);
+            riderDestinationIconOverlay.GeoCoordinate = new GeoCoordinate(eLat, eLng);
 
             // Create a MapLayer to contain the MapOverlay.
             riderMapLayer = new MapLayer();
@@ -2489,7 +2552,7 @@ namespace FT_Rider.Pages
         {
             (this.Resources["showStep02"] as Storyboard).Begin();
             grv_Step02.Visibility = Visibility.Visible;
-            
+
         }
         private void HideStep02Screen()
         {
@@ -2500,7 +2563,7 @@ namespace FT_Rider.Pages
 
 
 
-  
+
 
 
 
@@ -2660,7 +2723,7 @@ namespace FT_Rider.Pages
             isGetDestinationAddress = true;
 
             //Nếu như trước đó đã có địa chỉ nhập vào rồi thì autocomplete chính nó
-            if (txt_DestinationAddress.Text != null)
+            if (txt_DestinationAddress.Text != string.Empty)
             {
                 AutoCompleteDestinationSearch(txt_DestinationAddress.Text);
             }
@@ -2682,9 +2745,13 @@ namespace FT_Rider.Pages
             //    txt_DestinationAddress.Text = string.Empty;
             //}
 
+            if (txt_DestinationSearchAddress.Text.Equals(string.Empty))
+            {
+                AutoCompleteDestinationSearch("");
+            }
 
             //Reset lls
-            //AutoCompleteDestinationSearch("");
+            /*AutoCompleteDestinationSearch("");*/
 
             //Trong suốt texbox
             TextBox addressTextbox = (TextBox)sender;
@@ -2744,6 +2811,7 @@ namespace FT_Rider.Pages
                 map_RiderMap.RemoveRoute(riderMapRoute);
                 riderMapRoute = null;
                 riderQuery = null;
+                map_RiderMap.Layers.Remove(riderMapLayer);
             }
             riderQuery = new RouteQuery()
             {
@@ -2765,7 +2833,8 @@ namespace FT_Rider.Pages
                 Route newRoute = e.Result;
 
                 riderMapRoute = new MapRoute(newRoute);
-                riderMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
+                riderMapRoute.Color = Color.FromArgb(255, (byte)0, (byte)171, (byte)243); // aRGB for #00abf3
+                riderMapRoute.OutlineColor = Color.FromArgb(255, (byte)45, (byte)119, (byte)191); //2d77bf
                 map_RiderMap.AddRoute(riderMapRoute);
                 //map_RiderMap.SetView(newRoute);                
                 riderQuery.Dispose();
@@ -2813,16 +2882,32 @@ namespace FT_Rider.Pages
             isGetPickupAddress = true;
 
             //Xóa các đường đi
-            if (riderMapRoute != null)
-            {
-                riderMapRoute = null;
-                riderMapLayer = null;
-            }
+            RemoveMapRoute();
+            //if (riderMapRoute != null)
+            //{
+
+            //}
 
             GeoCoordinate currentPosition = await GetCurrentPosition.GetGeoCoordinate();
             //Đưa về vị trí ban đầu
             map_RiderMap.SetView(currentPosition, 16, MapAnimationKind.Parabolic);
         }
+
+
+        private void RemoveMapRoute()
+        {
+            if (riderMapRoute != null)
+            {
+                map_RiderMap.RemoveRoute(riderMapRoute);
+                riderMapRoute = null;
+                riderQuery = null;
+                riderDestinationIconOverlay = null;
+                riderMapLayer.Remove(riderDestinationIconOverlay);
+                map_RiderMap.Layers.Remove(riderMapLayer);
+            }
+        }
+
+
 
         private void LoadHomePageView()
         {
@@ -2838,6 +2923,7 @@ namespace FT_Rider.Pages
             img_PickerPin.Visibility = Visibility.Visible;
             grv_ProcessScreen.Visibility = Visibility.Collapsed;
             grv_DestinationSearch.Visibility = Visibility.Collapsed;
+            txt_EstimatedCost.Text = "0";
         }
 
         private void img_AutoRecall_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -2891,7 +2977,7 @@ namespace FT_Rider.Pages
             ShowPromotionCodeGird();
         }
 
- 
+
 
         private void HidePromotionCodeGird()
         {
@@ -2956,6 +3042,31 @@ namespace FT_Rider.Pages
                 //Cái này để ẩn / hiện textblock phía sau điểm đến
                 HideDestinationAddressTextblockBackground();
             }
+        }
+
+
+        /// <summary>
+        /// Chuyển đến cửa sổ gọi hãng 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tbl_CallTaxiCenter_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/TaxiList.xaml", UriKind.Relative));
+        }
+
+
+
+        /// <summary>
+        /// Cái này để hiện / hiện picker label
+        /// </summary>
+        private void ShowPickerLabel()
+        {
+            img_PickerLabel.Visibility = Visibility.Visible;
+        }
+        private void HIdePickerLabel()
+        {
+            img_PickerLabel.Visibility = Visibility.Collapsed;
         }
 
     }

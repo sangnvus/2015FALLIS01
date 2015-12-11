@@ -320,6 +320,7 @@
     <Content Include="Images\Icons\PNG\iconPNG_UserPassword.png" />
     <Content Include="Images\Icons\PNG\iconPNG_UserProfile.png" />
     <Content Include="Images\Icons\PNG\icon_Count.png" />
+    <Content Include="Images\Icons\PNG\img_PickupIcon.png" />
     <Content Include="Images\LeftMenu\icon_Menu_About.png" />
     <Content Include="Images\LeftMenu\icon_Menu_Feedback.png" />
     <Content Include="Images\LeftMenu\icon_Menu_MyTrip.png" />

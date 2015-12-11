@@ -234,7 +234,7 @@
                 </Rectangle>
                 <Image x:Name="img_MenuIcon1_Copy" Margin="29,162,356,571" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
                 <TextBlock x:Name="tbl_MyProfile" Text="Hồ sơ cá nhân" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,162,0,0" FontSize="22" Tap="tbl_MyProfile_Tap"/>
-                <TextBlock x:Name="tbl_CallTaxiCenter" Text="Gọi hãng Taxi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,365,0,0" FontSize="22" Tap="tbl_VipRider_Tap"/>
+                <TextBlock x:Name="tbl_CallTaxiCenter" Text="Gọi hãng Taxi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,365,0,0" FontSize="22" Tap="tbl_CallTaxiCenter_Tap"/>
                 <Image x:Name="img_MenuIcon4_Copy" Margin="29,362,356,371" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png"/>
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
@@ -313,9 +313,9 @@
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_EstimatedCost" HorizontalAlignment="Right" Margin="0,1,47,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="65" FontSize="18" Text="0" TextAlignment="Right"/>
-                    <TextBlock x:Name="txt_OpenPrice" HorizontalAlignment="Right" Margin="0,1,279,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="77" FontSize="18" Text="0" TextAlignment="Right"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="206,4,0,0" FontSize="15"/>
+                    <TextBlock x:Name="txt_EstimatedCost" HorizontalAlignment="Right" Margin="0,1,37,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="89" FontSize="18" Text="0" TextAlignment="Right"/>
+                    <TextBlock x:Name="txt_OpenPrice" HorizontalAlignment="Right" Margin="0,1,270,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="86" FontSize="18" Text="0" TextAlignment="Right"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="215,4,0,0" FontSize="15"/>
                     <TextBlock x:Name="txt_PromoteCode" HorizontalAlignment="Right" Margin="0,105,123,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="156" FontSize="19" Text="KM1235" Visibility="Collapsed"/>
                     <Image x:Name="img_PromotionCode" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="176" Source="/Images/Grid_RequestTaxi/img_Button_PromotionCode.jpg" Margin="192,87,0,0" KeyDown="img_PromotionCode_KeyDown" KeyUp="img_PromotionCode_KeyUp" Tap="img_PromotionCode_Tap"/>
                     <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_default_avatar_dark.png" Margin="368,27,0,0">
@@ -367,12 +367,21 @@
                         </Rectangle>
                         <ProgressBar x:Name="pb_PleaseWait" HorizontalAlignment="Left" Height="10" VerticalAlignment="Bottom" Width="448" Margin="0" IsIndeterminate="True" Foreground="White"/>
                     </Grid>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="439,4,0,0" FontSize="15"/>
+                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="448,4,0,0" FontSize="15"/>
                 </Grid>
                 <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="141" Margin="76,273,75,0" VerticalAlignment="Top" Width="305.3">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
                     <Image x:Name="img_PickerLabel" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallTaxi.png" Stretch="None" Tap="img_PickerLabel_Tap"/>
                     <Image x:Name="img_PickerLabel_Red" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="2,1,0,0" Source="/Images/Picker/img_Picker_CallCenter.png" Stretch="None" Visibility="Collapsed" Tap="img_PickerLabel_Red_Tap"/>
+                </Grid>
+                <Grid x:Name="grv_navbar" Margin="0" VerticalAlignment="Top">
+                    <Image x:Name="img_Navbar" Height="64" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Margin="0"/>
+                    <Image x:Name="img_FtaxiLogo" HorizontalAlignment="Center" Height="41" Margin="0,6,0,0" VerticalAlignment="Top" Width="107" Source="/Images/Logos/img_Ftaxi_logo_whileBG.png"/>
+                    <Button x:Name="btn_OpenMenu" Content="" HorizontalAlignment="Left" Margin="-11,-15,0,0" VerticalAlignment="Top" Width="86" BorderBrush="{x:Null}" Height="83" Click="btn_OpenMenu_Click">
+                        <Button.Background>
+                            <ImageBrush Stretch="Fill" ImageSource="/Images/Icons/icon-OpenMenu.png"/>
+                        </Button.Background>
+                    </Button>
                 </Grid>
                 <Grid x:Name="grv_DestinationSearch" Visibility="Collapsed">
                     <Grid.RenderTransform>
@@ -396,7 +405,7 @@
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="28"/>
+                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="30" LineHeight="10"/>
                                     <!--<Rectangle HorizontalAlignment="Center" Height="1" Width="456">
                                             <Rectangle.Fill>
                                                 <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
@@ -437,15 +446,6 @@
                     <Button x:Name="btn_ApplyCode" Content="XÁC NHẬN" Margin="10,266,10,0" VerticalAlignment="Top" Height="90" Tap="btn_ApplyCode_Tap">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
-                        </Button.Background>
-                    </Button>
-                </Grid>
-                <Grid x:Name="grv_navbar" Margin="0" VerticalAlignment="Top">
-                    <Image x:Name="img_Navbar" Height="64" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Margin="0"/>
-                    <Image x:Name="img_FtaxiLogo" HorizontalAlignment="Center" Height="41" Margin="0,6,0,0" VerticalAlignment="Top" Width="107" Source="/Images/Logos/img_Ftaxi_logo_whileBG.png"/>
-                    <Button x:Name="btn_OpenMenu" Content="" HorizontalAlignment="Left" Margin="-11,-15,0,0" VerticalAlignment="Top" Width="86" BorderBrush="{x:Null}" Height="83" Click="btn_OpenMenu_Click">
-                        <Button.Background>
-                            <ImageBrush Stretch="Fill" ImageSource="/Images/Icons/icon-OpenMenu.png"/>
                         </Button.Background>
                     </Button>
                 </Grid>
