@@ -249,9 +249,12 @@
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
 
-                <Grid x:Name="grv_Media" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="305" Margin="88,0,0,0">
-                    <MediaElement x:Name="me_SoundUpdate" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_noti02.wav"/>
+                <Grid x:Name="grv_Media" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="305" Margin="88,0,0,0" d:IsHidden="True" Visibility="Collapsed">
+                    <MediaElement x:Name="me_StartTrip" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_noti02.wav"/>
                     <MediaElement x:Name="me_StartRequest" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_noti01.wav"/>
+                    <MediaElement x:Name="me_NewTrip" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_Trip_NewTrip.wav"/>
+                    <MediaElement x:Name="me_UpdateTrip01" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_Trip_UpdateTrip01.wav"/>
+                    <MediaElement x:Name="me_CancelTrip" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_Trip_CancelTrip.wav"/>
                 </Grid>
 
                 <Grid x:Name="grv_Map" VerticalAlignment="Top" Width="480" Height="712" Margin="0,56,0,0">

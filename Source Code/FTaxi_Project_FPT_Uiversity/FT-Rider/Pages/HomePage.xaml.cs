@@ -108,8 +108,8 @@ namespace FT_Rider.Pages
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
 
         //For process bar
-        double tmpLat;
-        double tmpLng;
+        double tmpLat = 0;
+        double tmpLng = 0;
 
         //For Notification 
         string pushChannelURI = "";
@@ -131,9 +131,19 @@ namespace FT_Rider.Pages
         bool isTapableTaxiIcon = true; //Mặc định là true
         bool isTaxiTaped = false; //Cái này để biết khi nào ta nhấn vào taxi
 
+
         //for rider update driver status
         DispatcherTimer riderUpdateDriverStatusTimer;
         MapOverlay riderStartTripOverLay;
+
+        //for calcumale cost
+        bool isCalculateCost = false;
+        int costCount = 0;
+        double fiveStepBeforeLat = 0;
+        double fiveStepBeforeLng = 0;
+        double fiveStepAfterLat = 0;
+        double fiveStepAfterLng = 0;
+        double realDistance = 0;
 
         public HomePage()
         {
@@ -181,6 +191,46 @@ namespace FT_Rider.Pages
             riderUpdateDriverStatusTimer = new DispatcherTimer();
             riderUpdateDriverStatusTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
             riderUpdateDriverStatusTimer.Interval = new TimeSpan(0, 0, 0, 30); //Cứ 30 giây sẽ hiện vị trí Driver trên map của Rider
+        }
+
+
+        /// <summary>
+        /// Cái này là để đặt lại toàn bộ khóa trong chương trình
+        /// </summary>
+        private void ResetFlag()
+        {
+            isCalculateCost = false;
+            isPickup = false;
+            isGetDestinationAddress = false;
+            isGetPickupAddress = true;
+            isStep2 = false;
+            isEffect = false;
+            isTapableTaxiIcon = true;
+            isTaxiTaped = false;
+
+            costCount = 0;
+            fiveStepBeforeLat = 0;
+            fiveStepBeforeLng = 0;
+            fiveStepAfterLat = 0;
+            fiveStepAfterLng = 0;
+            realDistance = 0;
+
+            tmpLat = 0;
+            tmpLng = 0;
+
+            selectedDid = null;
+
+            pickupLat = 0;
+            pickupLng = 0;
+
+            destinationLat = 0;
+            destinationLng = 0;
+
+            tripEstimateCost = 0;
+            tripEstimateKm = 0;
+
+            //Không khóa map nữa
+            LockMapIsDeactived();
         }
 
         private void getNearDriverTimer_Tick(object sender, EventArgs e)
@@ -324,20 +374,57 @@ namespace FT_Rider.Pages
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
 
-                Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
+                Geocoordinate geocoordinate = args.Position.Coordinate;
                 riderMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
 
                 Debug.WriteLine("35625 geolocator_PositionChanged"); //DELETE AFTER FINISHED
 
+                //nếu cờ cho phép tính tiền bật, thì mới nhảy vào đây
+                //Nếu như vị trí thay đổi được 5 lần thì sẽ cộng dồn khoảng cách
+                if (isCalculateCost == true && costCount > 5)
+                {
+
+                    //Cái này sẽ âm thầm ính khoảng cách đã đi được
+                    //Tránh trường hợp tính sai do tài xế đi hình vòng tròn
+                    RealDistanceCalculate();
+
+
+                    //Reset bộ đếm
+                    costCount = 0;
+                }
+                costCount++;
             });
 
         }
         //------ END get current Position ------//
 
 
+        private async void RealDistanceCalculate()
+        {
+            //Ta có điểm A(fiveStepBeforeLat, fiveStepBeforeLng) rồi
+            //Giờ ta sẽ set điểm B(fiveStepAfterLat, fiveStepAfterLng)
+            //Sau đó cộng dồn khoảng cách
+            //Cuối cùng là thiết lập điểm A = điểm B
+            GeoCoordinate currentPosition = await GetCurrentPosition.GetGeoCoordinate();
+
+            //1.
+            fiveStepAfterLat = currentPosition.Latitude;
+            fiveStepAfterLng = currentPosition.Longitude;
+            //2.
+            realDistance = await GoogleAPIFunction.GetDistance(fiveStepBeforeLat, fiveStepBeforeLng, fiveStepAfterLat, fiveStepAfterLng);
+            //3.
+            fiveStepBeforeLat = fiveStepAfterLat;
+            fiveStepBeforeLng = fiveStepAfterLng;
+        }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private void FareCalculate()
+        {
 
+        }
 
 
 
@@ -1145,7 +1232,7 @@ namespace FT_Rider.Pages
 
 
             //Cái này là effect
-            if (isEffect == true )
+            if (isEffect == true)
             {
                 //Hiện màn hình step 01
                 ShowStep01Screen();
@@ -1167,7 +1254,7 @@ namespace FT_Rider.Pages
             {
                 //Nếu trạng thái cho nạp điểm đón đc kích hoạt thì cho phép
                 pickupLat = map_RiderMap.Center.Latitude;
-                pickupLng = map_RiderMap.Center.Longitude;                
+                pickupLng = map_RiderMap.Center.Longitude;
             }
 
             if (destinationLat != 0 && destinationLng != 0 && isTaxiTaped == true)
@@ -1765,12 +1852,27 @@ namespace FT_Rider.Pages
         /// </summary>
         private void TripUpdateAlert()
         {
-            me_SoundUpdate.Play();
+            me_StartTrip.Play();
         }
 
         private void TripStartAlert()
         {
             me_StartRequest.Play();
+        }
+
+        private void TripNewAlert()
+        {
+            me_NewTrip.Play();
+        }
+
+        private void TripCancelAlert()
+        {
+            me_CancelTrip.Play();
+        }
+
+        private void TripUpdate01()
+        {
+            me_UpdateTrip01.Play();
         }
 
         /// <summary>
@@ -1789,6 +1891,9 @@ namespace FT_Rider.Pages
         }
 
 
+        /// <summary>
+        /// Đây là lúc chuyến đi bắt đầu
+        /// </summary>
         private void SwitchToStartedStatus()
         {
             ///1. Hiện mess
@@ -1796,28 +1901,35 @@ namespace FT_Rider.Pages
             ///3. hiện vị trí xe
             ///
 
+
+            //1.
             //Cho rung điện thoại
             TouchFeedback();
             //Đổ âm chuông cảnh báo
-            TripUpdateAlert();
+            TripStartAlert();
 
             MessageBox.Show(ConstantVariable.strCarAreStarting);
 
-            //1.
-            tbl_DriverStatus.Text = ConstantVariable.strCarAreStarting;
-
             //2.
-            //Thread.Sleep(1500);
-
             grv_Step02.Visibility = Visibility.Collapsed;
-            //3.
+
+
+
             // Khóa màn hình map lại, không cho tương tác
             LockMapIsActived();
 
             //Xóa các router trên màn hình, chỉ hiện biểu tượng taxi
             RemoveMapRoute();
 
+            //3.
             DriverTracker();
+
+            //Bật hàm tính tiền
+            isCalculateCost = true;
+
+            //Set tọa độ điểm đầu cho hàm tính khoảng cách
+            fiveStepBeforeLat = pickupLat;
+            fiveStepBeforeLng = pickupLng;
         }
 
 
@@ -1826,17 +1938,24 @@ namespace FT_Rider.Pages
             tbl_DriverStatus.Text = ConstantVariable.strCarRejected; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
             ///1. VIẾT TIẾP HÀM CHO VIỆC LÀM LẠI CHU TRÌNH GỌI XE HOẶC GỌI TỔNG ĐÀI
             ///2. Chuyển qua Button Gọi hãng
-            ///3. CHO ÂM THANH HIỆU ỨNG            
+            ///3. CHO ÂM THANH HIỆU ỨNG 
+            ///
+
+            //Chạy hiệu ưngs
+            TouchFeedback();
+            TripCancelAlert();
 
             //2. 
             DeleteTripDate();
 
+            //Đăt lại các biến
+            ResetFlag();
+
+
             //Show messeage
             MessageBox.Show(ConstantVariable.strCarRejected);
 
-            //3.
-            grv_Step02.Visibility = Visibility.Collapsed;
-            //SetHomeViewState();
+            //3
             LoadHomePageView();
 
             //4. Get near car
@@ -1849,11 +1968,17 @@ namespace FT_Rider.Pages
             ///1. CHO ÂM THANH HIỆU ỨNG
             ///2. Xóa thông tin trip
             ///3. Về màn hình chính
-
+            ///
             //0.
-            tbl_DriverStatus.Text = ConstantVariable.strCarCanceled; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
+            MessageBox.Show(ConstantVariable.strCarCanceled); //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
 
             //1. 
+            TouchFeedback();
+            TripCancelAlert();
+
+
+            //Đăt lại các biến
+            ResetFlag();
 
             //2. 
             DeleteTripDate();
@@ -1877,7 +2002,7 @@ namespace FT_Rider.Pages
         private async void DriverTracker()
         {
 
-            if (riderMapLayer!=null)
+            if (riderMapLayer != null)
             {
                 riderStartTripOverLay = null;
                 map_RiderMap.Layers.Remove(riderMapLayer);
@@ -2041,7 +2166,7 @@ namespace FT_Rider.Pages
         private async void CancelTaxiTrip()
         {
             //Sau khi nhấn hủy bỏ thì lại cho phép chạm vào icon taxi
-            isTapableTaxiIcon = true;
+            //isTapableTaxiIcon = true;****
 
 
             //HIỆN LOADING PROCESS
@@ -2074,7 +2199,14 @@ namespace FT_Rider.Pages
                         tlmd = (long)cancelStatus.lmd;
 
                         //2. Xóa các thông tin liên quan đến trip
-                        createTrip = null;
+                        //createTrip = null;
+                        DeleteTripDate();
+
+                        //Đặt cờ lại mặc định
+                        ResetFlag();
+
+                        //Xóa thông tin map
+                        RemoveMapRoute();
 
                         //3. Về màn hình đầu tiên
                         //SAU KHI HOÀN THÀNH REQ HỦY CHUYẾN THÌ TẮT LOADING
@@ -2373,7 +2505,7 @@ namespace FT_Rider.Pages
             {
                 AutoCompleteDestinationSearch(queryAddress);
             }
-           
+
         }
 
 
@@ -2407,7 +2539,7 @@ namespace FT_Rider.Pages
                 places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoCompleteObj>(e.Result);
                 //2. Create Place list
                 ObservableCollection<AutoCompletePlaceLLSObj> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceLLSObj>();
-               
+
                 //3. Loop to list all item in object
                 foreach (var obj in places.predictions)
                 {
@@ -2483,7 +2615,8 @@ namespace FT_Rider.Pages
                 LoadDestinationCoordinate(lat, lng);
 
                 //Sau đó thay đổi setview
-                map_RiderMap.SetView(new GeoCoordinate(lat - 0.005, lng), 14, MapAnimationKind.Parabolic); //-0.002 để dịch map lên bên trên
+                //Lấy trung bình tọa độ 2 điểm pickup và điểm đến
+                map_RiderMap.SetView(new GeoCoordinate((lat + pickupLat) / 2 - 0.005, (lng + pickupLng) / 2), 14, MapAnimationKind.Parabolic); //-0.002 để dịch map lên bên trên
 
 
                 //Và chạy hàm tính chi phí
@@ -2703,9 +2836,19 @@ namespace FT_Rider.Pages
             //Trip Distcount
             txt_CT_Discount.Text = "0"; //Tạm thời chưa làm phần này
             //Trip Total Cost
-            if (txt_EstimatedCost.Text != "")
+            if (realDistance != 0)
             {
-                txt_CT_TotalCost.Text = txt_EstimatedCost.Text;
+                double fare = 0;
+                try
+                {
+                    fare = RiderFunctions.EstimateCostCalculate(nearDriverCollection, selectedDid, realDistance);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("Có lỗi 656a39 ở Tính tổng chi phí");
+
+                }
+                txt_CT_TotalCost.Text = fare.ToString();
             }
 
         }
@@ -3021,7 +3164,8 @@ namespace FT_Rider.Pages
         private async void btn_Close_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //Sau khi nhấn hủy bỏ thì lại cho phép chạm vào icon taxi
-            isTapableTaxiIcon = true;
+            //isTapableTaxiIcon = true;****
+            ResetFlag();
 
             LoadHomePageView();
 
@@ -3030,7 +3174,7 @@ namespace FT_Rider.Pages
 
 
             //Cho phép lấy tọa độ điểm đón
-            isGetPickupAddress = true;
+            //isGetPickupAddress = true;***
 
             //Xóa các đường đi
             RemoveMapRoute();
@@ -3052,6 +3196,7 @@ namespace FT_Rider.Pages
                 map_RiderMap.RemoveRoute(riderMapRoute);
                 riderMapRoute = null;
                 riderQuery = null;
+                //riderMapOverlay = null;
                 riderDestinationIconOverlay = null;
                 riderMapLayer.Remove(riderDestinationIconOverlay);
                 map_RiderMap.Layers.Remove(riderMapLayer);
@@ -3075,6 +3220,8 @@ namespace FT_Rider.Pages
             grv_ProcessScreen.Visibility = Visibility.Collapsed;
             grv_DestinationSearch.Visibility = Visibility.Collapsed;
             txt_EstimatedCost.Text = "0";
+            grv_EnterPromotionCode.Visibility = Visibility.Collapsed;
+            grv_CompleteTrip.Visibility = Visibility.Collapsed;
         }
 
         private void img_AutoRecall_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -3229,7 +3376,16 @@ namespace FT_Rider.Pages
         {
             ///Đầu tiên là tắt màn hình đi đã
             //1.
-            HideCompleteGrid();   
+            HideCompleteGrid();
+
+            //Sau đó reset tất cả giá trị các biến
+            ResetFlag();
+
+            //Đặt lại màn hình home
+            LoadHomePageView();
+
+            //xóa thông tin trip
+            DeleteTripDate();
         }
 
     }

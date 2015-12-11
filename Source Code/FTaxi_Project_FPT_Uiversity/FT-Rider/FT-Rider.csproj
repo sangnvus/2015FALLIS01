@@ -377,6 +377,9 @@
     <Content Include="README_FIRST.txt" />
     <Content Include="Sounds\sound_noti01.wav" />
     <Content Include="Sounds\sound_noti02.wav" />
+    <Content Include="Sounds\sound_Trip_CancelTrip.wav" />
+    <Content Include="Sounds\sound_Trip_NewTrip.wav" />
+    <Content Include="Sounds\sound_Trip_UpdateTrip01.wav" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
