@@ -128,6 +128,7 @@
     <Compile Include="Classes\RiderNotificationUpdateTrip.cs" />
     <Compile Include="Classes\RiderPaymentDTO.cs" />
     <Compile Include="Classes\RiderUpdateAddress.cs" />
+    <Compile Include="Classes\RiderUpdateDriverStatusObj.cs" />
     <Compile Include="Classes\RiderUpdateDriverStatusDTO.cs" />
     <Compile Include="Classes\RiderUpdatePayment.cs" />
     <Compile Include="Classes\RiderUpdateRegId.cs" />
@@ -374,6 +375,8 @@
     <Content Include="Images\Taxis\img_CarIcon_Vertical_Down.png" />
     <Content Include="Images\Taxis\img_CarIcon_Vertical_Up.png" />
     <Content Include="README_FIRST.txt" />
+    <Content Include="Sounds\sound_noti01.wav" />
+    <Content Include="Sounds\sound_noti02.wav" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />

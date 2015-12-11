@@ -95,7 +95,7 @@
             <Rectangle x:Name="panel_name" Margin="-4,13,-3,116" Opacity="0.7" Grid.Row="1" Fill="White" Stroke="#FFD1D1D1"/>
             <Rectangle x:Name="panel_Pay" Margin="-3,258,-4,150" Opacity="0.7" Grid.Row="1" Grid.RowSpan="2" Fill="#FFF4F4F5" Stroke="#FFC3C3C3"/>
             <TextBox x:Name="txt_Username" Text="Nguyễn Văn Lập" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="279" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,5,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Grid.Row="1"/>
-            <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,24,0,0" Source="/Images/Others/img_DefaultAvatar.png" Grid.Row="1">
+            <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,24,0,0" Source="/Images/Others/img_default_avatar_dark.png" Grid.Row="1">
                 <Image.Clip>
                     <EllipseGeometry
 						Center="50,50"

@@ -29,6 +29,16 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="showCompleteGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_CompleteTrip">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
         <Storyboard x:Key="showStep02">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_Step02">
                 <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
@@ -239,6 +249,11 @@
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
 
+                <Grid x:Name="grv_Media" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="305" Margin="88,0,0,0">
+                    <MediaElement x:Name="me_SoundUpdate" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_noti02.wav"/>
+                    <MediaElement x:Name="me_StartRequest" HorizontalAlignment="Left" Height="56" VerticalAlignment="Top" Width="100" Visibility="Collapsed" AutoPlay="False" BufferingTime="0:0:2" Source="/Sounds/sound_noti01.wav"/>
+                </Grid>
+
                 <Grid x:Name="grv_Map" VerticalAlignment="Top" Width="480" Height="712" Margin="0,56,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="7*"/>
@@ -318,15 +333,15 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="215,4,0,0" FontSize="15"/>
                     <TextBlock x:Name="txt_PromoteCode" HorizontalAlignment="Right" Margin="0,105,123,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="156" FontSize="19" Text="KM1235" Visibility="Collapsed"/>
                     <Image x:Name="img_PromotionCode" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="176" Source="/Images/Grid_RequestTaxi/img_Button_PromotionCode.jpg" Margin="192,87,0,0" KeyDown="img_PromotionCode_KeyDown" KeyUp="img_PromotionCode_KeyUp" Tap="img_PromotionCode_Tap"/>
-                    <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_default_avatar_dark.png" Margin="368,27,0,0">
+                    <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="81" VerticalAlignment="Top" Width="81" Source="/Images/Others/img_default_avatar_dark.png" Margin="377,38,0,0">
                         <Image.Clip>
                             <EllipseGeometry
-								Center="50,50"
-								RadiusX="45"
-								RadiusY="45" />
+								Center="40,40"
+								RadiusX="40"
+								RadiusY="40" />
                         </Image.Clip>
                     </Image>
-                    <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Left" Margin="368,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="13" Width="100" TextAlignment="Center">
+                    <TextBlock x:Name="txt_DriverNames" HorizontalAlignment="Left" Margin="368,124,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="12" Width="100" TextAlignment="Center">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
@@ -390,11 +405,7 @@
                     <Grid.Background>
                         <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                     </Grid.Background>
-                    <Rectangle HorizontalAlignment="Left" Height="79" VerticalAlignment="Top" Width="480">
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="White"/>
-                        </Rectangle.Fill>
-                    </Rectangle>
+                    <Rectangle HorizontalAlignment="Left" Height="79" VerticalAlignment="Top" Width="480" Fill="White"/>
                     <TextBox x:Name="txt_DestinationSearchAddress" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Padding="60,2,2,2" FontSize="25" KeyUp="TextBox_KeyUp" GotFocus="txt_DestinationSearchAddress_GotFocus" Tap="txt_DestinationSearchAddress_Tap" LostFocus="txt_DestinationSearchAddress_LostFocus"/>
                     <Image x:Name="img_SearchIcon" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="68" Source="/Images/SearchBar/icon_Search.jpg" Margin="0,8,0,0"/>
                     <Image x:Name="img_CloseClearIcon" HorizontalAlignment="Right" Height="62" Margin="408,10,0,0" VerticalAlignment="Top" Width="62" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearIcon_Tap"/>
@@ -430,14 +441,7 @@
                         </TextBlock.Foreground>
                     </TextBlock>
                     <Image x:Name="img_ClosePromotionCode" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="11,10,0,0" Tap="img_ClosePromotionCode_Tap"/>
-                    <TextBox x:Name="txt_PromotionCode" HorizontalAlignment="Center" Height="78" Margin="0,188,0,0" TextWrapping="Wrap" Text="Nhập mã khuyến mại" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" GotFocus="txt_PromotionCode_GotFocus">
-                        <TextBox.Foreground>
-                            <SolidColorBrush Color="#FFB9B9B9"/>
-                        </TextBox.Foreground>
-                        <TextBox.BorderBrush>
-                            <SolidColorBrush Color="#FFBAC6E6"/>
-                        </TextBox.BorderBrush>
-                    </TextBox>
+                    <TextBox x:Name="txt_PromotionCode" HorizontalAlignment="Center" Height="78" Margin="0,188,0,0" TextWrapping="Wrap" Text="Nhập mã khuyến mại" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" GotFocus="txt_PromotionCode_GotFocus" Foreground="#FFB9B9B9" BorderBrush="#FFBAC6E6"/>
                     <TextBlock HorizontalAlignment="Center" Margin="26,125,25,0" TextWrapping="Wrap" Text="Nếu bạn có mã khuyến mại, vui lòng nhập để nhận được ưu đãi từ F-Taxi" VerticalAlignment="Top" Width="429" Height="47" FontSize="17" TextAlignment="Center">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
@@ -448,6 +452,132 @@
                             <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                         </Button.Background>
                     </Button>
+                </Grid>
+                <Grid x:Name="grv_CompleteTrip" Visibility="Collapsed">
+                    <Grid.Background>
+                        <SolidColorBrush Color="{StaticResource Color_BaseGridColor}"/>
+                    </Grid.Background>
+                    <Rectangle x:Name="panel_name" Margin="-4,114,-3,422" Opacity="0.7" Fill="White" Stroke="#FFD1D1D1"/>
+                    <Rectangle x:Name="panel_Pay" Margin="-3,359,-4,112" Opacity="0.7" Fill="White" Stroke="#FFC3C3C3"/>
+                    <TextBlock x:Name="txt_CT_DriverName" HorizontalAlignment="Left" Margin="84,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213" Height="39" FontSize="23">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_CT_DriverMobile" HorizontalAlignment="Left" Margin="84,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213" Height="39" FontSize="23" Tap="txt_CT_DriverMobile_Tap">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_CT_From" HorizontalAlignment="Left" Margin="84,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="380" Height="49" FontSize="17" Tap="txt_CT_DriverMobile_Tap">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_CT_To" HorizontalAlignment="Left" Margin="84,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="380" Height="49" FontSize="17" Tap="txt_CT_DriverMobile_Tap">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_CT_Route" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405,374,0,0" FontSize="25" TextAlignment="Right">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_CT_Cost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405,433,0,0" FontSize="25" TextAlignment="Right" Foreground="#FFE64900"/>
+                    <TextBlock x:Name="txt_CT_Discount" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="391,488,0,0" FontSize="25" TextAlignment="Right">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_CT_TotalCost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="382,546,0,0" FontSize="25" TextAlignment="Right">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Image x:Name="img_DriverAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,125,0,0" Source="/Images/Others/img_default_avatar_dark.png">
+                        <Image.Clip>
+                            <EllipseGeometry
+                				Center="50,50"
+                				RadiusX="45"
+                				RadiusY="45" />
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock x:Name="tbl_Route" HorizontalAlignment="Left" Margin="10,376,0,0" TextWrapping="Wrap" Text="Quãng đường (km)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_Cost" HorizontalAlignment="Left" Margin="10,429,0,0" TextWrapping="Wrap" Text="Tổng phí (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_Discount" HorizontalAlignment="Left" Margin="10,490,0,0" TextWrapping="Wrap" Text="Khuyến mại (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_TotalCost" HorizontalAlignment="Left" Margin="10,548,0,0" TextWrapping="Wrap" Text="Thanh toán (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_CT_Rating" HorizontalAlignment="Left" Margin="10,608,0,0" TextWrapping="Wrap" Text="Đánh giá chuyến đi" VerticalAlignment="Top" FontSize="23" Width="222">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Image x:Name="img_header_Copy" Height="94" VerticalAlignment="Top" Source="/Images/PromotionCode/img_PromotionCodeGridBG.jpg" Stretch="Fill"/>
+                    <Image x:Name="img_Username" HorizontalAlignment="Left" Height="50" Margin="9,117,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                    <Image x:Name="img_Count" HorizontalAlignment="Left" Height="48" Margin="10,174,0,0" VerticalAlignment="Top" Width="44" Source="/Images/Icons/PNG/iconPNG_PhoneNumber.png"/>
+                    <Image x:Name="img_From" HorizontalAlignment="Left" Height="50" Margin="9,229,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_FromIcon.png"/>
+                    <Image x:Name="img_To" HorizontalAlignment="Left" Height="50" Margin="10,284,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_ToIcon.png"/>
+                    <Button x:Name="btn_CompleteApply" Content="XÁC NHẬN" Margin="0" VerticalAlignment="Bottom" Width="470" Height="90" BorderBrush="{x:Null}" Tap="btn_CompleteApply_Tap">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                        </Button.Background>
+                    </Button>
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="HOÀN THÀNH CHUYẾN ĐI" VerticalAlignment="Top" Margin="0,26,0,0" FontSize="30">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Rectangle x:Name="line1_Copy9" HorizontalAlignment="Left" Height="1" Margin="63,169,0,0" VerticalAlignment="Top" Width="234">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy10" HorizontalAlignment="Left" Height="1" Margin="63,226,0,0" VerticalAlignment="Top" Width="234">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy11" HorizontalAlignment="Left" Height="1" Margin="63,282,0,0" VerticalAlignment="Top" Width="401">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy12" HorizontalAlignment="Left" Height="1" Margin="7,418,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy13" HorizontalAlignment="Left" Height="1" Margin="7,476,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy14" HorizontalAlignment="Left" Height="1" Margin="7,533,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy15" HorizontalAlignment="Left" Height="1" Margin="7,592,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">

@@ -14,11 +14,15 @@ using System.IO.IsolatedStorage;
 using System.Device.Location;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Resources;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using System.Data.Linq;
 using System.ComponentModel;
 using System.IO;
+using System.Text;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Devices.Geolocation;
 using Microsoft.Phone.Controls;
@@ -27,13 +31,10 @@ using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Devices;
+using Microsoft.Phone.Notification;
 using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
-using Microsoft.Phone.Notification;
-using System.Text;
-using System.Diagnostics;
-using System.Threading.Tasks;
 
 
 namespace FT_Rider.Pages
@@ -130,6 +131,9 @@ namespace FT_Rider.Pages
         bool isTapableTaxiIcon = true; //Mặc định là true
         bool isTaxiTaped = false; //Cái này để biết khi nào ta nhấn vào taxi
 
+        //for rider update driver status
+        DispatcherTimer riderUpdateDriverStatusTimer;
+        MapOverlay riderStartTripOverLay;
 
         public HomePage()
         {
@@ -171,6 +175,12 @@ namespace FT_Rider.Pages
             changeLabelRedTimer = new DispatcherTimer();
             changeLabelRedTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
             changeLabelRedTimer.Interval = new TimeSpan(0, 0, 0, 2);
+
+
+            //For Rider update driver status
+            riderUpdateDriverStatusTimer = new DispatcherTimer();
+            riderUpdateDriverStatusTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
+            riderUpdateDriverStatusTimer.Interval = new TimeSpan(0, 0, 0, 30); //Cứ 30 giây sẽ hiện vị trí Driver trên map của Rider
         }
 
         private void getNearDriverTimer_Tick(object sender, EventArgs e)
@@ -496,7 +506,7 @@ namespace FT_Rider.Pages
                     selectedDid = did;
                     txt_OpenPrice.Text = openPrice.ToString();
                     txt_EstimatedCost.Text = estimateCost.ToString();
-                    txt_RiderName.Text = driverName;
+                    txt_DriverNames.Text = driverName;
                     txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
 
                     //Tắt Car bar
@@ -1437,6 +1447,12 @@ namespace FT_Rider.Pages
                 //btn_RequestTaxi.BorderBrush.Opacity = 0;
                 //SwitchToWaitingStatus();
 
+                //Rung điện thoại
+                TouchFeedback();
+
+                //Chạy âm thanh
+                TripStartAlert();
+
                 //SAU KHI REQ XONG THÌ CHUYỂN QUA MÀN HÌNH "VUI LÒNG ĐỢI", đồng thời tắt LOADING
                 grv_CancelTaxi.Visibility = Visibility.Visible; //Hiện màn hình "Vui lòng đợi" kèm Button "Hủy Chuyến"
                 grv_ProcessBarButton.Visibility = Visibility.Collapsed; //Đóng màn hình loading
@@ -1715,7 +1731,7 @@ namespace FT_Rider.Pages
 
                 switch (myTrip.tStatus) //<<<<< Cái này trả về thông tin bên ông Driver. vd: Nếu nhấn Start thì status là PI
                 {
-                    case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới"
+                    case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới" "TRIP HERE"
                         SwitchToPikingStatus();
                         break;
                     case ConstantVariable.tripStatusPicked: //Nếu là "PD" Thì chuyến đi đã bắt đầu
@@ -1745,6 +1761,19 @@ namespace FT_Rider.Pages
 
 
         /// <summary>
+        /// CÁI NÀY ĐỂ THÊM HIỆU ỨNG THÔNG BÁO KHI CÓ 
+        /// </summary>
+        private void TripUpdateAlert()
+        {
+            me_SoundUpdate.Play();
+        }
+
+        private void TripStartAlert()
+        {
+            me_StartRequest.Play();
+        }
+
+        /// <summary>
         /// CÁC TRƯỜNG HỢP CỦA UPDATE TRIP
         /// </summary>
         private void SwitchToPikingStatus()
@@ -1753,7 +1782,12 @@ namespace FT_Rider.Pages
             ///Hiện thông báo
             tbl_DriverStatus.Text = ConstantVariable.strCarAreComming; //HIỆN THÔNG ÁO "XE ĐANG TỚI.."
 
+            //Cho rung điện thoại
+            TouchFeedback();
+            //Đổ âm chuông cảnh báo
+            TripUpdateAlert();
         }
+
 
         private void SwitchToStartedStatus()
         {
@@ -1761,19 +1795,29 @@ namespace FT_Rider.Pages
             ///2. chờ sau 3 giây tắt grid
             ///3. hiện vị trí xe
             ///
+
+            //Cho rung điện thoại
+            TouchFeedback();
+            //Đổ âm chuông cảnh báo
+            TripUpdateAlert();
+
             MessageBox.Show(ConstantVariable.strCarAreStarting);
 
             //1.
             tbl_DriverStatus.Text = ConstantVariable.strCarAreStarting;
 
             //2.
-            Thread.Sleep(1500);
+            //Thread.Sleep(1500);
 
             grv_Step02.Visibility = Visibility.Collapsed;
             //3.
+            // Khóa màn hình map lại, không cho tương tác
+            LockMapIsActived();
 
+            //Xóa các router trên màn hình, chỉ hiện biểu tượng taxi
+            RemoveMapRoute();
 
-
+            DriverTracker();
         }
 
 
@@ -1827,12 +1871,72 @@ namespace FT_Rider.Pages
 
         }
 
+        /// <summary>
+        /// Hàm này để sau khi nhấn Start Trip, hệ thống sẽ khóa màn hình lại, và chỉ hiện vị trí ve ô tô đang chạy
+        /// </summary>
+        private async void DriverTracker()
+        {
 
+            if (riderMapLayer!=null)
+            {
+                riderStartTripOverLay = null;
+                map_RiderMap.Layers.Remove(riderMapLayer);
+            }
+
+            var uid = userData.content.uid;
+            var did = selectedDid;
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"did\":[\"{1}\"]}}", uid, did);
+            try
+            {
+                //Thử xem có lấy đc gì về ko, nếu ko lấy đc về thì báo lỗi mạng
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateDriverStatus, input);
+                var updateStatus = JsonConvert.DeserializeObject<RiderUpdateDriverStatusObj>(output);
+                if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 ok
+                {
+                    double lat = updateStatus.content.driverStatusList[0].lat;
+                    double lng = updateStatus.content.driverStatusList[0].lng;
+
+                    //Add img_CurrentLocation to Map
+                    Image startTripTaxiIcon = new Image();
+                    startTripTaxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
+                    startTripTaxiIcon.Height = 27;
+                    startTripTaxiIcon.Width = 30;
+
+                    riderStartTripOverLay = new MapOverlay();
+                    riderStartTripOverLay.Content = startTripTaxiIcon; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+                    riderStartTripOverLay.GeoCoordinate = new GeoCoordinate(lat, lng);
+                    riderStartTripOverLay.PositionOrigin = new Point(0.5, 0.5);
+
+                    riderMapLayer = new MapLayer();
+                    riderMapLayer.Add(riderMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
+                    map_RiderMap.Layers.Add(riderMapLayer);
+
+                    map_RiderMap.SetView(new GeoCoordinate(lat, lng), 15, MapAnimationKind.Linear);
+                }
+            }
+            catch (Exception)
+            {
+
+                //MessageBox.Show("(Mã lỗi 6501) " + ConstantVariable.errConnectingError);
+                Debug.WriteLine("Có lỗi 4526sfg ở Driver Tracker");
+            }
+        }
 
         private void SwitchToCompletedStatus()
         {
             ///CHO ÂM THANH HIỆU ỨNG
+            //
+
+            //Chạy âm thanh hoàn thành và rung
+            TouchFeedback();
+            TripUpdateAlert();
+
+            //Hiện màn hình thanh toán
+            ShowCompleteGrid();
         }
+
+
 
         /// <summary>
         /// Nhận thông tin từ Notification
@@ -2562,7 +2666,54 @@ namespace FT_Rider.Pages
 
 
 
+        /// <summary>
+        /// cái này để tắt và bật grid thanh toán
+        /// </summary>
+        private void ShowCompleteGrid()
+        {
+            (this.Resources["showCompleteGrid"] as Storyboard).Begin();
+            grv_CompleteTrip.Visibility = Visibility.Visible;
 
+
+            //Hiện thông tin lên 
+            //Driver Name
+            txt_CT_DriverName.Text = nearDriverCollection[selectedDid].fName + " " + nearDriverCollection[selectedDid].lName;
+            //Driver Mobile
+            txt_CT_DriverMobile.Text = nearDriverCollection[selectedDid].mobile;
+            //Trip Pickup Address
+            if (txt_PickupAddress.Text != "")
+            {
+                txt_CT_From.Text = txt_PickupAddress.Text;
+            }
+            //Trip Destination Address
+            if (txt_DestinationAddress.Text != "")
+            {
+                txt_CT_To.Text = txt_DestinationAddress.Text;
+            }
+            //Trip Distance
+            if (tripEstimateKm != 0)
+            {
+                txt_CT_Route.Text = tripEstimateKm.ToString();
+            }
+            //Trip Cost
+            if (txt_EstimatedCost.Text != "")
+            {
+                txt_CT_Cost.Text = txt_EstimatedCost.Text;
+            }
+            //Trip Distcount
+            txt_CT_Discount.Text = "0"; //Tạm thời chưa làm phần này
+            //Trip Total Cost
+            if (txt_EstimatedCost.Text != "")
+            {
+                txt_CT_TotalCost.Text = txt_EstimatedCost.Text;
+            }
+
+        }
+        private void HideCompleteGrid()
+        {
+            grv_CompleteTrip.Visibility = Visibility.Visible;
+
+        }
 
 
 
@@ -3067,6 +3218,18 @@ namespace FT_Rider.Pages
         private void HIdePickerLabel()
         {
             img_PickerLabel.Visibility = Visibility.Collapsed;
+        }
+
+        private void txt_CT_DriverMobile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            RiderFunctions.CallToNumber(txt_CT_DriverName.Text, txt_CT_DriverMobile.Text);
+        }
+
+        private void btn_CompleteApply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ///Đầu tiên là tắt màn hình đi đã
+            //1.
+            HideCompleteGrid();   
         }
 
     }
