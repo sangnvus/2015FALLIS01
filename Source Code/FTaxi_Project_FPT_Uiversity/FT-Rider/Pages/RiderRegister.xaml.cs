@@ -102,6 +102,7 @@ namespace FT_Rider.Pages
         {
             if (Regex.IsMatch(txt_UserId.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
             {
+                //Theem check do dai
                 txt_UserId.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
