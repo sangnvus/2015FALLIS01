@@ -15,6 +15,46 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+        <!--CÁI NÀY CHO HIỆU ỨNG MỞ LÊN CỦA MENU-->
+        <Storyboard x:Key="showAcceptRejectGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_AcceptReject">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="showStartTripGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_StartTrip">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Color x:Key="Color_TextGridColor">#FF333333</Color>
+        <Thickness x:Key="TextBox_TextPadingLeft">60,2,2,2</Thickness>
+
+        <Storyboard x:Key="showBillDetailGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_BillDetail">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+    </phone:PhoneApplicationPage.Resources>
+
+
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
             <toolkit:NavigationInTransition.Backward>
@@ -66,38 +106,35 @@
                 </Image>
                 <TextBlock x:Name="tbl_LastName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27"/>
                 <TextBlock x:Name="tbl_FirstName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,74,0,0" FontSize="27"/>
-                <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,164,0,0" FontSize="22">
+                <TextBlock x:Name="tbl_RegisterPromotionTrip" Text="Đăng ký lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,496,0,0" FontSize="22">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,233,0,0" FontSize="22">
+                <TextBlock x:Name="tbl_PromotionTrips" Text="Lộ trình khuyến mãi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="309" Margin="79,565,0,0" FontSize="22">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,296,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_VipRider" Text="Khách hàng VIP" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,361,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_CompanyInfo" Text="Thông tin công ty" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,429,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,233,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_VipRider" Text="Khách hàng VIP" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,361,0,0" FontSize="22" Visibility="Collapsed"/>
+                <TextBlock x:Name="tbl_CompanyInfo" Text="Thông tin công ty" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,299,0,0" FontSize="22"/>
                 <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,492,0,0" FontSize="22" Visibility="Collapsed" d:IsHidden="True"/>
-                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,494,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,563,0,0" FontSize="22"/>
-                <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_Logout_Tap">
+                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,360,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,429,0,0" FontSize="22"/>
+                <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_Logout_Tap" BorderBrush="{x:Null}">
                     <Button.Background>
                         <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
                     </Button.Background>
-                    <Button.BorderBrush>
-                        <SolidColorBrush Color="White" Opacity="0.2"/>
-                    </Button.BorderBrush>
                 </Button>
-                <Image x:Name="img_MenuIcon1" Margin="29,164,356,569" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
-                <Image x:Name="img_MenuIcon2" Margin="29,233,356,500" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
-                <Image x:Name="img_MenuIcon3" Margin="29,296,356,437" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
-                <Image x:Name="img_MenuIcon4" Margin="29,361,356,372" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png"/>
-                <Image x:Name="img_MenuIcon5" Margin="29,429,356,304" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
+                <Image x:Name="img_MenuIcon1" Margin="29,496,356,237" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
+                <Image x:Name="img_MenuIcon2" Margin="29,565,356,168" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_PromotionTrip.png" Opacity="0.5"/>
+                <Image x:Name="img_MenuIcon3" Margin="29,233,356,500" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_MyTrip.png"/>
+                <Image x:Name="img_MenuIcon4" Margin="29,361,356,372" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_VIP.png" Visibility="Collapsed"/>
+                <Image x:Name="img_MenuIcon5" Margin="29,299,356,434" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
                 <Image x:Name="img_MenuIcon6" Margin="29,492,356,241" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Support.png" Visibility="Collapsed"/>
-                <Image x:Name="img_MenuIcon7" Margin="29,492,356,241" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
-                <Image x:Name="img_MenuIcon8" Margin="29,563,356,170" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
+                <Image x:Name="img_MenuIcon7" Margin="29,358,356,375" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_About.png"/>
+                <Image x:Name="img_MenuIcon8" Margin="29,429,356,304" Width="35" Height="35" Source="/Images/LeftMenu/icon_Menu_Feedback.png"/>
                 <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" VerticalAlignment="Top" Width="420" Margin="0,137,0,0">
                     <Rectangle.Fill>
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
@@ -148,8 +185,17 @@
                         <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                     </Rectangle.Fill>
                 </Rectangle>
+                <Image x:Name="img_MenuIcon1_Copy" Margin="29,161,356,572" Width="35" Height="35" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                <TextBlock x:Name="tbl_MyProfile" Text="Hồ sơ cá nhân" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,161,0,0" FontSize="22" Tap="tbl_MyProfile_Tap"/>
             </Grid>
             <Grid x:Name="grv_HomePanel" Height="768" Width="480" Margin="420,0,0,0">
+                <Grid x:Name="grv_Media" HorizontalAlignment="Left" Height="51" VerticalAlignment="Top" Width="192" Margin="144,0,0,0" Visibility="Collapsed">
+                    <MediaElement x:Name="me_Trip_NewTrip" HorizontalAlignment="Left" Height="51" VerticalAlignment="Top" Width="100" Source="/Images/Sounds/sound_Trip_NewTrip.wav" BufferingTime="0:0:2" AutoPlay="False"/>
+                    <MediaElement x:Name="me_Trip_CancelTrip" HorizontalAlignment="Left" Height="51" VerticalAlignment="Top" Width="100" Source="/Images/Sounds/sound_Trip_CancelTrip.wav" BufferingTime="0:0:2" AutoPlay="False"/>
+                    <MediaElement x:Name="me_Trip_StartTrip" HorizontalAlignment="Left" Height="51" VerticalAlignment="Top" Width="100" Source="/Images/Sounds/sound_noti02.wav" BufferingTime="0:0:2" AutoPlay="False"/>
+                    <MediaElement x:Name="me_Trip_Update1" HorizontalAlignment="Left" Height="51" VerticalAlignment="Top" Width="100" Source="/Images/Sounds/sound_Trip_UpdateTrip01.wav" BufferingTime="0:0:2" AutoPlay="False"/>
+                    <MediaElement x:Name="me_Trip_Update2" HorizontalAlignment="Left" Height="51" VerticalAlignment="Top" Width="100" Source="/Images/Sounds/sound_noti01.wav" BufferingTime="0:0:2" AutoPlay="False"/>
+                </Grid>
                 <Grid x:Name="grv_navbar" Margin="0" VerticalAlignment="Top">
                     <Image x:Name="img_Navbar" Height="64" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Margin="0"/>
                     <Image x:Name="img_FtaxiLogo" HorizontalAlignment="Center" Height="41" Margin="0,6,0,0" VerticalAlignment="Top" Width="107" Source="/Images/Logos/img_Ftaxi_logo_whileBG.png"/>
@@ -181,100 +227,116 @@
                         </Button.Background>
                     </Button>
                 </Grid>
-                <Grid x:Name="grv_AcceptReject" Height="246" VerticalAlignment="Bottom" Width="480" Visibility="Collapsed">
-                    <Image x:Name="img_AcceptRejectBG" Source="/Images/Grid_AcceptReject/img_AcceptRejectGridBackgound.png" Width="480" Height="246" Margin="0"/>
-                    <Image x:Name="img_RiderAvatarAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="10,15,0,0">
+                <Grid x:Name="grv_AcceptReject" Height="199.7" VerticalAlignment="Bottom" Width="480" Visibility="Collapsed">
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Grid.RenderTransform>
+                    <Image x:Name="img_AcceptRejectBG" Source="/Images/Grid_AcceptReject/img_AcceptRejectGridBackgound.png" Width="480" Height="200" Margin="0" VerticalAlignment="Bottom"/>
+                    <Image x:Name="img_RiderMobile_Button" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="353" Margin="16,59,0,0" Source="/Images/Grid_AcceptReject/img_AcceptRejectGridPhoneButton.jpg" KeyDown="img_RiderMobile_Button_KeyDown" KeyUp="img_RiderMobile_Button_KeyUp"/>
+                    <Image x:Name="img_RiderAvatarAvatar" HorizontalAlignment="Left" Height="85" VerticalAlignment="Top" Width="85" Source="/Images/Others/img_default_avatar_dark.png" Margin="372,3,0,0">
                         <Image.Clip>
                             <EllipseGeometry
-                    			Center="50,50"
-                    			RadiusX="45"
-                    			RadiusY="45" />
+                    			Center="45,45"
+                    			RadiusX="40"
+                    			RadiusY="40" />
                         </Image.Clip>
                     </Image>
-                    <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Right" Margin="0,11,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
-                    <TextBlock x:Name="txt_RiderMobile" HorizontalAlignment="Right" Margin="0,49,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
-                    <TextBlock x:Name="txt_RiderAddress" HorizontalAlignment="Right" Margin="0,89,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="235" TextAlignment="Right"/>
-                    <Grid x:Name="grv_AcceptRejectbtn" Height="100" VerticalAlignment="Bottom" d:IsHidden="True">
-                        <Button x:Name="btn_AcceptTrip" Content="CHẤP NHẬN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" UseLayoutRounding="True" Height="95" Width="245" Tap="btn_AcceptTrip_Tap">
-                            <Button.BorderBrush>
-                                <SolidColorBrush Color="White" Opacity="0.2"/>
-                            </Button.BorderBrush>
+                    <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Right" Margin="0,89,15,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="15" Width="95" TextAlignment="Center" Height="26">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_RiderMobile" HorizontalAlignment="Right" Margin="0,64,147,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="30" Width="235" TextAlignment="Center" Tap="txt_RiderMobile_Tap">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_RiderAddress" HorizontalAlignment="Right" Margin="0,4,122,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" Width="279" Height="52" TextAlignment="Center">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Grid x:Name="grv_AcceptRejectbtn" Height="100" VerticalAlignment="Bottom">
+                        <Button x:Name="btn_AcceptTrip" Content="CHẤP NHẬN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0" UseLayoutRounding="True" Height="90" Width="245" Tap="btn_AcceptTrip_Tap" BorderBrush="{x:Null}">
                             <Button.Background>
                                 <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                             </Button.Background>
                         </Button>
-                        <Button x:Name="btn_RejectTrip" Content="TỪ CHỐI" VerticalAlignment="Bottom" Margin="0" HorizontalAlignment="Right" Height="95" Width="245" Tap="btn_RejectTrip_Tap">
-                            <Button.BorderBrush>
-                                <SolidColorBrush Color="White" Opacity="0.2"/>
-                            </Button.BorderBrush>
+                        <Button x:Name="btn_RejectTrip" Content="TỪ CHỐI" VerticalAlignment="Bottom" Margin="0" HorizontalAlignment="Right" Height="90" Width="245" Tap="btn_RejectTrip_Tap" BorderBrush="{x:Null}">
                             <Button.Background>
                                 <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
                             </Button.Background>
                         </Button>
                     </Grid>
-                    <Grid x:Name="grv_StartCancelbtn" Height="100" VerticalAlignment="Bottom" Visibility="Collapsed">
-                        <Button x:Name="btn_StartTrip" Content="BẮT ĐẦU" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="245" Height="95" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_StartTrip_Tap">
-                            <Button.BorderBrush>
-                                <SolidColorBrush Color="White" Opacity="0.19"/>
-                            </Button.BorderBrush>
+                    <Grid x:Name="grv_StartCancelbtn" Height="100" VerticalAlignment="Bottom">
+                        <Button x:Name="btn_StartTrip" Content="BẮT ĐẦU" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="245" Height="90" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_StartTrip_Tap" BorderBrush="{x:Null}">
                             <Button.Background>
                                 <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                             </Button.Background>
                         </Button>
-                        <Button x:Name="btn_CancelTrip" Content="HỦY BỎ" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="245" Height="95" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_CancelTrip_Tap">
-                            <Button.BorderBrush>
-                                <SolidColorBrush Color="White" Opacity="0.2"/>
-                            </Button.BorderBrush>
+                        <Button x:Name="btn_CancelTrip" Content="HỦY BỎ" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="245" Height="90" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_CancelTrip_Tap" BorderBrush="{x:Null}">
                             <Button.Background>
                                 <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
                             </Button.Background>
                         </Button>
                     </Grid>
-                    <Grid x:Name="grv_LoadingGridScreen" Height="246" VerticalAlignment="Bottom" Visibility="Collapsed">
-                        <Rectangle x:Name="rg_PleaseWaitBG" Stroke="Black">
+                    <Grid x:Name="grv_LoadingGridScreen" Height="200" VerticalAlignment="Bottom" Visibility="Collapsed">
+                        <Rectangle x:Name="rg_PleaseWaitBG">
                             <Rectangle.Fill>
                                 <SolidColorBrush Color="#FF343434" Opacity="0.5"/>
                             </Rectangle.Fill>
                         </Rectangle>
                         <ProgressBar x:Name="pb_ButtonPleaseWait" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Background="#19FFFFFF" Foreground="White"/>
                     </Grid>
-                    <Grid x:Name="grv_RiderCancel" Height="246" VerticalAlignment="Bottom" Visibility="Collapsed">
-                        <Rectangle x:Name="rg_CancelNotificationBG" Stroke="Black">
+                    <Grid x:Name="grv_RiderCancel" Visibility="Collapsed">
+                        <Rectangle x:Name="rg_CancelNotificationBG" Stroke="Black" Margin="0">
                             <Rectangle.Fill>
                                 <SolidColorBrush Color="Black" Opacity="0.8"/>
                             </Rectangle.Fill>
                         </Rectangle>
-                        <Button x:Name="btn_ConfirmCancelFromRider" Content="KẾT THÚC" VerticalAlignment="Bottom" Height="99" FontSize="{StaticResource Button_FontSize_22}">
-                            <Button.BorderBrush>
-                                <SolidColorBrush Color="White" Opacity="0.1"/>
-                            </Button.BorderBrush>
-                            <Button.Background>
-                                <SolidColorBrush Color="#FF151D32"/>
-                            </Button.Background>
-                        </Button>
-                        <Image x:Name="img_CanceledTrip" HorizontalAlignment="Center" Height="40" Margin="0,20,0,0" VerticalAlignment="Top" Width="40" Source="/Images/Alerts/img_CanceledTrip.png"/>
-                        <TextBlock x:Name="tbl_RiderCanceled" HorizontalAlignment="Center" Margin="35,70,34,104" TextWrapping="Wrap" Text="Hành khách đã hủy yêu cầu gọi xe.&#x0a;Chuyến đi kết thúc tại đây.&#x0a;Chúc bạn ngày làm việc an toàn và hiệu quả!" VerticalAlignment="Center" Width="411" TextAlignment="Center" FontSize="18"/>
+                        <TextBlock x:Name="tbl_RiderCanceled" HorizontalAlignment="Center" Margin="0,21,0,92" TextWrapping="Wrap" Text="Hành khách đã hủy yêu cầu gọi xe.&#xA;Chuyến đi kết thúc tại đây.&#xA;Chúc bạn ngày làm việc an toàn và hiệu quả!" VerticalAlignment="Center" Width="411" TextAlignment="Center" FontSize="18" Height="87"/>
+                        <Button x:Name="btn_ConfirmCancelFromRider" Content="XÁC NHẬN" VerticalAlignment="Bottom" Height="99" FontSize="{StaticResource Button_FontSize_22}" Background="#FF151D32" BorderBrush="{x:Null}" Tap="btn_ConfirmCancelFromRider_Tap"/>
                     </Grid>
                 </Grid>
-                <Grid x:Name="grv_StartTrip" Height="296" VerticalAlignment="Bottom" Margin="0" Visibility="Collapsed">
+                <Grid x:Name="grv_StartTrip" Height="228" VerticalAlignment="Bottom" Margin="0" Visibility="Collapsed">
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Grid.RenderTransform>
                     <Grid.Background>
                         <ImageBrush Stretch="Fill"/>
                     </Grid.Background>
                     <Image x:Name="img_StartTripBG" Margin="0" Source="/Images/Grid_StartTrip/img_StartTripBackground.png" VerticalAlignment="Bottom"/>
-                    <Image x:Name="img_PriceBar" Height="68" VerticalAlignment="Top" Width="480" Source="/Images/Grid_StartTrip/img_PriceBar.png"/>
-                    <Button x:Name="btn_TapToPay" Content="CHẠM ĐỂ THANH TOÁN" Width="480" Margin="0,3,0,0" Height="95" VerticalAlignment="Bottom" Tap="btn_TapToPay_Tap">
-                        <Button.BorderBrush>
-                            <SolidColorBrush Color="White" Opacity="0.2"/>
-                        </Button.BorderBrush>
+                    <Image x:Name="img_PriceBar" Height="28.2" VerticalAlignment="Top" Width="480" Source="/Images/Grid_StartTrip/img_PriceBar.png"/>
+                    <Image x:Name="img_RiderAvatarStartTrip" HorizontalAlignment="Left" Height="81" VerticalAlignment="Top" Width="81" Margin="378,46,0,0" Source="/Images/Others/img_default_avatar_dark.png">
+                        <Image.Clip>
+                            <EllipseGeometry
+                			Center="40,40"
+                			RadiusX="40"
+                			RadiusY="40" />
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock x:Name="txt_DistanceKm" HorizontalAlignment="Left" Margin="16,-4,0,0" TextWrapping="Wrap" Text="0.0 (km)" VerticalAlignment="Top" FontSize="25" Width="220" TextAlignment="Center"/>
+                    <TextBlock x:Name="txt_PricePerDistance" HorizontalAlignment="Left" Margin="241,-4,0,0" TextWrapping="Wrap" Text="0.000 (đ)" VerticalAlignment="Top" FontSize="25" Width="224" TextAlignment="Center"/>
+                    <TextBlock x:Name="txt_RiderNameStartTrip" HorizontalAlignment="Center" Margin="60,38,121,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="30" Width="299" TextAlignment="Center">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_PromotionPrice" HorizontalAlignment="Right" Margin="0,93,290,0" TextWrapping="Wrap" Text="0.0 đ" VerticalAlignment="Top" FontSize="30" Width="153" TextAlignment="Center">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_TotalPrice" HorizontalAlignment="Right" Margin="0,93,111,0" TextWrapping="Wrap" Text="0.0 đ" VerticalAlignment="Top" FontSize="30" Width="155" TextAlignment="Center">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Button x:Name="btn_TapToPay" Content="CHẠM ĐỂ THANH TOÁN" Width="480" Margin="0,3,0,0" Height="90" VerticalAlignment="Bottom" Tap="btn_TapToPay_Tap" BorderBrush="{x:Null}">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </Button.Background>
                     </Button>
-                    <TextBlock x:Name="txt_DistanceKm" HorizontalAlignment="Left" Margin="42,-5,0,0" TextWrapping="Wrap" Text="0.0" VerticalAlignment="Top" FontSize="35"/>
-                    <TextBlock x:Name="txt_PricePerDistance" HorizontalAlignment="Left" Margin="303,-5,0,0" TextWrapping="Wrap" Text="0.000" VerticalAlignment="Top" FontSize="35"/>
-                    <TextBlock x:Name="txt_RiderNameStartTrip" HorizontalAlignment="Right" Margin="0,44,15,0" TextWrapping="Wrap" Text="Nguyễn Văn Lập" VerticalAlignment="Top" FontSize="30" Width="270" TextAlignment="Right"/>
-                    <TextBlock x:Name="txt_PromotionPrice" HorizontalAlignment="Right" Margin="0,101,15,0" TextWrapping="Wrap" Text="0.0 đ" VerticalAlignment="Top" FontSize="30" Width="270" TextAlignment="Right"/>
-                    <TextBlock x:Name="txt_TotalPrice" HorizontalAlignment="Right" Margin="0,159,15,0" TextWrapping="Wrap" Text="0.0 đ" VerticalAlignment="Top" FontSize="30" Width="270" TextAlignment="Right"/>
                     <Grid x:Name="grv_TapToPayProcess" Visibility="Collapsed">
                         <Rectangle x:Name="rt_bg" Height="304">
                             <Rectangle.Fill>
@@ -283,6 +345,144 @@
                         </Rectangle>
                         <ProgressBar x:Name="pb_TapToPay" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Background="#19FFFFFF" Foreground="White"/>
                     </Grid>
+                </Grid>
+                <Grid x:Name="grv_BillDetail" Visibility="Collapsed">
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="0"/>
+                    </Grid.RenderTransform>
+                    <Grid.Background>
+                        <SolidColorBrush Color="{StaticResource Color_GridPanelColor}"/>
+                    </Grid.Background>
+                    <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/Images/GridPanels/img_GridHeader.jpg" Stretch="Fill"/>
+                    <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="THÔNG TIN THANH TOÁN" VerticalAlignment="Top" Margin="64,32,64,0" FontSize="30">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Rectangle x:Name="panel_name" Margin="-4,109,-3,427" Opacity="0.7" Fill="White" Stroke="#FFD1D1D1"/>
+                    <Rectangle x:Name="panel_Pay" Margin="-3,354,-4,129" Opacity="0.7" Fill="White" Stroke="#FFC3C3C3"/>
+                    <TextBlock x:Name="txt_BD_RiderName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="234" Margin="82,120,0,0" FontSize="25">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_BD_Mobile" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="234" Margin="82,178,0,0" FontSize="25" Tap="txt_BD_Mobile_Tap">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_BD_From" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="234" Margin="82,232,0,0" FontSize="25">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_BD_To" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="234" Margin="82,294,0,0" FontSize="25">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,120,0,0" Source="/Images/Others/img_default_avatar_dark.png">
+                        <Image.Clip>
+                            <EllipseGeometry
+                    			Center="50,50"
+                    			RadiusX="45"
+                    			RadiusY="45" />
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock x:Name="tbl_Route" HorizontalAlignment="Left" Margin="10,371,0,0" TextWrapping="Wrap" Text="Quãng đường (km)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_BD_Route" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0.0" VerticalAlignment="Top" Height="40" Width="159" Margin="302,369,0,0" FontSize="25" TextAlignment="Right">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_BD_Cost" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0.0" VerticalAlignment="Top" Height="40" Width="159" Margin="302,428,0,0" FontSize="25" TextAlignment="Right" Foreground="#FFE45D00"/>
+                    <TextBlock x:Name="tbl_Cost" HorizontalAlignment="Left" Margin="10,424,0,0" TextWrapping="Wrap" Text="Tổng phí (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_Discount" HorizontalAlignment="Left" Margin="10,485,0,0" TextWrapping="Wrap" Text="Khuyến mại (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_TotalCost" HorizontalAlignment="Left" Margin="10,543,0,0" TextWrapping="Wrap" Text="Thanh toán (đ)" VerticalAlignment="Top" FontSize="23" Width="201">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="tbl_PaymentType" HorizontalAlignment="Left" Margin="10,603,0,0" TextWrapping="Wrap" Text="Hình thức Thanh toán" VerticalAlignment="Top" FontSize="23" Width="222">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBox x:Name="txt_PaymentType" Text="Tiền mặt" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="214" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="266,582,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="2" TextAlignment="Right" FontSize="25" Foreground="Black"/>
+                    <Rectangle x:Name="line1_Copy9" HorizontalAlignment="Left" Height="1" Margin="82,169,0,0" VerticalAlignment="Top" Width="234">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy10" HorizontalAlignment="Left" Height="1" Margin="82,226,0,0" VerticalAlignment="Top" Width="234">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy11" HorizontalAlignment="Left" Height="1" Margin="82,282,-3,0" VerticalAlignment="Top" Width="401">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Image x:Name="img_Username" HorizontalAlignment="Left" Height="50" Margin="9,117,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+                    <Image x:Name="img_Mobile" HorizontalAlignment="Left" Height="48" Margin="10,174,0,0" VerticalAlignment="Top" Width="44" Source="/Images/Icons/PNG/iconPNG_PhoneNumber.png"/>
+                    <Image x:Name="img_From" HorizontalAlignment="Left" Height="50" Margin="9,229,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_FromIcon.png"/>
+                    <Image x:Name="img_To" HorizontalAlignment="Left" Height="50" Margin="10,284,0,0" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_ToIcon.png"/>
+                    <Rectangle x:Name="line1_Copy12" HorizontalAlignment="Left" Height="1" Margin="10,404,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy13" HorizontalAlignment="Left" Height="1" Margin="10,462,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy14" HorizontalAlignment="Left" Height="1" Margin="10,519,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy15" HorizontalAlignment="Left" Height="1" Margin="10,578,0,0" VerticalAlignment="Top" Width="460">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle x:Name="line1_Copy16" HorizontalAlignment="Left" Height="1" Margin="8,637,0,0" VerticalAlignment="Top" Width="460" d:IsHidden="True">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Button x:Name="btn_Payment" Content="THANH TOÁN" HorizontalAlignment="Left" Margin="0,672,-4,0" VerticalAlignment="Top" Height="95" Width="484" FontSize="23" Tap="btn_Payment_Tap" >
+                        <Button.BorderBrush>
+                            <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>
+                        </Button.BorderBrush>
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
+                        </Button.Background>
+                    </Button>
+                    <TextBlock x:Name="txt_BD_Discount" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0.0" VerticalAlignment="Top" Height="40" Width="159" Margin="302,483,0,0" FontSize="25" TextAlignment="Right">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_BD_TotalCost" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0.0" VerticalAlignment="Top" Height="40" Width="159" Margin="302,542,0,0" FontSize="25" TextAlignment="Right">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">

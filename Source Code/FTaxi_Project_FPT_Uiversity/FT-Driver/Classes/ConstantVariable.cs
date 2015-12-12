@@ -55,6 +55,7 @@ namespace FT_Driver.Classes
         //Confirmboz
         public const string cfbLogOut = "Bạn có chắc là bạn muốn thoát tài khoản không?";
         public const string cfbChangeStatus = "Bạn có chắc là bạn muốn đổi trạng thái không?";
+        public const string cfbTapToPay = "Bạn có chắc là bạn muốn kết thúc chuyến đi không?";
         public const string cfbYes = "Có";
         public const string cfbNo = "Không";
 

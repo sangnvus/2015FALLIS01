@@ -107,6 +107,7 @@
     <Compile Include="Classes\DriverSelectAvailableVehicle.cs" />
     <Compile Include="Classes\DriverSelectVehice.cs" />
     <Compile Include="Classes\DriverUpdateCurrentLocation.cs" />
+    <Compile Include="Classes\GetCurrentPosition.cs" />
     <Compile Include="Classes\GetJsonFromPOSTMethod.cs" />
     <Compile Include="Classes\GoogleAPIAddressObj.cs" />
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
@@ -285,7 +286,10 @@
     <Content Include="Images\FirstPage\img_TutPage04.jpg" />
     <Content Include="Images\FirstPage\img_TutPage05.jpg" />
     <Content Include="Images\FirstPage\img_TutPagebg.jpg" />
+    <Content Include="Images\GridPanels\img_GridHeader.jpg" />
     <Content Include="Images\Grid_AcceptReject\img_AcceptRejectGridBackgound.png" />
+    <Content Include="Images\Grid_AcceptReject\img_AcceptRejectGridPhoneButton.jpg" />
+    <Content Include="Images\Grid_AcceptReject\img_AcceptRejectGridPhoneButton_Clicked.jpg" />
     <Content Include="Images\Grid_NoCarYet\img_CallCenter.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_OpeningPrice.jpg" />
     <Content Include="Images\Grid_RequestTaxi\img_RequestTaxiButton.jpg" />
@@ -327,6 +331,7 @@
     <Content Include="Images\LeftMenu\icon_Menu_PromotionTrip.png" />
     <Content Include="Images\LeftMenu\icon_Menu_Support.png" />
     <Content Include="Images\LeftMenu\icon_Menu_VIP.png" />
+    <Content Include="Images\Logos\icon T-NetTaxi-Small-white.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo.png" />
     <Content Include="Images\Logos\img_Ftaxi_logo_whileBG.png" />
     <Content Include="Images\Logos\img_Ftaxi_Square_Logo.png" />
@@ -344,6 +349,11 @@
     <Content Include="Images\Picker\img_Picker_SetPickup.png" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon_Black.png" />
+    <Content Include="Images\Sounds\sound_noti01.wav" />
+    <Content Include="Images\Sounds\sound_noti02.wav" />
+    <Content Include="Images\Sounds\sound_Trip_CancelTrip.wav" />
+    <Content Include="Images\Sounds\sound_Trip_NewTrip.wav" />
+    <Content Include="Images\Sounds\sound_Trip_UpdateTrip01.wav" />
     <Content Include="Images\Taxis\img_CarIcon.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />

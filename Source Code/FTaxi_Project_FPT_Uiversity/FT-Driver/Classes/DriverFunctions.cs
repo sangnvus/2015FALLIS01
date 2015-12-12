@@ -1,4 +1,5 @@
 ﻿using Microsoft.Phone.Info;
+using Microsoft.Phone.Tasks;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,38 +19,95 @@ namespace FT_Driver.Classes
         }
 
 
+        public static void CallToNumber(string name, string number)
+        {
+            PhoneCallTask makePhone = new PhoneCallTask();
+            makePhone.DisplayName = name;
+            makePhone.PhoneNumber = number;
+            makePhone.Show();
+        }
+
 
         //Fare Cal
-        public static Double CostCalculate(VehicleInfo taxiInput, double kmInput)
+        public static Double FareCalculate(VehicleInfo taxiInput, double kmInput)
         {
-            Double price;
-            Double oKm = taxiInput.oKm;
-            Double oPrice = taxiInput.oPrice;
-            Double f1Km = (Double)taxiInput.f1Km;
-            Double f2Km = (Double)taxiInput.f2Km;
-            Double f3Km = (Double)taxiInput.f3Km;
-            Double f4Km = (Double)taxiInput.f4Km;
-            Double f1Price = (Double)taxiInput.f1Price;
-            Double f2Price = (Double)taxiInput.f2Price;
-            Double f3Price = (Double)taxiInput.f3Price;
-            Double f4Price = (Double)taxiInput.f4Price;
+
+            double price;
+            double oKm = taxiInput.oKm;
+            double oPrice = taxiInput.oPrice;
+            double f1Km = 0;
+            if (taxiInput.f1Km != null)
+            {
+                f1Km = (double)taxiInput.f1Km;
+            }
+            double f2Km = 0;
+            if (taxiInput.f2Km != null)
+            {
+                f2Km = (double)taxiInput.f2Km;
+            }
+            double f3Km = 0;
+            if (taxiInput.f3Km != null)
+            {
+                f3Km = (double)taxiInput.f3Km;
+            }
+            double f4Km = 0;
+            if (taxiInput.f4Km != null)
+            {
+                f4Km = (double)taxiInput.f4Km;
+            }
+            double f1Price = 0;
+            if (taxiInput.f1Price != null)
+            {
+                f1Price = (double)taxiInput.f1Price;
+            }
+            double f2Price = 0;
+            if (taxiInput.f2Price != null)
+            {
+                f2Price = (double)taxiInput.f2Price;
+            }
+            double f3Price = 0;
+            if (taxiInput.f3Price != null)
+            {
+                f3Price = (double)taxiInput.f3Price;
+            }
+            double f4Price = 0;
+            if (taxiInput.f4Price != null)
+            {
+                f4Price = (double)taxiInput.f4Price;
+            }
+
             price = oPrice;
 
-            if (kmInput > oKm && kmInput < f1Km || kmInput == f1Km)
+            if (kmInput > 0 && kmInput < oKm)
+            {
+                price = oPrice; // Nếu như mới lên xe hoặc đi quãng đường nhỏ hơn open km (0.6) thì bằng giá mở cửa
+            }
+            else if (kmInput > oKm && kmInput < (f1Km + oKm)) //Nếu đi trong khoảng từ 0.6 đến 15.6 (+ thêm 15km) thì
             {
                 price = oPrice + ((kmInput - oKm) * f1Price);
             }
-            else if (kmInput > f1Km && kmInput < f2Km || kmInput == f2Km)
+            else if (kmInput > (f1Km + oKm) && kmInput < (f2Km + f1Km + oKm))
             {
                 price = oPrice + (f1Km * f1Price) + (kmInput - (f1Km + oKm)) * f2Price;
             }
-            else if (kmInput > f2Km && kmInput < f3Km || kmInput == f3Km)
+            else if (f4Km == 0 && f3Km == 0)
             {
-                price = oPrice + (f1Km * f1Price) + (f2Km * f2Price) + (kmInput - (oKm + f1Km + f2Km)) * f3Price;
+                price = oPrice + (f1Km * f1Price) + (kmInput - (f1Km + oKm)) * f2Price;
             }
-            else if (kmInput > f3Km)
+            else if (f4Km == 0 && f3Km != 0)
             {
-                price = oPrice + (f1Km * f1Price) + (f2Km * f2Price) + (f3Km * f3Price) + (kmInput - (oKm + f1Km + f2Km + f3Km)) * f4Price;
+                price = oPrice + (f1Km * f1Price) + (f2Km * f2Price) + (kmInput - (f1Km + oKm + f2Km)) * f3Price;
+            }
+            else if (f4Km != 0 && f3Km != 0)
+            {
+                if (kmInput > (oKm + f1Km + f2Km + f3Km) && kmInput < (oKm + f1Km + f2Km + f3Km + f4Km))
+                {
+                    price = oPrice + (f1Km * f1Price) + (f2Km * f2Price) + (f3Km * f3Price) + (kmInput - (f1Km + oKm + f2Km + f3Km)) * f4Price;
+                }
+                else
+                {
+                    price = oPrice + (f1Km * f1Price) + (f2Km * f2Price) + (kmInput - (f1Km + oKm + f2Km)) * f3Price;
+                }
             }
             return price;
         }

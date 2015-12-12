@@ -29,6 +29,8 @@
         <Color x:Key="lls_BackgroundColor">#FF060F27</Color>
         <Color x:Key="Button_AcceptColor">#FF59B747</Color>
         <Color x:Key="processbar_Color">#FF1FBAD6</Color>
+        <Color x:Key="Color_GridTextColor">#FF333333</Color>
+        <Color x:Key="Color_GridPanelColor">#FFF2F2F4</Color>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
