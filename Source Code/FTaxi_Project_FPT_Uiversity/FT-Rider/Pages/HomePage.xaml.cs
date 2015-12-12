@@ -14,11 +14,15 @@ using System.IO.IsolatedStorage;
 using System.Device.Location;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Resources;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using System.Data.Linq;
 using System.ComponentModel;
 using System.IO;
+using System.Text;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Devices.Geolocation;
 using Microsoft.Phone.Controls;
@@ -27,12 +31,10 @@ using Microsoft.Phone.Maps.Services;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Maps.Toolkit;
 using Microsoft.Devices;
+using Microsoft.Phone.Notification;
 using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
-using Microsoft.Phone.Notification;
-using System.Text;
-using System.Diagnostics;
 
 
 namespace FT_Rider.Pages
@@ -42,7 +44,7 @@ namespace FT_Rider.Pages
         //USER DATA PASS FROM LOGIN PAGE
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
-        
+
         RiderLogin userData;
         string userId = string.Empty;
         string pwmd5 = string.Empty;
@@ -93,19 +95,22 @@ namespace FT_Rider.Pages
         //For GET PICK UP & Create Trip
         double pickupLat;
         double pickupLng;
-        double destinationLat = 0; //Why Double? because destinationLat can be null
+        double destinationLat = 0;
         double destinationLng = 0;
         string pickupType = ConstantVariable.ONE_MANY;
         RiderCreateTrip createTrip;
         long tlmd;
         RiderNotificationUpdateTrip myTrip;
+        double tripEstimateCost = 0;
+        double tripEstimateKm = 0;
+        string tripId = string.Empty;
 
         //For City Name
         IDictionary<string, RiderGetCityList> cityNamesDB = new Dictionary<string, RiderGetCityList>();
 
         //For process bar
-        double tmpLat;
-        double tmpLng;
+        double tmpLat = 0;
+        double tmpLng = 0;
 
         //For Notification 
         string pushChannelURI = "";
@@ -114,14 +119,38 @@ namespace FT_Rider.Pages
 
         //For change label
         DispatcherTimer changeLabelRedTimer;
-        
 
+        //For lock map and get pickupLat, pickupLng
+        bool isGetDestinationAddress = false;
+        bool isGetPickupAddress = true;
+
+        //For effect
+        bool isStep2 = false;
+        bool isEffect = false;
+
+        //For Lock taxi icon tap
+        bool isTapableTaxiIcon = true; //Mặc định là true
+        bool isTaxiTaped = false; //Cái này để biết khi nào ta nhấn vào taxi
+
+
+        //for rider update driver status
+        DispatcherTimer riderUpdateDriverStatusTimer;
+        MapOverlay riderStartTripOverLay;
+
+        //for calcumale cost
+        bool isCalculateCost = false;
+        int costCount = 0;
+        double fiveStepBeforeLat = 0;
+        double fiveStepBeforeLng = 0;
+        double fiveStepAfterLat = 0;
+        double fiveStepAfterLng = 0;
+        double realDistance = 0;
 
         public HomePage()
         {
 
-            InitializeComponent();
-
+            InitializeComponent();          
+                
             //Hiện loading screen
             ShowLoadingScreen();
 
@@ -146,18 +175,71 @@ namespace FT_Rider.Pages
             LoadCityNameDataBase();
 
 
+
             //Cái này để chạy Getneardriver. 
             //Nếu sau khi login mà chưa kịp cập nhật lat lng thì sau 3 giây sẽ gọi lại
             getNearDriverTimer = new DispatcherTimer();
             getNearDriverTimer.Tick += new EventHandler(getNearDriverTimer_Tick);
             getNearDriverTimer.Interval = new TimeSpan(0, 0, 0, 3);
 
+            //For change red label
+            changeLabelRedTimer = new DispatcherTimer();
+            changeLabelRedTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
+            changeLabelRedTimer.Interval = new TimeSpan(0, 0, 0, 2);
+
+
+            //For Rider update driver status
+            riderUpdateDriverStatusTimer = new DispatcherTimer();
+            riderUpdateDriverStatusTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
+            riderUpdateDriverStatusTimer.Interval = new TimeSpan(0, 0, 0, 30); //Cứ 30 giây sẽ hiện vị trí Driver trên map của Rider
+        }
+
+
+        /// <summary>
+        /// Cái này là để đặt lại toàn bộ khóa trong chương trình
+        /// </summary>
+        private void ResetFlag()
+        {
+            isCalculateCost = false;
+            isPickup = false;
+            isGetDestinationAddress = false;
+            isGetPickupAddress = true;
+            isStep2 = false;
+            isEffect = false;
+            isTapableTaxiIcon = true;
+            isTaxiTaped = false;
+
+            costCount = 0;
+            fiveStepBeforeLat = 0;
+            fiveStepBeforeLng = 0;
+            fiveStepAfterLat = 0;
+            fiveStepAfterLng = 0;
+            realDistance = 0;
+
+            tmpLat = 0;
+            tmpLng = 0;
+
+            selectedDid = null;
+
+            pickupLat = 0;
+            pickupLng = 0;
+
+            destinationLat = 0;
+            destinationLng = 0;
+
+            tripEstimateCost = 0;
+            tripEstimateKm = 0;
+
+            tripId = string.Empty;
+
+            //Không khóa map nữa
+            LockMapIsDeactived();
         }
 
         private void getNearDriverTimer_Tick(object sender, EventArgs e)
         {
             Debug.WriteLine("4433222 Bắt đầu chạy Get Near Driver Timer"); //DELETE AFTER FINISHED
-            GetNearDriver();            
+            GetNearDriver();
             //throw new NotImplementedException();
         }
 
@@ -282,6 +364,10 @@ namespace FT_Rider.Pages
             //Set Center view
             map_RiderMap.SetView(riderFirstGeoposition.Coordinate.ToGeoCoordinate(), 16, MapAnimationKind.Linear);
 
+
+            //Ngay sau khi có tọa độ của người dùng thì đẩy địa chỉ lên ô Search bar
+            txt_InputAddress.Text = await getNameAddressFromCoordinate(riderFirstGeoposition.Coordinate.Latitude, riderFirstGeoposition.Coordinate.Longitude);
+
             GetNearDriver();
             Debug.WriteLine("87wuyw Lấy địa Rider chỉ thành công"); //DELETE AFTER FINISHED
         }
@@ -291,16 +377,57 @@ namespace FT_Rider.Pages
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
 
-                Geocoordinate geocoordinate = geocoordinate = args.Position.Coordinate;
+                Geocoordinate geocoordinate = args.Position.Coordinate;
                 riderMapOverlay.GeoCoordinate = geocoordinate.ToGeoCoordinate(); //Cứ mỗi lần thay đổi vị trí, Map sẽ cập nhật tọa độ của Marker
 
                 Debug.WriteLine("35625 geolocator_PositionChanged"); //DELETE AFTER FINISHED
 
+                //nếu cờ cho phép tính tiền bật, thì mới nhảy vào đây
+                //Nếu như vị trí thay đổi được 5 lần thì sẽ cộng dồn khoảng cách
+                if (isCalculateCost == true && costCount > 5)
+                {
+
+                    //Cái này sẽ âm thầm ính khoảng cách đã đi được
+                    //Tránh trường hợp tính sai do tài xế đi hình vòng tròn
+                    RealDistanceCalculate();
+
+
+                    //Reset bộ đếm
+                    costCount = 0;
+                }
+                costCount++;
             });
 
         }
         //------ END get current Position ------//
 
+
+        private async void RealDistanceCalculate()
+        {
+            //Ta có điểm A(fiveStepBeforeLat, fiveStepBeforeLng) rồi
+            //Giờ ta sẽ set điểm B(fiveStepAfterLat, fiveStepAfterLng)
+            //Sau đó cộng dồn khoảng cách
+            //Cuối cùng là thiết lập điểm A = điểm B
+            GeoCoordinate currentPosition = await GetCurrentPosition.GetGeoCoordinate();
+
+            //1.
+            fiveStepAfterLat = currentPosition.Latitude;
+            fiveStepAfterLng = currentPosition.Longitude;
+            //2.
+            realDistance = await GoogleAPIFunction.GetDistance(fiveStepBeforeLat, fiveStepBeforeLng, fiveStepAfterLat, fiveStepAfterLng);
+            //3.
+            fiveStepBeforeLat = fiveStepAfterLat;
+            fiveStepBeforeLng = fiveStepAfterLng;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void FareCalculate()
+        {
+
+        }
 
 
 
@@ -355,25 +482,24 @@ namespace FT_Rider.Pages
                             };
                         }
 
-                        
+                        getNearDriverTimer.Stop();
+
+                        Debug.WriteLine("987253 Lấy taxi xung quanh OK"); //DELETE AFTER FINISHED
                         //Nếu như không có xe nào thì hiện nút gọi hãng
                         if (nearDriverCollection.Count == 0)
                         {
-                            changeLabelRedTimer = new DispatcherTimer();
-                            changeLabelRedTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
-                            changeLabelRedTimer.Interval = new TimeSpan(0,0,0,2);
 
                             changeLabelRedTimer.Start();
                         }
-
-                        foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                        else
                         {
-                            ShowNearDrivers(tmpIter.Key);
+                            foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+                            {
+                                Debug.WriteLine("473625 Nhảy vào hàm lấy xe"); //DELETE AFTER FINISHED
+                                ShowNearDrivers(tmpIter.Key);
+                            }
                         }
 
-                        Debug.WriteLine("473625 Nhảy vào hàm lấy xe"); //DELETE AFTER FINISHED
-                        //Sau đó sẽ cho dừng Timer lại
-                        getNearDriverTimer.Stop();
                     }
                     else
                     {
@@ -381,8 +507,7 @@ namespace FT_Rider.Pages
                         Debug.WriteLine("87653 Không có xe nào xung quanh"); //DELETE AFTER FINISHED
                         //Thêm code cho việc chuyển label ở đây
                     }
-
-                    Debug.WriteLine("987253 Lấy taxi xung quanh OK"); //DELETE AFTER FINISHED
+                    
                 }
                 catch (Exception)
                 {
@@ -408,37 +533,43 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private void changeLabelRedTimer_Tick(object sender, EventArgs e)
         {
-            ShowCallTaxiCenterPicker();
             changeLabelRedTimer.Stop();
+            ShowCallTaxiCenterPicker();
         }
         //------ END get near Driver ------//
+
+
+
+        /// <summary>
+        /// HÀM NÀY ĐỂ TRẢ VỀ TÊN ĐỊA CHỈ CỦA MỘT TỌA ĐỘ
+        /// </summary>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        public static async Task<string> getNameAddressFromCoordinate(double lat, double lng)
+        {
+            var str = await GoogleAPIFunction.ConvertLatLngToAddress(lat, lng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+            return address.results[0].formatted_address.ToString();
+        }
+
 
 
         //------ BEGIN show and Design UI 3 taxi near current position ------//
         private async void ShowNearDrivers(string did)
         {
+            if (riderMapLayer != null)
+            {
+                map_RiderMap.Layers.Remove(riderMapLayer);
+                riderMapLayer = null;
+            }
+
             GeoCoordinate TaxiCoordinate = new GeoCoordinate(nearDriverCollection[did].lat, nearDriverCollection[did].lng);
 
             double openPrice = nearDriverCollection[did].oPrice;
             double estimateCost = 0;
             double estimateKm = 0;
             string driverName = nearDriverCollection[did].lName + ", " + nearDriverCollection[did].fName;
-            if (destinationLat != 0 && destinationLng != 0)
-            {
-                try
-                {
-                    //thử xem có tính tiền đc ko?
 
-                    estimateKm = await GoogleAPIFunction.GetDistance(pickupLat, pickupLng, destinationLat, destinationLng);
-                    estimateCost = RiderFunctions.EstimateCostCalculate(nearDriverCollection, did, estimateCost);
-                }
-                catch (Exception)
-                {
-
-                    //Nếu ko tính đc thì...
-                    Debug.WriteLine("Có lỗi 689rggg ở Tính km và tính tiền");
-                }
-            }
             var str = await GoogleAPIFunction.ConvertLatLngToAddress(pickupLat, pickupLng);
             var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
 
@@ -451,22 +582,38 @@ namespace FT_Rider.Pages
             //Show taxi and trip infor
             //taxiIcon.Tap += taxiIcon_Tap;
 
-            taxiIcon.Tap += (sender, eventArgs) =>
+            taxiIcon.Tap += (object sender, System.Windows.Input.GestureEventArgs e) =>
             {
                 Debug.WriteLine("Chạm vào một Taxi thành công");
 
-                selectedDid = did;
-                txt_OpenPrice.Text = openPrice.ToString();
-                txt_EstimatedCost.Text = estimateCost.ToString();
-                txt_RiderName.Text = driverName;
-                txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
+                TouchFeedback(); //Rung phản hồi
 
-                //Hide Step 01
-                this.grv_Step01.Visibility = Visibility.Collapsed;
+                //Đánh dấu là một em taxi đã được nhấn rồi
+                isTaxiTaped = true;
 
-                //Show Step 02
-                this.grv_Step02.Visibility = Visibility.Visible;
-                this.grv_Picker.Visibility = Visibility.Collapsed;
+                //Cái này để khóa lại hành động sau khi Người dùng nhấn vào picker nhưng lại chọn icon taxi trên màn hình
+                if (isTapableTaxiIcon == true)
+                {
+                    //Khóa ko cho lấy điểm pickup
+                    //isGetPickupAddress = false; //<<<< Tạm thời vẫn cho lấy pickup nên là tắt đi
+
+                    selectedDid = did;
+                    txt_OpenPrice.Text = openPrice.ToString();
+                    txt_EstimatedCost.Text = estimateCost.ToString();
+                    txt_DriverNames.Text = driverName;
+                    txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
+
+                    //Tắt Car bar
+                    HideCarsBar();
+
+                    ////và hiện step 02
+                    //ShowStep02Screen();
+                    //Hiện màn hình step 02
+                    ShowFirstStep02Grid();
+
+                    //Show label picker
+                    ShowPickerLabel();
+                }
             };
 
 
@@ -516,20 +663,11 @@ namespace FT_Rider.Pages
 
 
 
-        //Tapped event
-        private void taxiIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            //Hide Step 01
-            this.grv_Step01.Visibility = Visibility.Collapsed;
 
-            //Show Step 02
-            this.grv_Step02.Visibility = Visibility.Visible;
-            this.grv_Picker.Visibility = Visibility.Collapsed;
-        }
         //------ END show and Design UI 3 taxi near current position ------//
 
 
-
+        /*
         //------ BEGIN route Direction on Map ------//
         private async void getMapRouteTo(double lat, double lng)
         {
@@ -655,7 +793,7 @@ namespace FT_Rider.Pages
         }
         //------ END route Direction on Map ------//
 
-
+        */
 
 
 
@@ -770,7 +908,7 @@ namespace FT_Rider.Pages
                 double lng = places.results[0].geometry.location.lng;
 
                 //route direction on map
-                this.getMapRouteTo(lat, lng);
+                //this.getMapRouteTo(lat, lng);
             }
             catch (Exception)
             {
@@ -790,7 +928,7 @@ namespace FT_Rider.Pages
         private void loadAutoCompletePlace(string inputAddress)
         {
             //GoogleAPIQueryAutoComplete URL
-            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&language=vi_VI" + "&input=" + inputAddress;
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&types=geocode&language=vi" + "&input=" + inputAddress;
 
             //Query Autocomplete Responses to a JSON String
             WebClient proxy = new WebClient();
@@ -834,13 +972,13 @@ namespace FT_Rider.Pages
 
             //Và điền địa chỉ vào ô tìm kiếm
             txt_InputAddress.Text = selectedPlace.Name.ToString();
-            setCursorAtLast(txt_InputAddress);
+            //setCursorAtLast(txt_InputAddress);
 
             //rung phản hồi
             TouchFeedback();
 
             //Xóa lls
-            lls_AutoComplete = null;
+            //lls_AutoComplete = null;
         }
 
         //------ END Auto Complete ------//
@@ -909,10 +1047,10 @@ namespace FT_Rider.Pages
             ShowSearchCloseIcon();
 
             //mở long list search
-            EnableSearchLongList();
+            //EnableSearchLongList();
 
             //Chạy autocomplete và load dữ liệu vào Longlistselector
-            string queryAddress = txt_InputAddress.Text;            
+            string queryAddress = txt_InputAddress.Text;
             loadAutoCompletePlace(queryAddress);
         }
 
@@ -993,6 +1131,8 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private void txt_InputAddress_GotFocus(object sender, RoutedEventArgs e)
         {
+            EnableSearchLongList();
+
             //Khi nhấn vào ô search thì picker bị ẩn đi
             HideGridPicker();
 
@@ -1000,8 +1140,16 @@ namespace FT_Rider.Pages
             ShowSearchCloseIcon();
 
             //Enable Auto Complete
-            loadAutoCompletePlace("");
-            EnableSearchLongList();
+            if (txt_InputAddress.Text.Length > 0)
+            {
+                loadAutoCompletePlace(txt_InputAddress.Text);
+            }
+            else
+            {
+                loadAutoCompletePlace("");
+            }
+
+
 
 
             //Cái này để làm cho textbox trong suốt khi tap vào
@@ -1023,9 +1171,6 @@ namespace FT_Rider.Pages
 
         private void txt_InputAddress_LostFocus(object sender, RoutedEventArgs e)
         {
-            //Tắt long list
-            DisableSearchLongList();
-
             //bật lại picker pin
             ShowGridPiker();
 
@@ -1042,6 +1187,14 @@ namespace FT_Rider.Pages
 
             //Đặt con trò chuột lên đầu tiên của search box
             setCursorAtFirst(txt_InputAddress);
+
+            //Tắt long list
+            HideSearchLongList();
+        }
+
+        private void HideSearchLongList()
+        {
+            lls_AutoComplete.Visibility = Visibility.Collapsed;
         }
 
 
@@ -1060,7 +1213,7 @@ namespace FT_Rider.Pages
             catch (Exception)
             {
 
-                MessageBox.Show("(Mã lỗi 35604) "+ConstantVariable.errConnectingError);
+                MessageBox.Show("(Mã lỗi 35604) " + ConstantVariable.errConnectingError);
             }
         }
 
@@ -1079,11 +1232,44 @@ namespace FT_Rider.Pages
                 grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
             }
 
+
+            //Hiện picker label chọn điểm đón
             img_PickerLabel.Visibility = Visibility.Visible; //Enable Pickup label
 
+
+
+            //Cái này là effect
+            if (isEffect == true)
+            {
+                //Hiện màn hình step 01
+                ShowStep01Screen();
+                //Nếu ở Step 02 thì hiện màn hình Step 02
+                if (isStep2 == true) //Cái này cần thiến để tránh việc Step 02 bị nhảy ra ở Step 01
+                {
+                    ShowStep02Screen();
+                }
+
+                //Sau đó tôi sẽ cho nó trở về false luôn
+                //Để trong trường hợp nhấn nút "HỦY TRIP"
+                //Map sẽ Resolved nhưng ko chạy effect
+                isEffect = false;
+            }
+
             //Nạp tọa độ đón
-            pickupLat = map_RiderMap.Center.Latitude;
-            pickupLng = map_RiderMap.Center.Longitude;
+            //Nếu cho phép lấy tọa độ thì sẽ lấy tọa độ ở giữa màn hình
+            if (isGetPickupAddress)
+            {
+                //Nếu trạng thái cho nạp điểm đón đc kích hoạt thì cho phép
+                pickupLat = map_RiderMap.Center.Latitude;
+                pickupLng = map_RiderMap.Center.Longitude;
+            }
+
+            if (destinationLat != 0 && destinationLng != 0 && isTaxiTaped == true)
+            {
+                EstimateCostCalculate(); //Hàm này chỉ hợp lệ trước lúc bắt đầu đi xe. còn sau đó thì dùng hàm khác. sử dụng vị trí hiện tại
+            }
+
+            //Nếu cho phép pickup và đang ở màn lấy địa chỉ đón thì cho phép lạy get nearDriver
             if (isPickup == true)
             {
                 //pickupTimer.Start();
@@ -1098,8 +1284,14 @@ namespace FT_Rider.Pages
 
         private void map_RiderMap_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
+            if (isEffect == false)
+            {
+                isEffect = true;
+            }
+
 
             //Tắt timer của change red label
+            //changeLabelRedTimer.Start();
             changeLabelRedTimer.Stop();
 
             //Ẩn picker label khi di chuyển map
@@ -1107,6 +1299,15 @@ namespace FT_Rider.Pages
 
             //Đặt trạng thái picker là true
             isPickup = true;
+
+            //Ẩn step 01
+            HideStep01Screen();
+
+            //Nếu ở Step 02 thì ẩn Step 02
+            if (isStep2 == true)
+            {
+                HideStep02Screen();
+            }
 
             Debug.WriteLine("RiderMap_MouseLeftButtonDown");
         }
@@ -1174,14 +1375,14 @@ namespace FT_Rider.Pages
             }
         }
 
-        private void txt_PickupAddress_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //Trong suốt texbox
-            TextBox addressTextbox = (TextBox)sender;
-            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
-            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
-            addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
-        }
+        //private void txt_PickupAddress_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    //Trong suốt texbox
+        //    TextBox addressTextbox = (TextBox)sender;
+        //    addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+        //    addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+        //    addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+        //}
         //------ END For open menu ------//
 
 
@@ -1190,11 +1391,6 @@ namespace FT_Rider.Pages
         private void canvas_ManipulationDelta(object sender, System.Windows.Input.ManipulationDeltaEventArgs e)
         {
 
-        }
-
-        private void txt_PickupAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            setCursorAtLast(txt_PickupAddress);
         }
 
 
@@ -1209,10 +1405,10 @@ namespace FT_Rider.Pages
         //This function to get City Code From City Name in City Dictionary
         private int GetCityCodeFromCityName(string cityName)
         {
-            int cityCode=0;
+            int cityCode = 0;
             try
             {
-                cityCode =  cityNamesDB[cityName].cityId;
+                cityCode = cityNamesDB[cityName].cityId;
             }
             catch (Exception)
             {
@@ -1243,6 +1439,10 @@ namespace FT_Rider.Pages
         /// <param name="e"></param>
         private async void btn_RequestTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            //Không cho lấy điểm đón nữa
+            //Có nghĩa là mỗi khi map di chuyển, sẽ ko lấy center map nữa
+            isGetPickupAddress = false;
+
             //HIỆN LOADING
             ShowButtonRequestLoadingState();
 
@@ -1289,8 +1489,8 @@ namespace FT_Rider.Pages
                 uid = userData.content.uid,
                 rid = userData.content.rid,
                 did = didList,
-                sAddr = txt_PickupAddress.Text, //Hiện tại Notification đang không gửi được thông báo với input là tiếng việt
-                eAddr = txt_DestinationAddress.Text, //nên sẽ conver hai địa chỉ đi và đón qua tiếng anh
+                sAddr = txt_PickupAddress.Text, 
+                eAddr = txt_DestinationAddress.Text, 
                 sLat = pickupLat,
                 sLng = pickupLng,
                 eLat = destinationLat,
@@ -1334,12 +1534,23 @@ namespace FT_Rider.Pages
                 createTrip.rType);
             var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCreateTrip, input);
             var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
-            if (createTripResponse.lmd != 0) //check if create trip ok
+            if (createTripResponse.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //check if create trip ok
             {
                 //btn_RequestTaxi.IsEnabled = false;
                 //btn_RequestTaxi.Content = "Vui lòng đợi...";
                 //btn_RequestTaxi.BorderBrush.Opacity = 0;
                 //SwitchToWaitingStatus();
+
+                tripId = createTripResponse.content.ToString();
+
+                //Rung điện thoại
+                TouchFeedback();
+
+                //Chạy âm thanh
+                TripStartAlert();
+
+                //Không cho tương tác lên màn hình nữa
+                LockMapIsActived();
 
                 //SAU KHI REQ XONG THÌ CHUYỂN QUA MÀN HÌNH "VUI LÒNG ĐỢI", đồng thời tắt LOADING
                 grv_CancelTaxi.Visibility = Visibility.Visible; //Hiện màn hình "Vui lòng đợi" kèm Button "Hủy Chuyến"
@@ -1348,36 +1559,199 @@ namespace FT_Rider.Pages
             }
         }
 
+        private async void btn_RequestTaxiMN_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowButtonRequestLoadingState();
+
+            //Không cho lấy điểm đón nữa
+            //Có nghĩa là mỗi khi map di chuyển, sẽ ko lấy center map nữa
+            isGetPickupAddress = false;
+
+            btn_RequestTaxi.IsEnabled = false;
+            TouchFeedback();
+            grv_Picker.Visibility = Visibility.Collapsed;
+            SwitchToWaitingStatus();
+
+
+            //Prepare for req service
+            int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
+            string eCityName;
+            int eCity;
+            if (destinationLat == 0 && destinationLng == 0)
+            {
+                eCity = 0;
+                eCityName = "";
+            }
+            else
+            {
+                eCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng));
+                eCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng);
+            }
+            string sCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng);
+            string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
+            string proCode = "";
+            pickupType = ConstantVariable.MANY;
+            List<string> didList = new List<string>();
+            foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
+            {
+                didList.Add(tmpIter.Key);
+            }
+
+            //Create Request Trip Onject 
+            RiderCreateTrip createTrip = new RiderCreateTrip
+            {
+                uid = userData.content.uid,
+                rid = userData.content.rid,
+                did = didList,///
+                sAddr = txt_PickupAddress.Text,
+                eAddr = txt_DestinationAddress.Text,
+                sLat = pickupLat,
+                sLng = pickupLng,
+                eLat = destinationLat,
+                eLng = destinationLng,
+                sCity = sCity,
+                eCity = eCity,
+                sCityName = sCityName,
+                eCityName = eCityName,
+                cntry = cntry,
+                proCode = proCode,
+                rType = pickupType///
+            };
+
+            string didString = "";
+            for (int i = 0; i < createTrip.did.Count; i++)
+            {
+                didString += didList[i];
+                didString += ",";
+            }
+
+            // Kiểm tra khi không có xe nào xung quanh >> bug
+            try
+            {
+                var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
+                + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
+                + "\"eLat\":\"{7}\",\"eLng\":\"{8}\",\"sCity\":\"{9}\","
+                + "\"eCity\":\"{10}\",\"sCityName\":\"{11}\",\"eCityName\":\"{12}\","
+                + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
+                createTrip.uid,
+                createTrip.rid,
+                didString.Remove(didString.Length - 1), //.Remove(didString.Length-1) to cut "," character at the end of string // ["a","b","c"]
+                createTrip.sAddr,
+                createTrip.eAddr,
+                createTrip.sLat.ToString().Replace(',', '.'),
+                createTrip.sLng.ToString().Replace(',', '.'),
+                createTrip.eLat.ToString().Replace(',', '.'),
+                createTrip.eLng.ToString().Replace(',', '.'),
+                createTrip.sCity,
+                createTrip.eCity,
+                createTrip.sCityName,
+                createTrip.eCityName,
+                createTrip.cntry,
+                createTrip.proCode,
+                createTrip.rType);
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCreateTrip, input);
+                var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (createTripResponse.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //check if create trip ok
+                {
+
+                    /* btn_RequestTaxi.Content = "";*/
+                    ///Code for create trip successed//
+                    ///
+                    //Update lmd
+                    tlmd = createTripResponse.lmd;
+                    
+                }
+            }
+            catch (Exception)
+            {
+
+                //Code thong bao, khong co xe nao xung quanh
+                MessageBox.Show("Rất tiếc, không có xe nào xung quanh!");
+            }
+        }
+
+
+
         private void SwitchToWaitingStatus()
         {
             if (grv_Step02.Visibility == Visibility.Collapsed)
             {
                 grv_Step02.Visibility = Visibility.Visible;
             }
-            btn_RequestTaxi.IsEnabled = false;
+            btn_RequestTaxi.Tap -= btn_RequestTaxi_Tap;
             btn_RequestTaxi.Content = ConstantVariable.strPleseWait;
-            btn_RequestTaxi.BorderBrush.Opacity = 0;
         }
 
         private void map_RiderMap_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             //Sau khi buông tay thì cho hiện black picker
-            ShowGridPiker();
+            //ShowGridPiker();
+
+
             //trong khi vẫn ẩn picker gọi hãng
             HideCallTaxiCenterPicker();
         }
 
         private void TouchFeedback()
         {
-            vibrateController.Start(TimeSpan.FromSeconds(0.1));
+           vibrateController.Start(TimeSpan.FromSeconds(0.1));
         }
 
-        private void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+
+
+        /// <summary>
+        /// KHI NHẤN VÀO PICKER LABEL CHỌN ĐIỂM ĐÓN
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void img_PickerLabel_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            chk_AutoRecall.IsChecked = true;
+            //không bật tính phí 
+            isTaxiTaped = false;
+
+            //Kích hoạt tự động gọi xe khác
+            ActiveAutoRecall();
+
+            //Hiện màn hình step 02
+            ShowRequestManyTaxiButton();
+
+            //Không cho lấy điểm đón nữa
+            //Có nghĩa là mỗi khi map di chuyển, sẽ ko lấy center map nữa
+            //isGetPickupAddress = false; //<<<<<<<<<<< TẠP THỜI VẪN ĐANG CHO NẠP PICKUP COORDINATE
+
+            //lấy địa chỉ tại trung tâm ma và đẩy lên grid
+            //txt_PickupAddress.Text = await getNameAddressFromCoordinate(this.map_RiderMap.Center.Latitude, this.map_RiderMap.Center.Longitude);
+            txt_PickupAddress.Text = await getNameAddressFromCoordinate(pickupLat, pickupLng);
+
+            //Tắt search bar
+            //HideSearchBar();
+
+            //Và khóa tương tác với map
+            //LockMapIsActived();
+
+            //Khóa event tap của nút auto recall
+            img_AutoRecall.Tap -= img_AutoRecall_Tap;
+
+
+            //Cái này để di chuyển map lên bên trên một chut
+            //map_RiderMap.SetView(new GeoCoordinate(pickupLat - 0.005, pickupLng), 16, MapAnimationKind.Linear);
+        }
+
+        private void ShowRequestManyTaxiButton()
+        {
             grv_Step02.Visibility = Visibility.Visible;
             btn_RequestTaxiMN.Visibility = Visibility.Visible;
             btn_RequestTaxi.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void ShowFirstStep02Grid()
+        {
+            (this.Resources["showStep02"] as Storyboard).Begin();
+            isStep2 = true;
+            grv_Step02.Visibility = Visibility.Visible;
+            btn_RequestTaxiMN.Visibility = Visibility.Collapsed;
+            btn_RequestTaxi.Visibility = Visibility.Visible;
         }
 
 
@@ -1422,7 +1796,7 @@ namespace FT_Rider.Pages
                 if (tNetAppSetting.Contains("PushChannelURI"))
                 {
                     tNetAppSetting["PushChannelURI"] = pushChannelURI.ToString(); //Cái này để lưu lại uri
-                }  
+                }
                 //tNetAppSetting["NotificationURI"] = pushChannelURI;
                 ///
                 ///CODE UPDATE URI HERE///
@@ -1445,7 +1819,7 @@ namespace FT_Rider.Pages
                 if (tNetAppSetting.Contains("PushChannelURI"))
                 {
                     tNetAppSetting["PushChannelURI"] = pushChannelURI.ToString(); //Cái này để lưu lại uri
-                }                
+                }
                 //tNetAppSetting["NotificationURI"] = pushChannelURI; //Truyền URI QUA CÁC TRANG KHÁC
                 ///
                 ///CODE LOAD URI HERE///
@@ -1576,7 +1950,7 @@ namespace FT_Rider.Pages
 
                 switch (myTrip.tStatus) //<<<<< Cái này trả về thông tin bên ông Driver. vd: Nếu nhấn Start thì status là PI
                 {
-                    case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới"
+                    case ConstantVariable.tripStatusPicking: //Nếu là "PI" thì sẽ chạy hàm thông báo "Xe đang tới" "TRIP HERE"
                         SwitchToPikingStatus();
                         break;
                     case ConstantVariable.tripStatusPicked: //Nếu là "PD" Thì chuyến đi đã bắt đầu
@@ -1606,6 +1980,34 @@ namespace FT_Rider.Pages
 
 
         /// <summary>
+        /// CÁI NÀY ĐỂ THÊM HIỆU ỨNG THÔNG BÁO KHI CÓ 
+        /// </summary>
+        private void TripUpdateAlert()
+        {
+            me_StartTrip.Play();
+        }
+
+        private void TripStartAlert()
+        {
+            me_StartRequest.Play();
+        }
+
+        private void TripNewAlert()
+        {
+            me_NewTrip.Play();
+        }
+
+        private void TripCancelAlert()
+        {
+            me_CancelTrip.Play();
+        }
+
+        private void TripUpdate01()
+        {
+            me_UpdateTrip01.Play();
+        }
+
+        /// <summary>
         /// CÁC TRƯỜNG HỢP CỦA UPDATE TRIP
         /// </summary>
         private void SwitchToPikingStatus()
@@ -1613,28 +2015,53 @@ namespace FT_Rider.Pages
             ///0.1 CHO ÂM THANH HIỆU ỨNG
             ///Hiện thông báo
             tbl_DriverStatus.Text = ConstantVariable.strCarAreComming; //HIỆN THÔNG ÁO "XE ĐANG TỚI.."
-            
+
+            //Cho rung điện thoại
+            TouchFeedback();
+            //Đổ âm chuông cảnh báo
+            TripUpdateAlert();
         }
 
+
+        /// <summary>
+        /// Đây là lúc chuyến đi bắt đầu
+        /// </summary>
         private void SwitchToStartedStatus()
         {
             ///1. Hiện mess
             ///2. chờ sau 3 giây tắt grid
             ///3. hiện vị trí xe
             ///
-            MessageBox.Show(ConstantVariable.strCarAreStarting);
-            
+
+
             //1.
-            tbl_DriverStatus.Text = ConstantVariable.strCarAreStarting;
+            //Cho rung điện thoại
+            TouchFeedback();
+            //Đổ âm chuông cảnh báo
+            TripStartAlert();
+
+            MessageBox.Show(ConstantVariable.strCarAreStarting);
 
             //2.
-            Thread.Sleep(1500);
-
             grv_Step02.Visibility = Visibility.Collapsed;
+
+
+
+            // Khóa màn hình map lại, không cho tương tác
+            LockMapIsActived();
+
+            //Xóa các router trên màn hình, chỉ hiện biểu tượng taxi
+            RemoveMapRoute();
+
             //3.
+            DriverTracker();
 
-            
+            //Bật hàm tính tiền
+            isCalculateCost = true;
 
+            //Set tọa độ điểm đầu cho hàm tính khoảng cách
+            fiveStepBeforeLat = pickupLat;
+            fiveStepBeforeLng = pickupLng;
         }
 
 
@@ -1643,17 +2070,25 @@ namespace FT_Rider.Pages
             tbl_DriverStatus.Text = ConstantVariable.strCarRejected; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
             ///1. VIẾT TIẾP HÀM CHO VIỆC LÀM LẠI CHU TRÌNH GỌI XE HOẶC GỌI TỔNG ĐÀI
             ///2. Chuyển qua Button Gọi hãng
-            ///3. CHO ÂM THANH HIỆU ỨNG            
+            ///3. CHO ÂM THANH HIỆU ỨNG 
+            ///
+
+            //Chạy hiệu ưngs
+            TouchFeedback();
+            TripCancelAlert();
 
             //2. 
             DeleteTripDate();
 
+            //Đăt lại các biến
+            ResetFlag();
+
+
             //Show messeage
             MessageBox.Show(ConstantVariable.strCarRejected);
 
-            //3.
-            grv_Step02.Visibility = Visibility.Collapsed;
-            SetHomeViewState();
+            //3
+            LoadHomePageView();
 
             //4. Get near car
             GetNearDriver();
@@ -1665,11 +2100,17 @@ namespace FT_Rider.Pages
             ///1. CHO ÂM THANH HIỆU ỨNG
             ///2. Xóa thông tin trip
             ///3. Về màn hình chính
-            
+            ///
             //0.
-            tbl_DriverStatus.Text = ConstantVariable.strCarCanceled; //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
+            MessageBox.Show(ConstantVariable.strCarCanceled); //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
 
             //1. 
+            TouchFeedback();
+            TripCancelAlert();
+
+
+            //Đăt lại các biến
+            ResetFlag();
 
             //2. 
             DeleteTripDate();
@@ -1679,19 +2120,80 @@ namespace FT_Rider.Pages
 
             //3.
             grv_Step02.Visibility = Visibility.Collapsed;
-            SetHomeViewState();
+            //SetHomeViewState();
+            LoadHomePageView();
 
             //4. Get near car
             GetNearDriver();
 
         }
 
+        /// <summary>
+        /// Hàm này để sau khi nhấn Start Trip, hệ thống sẽ khóa màn hình lại, và chỉ hiện vị trí ve ô tô đang chạy
+        /// </summary>
+        private async void DriverTracker()
+        {
 
+            if (riderMapLayer != null)
+            {
+                riderStartTripOverLay = null;
+                map_RiderMap.Layers.Remove(riderMapLayer);
+            }
+
+            var uid = userData.content.uid;
+            var did = selectedDid;
+
+            var input = string.Format("{{\"uid\":\"{0}\",\"did\":[\"{1}\"]}}", uid, did);
+            try
+            {
+                //Thử xem có lấy đc gì về ko, nếu ko lấy đc về thì báo lỗi mạng
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateDriverStatus, input);
+                var updateStatus = JsonConvert.DeserializeObject<RiderUpdateDriverStatusObj>(output);
+                if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 ok
+                {
+                    double lat = updateStatus.content.driverStatusList[0].lat;
+                    double lng = updateStatus.content.driverStatusList[0].lng;
+
+                    //Add img_CurrentLocation to Map
+                    Image startTripTaxiIcon = new Image();
+                    startTripTaxiIcon.Source = new BitmapImage(new Uri("/Images/Taxis/img_CarIcon.png", UriKind.Relative));
+                    startTripTaxiIcon.Height = 27;
+                    startTripTaxiIcon.Width = 30;
+
+                    riderStartTripOverLay = new MapOverlay();
+                    riderStartTripOverLay.Content = startTripTaxiIcon; //Phải khai báo 1 lớp Overlay vì Overlay có thuộc tính tọa độ (GeoCoordinate)
+                    riderStartTripOverLay.GeoCoordinate = new GeoCoordinate(lat, lng);
+                    riderStartTripOverLay.PositionOrigin = new Point(0.5, 0.5);
+
+                    riderMapLayer = new MapLayer();
+                    riderMapLayer.Add(riderMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
+                    map_RiderMap.Layers.Add(riderMapLayer);
+
+                    map_RiderMap.SetView(new GeoCoordinate(lat, lng), 15, MapAnimationKind.Linear);
+                }
+            }
+            catch (Exception)
+            {
+
+                //MessageBox.Show("(Mã lỗi 6501) " + ConstantVariable.errConnectingError);
+                Debug.WriteLine("Có lỗi 4526sfg ở Driver Tracker");
+            }
+        }
 
         private void SwitchToCompletedStatus()
         {
             ///CHO ÂM THANH HIỆU ỨNG
+            //
+
+            //Chạy âm thanh hoàn thành và rung
+            TouchFeedback();
+            TripUpdateAlert();
+
+            //Hiện màn hình thanh toán
+            ShowCompleteGrid();
         }
+
+
 
         /// <summary>
         /// Nhận thông tin từ Notification
@@ -1758,19 +2260,65 @@ namespace FT_Rider.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private async void btn_CancelTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void btn_CancelTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                //Thiết lập messagebox                
+                Message = ConstantVariable.cfbCancelTaxi, // "Bạn sẽ phải trả tiền gọi xe theo giá mở cửa nếu hủy chuyến."
+                LeftButtonContent = ConstantVariable.cfbYes,
+                RightButtonContent = ConstantVariable.cfbNo
+            };
+
+            //Add the dismissed event handler
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        CancelTaxiTrip();
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        messageBox.Dismiss();
+
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            //add the show method
+            messageBox.Show();
+
+        }
+
+        private async void CancelTaxiTrip()
+        {
+            //Sau khi nhấn hủy bỏ thì lại cho phép chạm vào icon taxi
+            //isTapableTaxiIcon = true;****
+
+
             //HIỆN LOADING PROCESS
             grv_ProcessBarButton.Visibility = Visibility.Visible;
 
+            //Xóa trạng thái step
+            //ClearAllStep();
+            if (myTrip != null)
+            {
+                tripId = myTrip.tid;
+            }
 
             RiderCancelTrip cancelTrip = new RiderCancelTrip
             {
                 uid = userId,
                 pw = pwmd5,
-                tid = myTrip.tid
+                tid = tripId,
+                lmd = tlmd
             };
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\"}}", cancelTrip.uid, cancelTrip.pw, cancelTrip.tid);
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"lmd\":\"{3}\"}}", cancelTrip.uid, cancelTrip.pw, cancelTrip.tid, cancelTrip.lmd);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCancelTrip, input);
@@ -1783,28 +2331,28 @@ namespace FT_Rider.Pages
                         ///1. Update lmd
                         ///2. Xóa tât cả các biến về Tạo một Trip
                         ///3. Trở về màn hình đầu tiên
-                       
+
                         //1. Update LMD cho phiên làm việc tiếp theo
                         tlmd = (long)cancelStatus.lmd;
 
                         //2. Xóa các thông tin liên quan đến trip
-                        createTrip = null;
+                        //createTrip = null;
+                        DeleteTripDate();
+
+                        //Đặt cờ lại mặc định
+                        ResetFlag();
+
+                        //Xóa thông tin map
+                        RemoveMapRoute();
 
                         //3. Về màn hình đầu tiên
                         //SAU KHI HOÀN THÀNH REQ HỦY CHUYẾN THÌ TẮT LOADING
                         grv_ProcessBarButton.Visibility = Visibility.Visible;
                         //Đưa màn hình về trạng thái ban đầu
-                        SetHomeViewState();
+                        LoadHomePageView();
+                        //SetHomeViewState();
 
-                    }
-                    else if (cancelStatus.status.Equals(ConstantVariable.RESPONSECODE_TRIP_TAKEN)) //013
-                    {
-                        ///CODE CHO VIỆC THÔNG BÁO ĐÃ BỊ CHIẾM KHÁCH
-                        ///CHO TRỞ VỀ MÀN HÌNH MAP
-                        ///XÓA NEW TRIP
-                        ///
-                    }
-                    else
+                    }else
                     {
                         Debug.WriteLine("Mã lỗi 576fg ở Cancel Trip");
                     }
@@ -1814,6 +2362,7 @@ namespace FT_Rider.Pages
             {
                 MessageBox.Show("(Mã lỗi 408) " + ConstantVariable.errServerErr);
             }
+
         }
 
 
@@ -1925,112 +2474,415 @@ namespace FT_Rider.Pages
         {
             NavigationService.Navigate(new Uri("/Pages/About.xaml", UriKind.Relative));
         }
-
-        private async void btn_RequestTaxiMN_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            btn_RequestTaxi.IsEnabled = false;
-            TouchFeedback();
-            grv_Picker.Visibility = Visibility.Collapsed;
-            SwitchToWaitingStatus();
-
-
-            //Prepare for req service
-            int sCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng));
-            string eCityName;
-            int eCity;
-            if (destinationLat == 0 && destinationLng == 0)
-            {
-                eCity = 0;
-                eCityName = "";
-            }
-            else
-            {
-                eCity = GetCityCodeFromCityName(await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng));
-                eCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(destinationLat, destinationLng);
-            }
-            string sCityName = await GoogleAPIFunction.GetCityNameFromCoordinate(pickupLat, pickupLng);
-            string cntry = await GoogleAPIFunction.GetCountryNameFromCoordinate(pickupLat, pickupLng);
-            string proCode = "";
-            pickupType = ConstantVariable.MANY;
-            List<string> didList = new List<string>();
-            foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
-            {
-                didList.Add(tmpIter.Key);
-            }
-
-            //Create Request Trip Onject 
-            RiderCreateTrip createTrip = new RiderCreateTrip
-            {
-                uid = userData.content.uid,
-                rid = userData.content.rid,
-                did = didList,///
-                sAddr = txt_PickupAddress.Text,
-                eAddr = txt_DestinationAddress.Text,
-                sLat = pickupLat,
-                sLng = pickupLng,
-                eLat = destinationLat,
-                eLng = destinationLng,
-                sCity = sCity,
-                eCity = eCity,
-                sCityName = sCityName,
-                eCityName = eCityName,
-                cntry = cntry,
-                proCode = proCode,
-                rType = pickupType///
-            };
-
-            string didString = "";
-            for (int i = 0; i < createTrip.did.Count; i++)
-            {
-                didString += didList[i];
-                didString += ",";
-            }
-
-            // Kiểm tra khi không có xe nào xung quanh >> bug
-            try
-            {
-                var input = string.Format("{{\"uid\":\"{0}\",\"rid\":\"{1}\",\"did\":[\"{2}\"],\"sAddr\":\"{3}\","
-                + "\"eAddr\":\"{4}\",\"sLat\":\"{5}\",\"sLng\":\"{6}\","
-                + "\"eLat\":\"{7}\",\"eLng\":\"{8}\",\"sCity\":\"{9}\","
-                + "\"eCity\":\"{10}\",\"sCityName\":\"{11}\",\"eCityName\":\"{12}\","
-                + "\"cntry\":\"{13}\",\"proCode\":\"{14}\",\"rType\":\"{15}\"}}",
-                createTrip.uid,
-                createTrip.rid,
-                didString.Remove(didString.Length - 1), //.Remove(didString.Length-1) to cut "," character at the end of string // ["a","b","c"]
-                createTrip.sAddr,
-                createTrip.eAddr,
-                createTrip.sLat.ToString().Replace(',', '.'),
-                createTrip.sLng.ToString().Replace(',', '.'),
-                createTrip.eLat.ToString().Replace(',', '.'),
-                createTrip.eLng.ToString().Replace(',', '.'),
-                createTrip.sCity,
-                createTrip.eCity,
-                createTrip.sCityName,
-                createTrip.eCityName,
-                createTrip.cntry,
-                createTrip.proCode,
-                createTrip.rType);
-                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderCreateTrip, input);
-                var createTripResponse = JsonConvert.DeserializeObject<BaseResponse>(output);
-                if (createTripResponse.lmd != 0) //check if create trip ok
-                {
-
-                    /* btn_RequestTaxi.Content = "";*/
-                    ///Code for create trip successed//
-                }
-            }
-            catch (Exception)
-            {
-                
-               //Code thong bao, khong co xe nao xung quanh
-                MessageBox.Show("Rất tiếc, không có xe nào xung quanh!");
-            }
-        }
+       
 
         private void img_PickerLabel_Red_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/TaxiList.xaml", UriKind.Relative));
         }
+
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //Cái này để làm cho textbox trong suốt khi tap vào
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY LÀ KHI NHẤN VÀO NÚT CLOSE Ở DESTINATION SEARCH
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void img_CloseClearIcon_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Kiểm tra xem nếu lúc nhấn icon Close mà chưa có nội dung gì. thì sẽ đóng Grid Search
+            if (txt_DestinationSearchAddress.Text.Equals(string.Empty))
+            {
+                HideGridDestinationAddressSearch();
+            }
+
+            //Nếu lúc đó có text thì xóa đi
+            if (txt_DestinationSearchAddress.Text.Length > 0)
+            {
+                txt_DestinationSearchAddress.Text = string.Empty;
+                txt_DestinationSearchAddress.Focus();
+            }
+        }
+        /// <summary>
+        /// CÁI NÀY ĐỂ CỨ SAU KHI NHẤN 1 PHÍM SẼ CHẠY AUTOCOMPLETE
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            string queryAddress = txt_DestinationSearchAddress.Text;
+            //Chạy autocomplete và load dữ liệu vào Longlistselector
+            if (txt_DestinationSearchAddress.Text.Equals(string.Empty))
+            {
+                AutoCompleteDestinationSearch("");
+
+            }
+            else
+            {
+                AutoCompleteDestinationSearch(queryAddress);
+            }
+
+        }
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// HIỆN ĐỊA CHỈ GỢI Ý
+        /// </summary>
+        private void AutoCompleteDestinationSearch(string inputAddress)
+        {
+            //lls_AutoComplete = null;
+            //GoogleAPIQueryAutoComplete URL
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI + ConstantVariable.googleGeolocationAPIkey + "&types=geocode&language=vi" + "&input=" + inputAddress;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_AutoCompleteDestinationSearch);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+        private void proxy_AutoCompleteDestinationSearch(object sender, DownloadStringCompletedEventArgs e)
+        {
+            try
+            {
+                //1. Convert Json String to an Object
+                GoogleAPIQueryAutoCompleteObj places = new GoogleAPIQueryAutoCompleteObj();
+                places = JsonConvert.DeserializeObject<GoogleAPIQueryAutoCompleteObj>(e.Result);
+                //2. Create Place list
+                ObservableCollection<AutoCompletePlaceLLSObj> autoCompleteDataSource = new ObservableCollection<AutoCompletePlaceLLSObj>();
+
+                //3. Loop to list all item in object
+                foreach (var obj in places.predictions)
+                {
+                    autoCompleteDataSource.Add(new AutoCompletePlaceLLSObj(obj.description.ToString()));
+                }
+                lls_DestinationAddress.ItemsSource = autoCompleteDataSource;
+            }
+            catch (Exception)
+            {
+                txt_DestinationSearchAddress.Focus();
+            }
+        }
+        /// <summary>
+        /// KHI NHẤN VÀO MỘT ĐỊA CHỈ TRONG LONGLIST
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lls_DestinationAddress_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedPlace = ((AutoCompletePlaceLLSObj)(sender as LongListSelector).SelectedItem);
+            // If selected item is null, do nothing
+            if (lls_DestinationAddress.SelectedItem == null)
+                return;
+
+            //Rung phản hồi
+            TouchFeedback();
+
+            //Khi nhấn vào 1 đỉa chỉ trong danh sách tự động tìm địa chỉ thì sẽ đặt địa chỉ đến
+            txt_DestinationAddress.Text = selectedPlace.Name.ToString();
+            //Ẩn textblock phía sau điểm đón
+            HideDestinationAddressTextblockBackground();
+
+            setDestinationAddressFromSearchBar(selectedPlace.Name.ToString());
+
+            //Tắt grid tìm điểm đến
+            HideGridDestinationAddressSearch();
+
+            //Không cho nhấn icon taxi trê nmàn hình maps nữa
+            isTapableTaxiIcon = false;
+
+            //Tắt effect
+            isEffect = false;
+
+            //Xóa lls
+            //lls_DestinationAddress = null;
+
+            //Ẩn picker pin
+            HideAllPickerLabel();
+        }
+        private void setDestinationAddressFromSearchBar(string inputAddress)
+        {
+            //GoogleAPIGeocoding URL
+            string URL = ConstantVariable.googleAPIGeocodingAddressBaseURI + inputAddress + "&key=" + ConstantVariable.googleGeolocationAPIkey;
+
+            //Query Autocomplete Responses to a JSON String
+            WebClient proxy = new WebClient();
+            proxy.DownloadStringCompleted +=
+            new DownloadStringCompletedEventHandler(proxy_setDestinationAddressFromSearchBar);
+            proxy.DownloadStringAsync(new Uri(URL));
+        }
+        private void proxy_setDestinationAddressFromSearchBar(object sender, DownloadStringCompletedEventArgs e)
+        {
+            //1. Convert chuối json lấy về thành object
+            GoogleAPIAddressObj places = new GoogleAPIAddressObj();
+            places = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(e.Result);
+            try
+            {
+                //Lấy tọa độ của điểm mới tìm được
+                double lat = places.results[0].geometry.location.lat;
+                double lng = places.results[0].geometry.location.lng;
+
+                //Load tọa độ vào biến Destination lat, lng
+                LoadDestinationCoordinate(lat, lng);
+
+                //Sau đó thay đổi setview
+                //Lấy trung bình tọa độ 2 điểm pickup và điểm đến
+                map_RiderMap.SetView(new GeoCoordinate((lat + pickupLat) / 2 - 0.005, (lng + pickupLng) / 2), 14, MapAnimationKind.Parabolic); //-0.002 để dịch map lên bên trên
+
+
+                //Và chạy hàm tính chi phí
+                EstimateCostCalculate();
+
+
+                //Kẻ một đường đi tới đó
+                getRouteOnMap(new GeoCoordinate(pickupLat, pickupLng), new GeoCoordinate(lat, lng));
+
+                //Và thêm icon điểm đich
+                ShowStartAndEndMarkersOnMap(pickupLat, pickupLng, lat, lng);
+
+
+                HideGridPicker();
+
+                //Và dời vị trí map về đó
+                //map_RiderMap.SetView(new GeoCoordinate(lat, lng), 16, MapAnimationKind.Linear);
+                //Hiện picker
+                //ShowGridPiker();
+
+
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show(ConstantVariable.errInvalidAddress);
+            }
+        }
+
+
+        /// <summary>
+        /// Hàm này để nạp dữ liệu vào cho điểm đến
+        /// </summary>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        private void LoadDestinationCoordinate(double lat, double lng)
+        {
+            destinationLat = lat;
+            destinationLng = lng;
+        }
+
+
+        /// <summary>
+        /// Hàm này để tính quãng đường, giá ước tính sau khi chọn điểm đến
+        /// </summary>
+        private async void EstimateCostCalculate()
+        {
+            if (destinationLat != 0 && destinationLng != 0)
+            {
+                try
+                {
+                    //thử xem có tính tiền đc ko?
+
+                    tripEstimateKm = await GoogleAPIFunction.GetDistance(pickupLat, pickupLng, destinationLat, destinationLng);
+                    if (tripEstimateKm != 0)
+                    {
+                        tripEstimateCost = RiderFunctions.EstimateCostCalculate(nearDriverCollection, selectedDid, tripEstimateKm);
+                        txt_EstimatedCost.Text = tripEstimateCost.ToString();
+                    }
+                }
+                catch (Exception)
+                {
+
+                    //Nếu ko tính đc thì...
+                    Debug.WriteLine("Có lỗi 689rggg ở Tính km và tính tiền");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// HÀM NÀY ĐỂ XE DỊCH MAP LÊN BÊN TRÊN, TRÁNH BỊ GRID CHỒNG LÊN
+        /// </summary>
+        /// <param name="lat"></param>
+        /// <param name="lng"></param>
+        private void SetMapCenterToUp(double lat, double lng)
+        {
+            map_RiderMap.Center = new GeoCoordinate(lat - 0.002, lng); //Trừ 0.001 để dịch chuyển map lên bên trên 
+        }
+
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ HIỆN MARKER ĐIỂM ĐẾN
+        /// </summary>
+        private void ShowStartAndEndMarkersOnMap(double sLat, double sLng, double eLat, double eLng)
+        {
+            //Nếu trước đó đã có route rồi thì giờ xóa icon đi
+            if (riderMapRoute != null)
+            {
+                riderMapLayer = null;
+            }
+
+            // Create a small Point to mark the current location.
+            Image destinationIcon = new Image();
+            destinationIcon.Source = new BitmapImage(new Uri("/Images/Icons/PNG/img_DestinationLocation.png", UriKind.Relative));
+            destinationIcon.Height = 27;
+            destinationIcon.Width = 25;
+
+
+
+            // Create a MapOverlay to contain the circle.
+            riderDestinationIconOverlay = new MapOverlay();
+            riderDestinationIconOverlay.Content = destinationIcon;
+
+            //MapOverlay PositionOrigin to 0.3, 0.9 MapOverlay will align it's center towards the GeoCoordinate
+            riderDestinationIconOverlay.PositionOrigin = new Point(0.5, 0.5);
+            riderDestinationIconOverlay.GeoCoordinate = new GeoCoordinate(eLat, eLng);
+
+            // Create a MapLayer to contain the MapOverlay.
+            riderMapLayer = new MapLayer();
+            riderMapLayer.Add(riderDestinationIconOverlay);
+
+            // Add the MapLayer to the Map.
+            map_RiderMap.Layers.Add(riderMapLayer);
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ VÔ HIỆU HÓA NÚT BACK Ở HOME
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            //base.OnBackKeyPress(e);
+            //MessageBox.Show("You can not use Hardware back button");
+            e.Cancel = true;
+        }
+
+
+
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ HIỆN / Ẩn MÀN HÌNH TÌM KIẾM ĐIỂM ĐẾN
+        /// </summary>
+        private void ShowGridDestinationAddressSearch()
+        {
+            (this.Resources["showDestinationSearch"] as Storyboard).Begin();
+            grv_DestinationSearch.Visibility = Visibility.Visible;
+        }
+        private void HideGridDestinationAddressSearch()
+        {
+            grv_DestinationSearch.Visibility = Visibility.Collapsed;
+        }
+
+
+
+        /// <summary>
+        /// Cái này để tắt bật khi di chuyenr map
+        /// </summary>
+        private void ShowStep01Screen()
+        {
+            (this.Resources["showStep01SearchBar"] as Storyboard).Begin();
+            (this.Resources["showStep01Carbar"] as Storyboard).Begin();
+            grv_CarsBar.Visibility = Visibility.Visible;
+            grv_SearchBar.Visibility = Visibility.Visible;
+        }
+        private void HideStep01Screen()
+        {
+            grv_CarsBar.Visibility = Visibility.Collapsed;
+            grv_SearchBar.Visibility = Visibility.Collapsed;
+            grv_Step02.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// CAI NÀY ĐỂ TẮT BẬT TRẠNG THÁI STEP 02s
+        /// </summary>
+        private void ShowStep02Screen()
+        {
+            (this.Resources["showStep02"] as Storyboard).Begin();
+            grv_Step02.Visibility = Visibility.Visible;
+
+        }
+        private void HideStep02Screen()
+        {
+            grv_Step02.Visibility = Visibility.Collapsed;
+        }
+
+
+
+
+        /// <summary>
+        /// cái này để tắt và bật grid thanh toán
+        /// </summary>
+        private void ShowCompleteGrid()
+        {
+            (this.Resources["showCompleteGrid"] as Storyboard).Begin();
+            grv_CompleteTrip.Visibility = Visibility.Visible;
+
+
+            //Hiện thông tin lên 
+            //Driver Name
+            txt_CT_DriverName.Text = nearDriverCollection[selectedDid].fName + " " + nearDriverCollection[selectedDid].lName;
+            //Driver Mobile
+            txt_CT_DriverMobile.Text = nearDriverCollection[selectedDid].mobile;
+            //Trip Pickup Address
+            if (txt_PickupAddress.Text != "")
+            {
+                txt_CT_From.Text = txt_PickupAddress.Text;
+            }
+            //Trip Destination Address
+            if (txt_DestinationAddress.Text != "")
+            {
+                txt_CT_To.Text = txt_DestinationAddress.Text;
+            }
+            //Trip Distance
+            if (tripEstimateKm != 0)
+            {
+                txt_CT_Route.Text = tripEstimateKm.ToString();
+            }
+            //Trip Cost
+            if (txt_EstimatedCost.Text != "")
+            {
+                txt_CT_Cost.Text = txt_EstimatedCost.Text;
+            }
+            //Trip Distcount
+            txt_CT_Discount.Text = "0"; //Tạm thời chưa làm phần này
+            //Trip Total Cost
+            if (realDistance != 0)
+            {
+                double fare = 0;
+                try
+                {
+                    fare = RiderFunctions.EstimateCostCalculate(nearDriverCollection, selectedDid, realDistance);
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine("Có lỗi 656a39 ở Tính tổng chi phí");
+
+                }
+                txt_CT_TotalCost.Text = fare.ToString();
+            }
+
+        }
+        private void HideCompleteGrid()
+        {
+            grv_CompleteTrip.Visibility = Visibility.Visible;
+
+        }
+
+
 
 
         /// <summary>
@@ -2056,8 +2908,8 @@ namespace FT_Rider.Pages
         /// </summary>
         private void DisableSearchLongList()
         {
-            lls_AutoComplete.IsEnabled = false;
             lls_AutoComplete.Visibility = Visibility.Collapsed;
+            lls_AutoComplete.IsEnabled = false;
         }
 
         private void EnableSearchLongList()
@@ -2116,7 +2968,7 @@ namespace FT_Rider.Pages
         /// <param name="txtBox"></param>
         private void setCursorAtLast(TextBox txtBox)
         {
-            txtBox.SelectionStart = txtBox.Text.Length; 
+            txtBox.SelectionStart = txtBox.Text.Length;
             txtBox.SelectionLength = 0;
         }
         private void setCursorAtFirst(TextBox txtBox)
@@ -2131,5 +2983,439 @@ namespace FT_Rider.Pages
             img_PickerLabel.Visibility = Visibility.Collapsed; //Disable Pickup label
             img_PickerLabel_Red.Visibility = Visibility.Collapsed;
         }
+
+
+        /// <summary>
+        /// CÁI NẢY CHỈ HIỆN MỖI PICKER PIN
+        /// </summary>
+        private void ShowOnlyPickerPin()
+        {
+            grv_Picker.Visibility = Visibility.Visible;
+            img_PickerPin.Visibility = Visibility.Collapsed;
+            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
+            img_PickerPin.Visibility = Visibility.Visible;
+        }
+
+
+
+        /// <summary>
+        /// Cái này để khóa việc tương tác với map bằng cách tạo 1 lớp phủ lên bên trên
+        /// </summary>
+        private void LockMapIsActived()
+        {
+            lls_LockMap.IsEnabled = true;
+            lls_LockMap.Visibility = Visibility.Visible;
+        }
+        private void LockMapIsDeactived()
+        {
+            lls_LockMap.IsEnabled = false;
+            lls_LockMap.Visibility = Visibility.Collapsed;
+        }
+
+
+
+        /// <summary>
+        /// Cái này để tắt bật search bar
+        /// </summary>
+        private void HideSearchBar()
+        {
+            grv_SearchBar.Visibility = Visibility.Collapsed;
+        }
+        private void ShowSearchBar()
+        {
+            grv_SearchBar.Visibility = Visibility.Visible;
+        }
+
+
+
+        /// <summary>
+        /// KHI NHẤN VÀO TEXTBOX ĐIỂM ĐẾN SẼ HIỆN GRID SEARCH ĐIỂM ĐẾN
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        private void txt_DestinationAddress_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Khi chuyển isGetPickupAddress qua failse thì sẽ không cho nạp pickupLat và pickupLng nữa
+            isGetPickupAddress = false;
+            isGetDestinationAddress = true;
+
+            //Nếu như trước đó đã có địa chỉ nhập vào rồi thì autocomplete chính nó
+            if (txt_DestinationAddress.Text != string.Empty)
+            {
+                AutoCompleteDestinationSearch(txt_DestinationAddress.Text);
+            }
+
+            ShowGridDestinationAddressSearch();
+            txt_DestinationSearchAddress.Focus();
+        }
+
+
+
+        private void txt_DestinationSearchAddress_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+            ////Nếu có nội dung thì xóa đi
+            //if (txt_DestinationSearchAddress.Text.Length > 0)
+            //{
+            //    lls_DestinationAddress = null;
+            //    //Xóa text khi mở grid lên
+            //    txt_DestinationAddress.Text = string.Empty;
+            //}
+
+            if (txt_DestinationSearchAddress.Text.Equals(string.Empty))
+            {
+                AutoCompleteDestinationSearch("");
+            }
+
+            //Reset lls
+            /*AutoCompleteDestinationSearch("");*/
+
+            //Trong suốt texbox
+            TextBox addressTextbox = (TextBox)sender;
+            addressTextbox.Background = new SolidColorBrush(Colors.Transparent);
+            addressTextbox.BorderBrush = new SolidColorBrush(Colors.Transparent);
+            //addressTextbox.SelectionBackground = new SolidColorBrush(Colors.Transparent);
+        }
+
+
+        /// <summary>
+        /// /Cái này để ẩn / hieenj textblock phía sau điểm đến
+        /// </summary>
+        private void ShowDestinationAddressTextblockBackground()
+        {
+            tbl_DestinationAddressBgText.Visibility = Visibility.Visible;
+        }
+        private void HideDestinationAddressTextblockBackground()
+        {
+            tbl_DestinationAddressBgText.Visibility = Visibility.Collapsed;
+        }
+
+
+
+        private void txt_DestinationSearchAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void txt_PickupAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Cái này để tắt bật picker pin
+        /// </summary>
+        private void HidePickerPin()
+        {
+            img_PickerPin.Visibility = Visibility.Collapsed;
+        }
+        private void ShowPickerPin()
+        {
+            img_PickerPin.Visibility = Visibility.Visible;
+        }
+
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ VẼ ĐƯỜNG ĐI GIỮA 2 điểm
+        /// </summary>
+        /// <param name="startPosition"></param>
+        /// <param name="endPosition"></param>
+        private void getRouteOnMap(GeoCoordinate startPosition, GeoCoordinate endPosition)
+        {
+            if (riderMapRoute != null)
+            {
+                map_RiderMap.RemoveRoute(riderMapRoute);
+                riderMapRoute = null;
+                riderQuery = null;
+                map_RiderMap.Layers.Remove(riderMapLayer);
+            }
+            riderQuery = new RouteQuery()
+            {
+                TravelMode = TravelMode.Driving,
+                Waypoints = new List<GeoCoordinate>()
+            {
+                startPosition, 
+                endPosition
+            },
+                RouteOptimization = RouteOptimization.MinimizeTime
+            };
+            riderQuery.QueryCompleted += driverRouteQuery_QueryCompleted;
+            riderQuery.QueryAsync();
+        }
+        void driverRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        {
+            if (e.Error == null)
+            {
+                Route newRoute = e.Result;
+
+                riderMapRoute = new MapRoute(newRoute);
+                riderMapRoute.Color = Color.FromArgb(255, (byte)0, (byte)171, (byte)243); // aRGB for #00abf3
+                riderMapRoute.OutlineColor = Color.FromArgb(255, (byte)45, (byte)119, (byte)191); //2d77bf
+                map_RiderMap.AddRoute(riderMapRoute);
+                //map_RiderMap.SetView(newRoute);                
+                riderQuery.Dispose();
+
+            }
+        }
+
+
+        private void FitRouteOnScreen(double sLat, double sLng, double eLat, double eLng)
+        {
+            //List<GeoCoordinate> startEndCoordinateList = new List<GeoCoordinate>();
+            //startEndCoordinateList.Add(new GeoCoordinate(sLat, sLng));
+            //startEndCoordinateList.Add(new GeoCoordinate(eLat, eLng));
+            //map_RiderMap.SetView(LocationRectangle.CreateBoundingRectangle(startEndCoordinateList, MapAnimationKind.Linear));
+        }
+
+
+        private void SetMapViewAtDestinationPosition(GeoCoordinate geoCoordinate)
+        {
+            map_RiderMap.SetView(geoCoordinate, 12, MapAnimationKind.Linear);
+        }
+
+
+        /// <summary>
+        /// Cái này để reset toàn bộ cờ đánh dấu tại các step
+        /// </summary>
+        private void ClearAllStep()
+        {
+            isStep2 = false;
+        }
+
+
+        private async void btn_Close_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Sau khi nhấn hủy bỏ thì lại cho phép chạm vào icon taxi
+            //isTapableTaxiIcon = true;****
+            ResetFlag();
+
+            LoadHomePageView();
+
+            //Xóa trạng thái step
+            ClearAllStep();
+
+
+            //Cho phép lấy tọa độ điểm đón
+            //isGetPickupAddress = true;***
+
+            //Xóa các đường đi
+            RemoveMapRoute();
+            //if (riderMapRoute != null)
+            //{
+
+            //}
+
+            GeoCoordinate currentPosition = await GetCurrentPosition.GetGeoCoordinate();
+            //Đưa về vị trí ban đầu
+            map_RiderMap.SetView(currentPosition, 16, MapAnimationKind.Parabolic);
+        }
+
+
+        private void RemoveMapRoute()
+        {
+            if (riderMapRoute != null)
+            {
+                map_RiderMap.RemoveRoute(riderMapRoute);
+                riderMapRoute = null;
+                riderQuery = null;
+                //riderMapOverlay = null;
+                riderDestinationIconOverlay = null;
+                riderMapLayer.Remove(riderDestinationIconOverlay);
+                map_RiderMap.Layers.Remove(riderMapLayer);
+            }
+        }
+
+
+
+        private void LoadHomePageView()
+        {
+            grv_Step01.Visibility = Visibility.Visible;
+            grv_CarsBar.Visibility = Visibility.Visible;
+            grv_SearchBar.Visibility = Visibility.Visible;
+            lls_LockMap.Visibility = Visibility.Collapsed;
+            lls_LockMap.IsEnabled = false;
+            grv_Step02.Visibility = Visibility.Collapsed;
+            grv_Picker.Visibility = Visibility.Visible;
+            img_PickerLabel.Visibility = Visibility.Visible;
+            img_PickerLabel_Red.Visibility = Visibility.Collapsed;
+            img_PickerPin.Visibility = Visibility.Visible;
+            grv_ProcessScreen.Visibility = Visibility.Collapsed;
+            grv_DestinationSearch.Visibility = Visibility.Collapsed;
+            txt_EstimatedCost.Text = "0";
+            grv_EnterPromotionCode.Visibility = Visibility.Collapsed;
+            grv_CompleteTrip.Visibility = Visibility.Collapsed;
+        }
+
+        private void img_AutoRecall_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Nếu như chưa chọn auto recall taxi
+            //Thì sẽ bật lên và nút chuyển qua checked
+            if (chk_AutoRecall.IsChecked == false)
+            {
+                ActiveAutoRecall();
+            }
+            else
+            {
+                //Nếu như đã kích hoạt trước đó rồi thì chuyển ngược lại
+                DeActiveRecall();
+            }
+        }
+        private void ActiveAutoRecall()
+        {
+            chk_AutoRecall.IsChecked = true;
+            img_AutoRecall.Source = new BitmapImage(new Uri("/Images/Grid_RequestTaxi/img_Button_AutoRecall_Clicked.jpg", UriKind.Relative));
+        }
+        private void DeActiveRecall()
+        {
+            chk_AutoRecall.IsChecked = false;
+            img_AutoRecall.Source = new BitmapImage(new Uri("/Images/Grid_RequestTaxi/img_Button_AutoRecall.jpg", UriKind.Relative));
+        }
+
+        /// <summary>
+        /// CÁI NÀY ĐƠN THUẦN CHỈ LÀ HIỆU ỨNG NHẤN NÚT CHO BUTTON
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void img_PromotionCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            img_PromotionCode.Source = new BitmapImage(new Uri("/Images/Grid_RequestTaxi/img_Button_PromotionCode_Clicked.jpg", UriKind.Relative));
+        }
+        private void img_PromotionCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            img_PromotionCode.Source = new BitmapImage(new Uri("/Images/Grid_RequestTaxi/img_Button_PromotionCode.jpg", UriKind.Relative));
+        }
+
+
+
+        /// <summary>
+        /// Khi nhấn vào nút mã khuyến mãi, sẽ hiện grid nhập mã khuyến mãi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void img_PromotionCode_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowPromotionCodeGird();
+        }
+
+
+
+        private void HidePromotionCodeGird()
+        {
+            grv_EnterPromotionCode.Visibility = Visibility.Collapsed;
+        }
+        private void ShowPromotionCodeGird()
+        {
+            (this.Resources["showEnterPromotionGrid"] as Storyboard).Begin();
+            grv_EnterPromotionCode.Visibility = Visibility.Visible;
+        }
+
+        private void img_ClosePromotionCode_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            HidePromotionCodeGird();
+        }
+
+
+
+        private void txt_PromotionCode_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_PromotionCode.Text.Equals("Nhập mã khuyến mại"))
+            {
+                txt_PromotionCode.Text = string.Empty;
+            }
+            txt_PromotionCode.Foreground = new SolidColorBrush(Colors.Black);
+        }
+
+        private void btn_ApplyCode_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Khi nhấn vào nếu như ko có thay đổi chi thì bên kia ko có mã khuyến mãi
+            if (txt_PromotionCode.Text.Equals("Nhập mã khuyến mại"))
+            {
+                txt_PromoteCode.Text = "";
+            }
+
+            txt_PromoteCode.Text = txt_PromotionCode.Text;
+
+            HidePromotionCodeGird();
+        }
+
+
+
+
+        private void HideCarsBar()
+        {
+            grv_CarsBar.Visibility = Visibility.Collapsed;
+        }
+        private void ShowCarsBar()
+        {
+            grv_CarsBar.Visibility = Visibility.Visible;
+        }
+
+
+        private void txt_DestinationSearchAddress_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (txt_DestinationAddress.Text.Equals(String.Empty))
+            {
+                ShowDestinationAddressTextblockBackground();
+            }
+            else
+            {
+                //Cái này để ẩn / hiện textblock phía sau điểm đến
+                HideDestinationAddressTextblockBackground();
+            }
+        }
+
+
+        /// <summary>
+        /// Chuyển đến cửa sổ gọi hãng 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tbl_CallTaxiCenter_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Pages/TaxiList.xaml", UriKind.Relative));
+        }
+
+
+
+        /// <summary>
+        /// Cái này để hiện / hiện picker label
+        /// </summary>
+        private void ShowPickerLabel()
+        {
+            img_PickerLabel.Visibility = Visibility.Visible;
+        }
+        private void HIdePickerLabel()
+        {
+            img_PickerLabel.Visibility = Visibility.Collapsed;
+        }
+
+        private void txt_CT_DriverMobile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            RiderFunctions.CallToNumber(txt_CT_DriverName.Text, txt_CT_DriverMobile.Text);
+        }
+
+        private void btn_CompleteApply_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ///Đầu tiên là tắt màn hình đi đã
+            //1.
+            HideCompleteGrid();
+
+            //Sau đó reset tất cả giá trị các biến
+            ResetFlag();
+
+            //Đặt lại màn hình home
+            LoadHomePageView();
+
+            //xóa thông tin trip
+            DeleteTripDate();
+        }
+
+        private async void btn_CallOneTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MessageBox.Show("ok");
+        }
+
     }
 }

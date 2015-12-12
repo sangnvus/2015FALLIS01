@@ -101,9 +101,9 @@ namespace FT_Rider.Classes
         public static async Task<double> GetDistance(Double sLat, Double sLng, Double eLat, Double eLng)
         {
             var URL = ConstantVariable.googleAPIDistanceMatrixBaseURI1
-                + sLat + "," + sLng
+                + sLat.ToString().Replace(',', '.') + "," + sLng.ToString().Replace(',', '.')
                 + "&destinations="
-                + eLat + "," + eLng
+                + eLat.ToString().Replace(',', '.') + "," + eLng.ToString().Replace(',', '.')
                 + ConstantVariable.googleAPIDistanceMatrixBaseURI3
                 + ConstantVariable.googleGeolocationAPIkey;
 

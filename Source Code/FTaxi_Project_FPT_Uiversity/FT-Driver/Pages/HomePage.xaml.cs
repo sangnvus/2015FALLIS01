@@ -61,7 +61,7 @@ namespace FT_Driver.Pages
         VibrateController vibrateController = VibrateController.Default;
 
         //Rider Destination Icon Overlay
-        MapOverlay driverDestinationIconOverlay;
+        MapOverlay driverDestinationIconOverlay = null;
 
         //For Update Current Location
         double currentLat;
@@ -99,10 +99,37 @@ namespace FT_Driver.Pages
         bool isTrack = false;
         double estimateCost = 0;
         double totalFare = 0;
+        DriverCompleteTrip completeTrip = null;
+        bool isCalculateFare = false;
+
+
         //For Distance
         Double distanceKm;
-        VehicleInfo mySelectedVehicle = new VehicleInfo();
+        VehicleInfo mySelectedVehicle;
         IsolatedStorageSettings tNetTripData = IsolatedStorageSettings.ApplicationSettings;
+
+        //For continous tracking on map
+        double fiveStepBeforeLat = 0;
+        double fiveStepBeforeLng = 0;
+        double fiveStepAfterLat = 0;
+        double fiveStepAfterLng = 0;
+        RouteQuery driverMapTrackerQuery = null;
+        MapRoute driverMapTrackerRoute = null;
+        MapLayer driverMapTrakerLayer = null;
+        MapOverlay driverMapTrackerOverlay = null;
+        bool isTrackingRoute = false;
+        int countTracking = 0;
+
+        //For calculatoe fare
+        double realDistance = 0;
+        double realFare = 0;
+
+        //For complete trip flaf
+        bool isFinishTrip = false; //Cái này để biết khi nào chueyens đi dừng lại, tài xế nhấn thanh toán
+
+
+        //for real gps
+        GeoCoordinate realCoordinate = new GeoCoordinate();
 
 
         public HomePage()
@@ -112,6 +139,8 @@ namespace FT_Driver.Pages
             //Get User data from login
             if (tNetUserLoginData.Contains("UserLoginData"))
             {
+                mySelectedVehicle = new VehicleInfo();
+
                 userData = (DriverLogin)tNetUserLoginData["UserLoginData"];
                 userId = (string)tNetUserLoginData["UserId"];
                 pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
@@ -127,16 +156,102 @@ namespace FT_Driver.Pages
             //Open Status Screen
             grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
 
-            this.LoadDriverProfile();
-            this.UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
+            LoadDriverProfile();
+            UpdateDriverStatus(ConstantVariable.dStatusNotAvailable); //"NA"
 
             updateLocationTimer = new DispatcherTimer();
             updateLocationTimer.Tick += new EventHandler(updateLocationTimer_Tick);
             updateLocationTimer.Interval = new TimeSpan(0, 0, 0, 20); //Sau năm dây sẽ chạy cập nhật nếu như lần cập nhật trước không thành công    
 
             //Cập nhật tọa độ của lái xe lên server
-            this.UpdateCurrentLocation(currentLat, currentLng);
+            UpdateCurrentLocation(currentLat, currentLng);
         }
+
+
+        /// <summary>
+        /// Hàm này để đặt lại mọi trạng thái điều kiện
+        /// </summary>
+        private void ResetFlag()
+        {
+            //For Router        
+            driverGeocodeQuery = null;
+            driverQuery = null;
+            driverMapRoute = null;
+            driverRoute = null;
+
+            //For get Current Location
+            driverFirstGeolocator = null;
+            driverFirstGeoposition = null;
+            driverMapOverlay = null;
+            driverMapLayer = null;
+
+            //For Router        
+            driverGeocodeQuery = null;
+            driverQuery = null;
+            driverMapRoute = null;
+            driverRoute = null;
+
+            //For get Current Location
+            driverFirstGeolocator = null;
+            driverFirstGeoposition = null;
+            driverMapOverlay = null;
+            driverMapLayer = null;
+
+            //Rider Destination Icon Overlay
+            driverDestinationIconOverlay = null;
+
+            //For Update Current Location
+            currentLat = 0;
+            currentLng = 0;
+            countForUpdateLocation = 0;
+
+            //For trip
+            newTrip = null;
+            myTrip = null;
+
+            //For Trip Complete
+            startLatitude = 0;
+            startLongitude = 0;
+            endLatitude = 0;
+            endLongitude = 0;
+            isTrack = false;
+            estimateCost = 0;
+            totalFare = 0;
+
+            //For Distance
+            distanceKm = 0;
+
+            mySelectedVehicle = null;
+            if (tNetTripData != null)
+            {
+                tNetTripData = null;
+            }
+
+            //for complete trip
+            completeTrip = null;
+
+            //For continous tracking on map
+            fiveStepBeforeLat = 0;
+            fiveStepBeforeLng = 0;
+            fiveStepAfterLat = 0;
+            fiveStepAfterLng = 0;
+            driverMapTrackerQuery = null;
+            driverMapTrackerRoute = null;
+            isTrackingRoute = false;
+            countTracking = 0;
+            driverMapTrakerLayer = null;
+            driverMapTrackerOverlay = null;
+
+            isCalculateFare = false;
+
+            realDistance = 0;
+            realFare = 0;
+            isFinishTrip = false;
+        }
+
+
+
+
 
         private void updateLocationTimer_Tick(object sender, EventArgs e)
         {
@@ -310,23 +425,66 @@ namespace FT_Driver.Pages
                 //For Update Current Location
                 //Cứ sau 5 lần thay đổi vị trí trên Map, thì sẽ cập nhật vị trí lên server một lần
                 //Việc này để giảm req lên sv và tránh hao pin cho tiết bị
-                countForUpdateLocation++;
-                if (countForUpdateLocation == 4)
+                if (countForUpdateLocation > 5)
                 {
                     Debug.WriteLine("Cập nhật vị trí Driver lên Server"); //DELETE AFTER FINISH
                     UpdateCurrentLocation(geocoordinate.Latitude, geocoordinate.Longitude);
                     countForUpdateLocation = 0;
                 }
 
+                //Cái này để luôn nhận đc tọa độ chuẩn
+                realCoordinate = geocoordinate.ToGeoCoordinate();
+
                 //Lấy tọa độ điểm cuối cùng của hành trình
                 //isTrack sẽ được chuyển qua TRUE ở button Start
+                //KHI XE DI CHUYỂN THÌ SẼ NẠP ĐIỂM CUỐI VÀO
                 if (isTrack)
                 {
                     SetEndCoordinateOfTrip(geocoordinate.Latitude, geocoordinate.Longitude);
-                    CalculateTripDistanceAndCost();
+                    //CalculateTripDistanceAndCost();
                 }
+
+                //Vẽ đường Tracking map trong trường hợp đã nhấn nút Start Trip
+                if (isTrackingRoute == true && countTracking > 5 && isFinishTrip == false)
+                {
+                    //Lấy điểm cuối
+                    fiveStepAfterLat = geocoordinate.Latitude;
+                    fiveStepAfterLng = geocoordinate.Longitude;
+
+                    //Vẽ Map
+                    TrackingRouteOnMap(new GeoCoordinate(fiveStepBeforeLat, fiveStepBeforeLng), new GeoCoordinate(fiveStepAfterLat, fiveStepAfterLng));
+                    //Tính Khoảng cách và tính tiền
+                    CalculateRealDistanceAndCost(fiveStepBeforeLat, fiveStepBeforeLng, fiveStepAfterLat, fiveStepAfterLng);                    
+
+                    //Và đặt lại điểm đầu của route
+                    fiveStepBeforeLat = fiveStepAfterLat;
+                    fiveStepBeforeLng = fiveStepAfterLng;
+
+                    //Reset bộ đếm
+                    countTracking = 0;
+                }
+
+                //Cái này để giảm số lần chạy code khi thay đổi vị trí map
+                countForUpdateLocation++;
+                countTracking++;
             });
 
+        }
+
+        /// <summary>
+        /// Hàm này để tình khoảng cách thực
+        /// </summary>
+        /// <param name="fiveStepBeforeLat"></param>
+        /// <param name="fiveStepBeforeLng"></param>
+        /// <param name="fiveStepAfterLat"></param>
+        /// <param name="fiveStepAfterLng"></param>
+        private async void CalculateRealDistanceAndCost(double fiveStepBeforeLat, double fiveStepBeforeLng, double fiveStepAfterLat, double fiveStepAfterLng)
+        {
+            //Cộng dồn khoảng cách
+            realDistance += await GoogleAPIFunctions.GetDistance(fiveStepBeforeLat, fiveStepBeforeLng, fiveStepAfterLat, fiveStepAfterLng);
+
+            //Và tính tiền
+            realFare = DriverFunctions.FareCalculate(mySelectedVehicle,realDistance);
         }
 
 
@@ -334,7 +492,7 @@ namespace FT_Driver.Pages
         private async void CalculateTripDistanceAndCost()
         {
             distanceKm = await GoogleAPIFunctions.GetDistance(startLatitude, startLongitude, endLatitude, endLongitude);
-            estimateCost = DriverFunctions.CostCalculate(mySelectedVehicle, distanceKm);////
+            estimateCost = DriverFunctions.FareCalculate(mySelectedVehicle, distanceKm);////
         }
 
 
@@ -349,165 +507,6 @@ namespace FT_Driver.Pages
             startLatitude = lat;
             startLongitude = lng;
         }
-
-
-        //------ BEGIN route Direction on Map ------//
-        private async void getMapRouteTo(double lat, double lng)
-        {
-            //driverCoordinates.RemoveAll(item => item == null);
-            //Delete Previous Route if exist
-            if (driverMapRoute != null)
-            {
-                //delete route
-                map_DriverMap.RemoveRoute(driverMapRoute);
-                driverMapRoute = null;
-                driverQuery = null;
-                driverMapLayer.Remove(driverDestinationIconOverlay);
-            }
-
-            Geolocator driverGeolocator = new Geolocator();
-            driverGeolocator.DesiredAccuracyInMeters = 5;
-            Geoposition driverGeoPosition = null;
-            try
-            {
-                //Set Position point
-                driverGeoPosition = await driverGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-                driverCoordinates.Add(new GeoCoordinate(driverGeoPosition.Coordinate.Latitude, driverGeoPosition.Coordinate.Longitude));
-            }
-            catch (UnauthorizedAccessException)
-            {
-                //Dịch vụ định vị đang tắt, vui lòng bật lên hoặc kiểm tra lại các thiết đặt.
-                MessageBox.Show("(Mã lỗi 303) " + ConstantVariable.errServiceIsOff);
-            }
-            catch (Exception ex)
-            {
-                // Something else happened while acquiring the location.
-                MessageBox.Show(ex.Message);
-            }
-
-            driverGeocodeQuery = new GeocodeQuery();
-            driverGeocodeQuery.SearchTerm = lat.ToString().Replace(',', '.') + "," + lng.ToString().Replace(',', '.');
-            driverGeocodeQuery.GeoCoordinate = new GeoCoordinate(driverGeoPosition.Coordinate.Latitude, driverGeoPosition.Coordinate.Longitude);
-
-
-            driverGeocodeQuery.QueryCompleted += Mygeocodequery_QueryCompleted;
-            driverGeocodeQuery.QueryAsync();
-        }
-
-
-        private void Mygeocodequery_QueryCompleted(object sender, QueryCompletedEventArgs<IList<MapLocation>> e)
-        {
-            if (e.Error == null)
-            {
-                try
-                {
-                    driverQuery = new RouteQuery();
-                    driverCoordinates.Add(e.Result[0].GeoCoordinate);
-                    driverQuery.Waypoints = driverCoordinates;
-                    driverQuery.QueryCompleted += MyQuery_QueryCompleted;
-                    driverQuery.QueryAsync();
-                    driverGeocodeQuery.Dispose();
-                }
-                catch (Exception)
-                {
-
-                    MessageBox.Show("(Mã lỗi 304) " + ConstantVariable.errInvalidAddress);
-                }
-            }
-        }
-
-
-
-        private void MyQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
-        {
-
-            //if valid address input
-            if (e.Error == null)
-            {
-                //if (driverMapRoute != null)
-                //{
-                //    map_DriverMap.RemoveRoute(driverMapRoute);
-                //    driverMapLayer.Remove(driverDestinationIconOverlay);
-                //    driverMapRoute = null;
-                //}                
-                driverRoute = e.Result;
-                driverMapRoute = new MapRoute(driverRoute);
-                //Makeup for router
-                driverMapRoute.Color = Color.FromArgb(255, (byte)185, (byte)207, (byte)231); // aRGB for #b9cfe7
-                map_DriverMap.AddRoute(driverMapRoute);
-                driverQuery.Dispose();
-
-                //get Coordinate of Destination Point
-                double destinationLatitude = driverCoordinates[driverCoordinates.Count - 1].Latitude;
-                double destinationLongtitude = driverCoordinates[driverCoordinates.Count - 1].Longitude;
-
-                //Set Map Center
-                this.map_DriverMap.Center = new GeoCoordinate(destinationLatitude - 0.001500, destinationLongtitude);
-
-                // Create a small Point to mark the current location.
-                Image myPositionIcon = new Image();
-                myPositionIcon.Source = new BitmapImage(new Uri("/Images/Icons/img_DestinationPoint.png", UriKind.Relative));
-                myPositionIcon.Height = 35;
-                myPositionIcon.Width = 29;
-
-                // Create a MapOverlay to contain the circle.
-                driverDestinationIconOverlay = new MapOverlay();
-                driverDestinationIconOverlay.Content = myPositionIcon;
-
-                //MapOverlay PositionOrigin to 0.3, 0.9 MapOverlay will align it's center towards the GeoCoordinate
-                driverDestinationIconOverlay.PositionOrigin = new Point(0.3, 0.9);
-                driverDestinationIconOverlay.GeoCoordinate = new GeoCoordinate(destinationLatitude, destinationLongtitude);
-
-                // Create a MapLayer to contain the MapOverlay.
-                driverMapLayer = new MapLayer();
-                driverMapLayer.Add(driverDestinationIconOverlay);
-
-                // Add the MapLayer to the Map.
-                map_DriverMap.Layers.Add(driverMapLayer);
-
-              
-            }
-            else
-            {
-                MessageBox.Show("(Mã lỗi 305) " + ConstantVariable.errInvalidAddress);
-            }
-        }
-        //------ END route Direction on Map ------//
-
-
-
-        //private void getRouteTo(GeoCoordinate myPosition, GeoCoordinate destination)
-        //{
-        //    if (driverMapRoute != null)
-        //    {
-        //        map_DriverMap.RemoveRoute(driverMapRoute);
-        //        driverMapRoute = null;
-        //        driverQuery = null;
-        //    }
-        //    driverQuery = new RouteQuery()
-        //    {
-        //        TravelMode = TravelMode.Driving,
-        //        Waypoints = new List<GeoCoordinate>()
-        //    {
-        //        myPosition, 
-        //        destination
-        //    },
-        //        RouteOptimization = RouteOptimization.MinimizeTime
-        //    };
-        //    driverQuery.QueryCompleted += driverRouteQuery_QueryCompleted;
-        //    driverQuery.QueryAsync();
-        //}
-        //void driverRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
-        //{
-        //    if (e.Error == null)
-        //    {
-        //        Route newRoute = e.Result;
-
-        //        driverMapRoute = new MapRoute(newRoute);
-        //        map_DriverMap.AddRoute(driverMapRoute);
-        //        driverQuery.Dispose();
-        //    }
-        //}
 
 
 
@@ -580,43 +579,6 @@ namespace FT_Driver.Pages
 
 
 
-
-
-        //------ BEGIN Convert Lat & Lng from Address for Bing map Input ------//
-        private void searchCoordinateFromAddress(string inputAddress)
-        {
-            //GoogleAPIGeocoding URL
-            string URL = ConstantVariable.googleAPIGeocodingRequestsBaseURI + inputAddress + "&key=" + ConstantVariable.googleGeolocationAPIkey;
-
-            //Query Autocomplete Responses to a JSON String
-            WebClient proxy = new WebClient();
-            proxy.DownloadStringCompleted +=
-            new DownloadStringCompletedEventHandler(proxy_searchCoordinateFromAddress);
-            proxy.DownloadStringAsync(new Uri(URL));
-        }
-        private void proxy_searchCoordinateFromAddress(object sender, DownloadStringCompletedEventArgs e)
-        {
-            //1. Convert Json String to an Object
-            GoogleAPIGeocoding places = new GoogleAPIGeocoding();
-            places = JsonConvert.DeserializeObject<GoogleAPIGeocoding>(e.Result);
-            try
-            {
-                double lat = places.results[0].geometry.location.lat;
-                double lng = places.results[0].geometry.location.lng;
-
-                //route direction on map
-                this.getMapRouteTo(lat, lng);
-            }
-            catch (Exception)
-            {
-
-                MessageBox.Show("(Mã lỗi 306) " + ConstantVariable.errInvalidAddress);
-            }
-        }
-
-        //------ END Convert Lat & Lng from Address for Bing map Input ------//
-
-
         private void map_DriverMap_Loaded(object sender, RoutedEventArgs e)
         {
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.ApplicationId = "5fcbf5e6-e6d0-48d7-a69d-8699df1b5318";
@@ -640,7 +602,6 @@ namespace FT_Driver.Pages
         private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             LogOut();
-
         }
 
         private void LogOut()
@@ -682,7 +643,7 @@ namespace FT_Driver.Pages
                 }
             };
             //add the show method
-            //messageBox.Show();
+            messageBox.Show();
         }
 
 
@@ -825,7 +786,7 @@ namespace FT_Driver.Pages
             {
                 switch (notificationType)
                 {
-                    case ConstantVariable.notiTypeNewTrip: //Nếu là "NT" thì sẽ chạy hàm Show New Trip Notification
+                    case ConstantVariable.notiTypeNewTrip: //Nếu là "NT" thì sẽ chạy hàm Show New Trip Notification    <<<<< TRIP HERE
                         ShowNotificationNewTrip();
                         break;
                     case ConstantVariable.notiTypeUpdateTrip: //Nếu là "UT" thì sẽ chạy hàm Show Update Trip Notification
@@ -845,12 +806,27 @@ namespace FT_Driver.Pages
 
 
 
+        /// <summary>
+        /// Cái này để phản hồi lại
+        /// RUNG ĐIỆN THOẠI
+        /// </summary>
+        private void TouchFeedback()
+        {
+            vibrateController.Start(TimeSpan.FromSeconds(0.1));
+        }
+
+
+
+
 
         /// <summary>
-        /// Các trường hợp của thông báo
+        /// HÀM NÀY ĐƯỢC GỌI NGAY KHI CÓ THÔNG BÁO MỚI
         /// </summary>
         private async void ShowNotificationNewTrip()
         {
+            //Chạy âm thanh thông báo và rung điện thoại
+            TouchFeedback();
+            Alert_Trip_New();
 
             //Hiển thị Grid thông tin Trip lên màn hình
             ShowAcceptRejectGrid();
@@ -871,14 +847,18 @@ namespace FT_Driver.Pages
 
                 //1. Nạp thông tin lên grid
                 txt_RiderAddress.Text = address.results[0].formatted_address.ToString();
-                txt_RiderMobile.Text = "0" + newTrip.mobile;
+                txt_RiderMobile.Text = newTrip.mobile;
                 txt_RiderName.Text = newTrip.rName;
 
                 //2. tắt Loading grid screen
                 HideLoadingGridScreen();
 
+                var myTempCoordinate = await GetCurrentPosition.GetGeoCoordinate();
                 //3. Hiển thị vị trí khách hàng có yêu cầu 
-                ///NOTDONE///
+                GetRouteOnMap(myTempCoordinate, new GeoCoordinate(newTrip.sLat, newTrip.sLng));
+
+                //4. Căn giữa hai điểm đầu cuối
+                map_DriverMap.SetView(new GeoCoordinate((myTempCoordinate.Latitude + newTrip.sLat) / 2, (myTempCoordinate.Longitude + newTrip.sLng) / 2), 14, MapAnimationKind.Parabolic);
 
 
             }
@@ -943,8 +923,12 @@ namespace FT_Driver.Pages
             ///HÀM NÀY ĐỂ XỬ LÝ KHI KHÁCH HÀNG HỦY CHUYẾN ĐI
             ///0. CÓ ÂM THANH CẢNH BÁO, CHIA BUỒN
             ///1. Hiện thông báo hủy chuyến
-            ///2. Xóa toàn bộ thông tin trip
-            ///3. Về màn hình chính
+            ///T
+
+            TouchFeedback();
+            Alert_Trip_Cancel();
+            ShowCancelGird();
+
 
         }
         private void SwitchToCompletedStatus()
@@ -952,9 +936,15 @@ namespace FT_Driver.Pages
 
         }
 
+        private void ShowCancelGird()
+        {
+            grv_RiderCancel.Visibility = Visibility.Visible;
+        }
 
-
-
+        private void HideCancelGird()
+        {
+            grv_RiderCancel.Visibility = Visibility.Collapsed;
+        }
 
 
         /// <summary>
@@ -1011,8 +1001,123 @@ namespace FT_Driver.Pages
         }
 
 
+        /// <summary>
+        /// CÁI NÀY ĐỂ VẼ ĐƯỜNG ĐI GIỮA 2 điểm
+        /// </summary>
+        /// <param name="startPosition"></param>
+        /// <param name="endPosition"></param>
+        private void GetRouteOnMap(GeoCoordinate startPosition, GeoCoordinate endPosition)
+        {
+            if (driverMapRoute != null)
+            {
+                map_DriverMap.RemoveRoute(driverMapRoute);
+                driverMapRoute = null;
+                driverQuery = null;
+                map_DriverMap.Layers.Remove(driverMapLayer);
+            }
+            driverQuery = new RouteQuery()
+            {
+                TravelMode = TravelMode.Driving,
+                Waypoints = new List<GeoCoordinate>()
+            {
+                startPosition, 
+                endPosition
+            },
+                RouteOptimization = RouteOptimization.MinimizeTime
+            };
+            driverQuery.QueryCompleted += driverRouteQuery_QueryCompleted;
+            driverQuery.QueryAsync();
+        }
+        void driverRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        {
+            if (e.Error == null)
+            {
+                Route newRoute = e.Result;
+
+                driverMapRoute = new MapRoute(newRoute);
+                driverMapRoute.Color = Color.FromArgb(255, (byte)0, (byte)171, (byte)243); // aRGB for #00abf3
+                driverMapRoute.OutlineColor = Color.FromArgb(255, (byte)45, (byte)119, (byte)191); //2d77bf
+                map_DriverMap.AddRoute(driverMapRoute);
+                //map_RiderMap.SetView(newRoute);                
+                driverQuery.Dispose();
+
+            }
+        }
 
 
+
+
+        /// <summary>
+        /// CÁI NÀY LÀ ĐỂ KẺ LẠI MỘT ĐưỜNG MAP TRONG QUÁ TRÌNH TAXI ĐANG DI CHuyển
+        /// </summary>
+        /// <param name="startPosition"></param>
+        /// <param name="endPosition"></param>
+        private void TrackingRouteOnMap(GeoCoordinate startPosition, GeoCoordinate endPosition)
+        {
+            driverMapTrackerQuery = new RouteQuery()
+            {
+                TravelMode = TravelMode.Driving,
+                Waypoints = new List<GeoCoordinate>()
+            {
+                startPosition, 
+                endPosition
+            },
+                RouteOptimization = RouteOptimization.MinimizeTime
+            };
+            driverMapTrackerQuery.QueryCompleted += driverTrackingRouteQuery_QueryCompleted;
+            driverMapTrackerQuery.QueryAsync();
+        }
+        void driverTrackingRouteQuery_QueryCompleted(object sender, QueryCompletedEventArgs<Route> e)
+        {
+            if (e.Error == null)
+            {
+                Route newRoute = e.Result;
+
+                driverMapTrackerRoute = new MapRoute(newRoute);
+                driverMapTrackerRoute.Color = Color.FromArgb(255, (byte)220, (byte)29, (byte)81); // aRGB for #dc1d51
+                driverMapTrackerRoute.OutlineColor = Color.FromArgb(255, (byte)193, (byte)5, (byte)5); //c10503
+                map_DriverMap.AddRoute(driverMapTrackerRoute);
+                //map_RiderMap.SetView(newRoute);                
+                driverMapTrackerQuery.Dispose();
+
+            }
+        }
+
+
+        /// <summary>
+        /// Cái này để xóa route
+        /// </summary>
+        private void RemoveMapRoute()
+        {
+            if (driverMapRoute != null)
+            {
+                map_DriverMap.RemoveRoute(driverMapRoute);
+                driverMapRoute = null;
+                driverQuery = null;
+                //riderMapOverlay = null;
+                driverDestinationIconOverlay = null;
+                driverMapLayer.Remove(driverDestinationIconOverlay);
+                map_DriverMap.Layers.Remove(driverMapLayer);
+            }
+        }
+
+
+        /// <summary>
+        /// Cái này để xóa route
+        /// </summary>
+        private void RemoveTrakingMapRoute()
+        {
+            if (driverMapTrackerRoute != null)
+            {
+                map_DriverMap.RemoveRoute(driverMapTrackerRoute);
+                driverMapTrackerRoute = null;
+                driverMapTrackerQuery = null;
+                //riderMapOverlay = null;
+                driverMapTrackerOverlay = null;
+                driverMapLayer.Remove(driverMapTrackerOverlay);
+                map_DriverMap.Layers.Remove(driverMapTrakerLayer);
+            }
+        }
 
 
         /// <summary>
@@ -1075,6 +1180,15 @@ namespace FT_Driver.Pages
                         ///CHO TRỞ VỀ MÀN HÌNH MAP
                         ///XÓA NEW TRIP
                         ///
+                        MessageBox.Show("Đã có tài xế chấp nhận yêu cầu trước bạn. Chuyến đi sẽ bị hủy!");
+
+                        RemoveMapRoute();
+
+                        ResetFlag();
+
+                        SetViewAtHomeState();
+
+                        DeleteTrip();
                     }
                     else
                     {
@@ -1098,6 +1212,7 @@ namespace FT_Driver.Pages
         /// <param name="e"></param>
         private async void btn_RejectTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            
             //Show loading Sceen
             ShowLoadingGridScreen();
 
@@ -1123,23 +1238,31 @@ namespace FT_Driver.Pages
                         ///3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
                         ///4. TRỞ VỀ MÀN HÌNH HOME
                         ///note. Để lấy lại trạng thái sẵn sàng thì a. THoát và đăng nhập lại b. Lựa chọn (Hình F trong tài liệu)
-
+                        
                         //1.  Update lmd
                         tlmd = (long)rejectStatus.lmd;
 
-
+                        /*
                         //2. Xóa toàn bộ thông tin Trip
-                        DeleteTrip();
+                        //DeleteTrip();
+                        ResetFlag();
 
                         //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
                         UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Để chuyển thành Not Available thì gửi lên "AC"
+                        ShowChangeStatusButton(); // <=========== Cần kích hoạt nút này lên để chuyển qua chế độ off
 
                         //Trước khi về màn hình home thì tắt loading screen
                         HideLoadingGridScreen();
-                        grv_AcceptReject.Visibility = Visibility.Collapsed;
+                        // grv_AcceptReject.Visibility = Visibility.Collapsed;
+
+                        //Xóa toàn bộ route
+                        RemoveMapRoute();
+                        RemoveTrakingMapRoute();
 
                         //4.TRỞ VỀ MÀN HÌNH HOME
                         SetViewAtHomeState();
+                        */
+                        ResetAllData();
 
                     }
                     else
@@ -1154,6 +1277,30 @@ namespace FT_Driver.Pages
             }
         }
 
+
+        private void ResetAllData()
+        {
+            //2. Xóa toàn bộ thông tin Trip
+            //DeleteTrip();
+            ResetFlag();
+
+            //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
+            UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Để chuyển thành Not Available thì gửi lên "AC"
+            ShowChangeStatusButton(); // <=========== Cần kích hoạt nút này lên để chuyển qua chế độ off
+
+            //Trước khi về màn hình home thì tắt loading screen
+            HideLoadingGridScreen();
+            // grv_AcceptReject.Visibility = Visibility.Collapsed;
+
+            //Xóa toàn bộ route
+            RemoveMapRoute();
+            RemoveTrakingMapRoute();
+
+            //4.TRỞ VỀ MÀN HÌNH HOME
+            SetViewAtHomeState();
+        }
+
+
         private async void btn_StartTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //Hiển thị Loading grid
@@ -1162,7 +1309,10 @@ namespace FT_Driver.Pages
             //Kích hoạt lấy tọa độ điểm cuối
             isTrack = true;
 
-            //Và khai báo tọa độ điểm đầu
+            //Xóa đường đi hiện tại trên map
+            RemoveMapRoute();
+
+            //Và khai báo tọa độ điểm đầu của chuyến đi (Chính là địa điểm hiện tại)
             SetStartCoordinateOfTrip(currentLat, currentLng);
 
             DriverStartTripObj startTrip = new DriverStartTripObj
@@ -1174,6 +1324,8 @@ namespace FT_Driver.Pages
                 lmd = tlmd //Cái này bây giờ không còn là của lmd Create trip nữa. mà của Accept Trip
             };
 
+
+            //Gửi thông tin lên sv
             var input = string.Format("{{\"uid\":\"{0}\",\"tid\":\"{1}\",\"lmd\":\"{2}\"}}", startTrip.uid, startTrip.tid, startTrip.lmd);
             try
             {
@@ -1183,6 +1335,8 @@ namespace FT_Driver.Pages
                     var startStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
                     if (startStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
+
+                        //Nếu thành công thì
                         ///1. Update lmd
                         ///2 Hiện Button "chạm để thanh toán"
                         ///3. Hiển thị giá, quãng đường, cập nhật sau 20s
@@ -1193,9 +1347,32 @@ namespace FT_Driver.Pages
                         //2. Tắt loading grid
                         HideLoadingGridScreen();
 
+                        //Vẽ một đường map từ vị trí hiện tại đến điểm đến (Nếu có)
+                        //Nếu khách hàng cung cấp địa chỉ đến thì mới chạy hàm này
+                        if (newTrip.eLat != 0 && newTrip.eLng != 0)
+                        {
+                            GetRouteOnMap(new GeoCoordinate(newTrip.sLat, newTrip.sLng), new GeoCoordinate(newTrip.eLat, newTrip.eLng));
+                            
+                        }
+
+
                         //Hiện button "Tap to pay"
                         ShowStartTripScreen();
 
+                        //Bật khóa để cho phép tracking route
+                        //Từ bây giờ bắt đầu vẽ map
+                        isTrackingRoute = true;
+
+                        //Bật hàm tính tiền
+                        isCalculateFare = true;
+
+                        //Gán điểm step đầu và cuối
+                        //Ngay khi ấn nút Start Trip thì sẽ gán điểm Đầu vào 
+                        //Khi nào map di chuyển đc 5 lần sẽ gán điểm Cuối > Vẽ Map > rôi chueyenr điểm cuối thành điểm đầu
+                        fiveStepBeforeLat = currentLat;
+                        fiveStepBeforeLng = currentLng;
+
+                        map_DriverMap.SetView(realCoordinate, 16, MapAnimationKind.Linear);
 
                     }
                     else
@@ -1209,6 +1386,7 @@ namespace FT_Driver.Pages
                 MessageBox.Show("(Mã lỗi 312) " + ConstantVariable.errServerError);
             }
         }
+        
 
         private async void btn_CancelTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -1240,15 +1418,27 @@ namespace FT_Driver.Pages
 
                         //1. Update lmd
                         tlmd = (long)cancelStatus.lmd;
-
+                        /*
                         //2. Xóa toàn bộ thông tin trip
-                        DeleteTrip();
+                        //DeleteTrip();
+                        ResetFlag();
 
                         //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
-                        UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Chuyển qua không phục vụ - gửi lên AC
+                        UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Chuyển qua không phục vụ - gửi lên AC   
+                        ShowChangeStatusButton(); // <=========== Cần kích hoạt nút này lên để chuyển qua chế độ off
 
-                        //4. Về màn hình Home
+                        //Trước khi về màn hình home thì tắt loading screen
+                        HideLoadingGridScreen();
+
+                        //Xóa toàn bộ route
+                        RemoveMapRoute();
+                        RemoveTrakingMapRoute();
+
+                        //4.TRỞ VỀ MÀN HÌNH HOME
                         SetViewAtHomeState();
+                        */
+
+                        ResetAllData();
                     }
                     else
                     {
@@ -1263,6 +1453,13 @@ namespace FT_Driver.Pages
         }
 
 
+        private void ShowChangeStatusButton()
+        {
+            btn_ChangeStatus_Green.Visibility = Visibility.Collapsed;
+            btn_ChangeStatus_Red.Visibility = Visibility.Visible;
+        }
+
+
         /// <summary>
         /// NHẤN NÚT NÀY ĐỂ CHUYỂN QUA TRANG THANH TOÁN
         /// </summary>
@@ -1270,15 +1467,57 @@ namespace FT_Driver.Pages
         /// <param name="e"></param>
         private async void btn_TapToPay_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            CustomMessageBox messageBox = new CustomMessageBox()
+            {
+                //set the properties                
+                Message = ConstantVariable.cfbTapToPay, // "Bạn có chắc là bạn muốn kết thúc chuyến đi không?";
+                LeftButtonContent = ConstantVariable.cfbYes,
+                RightButtonContent = ConstantVariable.cfbNo
+            };
+
+            //Add the dismissed event handler
+            messageBox.Dismissed += (s1, e1) =>
+            {
+                switch (e1.Result)
+                {
+                    case CustomMessageBoxResult.LeftButton:
+                        TapToPay();
+                        break;
+                    case CustomMessageBoxResult.RightButton:
+                        messageBox.Dismiss();
+
+                        break;
+                    case CustomMessageBoxResult.None:
+                        // Do something.
+                        break;
+                    default:
+                        break;
+                }
+            };
+
+            //add the show method
+            messageBox.Show();
+        }
+
+        private async void TapToPay()
+        {
+            //Thông báo là đã kết thúc chuyến đi rồi
+            isFinishTrip = true;
+
+            //Khai báo điểm cuối hành trình
+            SetEndCoordinateOfTrip(currentLat, currentLng);
+
             //Hiện loading grid screen
             ShowTapToPayLoadingScreen();
 
             //Chuyển đổi tọa độ qua địa chỉ
-            var endAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(currentLat, currentLng);
+            var endAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(endLatitude, endLongitude);
             var endAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(endAddressString);
+            var startAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(startLatitude, startLongitude);
+            var startAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(startAddressString);
 
             //Tạo obj Complete Trip //
-            DriverCompleteTrip completeTrip = new DriverCompleteTrip
+            completeTrip = new DriverCompleteTrip
             {
                 uid = userId,
                 pw = "",
@@ -1290,18 +1529,20 @@ namespace FT_Driver.Pages
                 dis = 0, //Cập nhật Discount vào đây
                 fare = estimateCost,
                 lmd = tlmd
-
             };
 
-            ///Có CONFIGM DIALOG            
+            //Sau cùng, Hiện grid Thanh toán
+            ShowBillDetailGrid();
 
-            //Gửi kèm dữ liệu!
-            tNetTripData["CompleteTripBill"] = completeTrip;
-
-            //Xóa dữ liệu cũ            
-
-            //Sau cùng, chuyển qua trang thanh toán
-            NavigationService.Navigate(new Uri("/Pages/HomePayment.xaml", UriKind.Relative));
+            //Hiện thông tin lên bill
+            txt_BD_RiderName.Text = newTrip.rName;
+            txt_BD_Mobile.Text = newTrip.mobile;
+            txt_BD_From.Text = startAddress.results[0].formatted_address.ToString();//Cái này để lấy địa chỉ từ tọa độ
+            txt_BD_To.Text = endAddress.results[0].formatted_address.ToString();//Cái này để lấy địa chỉ từ tọa độ
+            txt_BD_Route.Text = realDistance.ToString();
+            txt_BD_Cost.Text = realFare.ToString();
+            txt_BD_Discount.Text = "0.0";
+            txt_BD_TotalCost.Text = realFare.ToString();
         }
 
 
@@ -1342,6 +1583,8 @@ namespace FT_Driver.Pages
         private void ShowAcceptRejectGrid()
         {
             Debug.WriteLine("ShowAcceptRejectGrid");
+
+            (this.Resources["showAcceptRejectGrid"] as Storyboard).Begin();
             grv_AcceptReject.Visibility = Visibility.Visible;
             grv_TapToPayProcess.Visibility = Visibility.Collapsed;
         }
@@ -1356,6 +1599,8 @@ namespace FT_Driver.Pages
         private void ShowStartTripScreen()
         {
             Debug.WriteLine("ShowStartTripScreen");
+
+            (this.Resources["showStartTripGrid"] as Storyboard).Begin();
             grv_AcceptReject.Visibility = Visibility.Collapsed;
             grv_TapToPayProcess.Visibility = Visibility.Collapsed;
             grv_StartTrip.Visibility = Visibility.Visible;
@@ -1379,8 +1624,32 @@ namespace FT_Driver.Pages
         /// </summary>
         private void SetViewAtHomeState()
         {
-            grv_AcceptReject.Visibility = Visibility.Collapsed;
             grv_ChangeStatus.Visibility = Visibility.Visible;
+            btn_ChangeStatus_Green.Visibility = Visibility.Visible;
+            btn_ChangeStatus_Red.Visibility = Visibility.Collapsed;
+
+            grv_AcceptReject.Visibility = Visibility.Collapsed;
+            grv_StartCancelbtn.Visibility = Visibility.Collapsed;
+
+            grv_RiderCancel.Visibility = Visibility.Collapsed;
+
+            grv_StartTrip.Visibility = Visibility.Collapsed;
+            grv_ProcessScreen.Visibility = Visibility.Collapsed;
+
+            grv_BillDetail.Visibility = Visibility.Collapsed;
+
+            ResetMyCoordinate();
+        }
+
+
+        /// <summary>
+        /// Đặt lại vị trí đang đứng
+        /// </summary>
+        private async void ResetMyCoordinate()
+        {
+            GeoCoordinate currentPosition = await GetCurrentPosition.GetGeoCoordinate();
+            //Đưa về vị trí ban đầu
+            map_DriverMap.SetView(currentPosition, 16, MapAnimationKind.Parabolic);
         }
 
         private void btn_ChangeStatus_Red_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -1436,6 +1705,134 @@ namespace FT_Driver.Pages
             messageBox.Show();
         }
 
-    }
+        private void tbl_MyProfile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
 
+            NavigationService.Navigate(new Uri("/Pages/DriverProfile.xaml", UriKind.Relative));
+        }
+
+        private void txt_RiderMobile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            DriverFunctions.CallToNumber(txt_RiderName.Text, txt_RiderMobile.Text);
+        }
+
+
+        //Cái này để tạo hiệu ứng cho nút gọi phone
+        private void img_RiderMobile_Button_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            img_RiderMobile_Button.Source = new BitmapImage(new Uri("/Images/Grid_AcceptReject/img_AcceptRejectGridPhoneButton_Clicked.jpg", UriKind.Relative));
+        }
+
+        private void img_RiderMobile_Button_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            img_RiderMobile_Button.Source = new BitmapImage(new Uri("/Images/Grid_AcceptReject/img_AcceptRejectGridPhoneButton.jpg", UriKind.Relative));
+        }
+
+        /// <summary>
+        /// Cái này để chạy âm thanh
+        /// </summary>
+        private void Alert_Trip_Start()
+        {
+            me_Trip_StartTrip.Play();
+        }
+        private void Alert_Trip_Cancel()
+        {
+            me_Trip_CancelTrip.Play();
+        }
+        private void Alert_Trip_Comlete()
+        {
+            me_Trip_StartTrip.Play();
+        }
+        private void Alert_Trip_Update1()
+        {
+            me_Trip_Update1.Play();
+        }
+        private void Alert_Trip_Update2()
+        {
+            me_Trip_Update2.Play();
+        }
+        private void Alert_Trip_New()
+        {
+            me_Trip_NewTrip.Play();
+        }
+
+
+        private void ShowBillDetailGrid()
+        {
+            (this.Resources["showBillDetailGrid"] as Storyboard).Begin();
+            grv_BillDetail.Visibility = Visibility.Visible;
+        }
+
+        private void HideBillDetailGrid()
+        {
+            grv_BillDetail.Visibility = Visibility.Collapsed;
+        }
+
+
+        /// <summary>
+        /// Khi nhấn vào nút này sẽ chạy hàm Complete Trip
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void btn_Payment_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Kiểm tra mật khẩu
+            //MD5.MD5 pw = new MD5.MD5();
+            //pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
+            string pw = pwmd5;
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"eAdd\":\"{3}\",\"eCityName\":\"{4}\",\"eLat\":\"{5}\",\"eLng\":\"{6}\",\"dis\":\"{7}\",\"fare\":\"{8}\",\"lmd\":\"{9}\"}}", completeTrip.uid, pw, completeTrip.tid, completeTrip.eAdd, completeTrip.eCityName, completeTrip.eLat, completeTrip.eLng, completeTrip.dis, completeTrip.fare, completeTrip.lmd);
+            try
+            {
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverCompleteTrip, input);
+                if (output != null)
+                {
+                    var completeStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (completeStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))
+                    {
+                        ///1. HIện thông báo thành ôcng
+                        ///2. xóa toàn bộ thôn tin trip
+                        ///3. Về màn hình Home
+
+                        //1
+                        MessageBox.Show("Thanh toán thành công. Chúc bạn ngày làm việc hiệu quả!");
+
+                        //2.
+                        //tNetTripData.Remove("CompleteTripBill");
+                        DeleteTrip();
+                        RemoveMapRoute();
+                        RemoveTrakingMapRoute();
+                        ResetFlag();
+
+                        //3.
+                        SetViewAtHomeState();
+                        
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("(Mã lỗi 901) " + ConstantVariable.errServerError);
+                Debug.WriteLine("Mã lỗi 15fht không lấy get json string từ completetrip");
+            }
+            //Xóa dữ liệu
+        }
+
+        private void txt_BD_Mobile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            DriverFunctions.CallToNumber(txt_BD_RiderName.Text, txt_BD_Mobile.Text);
+        }
+
+        private void btn_ConfirmCancelFromRider_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ///HỦY TOÀN BỘ THÔNG TIN TRIP
+            ///TẮT GRID CANCEL
+            ///VỀ MÀN HÌNH CHÍNH
+            //
+            DeleteTrip();
+            SetViewAtHomeState();
+            HideCancelGird();
+            ResetFlag();
+
+        }
+    }
 }
