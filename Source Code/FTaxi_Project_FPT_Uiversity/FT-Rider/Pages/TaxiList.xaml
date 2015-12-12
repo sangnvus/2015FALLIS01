@@ -14,7 +14,10 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="#FFF9F9F9">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <SolidColorBrush Color="#FFF2F2F4"/>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -24,8 +27,36 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <phone:LongListSelector x:Name="lls_TaxiList" HorizontalAlignment="Left" Height="614" VerticalAlignment="Top" Width="456" SelectionChanged="lls_TaxiList_SelectionChanged" Margin="0,85,0,0">
+                <phone:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Height="152" VerticalAlignment="Top" Width="430" HorizontalAlignment="Center">
+                            <Grid HorizontalAlignment="Center" Height="152" VerticalAlignment="Top" Width="430">
+                                <Image HorizontalAlignment="Center" Height="152" Margin="0" VerticalAlignment="Top" Width="430" Source="/Images/TaxiList/img_TaxiListItemBG.png"/>
+                                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name}" VerticalAlignment="Top" Margin="0" FontSize="40" Width="410" TextAlignment="Center">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource Color_StepGridColor}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                                <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding Phone}" VerticalAlignment="Top" Margin="0,63,0,0" TextAlignment="Center" FontSize="30" Width="410">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </phone:LongListSelector.ItemTemplate>
+            </phone:LongListSelector>
+            <TextBox x:Name="txt_SearchBox" HorizontalAlignment="Left" Height="80" TextWrapping="Wrap" Text="Tìm kiếm" VerticalAlignment="Top" Width="456" Padding="8,5,2,2" GotFocus="txt_SearchBox_GotFocus" KeyUp="txt_SearchBox_KeyUp">
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource button_Cancel_Color_Gray}"/>
+                </TextBox.BorderBrush>
+            </TextBox>
 
         </Grid>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
+        <TextBlock x:Name="tbl_TaxiList" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="DANH SÁCH TAXI" VerticalAlignment="Top" FontSize="24" Width="191"/>
     </Grid>
 
 </phone:PhoneApplicationPage>

@@ -132,6 +132,8 @@
     <Compile Include="Classes\RiderUpdateDriverStatusDTO.cs" />
     <Compile Include="Classes\RiderUpdatePayment.cs" />
     <Compile Include="Classes\RiderUpdateRegId.cs" />
+    <Compile Include="Classes\TaxiItem.cs" />
+    <Compile Include="Classes\TaxiItemObj.cs" />
     <Compile Include="Classes\TaxiTypes.cs" />
     <Compile Include="Classes\UserData.cs" />
     <Compile Include="LocalizedStrings.cs" />
@@ -369,6 +371,7 @@
     <Content Include="Images\SearchBar\icon_Search.jpg" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon.png" />
     <Content Include="Images\SearchBar\img_PNG_CloseIcon_Black.png" />
+    <Content Include="Images\TaxiList\img_TaxiListItemBG.png" />
     <Content Include="Images\Taxis\img_CarIcon.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Left.png" />
     <Content Include="Images\Taxis\img_CarIcon_Horizontal_Right.png" />
