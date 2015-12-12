@@ -268,7 +268,7 @@
                             </Button.Background>
                         </Button>
                     </Grid>
-                    <Grid x:Name="grv_StartCancelbtn" Height="100" VerticalAlignment="Bottom">
+                    <Grid x:Name="grv_StartCancelbtn" Height="100" VerticalAlignment="Bottom" Visibility="Collapsed">
                         <Button x:Name="btn_StartTrip" Content="BẮT ĐẦU" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="245" Height="90" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_StartTrip_Tap" BorderBrush="{x:Null}">
                             <Button.Background>
                                 <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
@@ -371,12 +371,12 @@
                             <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_BD_From" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="234" Margin="82,232,0,0" FontSize="25">
+                    <TextBlock x:Name="txt_BD_From" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="379" Margin="82,232,0,0" FontSize="20">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_BD_To" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="234" Margin="82,294,0,0" FontSize="25">
+                    <TextBlock x:Name="txt_BD_To" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="47" Width="379" Margin="82,288,0,0" FontSize="20">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
                         </TextBlock.Foreground>

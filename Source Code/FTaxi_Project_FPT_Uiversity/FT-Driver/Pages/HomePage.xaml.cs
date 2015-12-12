@@ -128,6 +128,9 @@ namespace FT_Driver.Pages
         bool isFinishTrip = false; //Cái này để biết khi nào chueyens đi dừng lại, tài xế nhấn thanh toán
 
 
+        //for real gps
+        GeoCoordinate realCoordinate = new GeoCoordinate();
+
 
         public HomePage()
         {
@@ -429,6 +432,8 @@ namespace FT_Driver.Pages
                     countForUpdateLocation = 0;
                 }
 
+                //Cái này để luôn nhận đc tọa độ chuẩn
+                realCoordinate = geocoordinate.ToGeoCoordinate();
 
                 //Lấy tọa độ điểm cuối cùng của hành trình
                 //isTrack sẽ được chuyển qua TRUE ở button Start
@@ -597,7 +602,6 @@ namespace FT_Driver.Pages
         private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             LogOut();
-
         }
 
         private void LogOut()
@@ -639,7 +643,7 @@ namespace FT_Driver.Pages
                 }
             };
             //add the show method
-            //messageBox.Show();
+            messageBox.Show();
         }
 
 
@@ -843,7 +847,7 @@ namespace FT_Driver.Pages
 
                 //1. Nạp thông tin lên grid
                 txt_RiderAddress.Text = address.results[0].formatted_address.ToString();
-                txt_RiderMobile.Text = "0" + newTrip.mobile;
+                txt_RiderMobile.Text = newTrip.mobile;
                 txt_RiderName.Text = newTrip.rName;
 
                 //2. tắt Loading grid screen
@@ -1208,6 +1212,7 @@ namespace FT_Driver.Pages
         /// <param name="e"></param>
         private async void btn_RejectTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            
             //Show loading Sceen
             ShowLoadingGridScreen();
 
@@ -1233,11 +1238,11 @@ namespace FT_Driver.Pages
                         ///3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
                         ///4. TRỞ VỀ MÀN HÌNH HOME
                         ///note. Để lấy lại trạng thái sẵn sàng thì a. THoát và đăng nhập lại b. Lựa chọn (Hình F trong tài liệu)
-
+                        
                         //1.  Update lmd
                         tlmd = (long)rejectStatus.lmd;
 
-
+                        /*
                         //2. Xóa toàn bộ thông tin Trip
                         //DeleteTrip();
                         ResetFlag();
@@ -1252,9 +1257,12 @@ namespace FT_Driver.Pages
 
                         //Xóa toàn bộ route
                         RemoveMapRoute();
+                        RemoveTrakingMapRoute();
 
                         //4.TRỞ VỀ MÀN HÌNH HOME
                         SetViewAtHomeState();
+                        */
+                        ResetAllData();
 
                     }
                     else
@@ -1268,6 +1276,30 @@ namespace FT_Driver.Pages
                 MessageBox.Show("(Mã lỗi 312) " + ConstantVariable.errServerError);
             }
         }
+
+
+        private void ResetAllData()
+        {
+            //2. Xóa toàn bộ thông tin Trip
+            //DeleteTrip();
+            ResetFlag();
+
+            //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
+            UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Để chuyển thành Not Available thì gửi lên "AC"
+            ShowChangeStatusButton(); // <=========== Cần kích hoạt nút này lên để chuyển qua chế độ off
+
+            //Trước khi về màn hình home thì tắt loading screen
+            HideLoadingGridScreen();
+            // grv_AcceptReject.Visibility = Visibility.Collapsed;
+
+            //Xóa toàn bộ route
+            RemoveMapRoute();
+            RemoveTrakingMapRoute();
+
+            //4.TRỞ VỀ MÀN HÌNH HOME
+            SetViewAtHomeState();
+        }
+
 
         private async void btn_StartTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -1320,6 +1352,7 @@ namespace FT_Driver.Pages
                         if (newTrip.eLat != 0 && newTrip.eLng != 0)
                         {
                             GetRouteOnMap(new GeoCoordinate(newTrip.sLat, newTrip.sLng), new GeoCoordinate(newTrip.eLat, newTrip.eLng));
+                            
                         }
 
 
@@ -1338,6 +1371,8 @@ namespace FT_Driver.Pages
                         //Khi nào map di chuyển đc 5 lần sẽ gán điểm Cuối > Vẽ Map > rôi chueyenr điểm cuối thành điểm đầu
                         fiveStepBeforeLat = currentLat;
                         fiveStepBeforeLng = currentLng;
+
+                        map_DriverMap.SetView(realCoordinate, 16, MapAnimationKind.Linear);
 
                     }
                     else
@@ -1383,7 +1418,7 @@ namespace FT_Driver.Pages
 
                         //1. Update lmd
                         tlmd = (long)cancelStatus.lmd;
-
+                        /*
                         //2. Xóa toàn bộ thông tin trip
                         //DeleteTrip();
                         ResetFlag();
@@ -1397,9 +1432,13 @@ namespace FT_Driver.Pages
 
                         //Xóa toàn bộ route
                         RemoveMapRoute();
+                        RemoveTrakingMapRoute();
 
                         //4.TRỞ VỀ MÀN HÌNH HOME
                         SetViewAtHomeState();
+                        */
+
+                        ResetAllData();
                     }
                     else
                     {
@@ -1472,7 +1511,7 @@ namespace FT_Driver.Pages
             ShowTapToPayLoadingScreen();
 
             //Chuyển đổi tọa độ qua địa chỉ
-            var endAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(endLatitude, endLatitude);
+            var endAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(endLatitude, endLongitude);
             var endAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(endAddressString);
             var startAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(startLatitude, startLongitude);
             var startAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(startAddressString);

@@ -316,6 +316,7 @@
                     </Grid.RenderTransform>
                     <Image x:Name="img_RequestTaxiBackground" Height="200" Width="480" Source="/Images/Grid_RequestTaxi/img_RequestTaxiGridBackground.png" VerticalAlignment="Bottom"/>
                     <Image x:Name="img_OpeningPrice" Height="42" VerticalAlignment="Top" Width="480" Source="/Images/Grid_RequestTaxi/img_OpeningPrice.png" Margin="0"/>
+                    <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Right" Margin="0,72,294,0" VerticalAlignment="Top" Width="61" Visibility="Collapsed"/>
                     <TextBlock x:Name="tbl_DestinationAddressBgText" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Nhấn để thêm điểm đến" VerticalAlignment="Top" Margin="125,44,169,0" Width="186" FontSize="17" Opacity="0.5">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
@@ -333,7 +334,7 @@
                     </TextBlock>
                     <TextBlock x:Name="txt_EstimatedCost" HorizontalAlignment="Right" Margin="0,1,37,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="89" FontSize="18" Text="0" TextAlignment="Right"/>
                     <TextBlock x:Name="txt_OpenPrice" HorizontalAlignment="Right" Margin="0,1,270,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="26" Width="86" FontSize="18" Text="0" TextAlignment="Right"/>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="215,4,0,0" FontSize="15"/>
+                    <TextBlock x:Name="tbl_km" HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="215,4,0,0" FontSize="15"/>
                     <TextBlock x:Name="txt_PromoteCode" HorizontalAlignment="Right" Margin="0,105,123,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="34" Width="156" FontSize="19" Text="KM1235" Visibility="Collapsed"/>
                     <Image x:Name="img_PromotionCode" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="176" Source="/Images/Grid_RequestTaxi/img_Button_PromotionCode.jpg" Margin="192,87,0,0" KeyDown="img_PromotionCode_KeyDown" KeyUp="img_PromotionCode_KeyUp" Tap="img_PromotionCode_Tap"/>
                     <Image x:Name="img_Step2Avatar" HorizontalAlignment="Left" Height="81" VerticalAlignment="Top" Width="81" Source="/Images/Others/img_default_avatar_dark.png" Margin="377,38,0,0">
@@ -349,9 +350,14 @@
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <CheckBox x:Name="chk_AutoRecall" Content="CheckBox" HorizontalAlignment="Right" Margin="0,72,294,0" VerticalAlignment="Top" Width="61" Visibility="Collapsed"/>
                     <Image x:Name="img_AutoRecall" HorizontalAlignment="Left" Height="57" Margin="15,87,0,0" VerticalAlignment="Top" Width="176" Source="/Images/Grid_RequestTaxi/img_Button_AutoRecall.jpg" Tap="img_AutoRecall_Tap"/>
+                    <TextBlock x:Name="tbl_crc" HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="448,4,0,0" FontSize="15"/>
                     <Button x:Name="btn_RequestTaxi" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="247" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxi_Tap" BorderBrush="{x:Null}">
+                        <Button.Background>
+                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
+                        </Button.Background>
+                    </Button>
+                    <Button x:Name="btn_RequestTaxiMN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="247" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxiMN_Tap" BorderBrush="{x:Null}" Visibility="Collapsed">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </Button.Background>
@@ -359,11 +365,6 @@
                     <Button x:Name="btn_Close" Content="Đóng" Margin="240,0,0,0" VerticalAlignment="Bottom" Height="90" BorderBrush="{x:Null}" Width="247" HorizontalAlignment="Right" Tap="btn_Close_Tap">
                         <Button.Background>
                             <SolidColorBrush Color="{StaticResource button_Cancel_Color_Gray}"/>
-                        </Button.Background>
-                    </Button>
-                    <Button x:Name="btn_RequestTaxiMN" HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="90" Width="247" Content="YÊU CẦU TAXI" Tap="btn_RequestTaxiMN_Tap" BorderBrush="{x:Null}" Visibility="Collapsed">
-                        <Button.Background>
-                            <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </Button.Background>
                     </Button>
                     <Grid x:Name="grv_CancelTaxi" Height="100" VerticalAlignment="Bottom" Visibility="Collapsed">
@@ -385,7 +386,6 @@
                         </Rectangle>
                         <ProgressBar x:Name="pb_PleaseWait" HorizontalAlignment="Left" Height="10" VerticalAlignment="Bottom" Width="448" Margin="0" IsIndeterminate="True" Foreground="White"/>
                     </Grid>
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" Margin="448,4,0,0" FontSize="15"/>
                 </Grid>
                 <Grid x:Name="grv_Picker" HorizontalAlignment="Center" Height="141" Margin="76,273,75,0" VerticalAlignment="Top" Width="305.3">
                     <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="0" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>

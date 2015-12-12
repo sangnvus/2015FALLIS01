@@ -11,5 +11,7 @@ namespace FT_Rider.Classes
         public string uid { get; set; }
         public string pw { get; set; }
         public string tid { get; set; }
+
+        public long lmd { get; set; }
     }
 }

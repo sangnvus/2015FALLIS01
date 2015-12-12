@@ -67,7 +67,7 @@ namespace FT_Rider.Classes
         public const string tNetRiderGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
         public const string tNetRiderCreateTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CreateTrip";
         public const string tNetRiderUpdateRegId = "http://123.30.236.109:8088/TN/restServices/CommonController/updateRegId";
-        public const string tNetRiderCancelTrip = "http://123.30.236.109:8088/TN/restServices/CommonController/CancelTrip";
+        public const string tNetRiderCancelTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CancelTrip";
         public const string tNetRiderGetMyTrip = "http://123.30.236.109:8088/TN/restServices/TripController/getCompletedTripRider";
         public const string tNetRiderGetMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/getListFavoriteDriver";
         public const string tNetRiderDeleteMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/deleteFavoriteDriver";
@@ -76,7 +76,7 @@ namespace FT_Rider.Classes
         public const string tNetRiderResetPassword = "http://123.30.236.109:8088/TN/restServices/CommonController/resetPassword";
         public const string tNetRiderChangePassword = "http://123.30.236.109:8088/TN/restServices/RiderController/ChangePassword";
         public const string tNetRiderAddMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/addFavoriteDriver";
-        public const string tNetRiderUpdateDriverStatus = "http://123.30.236.109:8088/TN/restServices/RiderController/updateDriverStatus";
+        public const string tNetRiderUpdateDriverStatus = "http://123.30.236.109:8088/TN/restServices/RiderController/updateDriverStatus";        
 
         //Card type
         public const String DIRECT = "DI";
