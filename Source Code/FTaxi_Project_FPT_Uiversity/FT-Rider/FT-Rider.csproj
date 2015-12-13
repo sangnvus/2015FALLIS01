@@ -188,6 +188,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -359,6 +360,8 @@
     <Content Include="Images\Others\img_LockMap.png" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="Images\Others\img_PageContentBreak_dark.png" />
+    <Content Include="Images\Picker\img_PickerHomeAddress.png" />
+    <Content Include="Images\Picker\img_PickerOfficeAddress.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />
     <Content Include="Images\Picker\img_Picker_CallCenter.png" />
     <Content Include="Images\Picker\img_Picker_CallTaxi.png" />

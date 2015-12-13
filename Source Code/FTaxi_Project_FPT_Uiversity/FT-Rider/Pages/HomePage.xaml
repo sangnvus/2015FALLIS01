@@ -289,7 +289,7 @@
                             </Rectangle.Fill>
                         </Rectangle>
                         <Rectangle x:Name="line" HorizontalAlignment="Left" Height="1" Margin="19,60,0,0" VerticalAlignment="Top" Width="396" Fill="#FFA8A8A8"/>
-                        <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" Text="Địa chỉ đón" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp" LostFocus="txt_InputAddress_LostFocus" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="25" FontWeight="Light" FontStretch="SemiCondensed" SelectionForeground="{x:Null}" GotFocus="txt_InputAddress_GotFocus" Foreground="White" Width="480" Padding="2,2,30,2"/>
+                        <TextBox x:Name="txt_InputAddress" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" KeyDown="tb_InputAddress_KeyDown" Tap="txt_InputAddress_Tap" KeyUp="txt_InputAddress_KeyUp" LostFocus="txt_InputAddress_LostFocus" BorderBrush="{x:Null}" Background="{x:Null}" FontSize="25" FontWeight="Light" FontStretch="SemiCondensed" SelectionForeground="{x:Null}" GotFocus="txt_InputAddress_GotFocus" Foreground="White" Width="480" Padding="2,2,30,2" Text="{Binding MainModel.Address, Mode=TwoWay}"/>
                         <phone:LongListSelector x:Name="lls_AutoComplete" Margin="10,66,10,-291" Width="{StaticResource Longlistselector_WidthSize}" SelectionChanged="lls_AutoComplete_SelectionChanged" Visibility="Collapsed" IsEnabled="False">
                             <phone:LongListSelector.Background>
                                 <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>

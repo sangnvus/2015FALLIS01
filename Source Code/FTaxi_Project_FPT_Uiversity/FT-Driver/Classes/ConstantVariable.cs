@@ -50,6 +50,7 @@ namespace FT_Driver.Classes
         public const string tNetDriverCancelTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CancelTrip";
         public const string tNetDriverCompleteTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CompleteTrip";
         public const string tNetDriverChangePassword = "http://123.30.236.109:8088/TN/restServices/DriverController/ChangePassword";
+        public const string tNetDriverGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
 
 
         //Confirmboz
@@ -133,5 +134,12 @@ namespace FT_Driver.Classes
         public const string tripStatusPicking = "PI";
         public const string tripStatusCancelled = "CA";
         public const string tripStatusComplete = "TC";
+
+        public const string USERNAME_NOT_CORRECT = "Tên tài khoản không chính xác. Vui lòng kiếm tra lại.";
+        public const string PASSWORD_NOT_CORRECT = "Mật khẩu không chính xác. Vui lòng kiếm tra lại.";
+        public const string ERR_SYSTEM = "Hệ thống đang bị lỗi. Chúng tôi rất tiếc vì sự cố này.";
+        public const string INVALID_PASSWORD = "Mật khẩu không hợp lệ. Vui lòng kiếm tra lại";
+        public const string USERNAME_NOT_FOUND = "Tài khoản không tồn tại. Vui lòng kiếm tra lại";
+
     }
 }

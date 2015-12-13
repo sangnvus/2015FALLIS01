@@ -18,6 +18,7 @@ namespace FT_Driver.Classes
         public double dis { get; set; }
         public double fare { get; set; }
         public long lmd { get; set; }
+        public int eCityId { get; set; }       
 
     }
 }

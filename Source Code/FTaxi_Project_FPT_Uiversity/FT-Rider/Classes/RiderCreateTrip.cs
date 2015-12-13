@@ -17,8 +17,8 @@ namespace FT_Rider.Classes
         public Double? sLng { get; set; }
         public Double? eLat { get; set; }
         public Double? eLng { get; set; }
-        public Double? sCity { get; set; }
-        public Double? eCity { get; set; }
+        public int sCity { get; set; }
+        public int eCity { get; set; }
         public String sCityName { get; set; }
         public String eCityName { get; set; }
         public String cntry { get; set; }

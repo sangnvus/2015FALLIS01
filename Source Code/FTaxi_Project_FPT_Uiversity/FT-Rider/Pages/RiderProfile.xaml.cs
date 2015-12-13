@@ -17,12 +17,13 @@ using FT_Rider.Classes;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using Telerik.Windows.Controls.PhoneTextBox;
+using System.ComponentModel;
 
 
 
 namespace FT_Rider.Pages
 {
-    public partial class RiderProfile : PhoneApplicationPage
+    public partial class RiderProfile : PhoneApplicationPage, INotifyPropertyChanged
     {
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         RiderLogin userData = null;
@@ -201,7 +202,7 @@ namespace FT_Rider.Pages
             var uid = userData.content.uid;
             var olmd = preOlmd; ; //Cái này là dùng lmd của Login
             var pw = pwmd5;
-            var input = string.Format("{{\"rid\":\"{0}\",\"email\":\"{1}\",\"fName\":\"{2}\",\"lName\":\"{3}\",\"mobile\":\"{4}\",\"uid\":\"{5}\",\"pw\":\"{6}\",\"olmd\":\"{7}\"}}", rid, email, fName, lName, mobile, uid, pw, olmd);
+            var input = string.Format("{{\"rid\":\"{0}\",\"email\":\"{1}\",\"fName\":\"{2}\",\"lName\":\"{3}\",\"mobile\":\"{4}\",\"uid\":\"{5}\",\"pw\":\"{6}\",\"lmd\":\"{7}\"}}", rid, email, fName, lName, mobile, uid, pw, olmd);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateProfile, input);
@@ -218,14 +219,25 @@ namespace FT_Rider.Pages
                     //3
                     HideLoadingSreen();
                     HideSaveButton();
+                    ShowEditButton();
 
                     //2
                     MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //Cập nhật thành công
+                }
+                else
+                {
+                    HideLoadingSreen();
+                    ShowEditButton();
+                    HideSaveButton();
+                    MessageBox.Show("(Mã lỗi 22206) " + ConstantVariable.errServerErr); //Co loi may chu
+                    Debug.WriteLine("Có lỗi 263gghf ở update profile");
                 }
             }
             catch (Exception)
             {
                 HideLoadingSreen();
+                ShowEditButton();
+                HideSaveButton();
                 MessageBox.Show("(Mã lỗi 2201) " + ConstantVariable.errServerErr); //Co loi may chu
                 Debug.WriteLine("Có lỗi 7hsgt54 ở update profile");
             }
@@ -323,5 +335,55 @@ namespace FT_Rider.Pages
             //ValidatePhoneNumber();
         }
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (null != PropertyChanged)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void btn_Edit_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            HideEditButton();
+            ShowSaveButton();
+            txt_LastName.Focus();
+        }
+
+        private void HideEditButton()
+        {
+            btn_Edit.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowEditButton()
+        {
+            btn_Edit.Visibility = Visibility.Visible;
+        }
+
+        private void txt_LastName_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowSaveButton();
+            HideEditButton();
+        }
+
+        private void txt_FirstName_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowSaveButton();
+            HideEditButton();
+        }
+
+        private void txt_Email_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowSaveButton();
+            HideEditButton();
+        }
+
+        private void txt_Mobile_Tap_1(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowSaveButton();
+            HideEditButton();
+        }
+
+   
     }
 }

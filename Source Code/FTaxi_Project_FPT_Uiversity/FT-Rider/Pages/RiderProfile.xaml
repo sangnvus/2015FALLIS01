@@ -124,10 +124,10 @@
                 				RadiusY="45" />
                         </Image.Clip>
                     </Image>
-                    <TextBox x:Name="txt_Email" HorizontalAlignment="Left" Height="72" Margin="5,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" Tap="txt_Email_Tap" GotFocus="txt_Email_GotFocus" LostFocus="txt_Email_LostFocus"/>
-                    <TextBox x:Name="txt_FirstName" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Tap="txt_FirstName_Tap" GotFocus="txt_FirstName_GotFocus" LostFocus="txt_FirstName_LostFocus"/>
-                    <TextBox x:Name="txt_Mobile" HorizontalAlignment="Left" Height="72" Margin="5,244,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" Tap="txt_Mobile_Tap" GotFocus="txt_Mobile_GotFocus" LostFocus="txt_Mobile_LostFocus"/>
-                    <TextBox x:Name="txt_LastName" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" Tap="txt_LastName_Tap" GotFocus="txt_LastName_GotFocus" LostFocus="txt_LastName_LostFocus"/>
+                    <TextBox x:Name="txt_Email" HorizontalAlignment="Left" Height="72" Margin="5,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" GotFocus="txt_Email_GotFocus" LostFocus="txt_Email_LostFocus" Tap="txt_Email_Tap_1"/>
+                    <TextBox x:Name="txt_FirstName" HorizontalAlignment="Left" Height="72" Margin="5,120,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311" BorderBrush="{x:Null}" Background="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_FirstName_GotFocus" LostFocus="txt_FirstName_LostFocus" Tap="txt_FirstName_Tap_1"/>
+                    <TextBox x:Name="txt_Mobile" HorizontalAlignment="Left" Height="72" Margin="5,244,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" GotFocus="txt_Mobile_GotFocus" LostFocus="txt_Mobile_LostFocus" Tap="txt_Mobile_Tap_1"/>
+                    <TextBox x:Name="txt_LastName" Height="72" TextWrapping="Wrap"  VerticalAlignment="Top" Width="311" HorizontalAlignment="Left" RenderTransformOrigin="0.803,0.667" Margin="5,61,0,0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="{StaticResource TextBox_TextPadingLeft}" GotFocus="txt_LastName_GotFocus" LostFocus="txt_LastName_LostFocus" Tap="txt_LastName_Tap_1"/>
                     <TextBox x:Name="txt_Lang" HorizontalAlignment="Left" Height="72" Margin="5,297,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="465" Background="{x:Null}" BorderBrush="{x:Null}" Padding="60,2,2,2" Text="Tiếng Việt" d:IsHidden="True" Visibility="Collapsed"/>
                     <TextBlock x:Name="tbl_Lang" HorizontalAlignment="Left" Margin="84,316,0,0" TextWrapping="Wrap" Text="Tiếng Việt" VerticalAlignment="Top" Foreground="Black" FontSize="25"/>
                 </Grid>
@@ -157,6 +157,7 @@
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
         <TextBlock x:Name="tbl_Profile" HorizontalAlignment="Center" Margin="146,10,145,0" TextWrapping="Wrap" Text="HỒ SƠ CÁ NHÂN" VerticalAlignment="Top" FontSize="24" Width="189"/>
         <Button x:Name="btn_Save" Content="Lưu" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-15,-15,0" BorderBrush="{x:Null}" Foreground="#FF004F91" Background="{x:Null}" Height="83" Width="113" Visibility="Collapsed" Tap="btn_Save_Tap"/>
+        <Button x:Name="btn_Edit" Content="Sửa" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-15,-15,0" BorderBrush="{x:Null}" Foreground="#FF004F91" Background="{x:Null}" Height="83" Width="113" Tap="btn_Edit_Tap"/>
     </Grid>
 
 </phone:PhoneApplicationPage>
