@@ -87,7 +87,7 @@
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
                 </Rectangle.Stroke>
             </Rectangle>
-            <Rectangle x:Name="panel_moreInfor" Margin="-4,303,-3,212" Opacity="0.7" Grid.Row="1" Grid.RowSpan="2">
+            <Rectangle x:Name="panel_moreInfor" Margin="-4,303,-3,212" Opacity="0.7" Grid.Row="1" Grid.RowSpan="2" Visibility="Collapsed">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="#FFF4F4F5"/>
                 </Rectangle.Fill>
@@ -119,31 +119,23 @@
             	<Run Text="Mã số VAT: "/>
             	<Run FontWeight="Normal" Text="12345678910"/>
             </TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="10,317,0,0" Grid.Row="1" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="244">
+            <TextBlock HorizontalAlignment="Left" Margin="10,317,0,0" Grid.Row="1" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="244" Visibility="Collapsed">
             	<Run Text="Loại xe: "/>
             	<Run FontWeight="Normal" Text="KIA MORNING"/>
             </TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="160">
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="2" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="160" Visibility="Collapsed">
             	<Run Text="Sản xuất: "/>
             	<Run FontWeight="Normal" Text="2007"/>
             </TextBlock>
-            <TextBlock HorizontalAlignment="Left" Margin="10,41,0,0" Grid.Row="2" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="208">
+            <TextBlock HorizontalAlignment="Left" Margin="10,41,0,0" Grid.Row="2" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="208" Visibility="Collapsed">
             	<Run Text="Biển số: "/>
             	<Run FontWeight="Normal" Text="29A1- 1234"/>
             </TextBlock>
 
-            <TextBlock HorizontalAlignment="Left" Margin="10,85,0,0" Grid.Row="2" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="208">
+            <TextBlock HorizontalAlignment="Left" Margin="10,85,0,0" Grid.Row="2" TextWrapping="Wrap" Foreground="Black" FontWeight="Bold" FontSize="23" VerticalAlignment="Top" Width="208" Visibility="Collapsed">
             	<Run Text="Đăng kiểm: "/>
             	<Run FontWeight="Normal" Text="11/2015"/>
             </TextBlock>
-            <Button x:Name="btn_Comeback" Content="Quay lại" HorizontalAlignment="Center" Margin="10,0,10,10" VerticalAlignment="Bottom" Width="460" Foreground="White" FontSize="{StaticResource FontSizeTextboxText}" Grid.Row="2" Tap="btn_Tap_Comback">
-                <Button.BorderBrush>
-                    <SolidColorBrush Color="White" Opacity="0.2"/>
-                </Button.BorderBrush>
-                <Button.Background>
-                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
-                </Button.Background>
-            </Button>
 
 
         </Grid>
