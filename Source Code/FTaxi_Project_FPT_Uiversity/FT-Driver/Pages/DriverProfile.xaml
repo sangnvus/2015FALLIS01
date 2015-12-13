@@ -223,13 +223,13 @@
             <Grid.Background>
                 <SolidColorBrush Color="{StaticResource Color_BaseGridColor}"/>
             </Grid.Background>
-            <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/img_PromotionCodeGridBG2.jpg" Stretch="Fill" Margin="0"/>
+            <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/Images/PromotionCode/img_PromotionCodeGridBG.jpg" Stretch="Fill" Margin="0"/>
             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="ĐỊA CHỈ NHÀ RIÊNG" VerticalAlignment="Top" Margin="0,26,0,0" FontSize="30">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <Image x:Name="img_CloseHome" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/img_PromotionCodeCLOSE2.jpg" Margin="10,10,0,0" Tap="img_CloseHome_Tap"/>
+            <Image x:Name="img_CloseHome" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="10,10,0,0" Tap="img_CloseHome_Tap"/>
             <TextBox x:Name="txt_HomeAddress" HorizontalAlignment="Center" Height="78" Margin="0,120,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="480" Padding="10,2,50,2" Foreground="Black" GotFocus="txt_HomeAddress_GotFocus" KeyUp="txt_HomeAddress_KeyUp" Tap="txt_HomeAddress_Tap" FontSize="25" LostFocus="txt_HomeAddress_LostFocus">
                 <TextBox.BorderBrush>
                     <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
@@ -241,7 +241,7 @@
                 </Button.Foreground>
             </Button>
             <TextBlock x:Name="tbl_Address" HorizontalAlignment="Left" Margin="10,99,0,0" TextWrapping="Wrap" Text="Nhập địa chỉ" VerticalAlignment="Top" Foreground="#FF595959"/>
-            <Image x:Name="img_CloseClearHomeAddress" HorizontalAlignment="Left" Height="48" Margin="417,135,0,0" VerticalAlignment="Top" Width="48" Source="/icon_CloseClear2.jpg" Tap="img_CloseClearHomeAddress_Tap" Visibility="Collapsed"/>
+            <Image x:Name="img_CloseClearHomeAddress" HorizontalAlignment="Left" Height="48" Margin="417,135,0,0" VerticalAlignment="Top" Width="48" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearHomeAddress_Tap" Visibility="Collapsed"/>
             <Rectangle HorizontalAlignment="Left" Height="561" Margin="12,200,0,0" Stroke="Black" VerticalAlignment="Top" Width="456">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
@@ -274,13 +274,13 @@
             <Grid.Background>
                 <SolidColorBrush Color="{StaticResource Color_BaseGridColor}"/>
             </Grid.Background>
-            <Image x:Name="img_header_Copy" Height="94" VerticalAlignment="Top" Source="/img_PromotionCodeGridBG2.jpg" Stretch="Fill" Margin="0"/>
+            <Image x:Name="img_header_Copy" Height="94" VerticalAlignment="Top" Source="/Images/PromotionCode/img_PromotionCodeGridBG.jpg" Stretch="Fill" Margin="0"/>
             <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="ĐỊA CHỈ CÔNG TY" VerticalAlignment="Top" Margin="0,26,0,0" FontSize="30">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <Image x:Name="img_CloseOffice" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/img_PromotionCodeCLOSE2.jpg" Margin="10,10,0,0" Tap="img_CloseOffice_Tap"/>
+            <Image x:Name="img_CloseOffice" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="10,10,0,0" Tap="img_CloseOffice_Tap"/>
             <TextBlock x:Name="tbl_OfficeAddress_Show" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Margin="30,105,30,0" Height="90" Width="420" FontSize="22" Tap="tbl_OfficeAddress_Tap">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
