@@ -35,15 +35,26 @@ using Microsoft.Phone.Notification;
 using Newtonsoft.Json;
 using FT_Rider.Resources;
 using FT_Rider.Classes;
+using System.Runtime.Serialization;
+using FT_Rider.ViewModel;
 
 
 namespace FT_Rider.Pages
 {
+
     public partial class HomePage : PhoneApplicationPage
     {
+        #region Variable
+
+
         //USER DATA PASS FROM LOGIN PAGE
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
+
+
+        MainViewModel _mainModel;
+
+
 
         RiderLogin userData;
         string userId = string.Empty;
@@ -145,12 +156,18 @@ namespace FT_Rider.Pages
         double fiveStepAfterLat = 0;
         double fiveStepAfterLng = 0;
         double realDistance = 0;
-
+        #endregion
+        public MainViewModel MainModel
+        {
+            get { return _mainModel; }
+            private set { _mainModel = value; }
+        }
         public HomePage()
         {
 
-            InitializeComponent();          
-                
+            InitializeComponent();
+            _isNewPageInstance = true;
+            MainModel = new MainViewModel();
             //Hiện loading screen
             ShowLoadingScreen();
 
@@ -192,6 +209,8 @@ namespace FT_Rider.Pages
             riderUpdateDriverStatusTimer = new DispatcherTimer();
             riderUpdateDriverStatusTimer.Tick += new EventHandler(changeLabelRedTimer_Tick);
             riderUpdateDriverStatusTimer.Interval = new TimeSpan(0, 0, 0, 30); //Cứ 30 giây sẽ hiện vị trí Driver trên map của Rider
+
+            DataContext = this;
         }
 
 
@@ -287,7 +306,7 @@ namespace FT_Rider.Pages
 
 
         //Check exxception input // and cntry is VN
-        public async void LoadCityNameDataBase()
+        private async void LoadCityNameDataBase()
         {
             //{"uid":"apl.ytb2@gmail.com","pw":"Abc123!","lan":"VI","cntry":"VN"}
             var uid = userData.content.uid;
@@ -301,21 +320,28 @@ namespace FT_Rider.Pages
             {
 
                 cityItem = JsonConvert.DeserializeObject<RiderGetCityNames>(output);
-                foreach (var item in cityItem.content.list)
+                if (cityItem != null)
                 {
-                    cityNamesDB[item.cityName] = new RiderGetCityList
+                    foreach (var item in cityItem.content.list)
                     {
-                        cityId = item.cityId,
-                        lan = item.lan,
-                        cityName = item.cityName,
-                        googleName = item.googleName,
-                        lat = item.lat,
-                        lng = item.lng
-                    };
-                }
+                        cityNamesDB[item.cityName] = new RiderGetCityList
+                        {
+                            cityId = item.cityId,
+                            lan = item.lan,
+                            cityName = item.cityName,
+                            googleName = item.googleName,
+                            lat = item.lat,
+                            lng = item.lng
+                        };
+                    }
 
-                //Sau khi load xing thì đẩy vào isolate
-                tNetUserLoginData["CityNamesDB"] = cityNamesDB;
+                    //Sau khi load xing thì đẩy vào isolate
+                    tNetUserLoginData["CityNamesDB"] = cityNamesDB;
+                }
+                else
+                {
+                    Debug.WriteLine(ConstantVariable.errServerErr);
+                }
             }
             catch (NullReferenceException)
             {
@@ -450,7 +476,7 @@ namespace FT_Rider.Pages
 
                 var input = string.Format("{{\"uid\":\"{0}\",\"lat\":{1},\"lng\":{2},\"cLvl\":\"{3}\"}}", uid, lat.ToString().Replace(',', '.'), lng.ToString().Replace(',', '.'), clvl);
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderGetNerDriverAddress, input);
-                RiderGetNearDriver nearDriver;
+                RiderGetNearDriver nearDriver = new RiderGetNearDriver();
                 try
                 {
                     nearDriver = JsonConvert.DeserializeObject<RiderGetNearDriver>(output);
@@ -507,7 +533,7 @@ namespace FT_Rider.Pages
                         Debug.WriteLine("87653 Không có xe nào xung quanh"); //DELETE AFTER FINISHED
                         //Thêm code cho việc chuyển label ở đây
                     }
-                    
+
                 }
                 catch (Exception)
                 {
@@ -1052,6 +1078,7 @@ namespace FT_Rider.Pages
             //Chạy autocomplete và load dữ liệu vào Longlistselector
             string queryAddress = txt_InputAddress.Text;
             loadAutoCompletePlace(queryAddress);
+
         }
 
 
@@ -1143,6 +1170,7 @@ namespace FT_Rider.Pages
             if (txt_InputAddress.Text.Length > 0)
             {
                 loadAutoCompletePlace(txt_InputAddress.Text);
+                Debug.WriteLine(MainModel.Address);
             }
             else
             {
@@ -1489,8 +1517,8 @@ namespace FT_Rider.Pages
                 uid = userData.content.uid,
                 rid = userData.content.rid,
                 did = didList,
-                sAddr = txt_PickupAddress.Text, 
-                eAddr = txt_DestinationAddress.Text, 
+                sAddr = txt_PickupAddress.Text,
+                eAddr = txt_DestinationAddress.Text,
                 sLat = pickupLat,
                 sLng = pickupLng,
                 eLat = destinationLat,
@@ -1541,7 +1569,11 @@ namespace FT_Rider.Pages
                 //btn_RequestTaxi.BorderBrush.Opacity = 0;
                 //SwitchToWaitingStatus();
 
+                //Lấy thông tin trip
                 tripId = createTripResponse.content.ToString();
+
+                //Cập nhật lmd
+                tlmd = createTripResponse.lmd;
 
                 //Rung điện thoại
                 TouchFeedback();
@@ -1659,7 +1691,7 @@ namespace FT_Rider.Pages
                     ///
                     //Update lmd
                     tlmd = createTripResponse.lmd;
-                    
+
                 }
             }
             catch (Exception)
@@ -1694,7 +1726,7 @@ namespace FT_Rider.Pages
 
         private void TouchFeedback()
         {
-           vibrateController.Start(TimeSpan.FromSeconds(0.1));
+            vibrateController.Start(TimeSpan.FromSeconds(0.1));
         }
 
 
@@ -2076,19 +2108,17 @@ namespace FT_Rider.Pages
             //Chạy hiệu ưngs
             TouchFeedback();
             TripCancelAlert();
-
-            //2. 
-            DeleteTripDate();
-
-            //Đăt lại các biến
-            ResetFlag();
-
-
             //Show messeage
             MessageBox.Show(ConstantVariable.strCarRejected);
 
+
             //3
             LoadHomePageView();
+            //Đăt lại các biến
+            ResetFlag();
+
+            //2. 
+            DeleteTripData();
 
             //4. Get near car
             GetNearDriver();
@@ -2101,27 +2131,19 @@ namespace FT_Rider.Pages
             ///2. Xóa thông tin trip
             ///3. Về màn hình chính
             ///
-            //0.
-            MessageBox.Show(ConstantVariable.strCarCanceled); //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
-
             //1. 
+
             TouchFeedback();
             TripCancelAlert();
+            MessageBox.Show(ConstantVariable.strCarCanceled); //HIỆN THÔNG ÁO "YÊU CẦU BỊ HỦY BỎ.."
 
-
+            //3
+            LoadHomePageView();
             //Đăt lại các biến
             ResetFlag();
 
             //2. 
-            DeleteTripDate();
-
-            //Show messeage
-            MessageBox.Show(ConstantVariable.strCarCanceled);
-
-            //3.
-            grv_Step02.Visibility = Visibility.Collapsed;
-            //SetHomeViewState();
-            LoadHomePageView();
+            DeleteTripData();
 
             //4. Get near car
             GetNearDriver();
@@ -2205,6 +2227,21 @@ namespace FT_Rider.Pages
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            if (_isNewPageInstance)
+            {
+                if (MainModel == null)
+                {
+                    if (State.Count > 0)
+                    {
+                        MainModel = (MainViewModel)State["MainModel"];
+                        DataContext = this;
+                    }
+                }
+
+            }
+            // Set _isNewPageInstance to false. If the user navigates back to this page
+            // and it has remained in memory, this value will continue to be false.
+            _isNewPageInstance = false;
             try
             {
                 if (this.NavigationContext.QueryString["json"].ToString() != null)
@@ -2223,8 +2260,18 @@ namespace FT_Rider.Pages
 
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            if (e.NavigationMode != System.Windows.Navigation.NavigationMode.Back)
+            {
+                // Save the ViewModel variable in the page's State dictionary.
+                State["MainModel"] = MainModel;
+            }
+        }
 
-        private void DeleteTripDate()
+
+        private void DeleteTripData()
         {
             myTrip = null;
             createTrip = null;
@@ -2306,10 +2353,8 @@ namespace FT_Rider.Pages
 
             //Xóa trạng thái step
             //ClearAllStep();
-            if (myTrip != null)
-            {
-                tripId = myTrip.tid;
-            }
+
+            //lấy Trip id
 
             RiderCancelTrip cancelTrip = new RiderCancelTrip
             {
@@ -2337,7 +2382,7 @@ namespace FT_Rider.Pages
 
                         //2. Xóa các thông tin liên quan đến trip
                         //createTrip = null;
-                        DeleteTripDate();
+                        DeleteTripData();
 
                         //Đặt cờ lại mặc định
                         ResetFlag();
@@ -2352,7 +2397,8 @@ namespace FT_Rider.Pages
                         LoadHomePageView();
                         //SetHomeViewState();
 
-                    }else
+                    }
+                    else
                     {
                         Debug.WriteLine("Mã lỗi 576fg ở Cancel Trip");
                     }
@@ -2365,16 +2411,6 @@ namespace FT_Rider.Pages
 
         }
 
-
-
-        /// <summary>
-        /// HÀM NÀY ĐỂ ĐƯA MÀN HÌNH VỀ BAN ĐẦU
-        /// </summary>
-        private void SetHomeViewState()
-        {
-            grv_Step01.Visibility = Visibility.Visible;
-            grv_Step02.Visibility = Visibility.Collapsed;
-        }
 
         private void tbl_MyTrips_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -2474,7 +2510,7 @@ namespace FT_Rider.Pages
         {
             NavigationService.Navigate(new Uri("/Pages/About.xaml", UriKind.Relative));
         }
-       
+
 
         private void img_PickerLabel_Red_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -3246,6 +3282,8 @@ namespace FT_Rider.Pages
             txt_EstimatedCost.Text = "0";
             grv_EnterPromotionCode.Visibility = Visibility.Collapsed;
             grv_CompleteTrip.Visibility = Visibility.Collapsed;
+            grv_ProcessBarButton.Visibility = Visibility.Collapsed;
+
         }
 
         private void img_AutoRecall_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -3409,7 +3447,7 @@ namespace FT_Rider.Pages
             LoadHomePageView();
 
             //xóa thông tin trip
-            DeleteTripDate();
+            DeleteTripData();
         }
 
         private async void btn_CallOneTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -3417,5 +3455,13 @@ namespace FT_Rider.Pages
             MessageBox.Show("ok");
         }
 
+
+
+
+        #region Navigation Override
+
+        #endregion
+
+        bool _isNewPageInstance = false;
     }
 }

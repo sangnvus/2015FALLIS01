@@ -26,7 +26,7 @@ namespace FT_Driver.Pages
 {
     public partial class Login : PhoneApplicationPage
     {
-       // string pushChannelURI = null;
+        // string pushChannelURI = null;
         IsolatedStorageSettings tNetUserLoginData = IsolatedStorageSettings.ApplicationSettings;
         IsolatedStorageSettings tNetAppSetting = IsolatedStorageSettings.ApplicationSettings;
         string pushChannelURI = string.Empty;
@@ -38,7 +38,7 @@ namespace FT_Driver.Pages
 
             CreatePushChannel();
             //Create Push notification Channel
-           // CreatePushChannel();
+            // CreatePushChannel();
         }
 
 
@@ -51,7 +51,7 @@ namespace FT_Driver.Pages
         {
             if (txt_UserId.Text != "" && txt_Password.ActionButtonCommandParameter.ToString() != "")
             {
-                grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
+                ShowLoadingScreen();
                 var uid = txt_UserId.Text;
                 MD5.MD5 pw = new MD5.MD5();
                 pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
@@ -67,23 +67,46 @@ namespace FT_Driver.Pages
                     var driverLogin = JsonConvert.DeserializeObject<DriverLogin>(output);
                     if (driverLogin != null)
                     {
-                        if (driverLogin.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))// neu ok 0000
+                        //Kiểm tra các trường hợp trả về
+                        switch (driverLogin.status)
                         {
-                            tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
+                            case ConstantVariable.RESPONSECODE_SUCCESS: //0000 OK
+                                tNetAppSetting["isLogin"] = "WasLogined"; //Change login state to Logined
+                                NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
+                                tNetUserLoginData["UserId"] = uid;
+                                tNetUserLoginData["PasswordMd5"] = pwmd5;
+                                tNetUserLoginData["UserLoginData"] = driverLogin;
+                                tNetUserLoginData["UserLmd"] = driverLogin.lmd;
+                                tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
+                                tNetUserLoginData["PushChannelURI"] = pushChannelURI;
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_USERNAME_NOT_CORRECT: //Tài khoản không đúng
+                                ShowMessageUSERNAME_NOT_CORRECT();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_PASSWORD_NOT_CORRECT:
+                                ShowMessagePASSWORD_NOT_CORRECT();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_ERR_SYSTEM:
+                                ShowMessageERR_SYSTEM();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_INVALID_PASSWORD:
+                                ShowMessageINVALID_PASSWORD();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_USERNAME_NOT_FOUND:
+                                ShowMessageUSERNAME_NOT_FOUND();
+                                HideLoadingScreen();
+                                break;
+                            default:
+                                MessageBox.Show("(Mã lỗi 3101) " + ConstantVariable.errLoginFailed);
+                                HideLoadingScreen();
+                                Debug.WriteLine("Có lỗi 265fgt67 ở Driver Login");
+                                break;
 
-                            NavigationService.Navigate(new Uri("/Pages/DriverCarList.xaml", UriKind.Relative));
-                            tNetUserLoginData["UserId"] = uid;
-                            tNetUserLoginData["PasswordMd5"] = pwmd5;
-                            tNetUserLoginData["UserLoginData"] = driverLogin;
-                            tNetUserLoginData["UserLmd"] = driverLogin.lmd;
-                            tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
-                            tNetUserLoginData["PushChannelURI"] = pushChannelURI;
-                        }
-                        else
-                        {
-                            MessageBox.Show("(Mã lỗi 3101) " + ConstantVariable.errLoginFailed);
-                            HideLoadingScreen();
-                            Debug.WriteLine("Có lỗi 265fgt67 ở Driver Login");
                         }
                     }
                     else
@@ -110,7 +133,14 @@ namespace FT_Driver.Pages
             }
 
         }
+
+        private void ShowLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
+        }
+
        
+
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/DriverRegister.xaml", UriKind.Relative));
@@ -201,56 +231,30 @@ namespace FT_Driver.Pages
         }
 
 
-        //// Parse out the information that was part of the message.
-        //void PushChannel_ShellToastNotificationReceived(object sender, NotificationEventArgs e)
-        //{
-           
-        //    StringBuilder message = new StringBuilder();
-        //    //string relativeUri = string.Empty;
-
-        //    //message.AppendFormat("Received Toast {0}:\n", DateTime.Now.ToShortTimeString());
-
-        //    // Parse out the information that was part of the message.
-        //    foreach (string key in e.Collection.Keys)
-        //    {
-        //        //message.AppendFormat("{0}: {1}\n", key, e.Collection[key]);
-
-        //        if (string.Compare(
-        //            key,
-        //            "wp:Param",
-        //            System.Globalization.CultureInfo.InvariantCulture,
-        //            System.Globalization.CompareOptions.IgnoreCase) == 0)
-        //        {
-        //            //Lấy chuỗi thông báo từ Notification
-        //            notificationReceivedString = e.Collection[key];
-        //        }
-        //    }
-
-        //    // Display a dialog of all the fields in the toast.
-        //    //Dispatcher.BeginInvoke(() => MessageBox.Show(message.ToString()));          
-        //    Dispatcher.BeginInvoke(() =>
-        //    {
-        //        //notificationReceivedString = e.Collection.Keys.;
-        //        //MessageBox.Show(notificationReceivedString);
-        //        if (notificationReceivedString != string.Empty)
-        //        {
-
-        //            //Hàm này để lấy ra chuỗi Json trong một String gửi qua notification
-        //            int a = notificationReceivedString.IndexOf("json=");
-        //            int b = notificationReceivedString.IndexOf("}");
-        //            int c = notificationReceivedString.IndexOf("notiType=");
-        //            string tmpStirng = notificationReceivedString.Substring(a + 5, b - a - 4);
-        //            //Cái này để lấy kiểu 
-        //            notificationType = notificationReceivedString.Substring(c + 9, notificationReceivedString.Length - c - 9);
-        //            notificationReceivedString = tmpStirng;
-
-        //            //Sau đó chạy thông báo
-        //            ShowNotification();
-        //        }
-        //    });
-
-        //}
-
-
+        private void ShowMessageUSERNAME_NOT_CORRECT()
+        {
+            MessageBox.Show(ConstantVariable.USERNAME_NOT_CORRECT);
+            txt_UserId.Focus();
+        }
+        private void ShowMessagePASSWORD_NOT_CORRECT()
+        {
+            MessageBox.Show(ConstantVariable.PASSWORD_NOT_CORRECT);
+            txt_Password.Focus();
+        }
+        private void ShowMessageERR_SYSTEM()
+        {
+            MessageBox.Show(ConstantVariable.ERR_SYSTEM);
+            this.Focus();
+        }
+        private void ShowMessageINVALID_PASSWORD()
+        {
+            MessageBox.Show(ConstantVariable.INVALID_PASSWORD);
+            txt_Password.Focus();
+        }
+        private void ShowMessageUSERNAME_NOT_FOUND()
+        {
+            MessageBox.Show(ConstantVariable.USERNAME_NOT_FOUND);
+            txt_UserId.Focus();
+        }
     }
 }

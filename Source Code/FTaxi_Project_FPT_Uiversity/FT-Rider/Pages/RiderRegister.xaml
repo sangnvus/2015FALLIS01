@@ -59,7 +59,7 @@
             <telerikPrimitives:RadPasswordBox x:Name="txt_PasswordAgain" Header="{Binding Name}" Margin="-5,174,-10,444" LostFocus="txt_PasswordAgain_LostFocus"  Padding="60,2,2,2"/>
             <telerikPrimitives:RadTextBox x:Name="txt_FirstName" Header="{Binding Name}" Margin="-5,295,-10,323" LostFocus="txt_FirstName_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
             <telerikPrimitives:RadTextBox x:Name="txt_LastName" Header="{Binding Name}" Margin="-5,385,-10,233" LostFocus="txt_LastName_LostFocus" SelectionForeground="Black" Padding="60,2,2,2"/>
-            <telerikPrimitives:RadTextBox x:Name="txt_Mobile" Header="{Binding Name}" Margin="-5,473,-10,145" LostFocus="txt_Mobile_LostFocus" SelectionForeground="Black" Padding="60,2,2,2" InputScope="Digits"/>
+            <telerikPrimitives:RadTextBox x:Name="txt_Mobile" Header="{Binding Name}" Margin="-5,473,-10,145" LostFocus="txt_Mobile_LostFocus" SelectionForeground="Black" Padding="60,2,2,2" InputScope="TelephoneNumber"/>
             <Button x:Name="btn_Register" Content="Đăng ký" HorizontalAlignment="Left" Margin="-5,626,-10,0" VerticalAlignment="Top" Height="90" Width="471"  FontSize="{StaticResource Button_FontSize}" Click="btn_Click_Register" >
                 <Button.BorderBrush>
                     <SolidColorBrush Color="White" Opacity="{StaticResource Button_BorderOpacity_20}"/>

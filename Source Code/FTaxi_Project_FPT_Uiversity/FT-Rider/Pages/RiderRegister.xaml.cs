@@ -100,8 +100,9 @@ namespace FT_Rider.Pages
 
         private bool ValidateEmail()
         {
-            if (Regex.IsMatch(txt_UserId.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
+            if (txt_UserId.Text.Length > 15 && txt_UserId.Text.Length < 50 && Regex.IsMatch(txt_UserId.Text.Trim(), @"^([a-zA-Z_])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])$"))
             {
+                //Theem check do dai
                 txt_UserId.ChangeValidationState(ValidationState.Valid, "");
                 return true;
             }
@@ -143,19 +144,20 @@ namespace FT_Rider.Pages
         private bool ValidateVerifyPassword()
         {
             var passwordEmpty = string.IsNullOrEmpty(txt_PasswordAgain.Password);
-            //tbVerifyPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
-            //pbVerifyPassword.Opacity = passwordEmpty ? 0 : 100;
-            if (txt_PasswordAgain.Password.Length < 6)
-            {
+            ////tbVerifyPasswordWatermark.Opacity = passwordEmpty ? 100 : 0;
+            ////pbVerifyPassword.Opacity = passwordEmpty ? 0 : 100;
+            //if (txt_PasswordAgain.Password.Length < 6)
+            //{
 
-                txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu ít nhất 6 kí tự !");
-                return false;
-            }
-            else if (passwordEmpty) {
-                txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Vui lòng nhập mật khẩu");
-                return false;
-            }
-            else if (!txt_PasswordAgain.Password.Equals(txt_Password.Password))
+            //    txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu ít nhất 6 kí tự !");
+            //    return false;
+            //}
+            //else if (passwordEmpty) {
+            //    txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Vui lòng nhập mật khẩu");
+            //    return false;
+            //}
+            //else 
+            if (!txt_PasswordAgain.Password.Equals(txt_Password.Password))
             {
                 txt_PasswordAgain.ChangeValidationState(ValidationState.Invalid, "Mật khẩu không trùng nhau !");
                 return false;
@@ -171,8 +173,8 @@ namespace FT_Rider.Pages
 
         private bool ValidateName()
         {
-            var NameEmpty = string.IsNullOrEmpty(txt_FirstName.Text);
-            if (NameEmpty )
+            var NameEmpty = string.IsNullOrEmpty(txt_FirstName.Text.Trim());
+            if (NameEmpty && txt_FirstName.Text.Length > 20)
             {
                 txt_FirstName.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập tên");
                 return false;
@@ -187,7 +189,7 @@ namespace FT_Rider.Pages
         private bool ValidateFirstAndMiddleName()
         {
             var FirstAndMiddleNameEmpty = string.IsNullOrEmpty(txt_LastName.Text);
-            if (FirstAndMiddleNameEmpty)
+            if (FirstAndMiddleNameEmpty && txt_LastName.Text.Length < 30)
             {
                 txt_LastName.ChangeValidationState(ValidationState.Invalid, "Xin hãy nhập họ và tên đệm");
                 return false;
@@ -203,9 +205,9 @@ namespace FT_Rider.Pages
         private bool ValidatePhoneNumber()
         {
             var PhoneNumberEmpty = string.IsNullOrEmpty(txt_Mobile.Text);
-            if (PhoneNumberEmpty || txt_Mobile.Text.Length != 10)
+            if (PhoneNumberEmpty || txt_Mobile.Text.Length != 10 || txt_Mobile.Text.Length != 11)
             {
-                txt_Mobile.ChangeValidationState(ValidationState.Invalid, "Số điện thoại gồm 10 số");
+                txt_Mobile.ChangeValidationState(ValidationState.Invalid, "Số điện thoại phải có 10 hoặc 11 chứ số.");
                 return false;
             }
             else
@@ -235,6 +237,7 @@ namespace FT_Rider.Pages
         private void txt_FirstName_LostFocus(object sender, RoutedEventArgs e)
         {
             ValidateName();
+
         }
         private void txt_LastName_LostFocus(object sender, RoutedEventArgs e)
         {

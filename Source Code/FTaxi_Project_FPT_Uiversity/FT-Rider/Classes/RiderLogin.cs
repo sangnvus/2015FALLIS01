@@ -36,7 +36,7 @@ namespace FT_Rider.Classes
         public Double? oAddLat { get; set; }
         public Double? oAddLng { get; set; }
         public IList<Pmt> pmt { get; set; }
-        public long olmd { get; set; }
+        public long lmd { get; set; }
         public int nlmd { get; set; }
         public String status { get; set; }
         public String uid { get; set; }

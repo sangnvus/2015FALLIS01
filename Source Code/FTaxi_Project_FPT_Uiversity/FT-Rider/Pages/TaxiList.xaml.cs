@@ -31,7 +31,7 @@ namespace FT_Rider.Pages
             {
                 foreach (var item in taxiList.brands)
                 {
-                    taxiListDataSource.Add(new TaxiItemObj(item.id, item.name, item.phone));
+                    taxiListDataSource.Add(new TaxiItemObj(item.id, item.name.ToUpper(), item.phone));
                 }
             }
             else

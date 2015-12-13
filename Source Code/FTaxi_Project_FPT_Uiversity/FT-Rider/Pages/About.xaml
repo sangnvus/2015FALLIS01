@@ -6,12 +6,36 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
+
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
@@ -38,10 +62,17 @@
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <TextBlock x:Name="tbl_description" HorizontalAlignment="Center" Margin="0,207,0,0" TextWrapping="Wrap" Text="About...." VerticalAlignment="Top" TextAlignment="Left" Height="437" Width="369">
+            <TextBlock x:Name="tbl_description" HorizontalAlignment="Center" Margin="44,207,44,0" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" Height="167" Width="368">
                 <TextBlock.Foreground>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </TextBlock.Foreground>
+            	<Run Text="Được phát triển bởi F-Taxi Team "/>
+            	<LineBreak/>
+            	<Run Text="Đại học FPT Hà Nội "/>
+            	<LineBreak/>
+            	<Run Text="Sử dụng dữ liệu của T-Net Solution"/>
+            	<LineBreak/>
+            	<Run Text="© 2015 A F-Taxi Team's Product"/>
             </TextBlock>
 
         </Grid>

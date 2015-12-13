@@ -52,6 +52,7 @@ namespace FT_Rider.Classes
         public const string strPassNotLike = "Mật khẩu không giống nhau!";
         public const string strChangePassSuccess = "Đổi mật khẩu thành công!";
         public const string strAddFavoriteSuccess = "Bạn đã thêm thành công lái xe yêu thích!";
+        public const string strSendFeedbackOK = "Bạn đã gửi phản hồi thành công. Cảm ơn bạn đã quan tâm đến chúng tôi.";
 
 
         //valid
@@ -76,7 +77,8 @@ namespace FT_Rider.Classes
         public const string tNetRiderResetPassword = "http://123.30.236.109:8088/TN/restServices/CommonController/resetPassword";
         public const string tNetRiderChangePassword = "http://123.30.236.109:8088/TN/restServices/RiderController/ChangePassword";
         public const string tNetRiderAddMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/addFavoriteDriver";
-        public const string tNetRiderUpdateDriverStatus = "http://123.30.236.109:8088/TN/restServices/RiderController/updateDriverStatus";        
+        public const string tNetRiderUpdateDriverStatus = "http://123.30.236.109:8088/TN/restServices/RiderController/updateDriverStatus";
+        public const string tNetRiderSendFeedback = "http://123.30.236.109:8088/TN/restServices/RiderController/Feedback";     
 
         //Card type
         public const String DIRECT = "DI";
@@ -167,6 +169,12 @@ namespace FT_Rider.Classes
         //Address Type
         public const string addrTypeHOME = "home";
         public const string addrTypeOFFICE = "office";
+
+        public const string USERNAME_NOT_CORRECT = "Tên tài khoản không chính xác. Vui lòng kiếm tra lại.";
+        public const string PASSWORD_NOT_CORRECT = "Mật khẩu không chính xác. Vui lòng kiếm tra lại.";
+        public const string ERR_SYSTEM = "Hệ thống đang bị lỗi. Chúng tôi rất tiếc vì sự cố này.";
+        public const string INVALID_PASSWORD = "Mật khẩu không hợp lệ. Vui lòng kiếm tra lại";
+        public const string USERNAME_NOT_FOUND = "Tài khoản không tồn tại. Vui lòng kiếm tra lại";
 
     }
 }

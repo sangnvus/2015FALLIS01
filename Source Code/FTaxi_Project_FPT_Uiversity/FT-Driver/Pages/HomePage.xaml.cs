@@ -76,6 +76,9 @@ namespace FT_Driver.Pages
         double initialPosition;
         bool _viewMoved = false;
 
+        //For City Name
+        IDictionary<string, DriverGetCityList> cityNamesDB = new Dictionary<string, DriverGetCityList>();
+
         //For timer
         DispatcherTimer updateLocationTimer;
 
@@ -130,7 +133,7 @@ namespace FT_Driver.Pages
 
         //for real gps
         GeoCoordinate realCoordinate = new GeoCoordinate();
-
+        string rawPass = string.Empty;
 
         public HomePage()
         {
@@ -145,6 +148,7 @@ namespace FT_Driver.Pages
                 userId = (string)tNetUserLoginData["UserId"];
                 pwmd5 = (string)tNetUserLoginData["PasswordMd5"];
                 mySelectedVehicle = (VehicleInfo)tNetUserLoginData["MySelectedVehicle"];
+                rawPass = (string)tNetUserLoginData["RawPassword"];
             }
 
             //Tạo kênh Notification
@@ -165,7 +169,10 @@ namespace FT_Driver.Pages
 
             //Cập nhật tọa độ của lái xe lên server
             UpdateCurrentLocation(currentLat, currentLng);
+
+            LoadCityNameDataBase();
         }
+
 
 
         /// <summary>
@@ -772,6 +779,18 @@ namespace FT_Driver.Pages
                 }
             });
 
+        }
+
+
+        /// <summary>
+        /// CÁI NÀY ĐỂ VÔ HIỆU HÓA NÚT BACK Ở HOME
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            //base.OnBackKeyPress(e);
+            //MessageBox.Show("You can not use Hardware back button");
+            e.Cancel = true;
         }
 
 
@@ -1528,7 +1547,8 @@ namespace FT_Driver.Pages
                 eLng = endLongitude,
                 dis = 0, //Cập nhật Discount vào đây
                 fare = estimateCost,
-                lmd = tlmd
+                lmd = tlmd,
+                eCityId = GetCityCodeFromCityName(endAddress.results[0].address_components[endAddress.results[0].address_components.Count - 2].long_name)
             };
 
             //Sau cùng, Hiện grid Thanh toán
@@ -1545,6 +1565,23 @@ namespace FT_Driver.Pages
             txt_BD_TotalCost.Text = realFare.ToString();
         }
 
+        //This function to get City Code From City Name in City Dictionary
+        private int GetCityCodeFromCityName(string cityName)
+        {
+            int cityCode = 0;
+            try
+            {
+                cityCode = cityNamesDB[cityName].cityId;
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 5301) " + ConstantVariable.errServerError);
+            }
+            return cityCode;
+        }
+
+
 
         private void ShowInforWhenStartTrip()
         {
@@ -1556,6 +1593,51 @@ namespace FT_Driver.Pages
 
         }
 
+
+
+
+        //Check exxception input // and cntry is VN
+        private async void LoadCityNameDataBase()
+        {
+            //{"uid":"apl.ytb2@gmail.com","pw":"Abc123!","lan":"VI","cntry":"VN"}
+            var uid = userId;
+            var pw = rawPass;
+            var lan = "VI";
+            var cntry = "VN";
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"lan\":\"{2}\",\"cntry\":\"{3}\"}}", uid, pw, lan, cntry);
+            var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverGetCityName, input);
+            DriverGetCityNames cityItem;
+            try
+            {
+
+                cityItem = JsonConvert.DeserializeObject<DriverGetCityNames>(output);
+                if (cityItem != null)
+                {
+                    foreach (var item in cityItem.content.list)
+                    {
+                        cityNamesDB[item.cityName] = new DriverGetCityList
+                        {
+                            cityId = item.cityId,
+                            lan = item.lan,
+                            cityName = item.cityName,
+                            googleName = item.googleName,
+                            lat = item.lat,
+                            lng = item.lng
+                        };
+                    }
+                    //Sau khi load xing thì đẩy vào isolate
+                    tNetUserLoginData["CityNamesDB"] = cityNamesDB;
+                }else
+                {
+                    Debug.WriteLine(ConstantVariable.errServerError);
+                }
+            }
+            catch (NullReferenceException)
+            {
+
+                MessageBox.Show(ConstantVariable.errServerError);
+            }
+        }
 
 
         private void DeleteTrip()
@@ -1780,7 +1862,7 @@ namespace FT_Driver.Pages
             //MD5.MD5 pw = new MD5.MD5();
             //pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
             string pw = pwmd5;
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"eAdd\":\"{3}\",\"eCityName\":\"{4}\",\"eLat\":\"{5}\",\"eLng\":\"{6}\",\"dis\":\"{7}\",\"fare\":\"{8}\",\"lmd\":\"{9}\"}}", completeTrip.uid, pw, completeTrip.tid, completeTrip.eAdd, completeTrip.eCityName, completeTrip.eLat, completeTrip.eLng, completeTrip.dis, completeTrip.fare, completeTrip.lmd);
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"eAdd\":\"{3}\",\"eCityName\":\"{4}\",\"eLat\":\"{5}\",\"eLng\":\"{6}\",\"dis\":\"{7}\",\"fare\":\"{8}\",\"lmd\":\"{9}\",\"eCityId\":\"{10}\"}}", completeTrip.uid, pw, completeTrip.tid, completeTrip.eAdd, completeTrip.eCityName, completeTrip.eLat, completeTrip.eLng, completeTrip.dis, completeTrip.fare, completeTrip.lmd, completeTrip.eCityId);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverCompleteTrip, input);

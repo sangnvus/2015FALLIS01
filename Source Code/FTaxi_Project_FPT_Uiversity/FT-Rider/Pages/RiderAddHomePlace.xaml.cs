@@ -55,7 +55,7 @@ namespace FT_Rider.Pages
 
             }
 
-            this.LoadLocationOnMap(21.038472, 105.8014108);
+            //LoadLocationOnMap(21.038472, 105.8014108);
 
 
 
@@ -95,6 +95,14 @@ namespace FT_Rider.Pages
 
         }
 
+        private void ShowSaveButton()
+        {
+            btn_Save.Visibility = Visibility.Visible;
+        }
+        private void HideSaveButton()
+        {
+            btn_Save.Visibility = Visibility.Collapsed;
+        }
         private void txt_Address_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             //Enable LLS
@@ -102,6 +110,7 @@ namespace FT_Rider.Pages
             //Enable 
             img_ClearText.Visibility = Visibility.Visible;
 
+            ShowSaveButton();     
         }
 
         private void img_ClearText_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -198,43 +207,46 @@ namespace FT_Rider.Pages
                 //Show Loading
                 ShowLoadingScreen();
 
-                //Lấy thông tin tọa độ
-                var input = ConstantVariable.googleAPIGeocodingAddressBaseURI + txt_Address.Text + "&key=" + ConstantVariable.googleGeolocationAPIkey;
-                try
-                {
-                    var output = await ReqAndRes.GetJsonString(input);
-                    var myLocation = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(output);
-                    if (myLocation.status.Equals(ConstantVariable.googleResponseStatusOK)) //OK
-                    {
-                       myCntry = myLocation.results[0].address_components[myLocation.results[0].address_components.Count-1].short_name.ToString();
-
-                        //Trả về cityCode
-                       myCityId = (GetCityCodeFromCityName(myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name.ToString()));
-
-                        //Tra ve lat long
-                       myLat = myLocation.results[0].geometry.location.lat;
-                       myLng = myLocation.results[0].geometry.location.lng;
-                    }
-                    else
-                    {
-                        MessageBox.Show("(Mã lỗi 2603) " + ConstantVariable.errServerErr);
-                        Debug.WriteLine("Có lỗi 56ght ở get Google String");
-                    }
-                }
-                catch (Exception)
-                {
-
-                    MessageBox.Show("(Mã lỗi 2602) " + ConstantVariable.errServerErr);
-                    Debug.WriteLine("Có lỗi 256ftgh ở get Google String");
-                }
-
-
-                //Lay xong thong tin thi:...
                 //Chạy hàm cập nhật địa chỉ nhả
                 UpdateHomeAddress();
 
+                HideLoadingScreen();
                 //Update xong thi tat
             }
+        }
+
+        private async void Tmep()
+        {
+            //Lấy thông tin tọa độ
+            var input = ConstantVariable.googleAPIGeocodingAddressBaseURI + txt_Address.Text + "&key=" + ConstantVariable.googleGeolocationAPIkey;
+            try
+            {
+                var output = await ReqAndRes.GetJsonString(input);
+                var myLocation = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(output);
+                if (myLocation.status.Equals(ConstantVariable.googleResponseStatusOK)) //OK
+                {
+                    myCntry = myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 1].short_name.ToString();
+
+                    //Trả về cityCode
+                    myCityId = (GetCityCodeFromCityName(myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name.ToString()));
+
+                    //Tra ve lat long
+                    myLat = myLocation.results[0].geometry.location.lat;
+                    myLng = myLocation.results[0].geometry.location.lng;
+                }
+                else
+                {
+                    MessageBox.Show("(Mã lỗi 2603) " + ConstantVariable.errServerErr);
+                    Debug.WriteLine("Có lỗi 56ght ở get Google String");
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 2602) " + ConstantVariable.errServerErr);
+                Debug.WriteLine("Có lỗi 256ftgh ở get Google String");
+            }
+
         }
 
         private async void UpdateHomeAddress()
@@ -260,31 +272,19 @@ namespace FT_Rider.Pages
                 var updateStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
                 if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //ok 0000
                 {
-                    //Neu ok thi se
-                    ///2. cap nhat lmd
-                    ///3. tat loading
-                    ///4. mess
-                    ///
-
-                    //2.
+                    
                     tNetUserLoginData["UserLmd"] = updateStatus.lmd;
 
-                    //3.
-                    HideLoadingScreen();
-
-                    //4.
                     MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //ok
                 }
                 else
                 {
-                    HideLoadingScreen();
                     MessageBox.Show("(Mã lỗi 2689) " + ConstantVariable.errServerErr); //Co loi may chu
                     Debug.WriteLine("Có lỗi 2565568 ở update home address");    
                 }
             }
             catch (Exception)
             {
-                HideLoadingScreen();
                 MessageBox.Show("(Mã lỗi 2605) " + ConstantVariable.errServerErr); //Co loi may chu
                 Debug.WriteLine("Có lỗi 58565dfg ở update home address");    
             }
@@ -315,6 +315,19 @@ namespace FT_Rider.Pages
         private void HideLoadingScreen()
         {
             grv_ProcessScreen.Visibility = Visibility.Collapsed;
+        }
+
+        private void btn_Save_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowLoadingScreen();
+            UpdateHomeAddress();
+            HideLoadingScreen();
+            HideSaveButton();
+        }
+
+        private void UpdateAddress()
+        {
+            throw new NotImplementedException();
         }
     }
 }
