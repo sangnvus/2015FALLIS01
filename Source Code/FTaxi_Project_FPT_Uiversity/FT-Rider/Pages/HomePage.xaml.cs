@@ -1541,7 +1541,11 @@ namespace FT_Rider.Pages
                 //btn_RequestTaxi.BorderBrush.Opacity = 0;
                 //SwitchToWaitingStatus();
 
+                //Lấy thông tin trip
                 tripId = createTripResponse.content.ToString();
+
+                //Cập nhật lmd
+                tlmd = createTripResponse.lmd;
 
                 //Rung điện thoại
                 TouchFeedback();
@@ -2306,10 +2310,8 @@ namespace FT_Rider.Pages
 
             //Xóa trạng thái step
             //ClearAllStep();
-            if (myTrip != null)
-            {
-                tripId = myTrip.tid;
-            }
+
+            //lấy Trip id
 
             RiderCancelTrip cancelTrip = new RiderCancelTrip
             {
