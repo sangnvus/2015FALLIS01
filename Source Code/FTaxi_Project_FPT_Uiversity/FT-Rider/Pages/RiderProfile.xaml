@@ -44,6 +44,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Color x:Key="lls_BackgroundColor">#FF060F27</Color>
 
 
     </phone:PhoneApplicationPage.Resources>
@@ -208,26 +209,26 @@
             </Button>
             <TextBlock x:Name="tbl_Account" HorizontalAlignment="Left" Margin="10,99,0,0" TextWrapping="Wrap" Text="Nhập địa chỉ" VerticalAlignment="Top" Foreground="#FF595959"/>
             <Image x:Name="img_CloseClearHomeAddress" HorizontalAlignment="Left" Height="48" Margin="417,135,0,0" VerticalAlignment="Top" Width="48" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearHomeAddress_Tap" Visibility="Collapsed"/>
-            <maps:Map x:Name="map_HomeAddress" HorizontalAlignment="Left" Margin="13,203,0,0" VerticalAlignment="Top" Height="555" Width="452" KeyDown="map_HomeAddress_KeyDown" ResolveCompleted="map_HomeAddress_ResolveCompleted" MouseLeftButtonDown="map_HomeAddress_MouseLeftButtonDown" GotFocus="map_HomeAddress_GotFocus">
+            <Rectangle HorizontalAlignment="Left" Height="561" Margin="12,200,0,0" Stroke="Black" VerticalAlignment="Top" Width="456">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <maps:Map x:Name="map_HomeAddress" HorizontalAlignment="Left" Margin="15,203,0,0" VerticalAlignment="Top" Height="555" Width="450" KeyDown="map_HomeAddress_KeyDown" ResolveCompleted="map_HomeAddress_ResolveCompleted" MouseLeftButtonDown="map_HomeAddress_MouseLeftButtonDown" GotFocus="map_HomeAddress_GotFocus">
                 <maps:Map.BorderBrush>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </maps:Map.BorderBrush>
             </maps:Map>
             <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="215,0,216,285" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
             <Image x:Name="img_PickerLabel" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="89,343,0,0" Source="/Images/Picker/img_PickerHomeAddress.png" Stretch="None"/>
-            <phone:LongListSelector x:Name="lls_HomeAddress" HorizontalAlignment="Left" Height="247" VerticalAlignment="Top" Width="456" Margin="12,183,0,0" SelectionChanged="lls_HomeAddress_SelectionChanged" Visibility="Collapsed">
+            <phone:LongListSelector x:Name="lls_HomeAddress" HorizontalAlignment="Left" Height="242" VerticalAlignment="Top" Width="456" Margin="12,183,0,0" SelectionChanged="lls_HomeAddress_SelectionChanged" Visibility="Collapsed">
                 <phone:LongListSelector.Background>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </phone:LongListSelector.Background>
                 <phone:LongListSelector.ItemTemplate>
                     <DataTemplate>
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="28"/>
-                            <!--<Rectangle HorizontalAlignment="Center" Height="1" Width="456">
-                                            <Rectangle.Fill>
-                                                <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
-                                            </Rectangle.Fill>
-                                        </Rectangle>-->
+                            <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="0,10,0,0" FontSize="28"/>
                         </StackPanel>
                     </DataTemplate>
                 </phone:LongListSelector.ItemTemplate>
@@ -259,26 +260,26 @@
             </Button>
             <TextBlock x:Name="tbl_Office" HorizontalAlignment="Left" Margin="10,99,0,0" TextWrapping="Wrap" Text="Nhập địa chỉ" VerticalAlignment="Top" Foreground="#FF595959"/>
             <Image x:Name="img_CloseClearOfficeAddress" HorizontalAlignment="Left" Height="48" Margin="417,135,0,0" VerticalAlignment="Top" Width="48" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearOfficeAddress_Tap" Visibility="Collapsed"/>
-            <maps:Map x:Name="map_OfficeAddress" HorizontalAlignment="Left" Margin="13,203,0,0" VerticalAlignment="Top" Height="555" Width="452" ResolveCompleted="map_OfficeAddress_ResolveCompleted" MouseLeftButtonDown="map_HomeAddress_MouseLeftButtonDown" GotFocus="map_OfficeAddress_GotFocus">
+            <Rectangle HorizontalAlignment="Left" Height="561" Margin="12,200,0,0" Stroke="Black" VerticalAlignment="Top" Width="456">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <maps:Map x:Name="map_OfficeAddress" HorizontalAlignment="Left" Margin="15,203,0,0" VerticalAlignment="Top" Height="555" Width="450" ResolveCompleted="map_OfficeAddress_ResolveCompleted" MouseLeftButtonDown="map_HomeAddress_MouseLeftButtonDown" GotFocus="map_OfficeAddress_GotFocus">
                 <maps:Map.BorderBrush>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </maps:Map.BorderBrush>
             </maps:Map>
             <Image x:Name="img_PickerPin1" HorizontalAlignment="Center" Height="53" Margin="215,0,216,285" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
             <Image x:Name="img_PickerLabel1" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="89,343,0,0" Source="/Images/Picker/img_PickerOfficeAddress.png" Stretch="None"/>
-            <phone:LongListSelector x:Name="lls_OfficeAddress" HorizontalAlignment="Left" Height="247" VerticalAlignment="Top" Width="456" Margin="12,183,0,0" SelectionChanged="lls_OfficeAddress_SelectionChanged" Visibility="Collapsed">
+            <phone:LongListSelector x:Name="lls_OfficeAddress" HorizontalAlignment="Left" Height="242" VerticalAlignment="Top" Width="456" Margin="12,183,0,0" SelectionChanged="lls_OfficeAddress_SelectionChanged" Visibility="Collapsed">
                 <phone:LongListSelector.Background>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </phone:LongListSelector.Background>
                 <phone:LongListSelector.ItemTemplate>
                     <DataTemplate>
                         <StackPanel VerticalAlignment="Center">
-                            <!--<Rectangle HorizontalAlignment="Center" Height="1" Width="456">
-                                            <Rectangle.Fill>
-                                                <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
-                                            </Rectangle.Fill>
-                                        </Rectangle>-->
-                            <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="28"/>
+                            <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="0,10,0,0" FontSize="28" Visibility="Visible"/>
                         </StackPanel>
                     </DataTemplate>
                 </phone:LongListSelector.ItemTemplate>

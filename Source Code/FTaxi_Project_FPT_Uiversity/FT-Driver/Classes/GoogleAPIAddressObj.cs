@@ -55,7 +55,7 @@ namespace FT_Driver.Classes
         public IList<string> types { get; set; }
     }
 
-    public class AOJGoogleAPIAddressObj
+    public class GoogleAPIAddressObj
     {
         public IList<AOJResult> results { get; set; }
         public string status { get; set; }

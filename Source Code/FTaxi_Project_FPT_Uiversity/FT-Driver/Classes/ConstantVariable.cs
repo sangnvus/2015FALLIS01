@@ -11,9 +11,11 @@ namespace FT_Driver.Classes
         public const string googleAPIQueryAutoCompleteRequestsBaseURI = "https://maps.googleapis.com/maps/api/place/queryautocomplete/json?key=";
         public const string googleAPIGeocodingRequestsBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?address=";
         public const string googleAPIGeocodingLatLngBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+        public const string googleAPIGeocodingAddressBaseURI = "https://maps.googleapis.com/maps/api/geocode/json?address=";
         //public static string googleGeolocationAPIkey = "AIzaSyAOi7TswVYRlkqvZcQ88Qf9SUHODK67TR0";
         public const string googleGeolocationAPIkey = "AIzaSyD4Y-OfQiAfs9hS_kyrfmzUSs5jY9gEKiY";
         public const string destiationAddressDescription = "Địa chỉ đón";
+        public const string googleResponseStatusOK = "OK";
 
         public const string googleAPIDistanceMatrixBaseURI1 = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
         public const string googleAPIDistanceMatrixBaseURI2 = "&destinations=";
@@ -34,9 +36,14 @@ namespace FT_Driver.Classes
         public const string strPassNotLike = "Mật khẩu không giống nhau!";
         public const string strChangePassSuccess = "Đổi mật khẩu thành công!";
         public const string strStatusNotAvaiable = "Trạng thái của bạn đã được chuyển qua 'Không Hoạt Động'!";
+        public const string strRiderUpdateSuccess = "Cập nhật thông tin cá nhân thành công!";
 
 
         public const string tNetWsParameterName = "json";
+
+        //Address Type
+        public const string addrTypeHOME = "home";
+        public const string addrTypeOFFICE = "office";
 
         //Driver Controller
         public const string tNetDriverLoginAddress = "http://123.30.236.109:8088/TN/restServices/DriverController/Login";
@@ -51,6 +58,7 @@ namespace FT_Driver.Classes
         public const string tNetDriverCompleteTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CompleteTrip";
         public const string tNetDriverChangePassword = "http://123.30.236.109:8088/TN/restServices/DriverController/ChangePassword";
         public const string tNetDriverGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
+        public const string tNetDriverUpdateAddress = "http://123.30.236.109:8088/TN/restServices/CommonController/UpdateAddress";
 
 
         //Confirmboz

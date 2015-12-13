@@ -24,6 +24,73 @@ namespace FT_Driver.Classes
         }
 
 
+        public async static Task<string> GetCountryNameFromCoordinate(double lat, double lng)
+        {
+            string cntryName;
+            var str = await GoogleAPIFunctions.ConvertLatLngToAddress(lat, lng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+            cntryName = address.results[0].address_components[address.results[0].address_components.Count - 1].short_name;
+
+            return cntryName;
+        }
+
+
+        public async static Task<string> GetCityNameFromCoordinate(double lat, double lng)
+        {
+            string cityName;
+            var str = await GoogleAPIFunctions.ConvertLatLngToAddress(lat, lng);
+            var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+            cityName = address.results[0].address_components[address.results[0].address_components.Count - 2].long_name;
+
+            return cityName;
+        }
+
+
+
+        public static async Task<GoogleAPIAddressObj> ConvertAddressToLatLng(string address)
+        {
+            GoogleAPIAddressObj latLngObj = new GoogleAPIAddressObj();
+
+            //GoogleAPIGeocoding URL
+            string URL = ConstantVariable.googleAPIGeocodingAddressBaseURI
+                + address
+                + "&key="
+                + ConstantVariable.googleGeolocationAPIkey;
+
+            string json = await ReqAndRes.GetJsonString(URL);
+            latLngObj = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(json);
+
+            return latLngObj;
+        }
+
+
+
+
+
+
+
+        //Input Address (ex: 18 Pham Hung)
+        //Output a json incluted detail of address 18 Pham Hung
+        public static async Task<GoogleAPIQueryAutoCompleteObj> ConvertAutoCompleteToLLS(string address)
+        {
+            string URL = ConstantVariable.googleAPIQueryAutoCompleteRequestsBaseURI
+                + ConstantVariable.googleGeolocationAPIkey
+                + "&input="
+                + address;
+
+            //Get Json string
+            string addressObjString;
+            addressObjString = await ReqAndRes.GetJsonString(URL);
+
+            GoogleAPIQueryAutoCompleteObj addressObj = new GoogleAPIQueryAutoCompleteObj();
+            addressObj = JsonConvert.DeserializeObject<GoogleAPIQueryAutoCompleteObj>(addressObjString);
+
+            return addressObj;
+        }
+
+
+
+
 
         public static async Task<double> GetDistance(Double sLat, Double sLng, Double eLat, Double eLng)
         {

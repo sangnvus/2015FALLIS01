@@ -93,6 +93,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\AutoCompletePlaceLLSObj.cs" />
     <Compile Include="Classes\DriverAcceptTripObj.cs" />
     <Compile Include="Classes\DriverBase.cs" />
     <Compile Include="Classes\DriverCompleteTrip.cs" />
@@ -114,7 +115,7 @@
     <Compile Include="Classes\GoogleAPIDistanceMatrixObj.cs" />
     <Compile Include="Classes\GoogleAPIFunctions.cs" />
     <Compile Include="Classes\GoogleAPIGeocoding.cs" />
-    <Compile Include="Classes\GoogleAPIQueryAutoComplete.cs" />
+    <Compile Include="Classes\GoogleAPIQueryAutoCompleteObj.cs" />
     <Compile Include="Classes\Language.cs" />
     <Compile Include="Classes\Md5Hash\helper.cs" />
     <Compile Include="Classes\Md5Hash\MD5.cs" />
@@ -158,9 +159,6 @@
     </Compile>
     <Compile Include="Pages\DriverProfile.xaml.cs">
       <DependentUpon>DriverProfile.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\DriverAddHomePlace.xaml.cs">
-      <DependentUpon>DriverAddHomePlace.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\DriverChangePassword.xaml.cs">
       <DependentUpon>DriverChangePassword.xaml</DependentUpon>
@@ -225,10 +223,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\DriverAddHomePlace.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\DriverChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -261,6 +255,9 @@
     <Content Include="Assets\Tiles\IconicTileSmall.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="icon_CloseClear.jpg" />
+    <Content Include="icon_CloseClear1.jpg" />
+    <Content Include="icon_CloseClear2.jpg" />
     <Content Include="Images\About\img_About.png" />
     <Content Include="Images\Alerts\img_CanceledTrip.png" />
     <Content Include="Images\BackgroundImages\img_AppBackground.jpg" />
@@ -365,6 +362,12 @@
     <Content Include="img_About.png" />
     <Content Include="img_MyTrip.png" />
     <Content Include="img_PageContentBreak_dark.png" />
+    <Content Include="img_PromotionCodeCLOSE.jpg" />
+    <Content Include="img_PromotionCodeCLOSE1.jpg" />
+    <Content Include="img_PromotionCodeCLOSE2.jpg" />
+    <Content Include="img_PromotionCodeGridBG.jpg" />
+    <Content Include="img_PromotionCodeGridBG1.jpg" />
+    <Content Include="img_PromotionCodeGridBG2.jpg" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Add.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
