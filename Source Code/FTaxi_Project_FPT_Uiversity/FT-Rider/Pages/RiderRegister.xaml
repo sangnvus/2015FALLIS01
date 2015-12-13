@@ -20,6 +20,7 @@
     shell:SystemTray.IsVisible="True">
     <phone:PhoneApplicationPage.Resources>
         <Color x:Key="Textbox_BorderColor">#FF81D7FF</Color>
+        <Color x:Key="processbar_Color">#FF1FBAD6</Color>
     </phone:PhoneApplicationPage.Resources>
     <toolkit:TransitionService.NavigationInTransition>
         <toolkit:NavigationInTransition>
@@ -79,6 +80,19 @@
         <!--ContentPanel - place additional content here-->
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbl_Register" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="ĐĂNG KÝ TÀI KHOẢN" VerticalAlignment="Top" FontSize="24" Width="232"/>
+        <Grid x:Name="grv_ProcessScreen" Margin="0" Visibility="Collapsed" Grid.RowSpan="2">
+            <Rectangle x:Name="rt_processBar" Stroke="Black">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="Black" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                <ProgressBar.Foreground>
+                    <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                </ProgressBar.Foreground>
+            </ProgressBar>
+            <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+        </Grid>
 
     </Grid>
 

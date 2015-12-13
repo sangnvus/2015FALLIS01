@@ -101,6 +101,10 @@ namespace FT_Driver.Pages
                                 ShowMessageUSERNAME_NOT_FOUND();
                                 HideLoadingScreen();
                                 break;
+                            case ConstantVariable.RESPONSECODE_INVALID_USER_GROUP:
+                                ShowMessageINVALID_USER_GROUP();
+                                HideLoadingScreen();
+                                break;
                             default:
                                 MessageBox.Show("(Mã lỗi 3101) " + ConstantVariable.errLoginFailed);
                                 HideLoadingScreen();
@@ -139,7 +143,7 @@ namespace FT_Driver.Pages
             grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
         }
 
-       
+
 
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -233,27 +237,32 @@ namespace FT_Driver.Pages
 
         private void ShowMessageUSERNAME_NOT_CORRECT()
         {
-            MessageBox.Show(ConstantVariable.USERNAME_NOT_CORRECT);
+            MessageBox.Show("(Mã lỗi 3116) " + ConstantVariable.USERNAME_NOT_CORRECT);
             txt_UserId.Focus();
         }
         private void ShowMessagePASSWORD_NOT_CORRECT()
         {
-            MessageBox.Show(ConstantVariable.PASSWORD_NOT_CORRECT);
+            MessageBox.Show("(Mã lỗi 3115) " + ConstantVariable.PASSWORD_NOT_CORRECT);
             txt_Password.Focus();
         }
         private void ShowMessageERR_SYSTEM()
         {
-            MessageBox.Show(ConstantVariable.ERR_SYSTEM);
+            MessageBox.Show("(Mã lỗi 3114) " + ConstantVariable.ERR_SYSTEM);
             this.Focus();
         }
         private void ShowMessageINVALID_PASSWORD()
         {
-            MessageBox.Show(ConstantVariable.INVALID_PASSWORD);
+            MessageBox.Show("(Mã lỗi 3112) " + ConstantVariable.INVALID_PASSWORD);
             txt_Password.Focus();
         }
         private void ShowMessageUSERNAME_NOT_FOUND()
         {
-            MessageBox.Show(ConstantVariable.USERNAME_NOT_FOUND);
+            MessageBox.Show("(Mã lỗi 3111) " + ConstantVariable.USERNAME_NOT_FOUND);
+            txt_UserId.Focus();
+        }
+        private void ShowMessageINVALID_USER_GROUP()
+        {
+            MessageBox.Show("(Mã lỗi 3110) " + ConstantVariable.INVALID_USER_GROUP);
             txt_UserId.Focus();
         }
     }

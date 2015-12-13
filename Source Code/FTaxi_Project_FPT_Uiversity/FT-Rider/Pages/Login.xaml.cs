@@ -93,6 +93,10 @@ namespace FT_Rider.Pages
                                 ShowMessageUSERNAME_NOT_FOUND();
                                 HideLoadingScreen();
                                 break;
+                            case ConstantVariable.RESPONSECODE_INVALID_USER_GROUP:
+                                ShowMessageINVALID_USER_GROUP();
+                                HideLoadingScreen();
+                                break;
                             default:
                                 MessageBox.Show("(Mã lỗi 1105) " + ConstantVariable.errLoginFailed);
                                 HideLoadingScreen();
@@ -104,7 +108,7 @@ namespace FT_Rider.Pages
                     {
                         MessageBox.Show("(Mã lỗi 1102) " + ConstantVariable.errLoginFailed);
                         HideLoadingScreen();
-                        Debug.WriteLine("(Mã lỗi 1102) " + ConstantVariable.errLoginFailed);
+                        Debug.WriteLine("Có lỗi 2356fgg ở Login");
                     }
 
                 }
@@ -112,7 +116,7 @@ namespace FT_Rider.Pages
                 {
                     MessageBox.Show("(Mã lỗi 1101) " + ConstantVariable.errConnectingError);
                     HideLoadingScreen();
-                    Debug.WriteLine("(Mã lỗi 1101) " + ConstantVariable.errConnectingError);
+                    Debug.WriteLine("Có lỗi 25hg567 ở Login");
                 }
             }
             else
@@ -121,6 +125,8 @@ namespace FT_Rider.Pages
                 HideLoadingScreen();
             }
         }
+
+       
 
         private void ShowLoadingScreen()
         {
@@ -178,6 +184,11 @@ namespace FT_Rider.Pages
         private void ShowMessageUSERNAME_NOT_FOUND()
         {
             MessageBox.Show("(Mã lỗi 1112) " + ConstantVariable.USERNAME_NOT_FOUND);
+            txt_UserId.Focus();
+        }
+        private void ShowMessageINVALID_USER_GROUP()
+        {
+            MessageBox.Show("(Mã lỗi 1112) " + ConstantVariable.INVALID_USER_GROUP);
             txt_UserId.Focus();
         }
     }

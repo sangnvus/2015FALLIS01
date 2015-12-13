@@ -175,6 +175,7 @@ namespace FT_Rider.Classes
         public const string ERR_SYSTEM = "Hệ thống đang bị lỗi. Chúng tôi rất tiếc vì sự cố này.";
         public const string INVALID_PASSWORD = "Mật khẩu không hợp lệ. Vui lòng kiếm tra lại";
         public const string USERNAME_NOT_FOUND = "Tài khoản không tồn tại. Vui lòng kiếm tra lại";
+        public const string INVALID_USER_GROUP = "Tài khoản không hợp lệ. Vui lòng kiếm tra lại";
 
     }
 }
