@@ -858,7 +858,7 @@ namespace FT_Driver.Pages
             {
                 newTrip = JsonConvert.DeserializeObject<DriverNewtripNotification>(input); //Tạo đối tượng NewTrip từ Json Input
                 var addressString = await GoogleAPIFunctions.ConvertLatLngToAddress(newTrip.sLat, newTrip.sLng);
-                var address = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(addressString);
+                var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(addressString);
 
                 ///1. Nạp thông tin lên grid
                 ///2. tắt Loading grid screen
@@ -1531,9 +1531,9 @@ namespace FT_Driver.Pages
 
             //Chuyển đổi tọa độ qua địa chỉ
             var endAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(endLatitude, endLongitude);
-            var endAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(endAddressString);
+            var endAddress = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(endAddressString);
             var startAddressString = await GoogleAPIFunctions.ConvertLatLngToAddress(startLatitude, startLongitude);
-            var startAddress = JsonConvert.DeserializeObject<AOJGoogleAPIAddressObj>(startAddressString);
+            var startAddress = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(startAddressString);
 
             //Tạo obj Complete Trip //
             completeTrip = new DriverCompleteTrip

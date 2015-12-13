@@ -7,10 +7,8 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
     x:Class="FT_Driver.Pages.HomePage"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
@@ -53,6 +51,17 @@
         </Storyboard>
 
     </phone:PhoneApplicationPage.Resources>
+
+
+    <phone:PhoneApplicationPage.FontFamily>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+    </phone:PhoneApplicationPage.FontFamily>
+    <phone:PhoneApplicationPage.FontSize>
+        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+    </phone:PhoneApplicationPage.FontSize>
+    <phone:PhoneApplicationPage.Foreground>
+        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+    </phone:PhoneApplicationPage.Foreground>
 
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -99,9 +108,9 @@
                 <Image x:Name="img_MenuAvatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Source="/Images/Others/img_DefaultAvatar.png" Margin="50,20,0,0">
                     <Image.Clip>
                         <EllipseGeometry
-                			Center="50,50"
-                			RadiusX="45"
-                			RadiusY="45" />
+							Center="50,50"
+							RadiusX="45"
+							RadiusY="45" />
                     </Image.Clip>
                 </Image>
                 <TextBlock x:Name="tbl_LastName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="206" Margin="182,27,0,0" FontSize="27"/>
@@ -116,12 +125,36 @@
                         <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,233,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_MyTrips" Text="Lộ trình của tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,233,0,0" FontSize="22">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="MouseLeftButtonDown">
+							<ec:NavigateToPageAction TargetPage="/Pages/DriverMyTrip.xaml"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+                </TextBlock>
                 <TextBlock x:Name="tbl_VipRider" Text="Khách hàng VIP" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,361,0,0" FontSize="22" Visibility="Collapsed"/>
-                <TextBlock x:Name="tbl_CompanyInfo" Text="Thông tin công ty" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,299,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_CompanyInfo" Text="Thông tin công ty" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,299,0,0" FontSize="22">
+                	<i:Interaction.Triggers>
+                		<i:EventTrigger EventName="MouseLeftButtonDown">
+                			<ec:NavigateToPageAction TargetPage="/Pages/CompanyInfo.xaml"/>
+                		</i:EventTrigger>
+                	</i:Interaction.Triggers>
+                </TextBlock>
                 <TextBlock x:Name="tbl_Support" Text="Hỗ trợ" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,492,0,0" FontSize="22" Visibility="Collapsed" d:IsHidden="True"/>
-                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,360,0,0" FontSize="22"/>
-                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,429,0,0" FontSize="22"/>
+                <TextBlock x:Name="tbl_About" Text="Về chúng tôi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,360,0,0" FontSize="22">
+                	<i:Interaction.Triggers>
+                		<i:EventTrigger EventName="MouseLeftButtonDown">
+                			<ec:NavigateToPageAction TargetPage="/Pages/About.xaml"/>
+                		</i:EventTrigger>
+                	</i:Interaction.Triggers>
+                </TextBlock>
+                <TextBlock x:Name="tbl_Feedback" Text="Phản hồi" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Height="35" Width="192" Margin="79,429,0,0" FontSize="22">
+                	<i:Interaction.Triggers>
+                		<i:EventTrigger EventName="MouseLeftButtonDown">
+                			<ec:NavigateToPageAction TargetPage="/Pages/DriverFeedback.xaml"/>
+                		</i:EventTrigger>
+                	</i:Interaction.Triggers>
+                </TextBlock>
                 <Button x:Name="btn_Logout" Content="Đăng xuất" Margin="10,687,10,0" FontSize="{StaticResource Button_FontSize_22}" Tap="btn_Logout_Tap" BorderBrush="{x:Null}">
                     <Button.Background>
                         <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Red}"/>
@@ -236,9 +269,9 @@
                     <Image x:Name="img_RiderAvatarAvatar" HorizontalAlignment="Left" Height="85" VerticalAlignment="Top" Width="85" Source="/Images/Others/img_default_avatar_dark.png" Margin="372,3,0,0">
                         <Image.Clip>
                             <EllipseGeometry
-                    			Center="45,45"
-                    			RadiusX="40"
-                    			RadiusY="40" />
+								Center="45,45"
+								RadiusX="40"
+								RadiusY="40" />
                         </Image.Clip>
                     </Image>
                     <TextBlock x:Name="txt_RiderName" HorizontalAlignment="Right" Margin="0,89,15,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="15" Width="95" TextAlignment="Center" Height="26">
@@ -310,9 +343,9 @@
                     <Image x:Name="img_RiderAvatarStartTrip" HorizontalAlignment="Left" Height="81" VerticalAlignment="Top" Width="81" Margin="378,46,0,0" Source="/Images/Others/img_default_avatar_dark.png">
                         <Image.Clip>
                             <EllipseGeometry
-                			Center="40,40"
-                			RadiusX="40"
-                			RadiusY="40" />
+								Center="40,40"
+								RadiusX="40"
+								RadiusY="40" />
                         </Image.Clip>
                     </Image>
                     <TextBlock x:Name="txt_DistanceKm" HorizontalAlignment="Left" Margin="16,-4,0,0" TextWrapping="Wrap" Text="0.0 (km)" VerticalAlignment="Top" FontSize="25" Width="220" TextAlignment="Center"/>
@@ -384,9 +417,9 @@
                     <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,120,0,0" Source="/Images/Others/img_default_avatar_dark.png">
                         <Image.Clip>
                             <EllipseGeometry
-                    			Center="50,50"
-                    			RadiusX="45"
-                    			RadiusY="45" />
+								Center="50,50"
+								RadiusX="45"
+								RadiusY="45" />
                         </Image.Clip>
                     </Image>
                     <TextBlock x:Name="tbl_Route" HorizontalAlignment="Left" Margin="10,371,0,0" TextWrapping="Wrap" Text="Quãng đường (km)" VerticalAlignment="Top" FontSize="23" Width="201">

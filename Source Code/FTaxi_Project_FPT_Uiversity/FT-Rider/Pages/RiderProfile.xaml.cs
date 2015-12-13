@@ -77,6 +77,7 @@ namespace FT_Rider.Pages
 
 
             txt_HomeAddress.Text = tbl_HomeAddress.Text;
+            txt_OfficeAddress.Text = tbl_OfficeAddress.Text;
 
         }
 
@@ -775,7 +776,22 @@ namespace FT_Rider.Pages
             {
                 homeLat = map_HomeAddress.Center.Latitude;
                 homeLng = map_HomeAddress.Center.Longitude;
-                ShowAddressFromCoordinate(homeLat, homeLng);
+                ShowHomeAddressFromCoordinate(homeLat, homeLng);
+            }
+        }
+
+        private async void ShowHomeAddressFromCoordinate(double lat, double lng)
+        {
+            try
+            {
+                var str = await GoogleAPIFunction.ConvertLatLngToAddress(lat, lng);
+                var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
+                txt_HomeAddress.Text = address.results[0].formatted_address.ToString();
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 32658) " + ConstantVariable.errConnectingError);
             }
         }
 
@@ -785,7 +801,7 @@ namespace FT_Rider.Pages
             {
                 var str = await GoogleAPIFunction.ConvertLatLngToAddress(lat, lng);
                 var address = JsonConvert.DeserializeObject<GoogleAPIAddressObj>(str);
-                txt_HomeAddress.Text = address.results[0].formatted_address.ToString();
+                txt_OfficeAddress.Text = address.results[0].formatted_address.ToString();
             }
             catch (Exception)
             {
@@ -948,8 +964,8 @@ namespace FT_Rider.Pages
         {
             if (isMovableOfficeMap == true)
             {
-                officeLat = map_HomeAddress.Center.Latitude;
-                officeLng = map_HomeAddress.Center.Longitude;
+                officeLat = map_OfficeAddress.Center.Latitude;
+                officeLng = map_OfficeAddress.Center.Longitude;
                 ShowAddressFromCoordinate(officeLat, officeLng);
             }
         }

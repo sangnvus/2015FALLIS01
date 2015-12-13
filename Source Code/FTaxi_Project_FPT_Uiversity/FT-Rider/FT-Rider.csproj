@@ -152,12 +152,6 @@
     <Compile Include="Pages\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\RiderAddHomePlace.xaml.cs">
-      <DependentUpon>RiderAddHomePlace.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\RiderAddWorkPlace.xaml.cs">
-      <DependentUpon>RiderAddWorkPlace.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\RiderChangePassword.xaml.cs">
       <DependentUpon>RiderChangePassword.xaml</DependentUpon>
     </Compile>
@@ -214,14 +208,6 @@
     <Page Include="Pages\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\RiderAddHomePlace.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\RiderAddWorkPlace.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\RiderChangePassword.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -297,12 +297,8 @@
                             <phone:LongListSelector.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="28"/>
-                                        <!--<Rectangle HorizontalAlignment="Center" Height="1" Width="456">
-                                            <Rectangle.Fill>
-                                                <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
-                                            </Rectangle.Fill>
-                                        </Rectangle>-->
+                                        <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="0,10,0,0" FontSize="28"/>
+                                        
                                     </StackPanel>
                                 </DataTemplate>
                             </phone:LongListSelector.ItemTemplate>
@@ -411,7 +407,7 @@
                     <Rectangle HorizontalAlignment="Left" Height="79" VerticalAlignment="Top" Width="480" Fill="White"/>
                     <TextBox x:Name="txt_DestinationSearchAddress" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Padding="60,2,2,2" FontSize="25" KeyUp="TextBox_KeyUp" GotFocus="txt_DestinationSearchAddress_GotFocus" Tap="txt_DestinationSearchAddress_Tap" LostFocus="txt_DestinationSearchAddress_LostFocus"/>
                     <Image x:Name="img_SearchIcon" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="68" Source="/Images/SearchBar/icon_Search.jpg" Margin="0,8,0,0"/>
-                    <Image x:Name="img_CloseClearIcon" HorizontalAlignment="Right" Height="62" Margin="408,10,0,0" VerticalAlignment="Top" Width="62" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearIcon_Tap"/>
+                    <Image x:Name="img_CloseClearIcon" HorizontalAlignment="Right" Height="69" VerticalAlignment="Top" Width="69" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearIcon_Tap" Margin="0,10,0,0"/>
                     <phone:LongListSelector x:Name="lls_DestinationAddress" HorizontalAlignment="Left" Height="687" Margin="0,81,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="lls_DestinationAddress_SelectionChanged">
                         <phone:LongListSelector.Background>
                             <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
@@ -419,12 +415,7 @@
                         <phone:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,16,15,17" FontSize="30" LineHeight="10"/>
-                                    <!--<Rectangle HorizontalAlignment="Center" Height="1" Width="456">
-                                            <Rectangle.Fill>
-                                                <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
-                                            </Rectangle.Fill>
-                                        </Rectangle>-->
+                                    <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="0,9,0,0" FontSize="30" LineHeight="10"/>
                                 </StackPanel>
                             </DataTemplate>
                         </phone:LongListSelector.ItemTemplate>

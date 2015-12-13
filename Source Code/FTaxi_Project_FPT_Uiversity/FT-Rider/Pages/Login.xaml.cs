@@ -45,15 +45,14 @@ namespace FT_Rider.Pages
         {
             if (txt_UserId.Text != "" && txt_Password.ActionButtonCommandParameter.ToString() != "")
             {
-
-                grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
+                ShowLoadingScreen();
                 var uid = txt_UserId.Text;
                 MD5.MD5 pw = new MD5.MD5();
                 pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
                 var pwmd5 = pw.FingerPrint.ToLower();
                 var mid = "";//pushChannelURI;
                 var mType = ConstantVariable.mTypeWIN;
-                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);                
+                var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"mid\":\"{2}\",\"mType\":\"{3}\"}}", uid, pwmd5, mid, mType);
                 try
                 {
                     //Thử xem có lấy đc JSON về ko, nếu ko thì bắn ra Lối kết nối / lỗi server
@@ -62,45 +61,77 @@ namespace FT_Rider.Pages
                     riderLogin = JsonConvert.DeserializeObject<RiderLogin>(output);
                     if (riderLogin != null)
                     {
-                        if (riderLogin.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 Code
+                        switch (riderLogin.status)
                         {
-                            tNetAppSetting["isLogin"] = "WasLogined";
-                            NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
-                            tNetUserLoginData["UserId"] = uid;
-                            tNetUserLoginData["PasswordMd5"] = pwmd5;
-                            tNetUserLoginData["UserLoginData"] = riderLogin;
-                            tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
-                            tNetUserLoginData["UserLmd"] = riderLogin.content.lmd; //Cái này là để cập nhật lmd cho việc update thông tin
-                        }
-                        else
-                        {
-                            MessageBox.Show(ConstantVariable.errLoginFailed);
-                            grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
-                            Debug.WriteLine("(Mã lỗi 1103) " + ConstantVariable.errLoginFailed);
+                            case ConstantVariable.RESPONSECODE_SUCCESS: //0000 OK
+                                tNetAppSetting["isLogin"] = "WasLogined";
+                                NavigationService.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative));
+                                tNetUserLoginData["UserId"] = uid;
+                                tNetUserLoginData["PasswordMd5"] = pwmd5;
+                                tNetUserLoginData["UserLoginData"] = riderLogin;
+                                tNetUserLoginData["RawPassword"] = txt_Password.ActionButtonCommandParameter.ToString();
+                                tNetUserLoginData["UserLmd"] = riderLogin.content.lmd; //Cái này là để cập nhật lmd cho việc update thông tin
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_USERNAME_NOT_CORRECT: //Tài khoản không đúng
+                                ShowMessageUSERNAME_NOT_CORRECT();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_PASSWORD_NOT_CORRECT:
+                                ShowMessagePASSWORD_NOT_CORRECT();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_ERR_SYSTEM:
+                                ShowMessageERR_SYSTEM();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_INVALID_PASSWORD:
+                                ShowMessageINVALID_PASSWORD();
+                                HideLoadingScreen();
+                                break;
+                            case ConstantVariable.RESPONSECODE_USERNAME_NOT_FOUND:
+                                ShowMessageUSERNAME_NOT_FOUND();
+                                HideLoadingScreen();
+                                break;
+                            default:
+                                MessageBox.Show("(Mã lỗi 1105) " + ConstantVariable.errLoginFailed);
+                                HideLoadingScreen();
+                                Debug.WriteLine("Có lỗi 265fgt67 ở Rider Login");
+                                break;
                         }
                     }
                     else
                     {
-                        MessageBox.Show(ConstantVariable.errLoginFailed);
-                        grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                        MessageBox.Show("(Mã lỗi 1102) " + ConstantVariable.errLoginFailed);
+                        HideLoadingScreen();
                         Debug.WriteLine("(Mã lỗi 1102) " + ConstantVariable.errLoginFailed);
                     }
 
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show(ConstantVariable.errConnectingError);
-                    grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                    MessageBox.Show("(Mã lỗi 1101) " + ConstantVariable.errConnectingError);
+                    HideLoadingScreen();
                     Debug.WriteLine("(Mã lỗi 1101) " + ConstantVariable.errConnectingError);
                 }
             }
             else
             {
-                MessageBox.Show(ConstantVariable.errNotEmpty);
-                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+                MessageBox.Show("(Mã lỗi 1109) " + ConstantVariable.errNotEmpty);
+                HideLoadingScreen();
             }
         }
-      
+
+        private void ShowLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Visible; //Enable Process bar
+        }
+
+        private void HideLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable Process bar
+        }
+
 
         private void tbn_Tap_Register(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -121,6 +152,33 @@ namespace FT_Rider.Pages
 
         private void txt_Password_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
+        }
+
+
+        private void ShowMessageUSERNAME_NOT_CORRECT()
+        {
+            MessageBox.Show("(Mã lỗi 1108) " + ConstantVariable.USERNAME_NOT_CORRECT);
+            txt_UserId.Focus();
+        }
+        private void ShowMessagePASSWORD_NOT_CORRECT()
+        {
+            MessageBox.Show("(Mã lỗi 1107) " + ConstantVariable.PASSWORD_NOT_CORRECT);
+            txt_Password.Focus();
+        }
+        private void ShowMessageERR_SYSTEM()
+        {
+            MessageBox.Show("(Mã lỗi 1106) " + ConstantVariable.ERR_SYSTEM);
+            this.Focus();
+        }
+        private void ShowMessageINVALID_PASSWORD()
+        {
+            MessageBox.Show("(Mã lỗi 1100) " + ConstantVariable.INVALID_PASSWORD);
+            txt_Password.Focus();
+        }
+        private void ShowMessageUSERNAME_NOT_FOUND()
+        {
+            MessageBox.Show("(Mã lỗi 1112) " + ConstantVariable.USERNAME_NOT_FOUND);
+            txt_UserId.Focus();
         }
     }
 }
