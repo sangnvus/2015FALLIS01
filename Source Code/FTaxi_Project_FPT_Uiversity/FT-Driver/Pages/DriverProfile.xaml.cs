@@ -279,6 +279,7 @@ namespace FT_Driver.Pages
                             if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//ok 0000
                             {
                                 tNetUserLoginData["UserLmd"] = updateStatus.lmd;
+                                preOlmd = updateStatus.lmd;
 
                                 if (homeLng != 0 && homeLat != 0)
                                 {

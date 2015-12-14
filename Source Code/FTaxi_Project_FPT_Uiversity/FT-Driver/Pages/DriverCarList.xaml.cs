@@ -97,7 +97,7 @@ namespace FT_Driver.Pages
         private void lls_CarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             grv_ProcessScreen.Visibility = Visibility.Visible;
-            tNetAppSetting["isSelectedCar"] = "SelectedCar"; //Cái này để đánh dấu rằng, sẽ bỏ qua bước chọn xe //Thêm vào sau tiến trình chọn xe
+            //tNetAppSetting["isSelectedCar"] = "SelectedCar"; //Cái này để đánh dấu rằng, sẽ bỏ qua bước chọn xe //Thêm vào sau tiến trình chọn xe
 
             var selectedCar = ((DriverVehiceInfoObj)(sender as LongListSelector).SelectedItem);
             // If selected item is null, do nothing
@@ -158,6 +158,7 @@ namespace FT_Driver.Pages
 
                             //
                             tNetUserLoginData["MySelectedVehicle"] = myVehicle;
+                            tNetUserLoginData["UserLmd"] = selectVehicle.lmd; //Cái này là để cập nhật lmd cho việc update thông tin
                         }
                     }
 

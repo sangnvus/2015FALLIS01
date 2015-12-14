@@ -297,7 +297,7 @@
                             <phone:LongListSelector.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="0,10,0,0" FontSize="28"/>
+                                        <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,9,15,0" FontSize="28"/>
                                         
                                     </StackPanel>
                                 </DataTemplate>
