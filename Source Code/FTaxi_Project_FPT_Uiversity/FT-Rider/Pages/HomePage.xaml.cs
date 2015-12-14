@@ -1704,8 +1704,9 @@ namespace FT_Rider.Pages
 
             MessageBox.Show(ConstantVariable.strCarAreStarting);
 
-            //2.
-            grv_Step02.Visibility = Visibility.Collapsed;
+            //2. //Tránh trường hợp hiện lại step 02
+            isEffect == false;
+            HideStep02Screen();
 
             // Khóa màn hình map lại, không cho tương tác
             LockMapIsActived();
