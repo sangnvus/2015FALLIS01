@@ -1010,6 +1010,20 @@ namespace FT_Driver.Pages
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverUpdateRegId, input);
+                var updateStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (updateStatus != null)
+                {
+                    if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 OK
+                    {
+                        //update lmd
+                        tNetUserLoginData["UserLmd"] = updateStatus.lmd;
+                    }
+                }
+                else
+                {
+                    //Lỗi máy chủ
+                    MessageBox.Show("(Mã lỗi 4010) " + ConstantVariable.errServerError);
+                }
             }
             catch (Exception)
             {
@@ -1862,7 +1876,7 @@ namespace FT_Driver.Pages
             //MD5.MD5 pw = new MD5.MD5();
             //pw.Value = txt_Password.ActionButtonCommandParameter.ToString();
             string pw = pwmd5;
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"eAdd\":\"{3}\",\"eCityName\":\"{4}\",\"eLat\":\"{5}\",\"eLng\":\"{6}\",\"dis\":\"{7}\",\"fare\":\"{8}\",\"lmd\":\"{9}\",\"eCityId\":\"{10}\"}}", completeTrip.uid, pw, completeTrip.tid, completeTrip.eAdd, completeTrip.eCityName, completeTrip.eLat, completeTrip.eLng, completeTrip.dis, completeTrip.fare, completeTrip.lmd, completeTrip.eCityId);
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"tid\":\"{2}\",\"eAdd\":\"{3}\",\"eCityName\":\"{4}\",\"eLat\":\"{5}\",\"eLng\":\"{6}\",\"dis\":\"{7}\",\"fare\":\"{8}\",\"lmd\":\"{9}\",\"eCityId\":\"{10}\"}}", completeTrip.uid, pw, completeTrip.tid, completeTrip.eAdd, completeTrip.eCityName, completeTrip.eLat.ToString().Replace(',', '.'), completeTrip.eLng.ToString().Replace(',', '.'), completeTrip.dis, completeTrip.fare, completeTrip.lmd, completeTrip.eCityId);
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverCompleteTrip, input);

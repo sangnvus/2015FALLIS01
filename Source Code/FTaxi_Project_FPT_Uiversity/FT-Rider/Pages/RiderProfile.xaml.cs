@@ -102,9 +102,9 @@ namespace FT_Rider.Pages
                 txt_LastName.Text = string.Empty;
             }
 
-            if (userData.content.mobile != null)
+            if (userData.content.phone != null)
             {
-                txt_Mobile.Text = userData.content.mobile;
+                txt_Mobile.Text = userData.content.phone;
             }
             else
             {
@@ -234,6 +234,7 @@ namespace FT_Rider.Pages
 
                     //1
                     tNetUserLoginData["UserLmd"] = updateStatus.lmd;
+                    preOlmd = updateStatus.lmd;
 
                     //3
                     HideLoadingScreen();
@@ -384,7 +385,9 @@ namespace FT_Rider.Pages
                     officeCntry = myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 1].short_name.ToString();
 
                     //Trả về cityCode
-                    officeCity = myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name.ToString();
+                    officeCity = myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name;
+
+                    officeCityId = GetCityCodeFromCityName(myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name.ToString());
 
                     //Tra ve lat long
                     officeLat = myLocation.results[0].geometry.location.lat;
@@ -405,7 +408,7 @@ namespace FT_Rider.Pages
                     var uid = userData.content.uid;
                     var pw = pwmd5;
 
-                    var input2 = string.Format("{{\"id\":\"{0}\",\"nCity\":\"{1}\",\"nAdd\":\"{2}\",\"lat\":\"{3}\",\"lng\":\"{4}\",\"addrType\":\"{5}\",\"olmd\":\"{6}\",\"role\":\"{7}\",\"cityId\":\"{8}\",\"cntry\":\"{9}\",\"uid\":\"{10}\",\"pw\":\"{11}\"}}", id, nCity, nAdd, lat, lng, addrType, lmd, role, cityId, cntry, uid, pw);
+                    var input2 = string.Format("{{\"id\":\"{0}\",\"nCity\":\"{1}\",\"nAdd\":\"{2}\",\"lat\":\"{3}\",\"lng\":\"{4}\",\"addType\":\"{5}\",\"lmd\":\"{6}\",\"role\":\"{7}\",\"cityId\":\"{8}\",\"cntry\":\"{9}\",\"uid\":\"{10}\",\"pw\":\"{11}\"}}", id, nCity, nAdd, lat, lng, addrType, lmd, role, cityId, cntry, uid, pw);
                     try
                     {
                         //Thủ xem có lấy đc gì k
@@ -416,6 +419,7 @@ namespace FT_Rider.Pages
                             if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//ok 0000
                             {
                                 tNetUserLoginData["UserLmd"] = updateStatus.lmd;
+                                preOlmd = updateStatus.lmd;
 
                                 if (officeLng != 0 && officeLat != 0)
                                 {
@@ -425,6 +429,7 @@ namespace FT_Rider.Pages
                                 HideSaveOfficeButton();
                                 HideLoadingScreen();
                                 MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //ok
+                                tbl_OfficeAddress.Text = txt_OfficeAddress.Text;
                             }
 
                         }
@@ -474,6 +479,7 @@ namespace FT_Rider.Pages
 
                     //Trả về cityCode
                     homeCity = myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name.ToString();
+                    homeCityId = GetCityCodeFromCityName(myLocation.results[0].address_components[myLocation.results[0].address_components.Count - 2].long_name.ToString());
 
                     //Tra ve lat long
                     homeLat = myLocation.results[0].geometry.location.lat;
@@ -494,7 +500,7 @@ namespace FT_Rider.Pages
                     var uid = userData.content.uid;
                     var pw = pwmd5;
 
-                    var input2 = string.Format("{{\"id\":\"{0}\",\"nCity\":\"{1}\",\"nAdd\":\"{2}\",\"lat\":\"{3}\",\"lng\":\"{4}\",\"addrType\":\"{5}\",\"olmd\":\"{6}\",\"role\":\"{7}\",\"cityId\":\"{8}\",\"cntry\":\"{9}\",\"uid\":\"{10}\",\"pw\":\"{11}\"}}", id, nCity, nAdd, lat, lng, addrType, lmd, role, cityId, cntry, uid, pw);
+                    var input2 = string.Format("{{\"id\":\"{0}\",\"nCity\":\"{1}\",\"nAdd\":\"{2}\",\"lat\":\"{3}\",\"lng\":\"{4}\",\"addType\":\"{5}\",\"lmd\":\"{6}\",\"role\":\"{7}\",\"cityId\":\"{8}\",\"cntry\":\"{9}\",\"uid\":\"{10}\",\"pw\":\"{11}\"}}", id, nCity, nAdd, lat, lng, addrType, lmd, role, cityId, cntry, uid, pw);
                     try
                     {
                         //Thủ xem có lấy đc gì k
@@ -505,6 +511,7 @@ namespace FT_Rider.Pages
                             if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//ok 0000
                             {
                                 tNetUserLoginData["UserLmd"] = updateStatus.lmd;
+                                preOlmd = updateStatus.lmd;
 
                                 if (homeLng != 0 && homeLat != 0)
                                 {
@@ -514,6 +521,7 @@ namespace FT_Rider.Pages
                                 HideSaveHomeButton();
                                 HideLoadingScreen();
                                 MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //ok
+                                tbl_HomeAddress.Text = txt_HomeAddress.Text;
                             }
 
                         }

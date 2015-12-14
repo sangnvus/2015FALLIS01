@@ -2292,6 +2292,20 @@ namespace FT_Rider.Pages
             try
             {
                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderUpdateRegId, input);
+                var updateStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                if (updateStatus != null)
+                {
+                    if (updateStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000 OK
+                    {
+                        //update lmd
+                        tNetUserLoginData["UserLmd"] = updateStatus.lmd;
+                    }
+                }
+                else
+                {
+                    //Lỗi máy chủ
+                    MessageBox.Show("(Mã lỗi 4010) " + ConstantVariable.errServerErr);
+                }
             }
             catch (Exception)
             {
