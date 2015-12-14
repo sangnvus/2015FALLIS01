@@ -258,8 +258,6 @@ namespace FT_Driver.Pages
 
 
 
-
-
         private void updateLocationTimer_Tick(object sender, EventArgs e)
         {
             Debug.WriteLine("Chạy Update Location Timer"); //DELETE AFTER FINISH
@@ -285,11 +283,10 @@ namespace FT_Driver.Pages
             Debug.WriteLine("DriverMap_ResolveCompleted"); //DELETE AFTER FINISH
 
             if (new GeoCoordinate(Math.Round(map_DriverMap.Center.Latitude, 5), Math.Round(map_DriverMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
-            {
-                grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
+            {                
+                HideLoadingScreen();
             }
         }
-
 
 
         //------ BEGIN Update Driver Status ------//
@@ -592,19 +589,6 @@ namespace FT_Driver.Pages
             Microsoft.Phone.Maps.MapsSettings.ApplicationContext.AuthenticationToken = "I5nG-B7z5bxyTGww1PApXA";
         }
 
-
-
-        private void SetChangeStatusButtonIsGreen()
-        {
-            btn_ChangeStatus_Red.Visibility = Visibility.Collapsed;
-            btn_ChangeStatus_Green.Visibility = Visibility.Visible;
-        }
-
-        private void SetChangeStatusButtonIsRed()
-        {
-            btn_ChangeStatus_Red.Visibility = Visibility.Visible;
-            btn_ChangeStatus_Green.Visibility = Visibility.Collapsed;
-        }
 
         private void btn_Logout_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -955,16 +939,7 @@ namespace FT_Driver.Pages
 
         }
 
-        private void ShowCancelGird()
-        {
-            grv_RiderCancel.Visibility = Visibility.Visible;
-        }
-
-        private void HideCancelGird()
-        {
-            grv_RiderCancel.Visibility = Visibility.Collapsed;
-        }
-
+    
 
         /// <summary>
         /// Nhận thông tin từ Notification
@@ -1486,13 +1461,6 @@ namespace FT_Driver.Pages
         }
 
 
-        private void ShowChangeStatusButton()
-        {
-            btn_ChangeStatus_Green.Visibility = Visibility.Collapsed;
-            btn_ChangeStatus_Red.Visibility = Visibility.Visible;
-        }
-
-
         /// <summary>
         /// NHẤN NÚT NÀY ĐỂ CHUYỂN QUA TRANG THANH TOÁN
         /// </summary>
@@ -1661,83 +1629,6 @@ namespace FT_Driver.Pages
             newTrip = null;
         }
 
-
-        /// <summary>
-        /// TẤT CẢ CÁC HÀM SHOW và HIDE trạng thái màn hình
-        /// </summary>
-        private void ShowLoadingGridScreen()
-        {
-            Debug.WriteLine("ShowLoadingGridScreen");
-            grv_LoadingGridScreen.Visibility = Visibility.Visible;
-        }
-
-        private void HideLoadingGridScreen()
-        {
-            Debug.WriteLine("HideLoadingGridScreen");
-            grv_LoadingGridScreen.Visibility = Visibility.Collapsed;
-        }
-        private void ShowAcceptRejectGrid()
-        {
-            Debug.WriteLine("ShowAcceptRejectGrid");
-
-            (this.Resources["showAcceptRejectGrid"] as Storyboard).Begin();
-            grv_AcceptReject.Visibility = Visibility.Visible;
-            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
-        }
-
-        private void ShowStartCancelGird()
-        {
-            Debug.WriteLine("ShowStartCancelGird");
-            grv_StartCancelbtn.Visibility = Visibility.Visible; //Bật cụm button Start / Cancel
-            grv_AcceptRejectbtn.Visibility = Visibility.Collapsed; //Tắt cụm button Accept / Reject
-        }
-
-        private void ShowStartTripScreen()
-        {
-            Debug.WriteLine("ShowStartTripScreen");
-
-            (this.Resources["showStartTripGrid"] as Storyboard).Begin();
-            grv_AcceptReject.Visibility = Visibility.Collapsed;
-            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
-            grv_StartTrip.Visibility = Visibility.Visible;
-        }
-
-        private void ShowTapToPayLoadingScreen()
-        {
-            Debug.WriteLine("ShowTapToPayLoadingScreen");
-            grv_TapToPayProcess.Visibility = Visibility.Visible;
-        }
-
-        private void HideTapToPayLoadingScreen()
-        {
-            Debug.WriteLine("HideTapToPayLoadingScreen");
-            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
-        }
-
-
-        /// <summary>
-        /// HÀM NÀY ĐỂ ĐƯA DRIVER VỀ MÀN HÌNH CHÍNH
-        /// </summary>
-        private void SetViewAtHomeState()
-        {
-            grv_ChangeStatus.Visibility = Visibility.Visible;
-            btn_ChangeStatus_Green.Visibility = Visibility.Visible;
-            btn_ChangeStatus_Red.Visibility = Visibility.Collapsed;
-
-            grv_AcceptReject.Visibility = Visibility.Collapsed;
-            grv_StartCancelbtn.Visibility = Visibility.Collapsed;
-
-            grv_RiderCancel.Visibility = Visibility.Collapsed;
-
-            grv_StartTrip.Visibility = Visibility.Collapsed;
-            grv_ProcessScreen.Visibility = Visibility.Collapsed;
-
-            grv_BillDetail.Visibility = Visibility.Collapsed;
-
-            ResetMyCoordinate();
-        }
-
-
         /// <summary>
         /// Đặt lại vị trí đang đứng
         /// </summary>
@@ -1852,19 +1743,6 @@ namespace FT_Driver.Pages
             me_Trip_NewTrip.Play();
         }
 
-
-        private void ShowBillDetailGrid()
-        {
-            (this.Resources["showBillDetailGrid"] as Storyboard).Begin();
-            grv_BillDetail.Visibility = Visibility.Visible;
-        }
-
-        private void HideBillDetailGrid()
-        {
-            grv_BillDetail.Visibility = Visibility.Collapsed;
-        }
-
-
         /// <summary>
         /// Khi nhấn vào nút này sẽ chạy hàm Complete Trip
         /// </summary>
@@ -1901,7 +1779,7 @@ namespace FT_Driver.Pages
 
                         //3.
                         SetViewAtHomeState();
-                        
+
                     }
                 }
             }
@@ -1910,7 +1788,6 @@ namespace FT_Driver.Pages
                 MessageBox.Show("(Mã lỗi 901) " + ConstantVariable.errServerError);
                 Debug.WriteLine("Mã lỗi 15fht không lấy get json string từ completetrip");
             }
-            //Xóa dữ liệu
         }
 
         private void txt_BD_Mobile_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -1930,5 +1807,102 @@ namespace FT_Driver.Pages
             ResetFlag();
 
         }
+
+
+        #region Show Hide State
+        /// <summary>
+        /// TẤT CẢ CÁC HÀM SHOW và HIDE trạng thái màn hình
+        /// </summary>
+        private void SetViewAtHomeState()
+        {
+            grv_ChangeStatus.Visibility = Visibility.Visible;
+            btn_ChangeStatus_Green.Visibility = Visibility.Visible;
+            btn_ChangeStatus_Red.Visibility = Visibility.Collapsed;
+
+            grv_AcceptReject.Visibility = Visibility.Collapsed;
+            grv_StartCancelbtn.Visibility = Visibility.Collapsed;
+
+            grv_RiderCancel.Visibility = Visibility.Collapsed;
+
+            grv_StartTrip.Visibility = Visibility.Collapsed;
+            grv_ProcessScreen.Visibility = Visibility.Collapsed;
+
+            grv_BillDetail.Visibility = Visibility.Collapsed;
+        }
+        private void ShowLoadingGridScreen()
+        {
+            grv_LoadingGridScreen.Visibility = Visibility.Visible;
+        }
+        private void HideLoadingGridScreen()
+        {
+            grv_LoadingGridScreen.Visibility = Visibility.Collapsed;
+        }
+        private void ShowAcceptRejectGrid()
+        {
+            (this.Resources["showAcceptRejectGrid"] as Storyboard).Begin();
+            grv_AcceptReject.Visibility = Visibility.Visible;
+            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
+        }
+        private void ShowStartCancelGird()
+        {
+            grv_StartCancelbtn.Visibility = Visibility.Visible; //Bật cụm button Start / Cancel
+            grv_AcceptRejectbtn.Visibility = Visibility.Collapsed; //Tắt cụm button Accept / Reject
+        }
+        private void ShowStartTripScreen()
+        {
+            (this.Resources["showStartTripGrid"] as Storyboard).Begin();
+            grv_AcceptReject.Visibility = Visibility.Collapsed;
+            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
+            grv_StartTrip.Visibility = Visibility.Visible;
+        }
+
+        private void ShowTapToPayLoadingScreen()
+        {
+            grv_TapToPayProcess.Visibility = Visibility.Visible;
+        }
+        private void HideTapToPayLoadingScreen()
+        {
+            grv_TapToPayProcess.Visibility = Visibility.Collapsed;
+        }
+        private void ShowBillDetailGrid()
+        {
+            (this.Resources["showBillDetailGrid"] as Storyboard).Begin();
+            grv_BillDetail.Visibility = Visibility.Visible;
+        }
+        private void HideBillDetailGrid()
+        {
+            grv_BillDetail.Visibility = Visibility.Collapsed;
+        }
+        private void ShowChangeStatusButton()
+        {
+            btn_ChangeStatus_Green.Visibility = Visibility.Collapsed;
+            btn_ChangeStatus_Red.Visibility = Visibility.Visible;
+        }
+        private void ShowCancelGird()
+        {
+            grv_RiderCancel.Visibility = Visibility.Visible;
+        }
+
+        private void HideCancelGird()
+        {
+            grv_RiderCancel.Visibility = Visibility.Collapsed;
+        }
+        private void HideLoadingScreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Collapsed; //Disable process bar
+        }
+
+        private void SetChangeStatusButtonIsGreen()
+        {
+            btn_ChangeStatus_Red.Visibility = Visibility.Collapsed;
+            btn_ChangeStatus_Green.Visibility = Visibility.Visible;
+        }
+
+        private void SetChangeStatusButtonIsRed()
+        {
+            btn_ChangeStatus_Red.Visibility = Visibility.Visible;
+            btn_ChangeStatus_Green.Visibility = Visibility.Collapsed;
+        }
+        #endregion
     }
 }
