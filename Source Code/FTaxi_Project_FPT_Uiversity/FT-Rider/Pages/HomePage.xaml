@@ -298,7 +298,7 @@
                                 <DataTemplate>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,9,15,0" FontSize="28"/>
-                                        
+
                                     </StackPanel>
                                 </DataTemplate>
                             </phone:LongListSelector.ItemTemplate>
@@ -318,7 +318,7 @@
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_PickupAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="146,44,0,0" Height="53" Width="324" TextAlignment="Right" Tap="txt_PickupAddress_Tap" d:IsHidden="True" Visibility="Collapsed">
+                    <TextBlock x:Name="txt_PickupAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="146,44,0,0" Height="53" Width="324" TextAlignment="Right" d:IsHidden="True" Visibility="Collapsed">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
@@ -405,7 +405,7 @@
                         <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                     </Grid.Background>
                     <Rectangle HorizontalAlignment="Left" Height="79" VerticalAlignment="Top" Width="480" Fill="White"/>
-                    <TextBox x:Name="txt_DestinationSearchAddress" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Padding="60,2,2,2" FontSize="25" KeyUp="TextBox_KeyUp" GotFocus="txt_DestinationSearchAddress_GotFocus" Tap="txt_DestinationSearchAddress_Tap" LostFocus="txt_DestinationSearchAddress_LostFocus"/>
+                    <TextBox x:Name="txt_DestinationSearchAddress" HorizontalAlignment="Left" Height="72" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Padding="60,2,2,2" FontSize="25" KeyUp="TextBox_KeyUp" GotFocus="txt_DestinationSearchAddress_GotFocus" LostFocus="txt_DestinationSearchAddress_LostFocus"/>
                     <Image x:Name="img_SearchIcon" HorizontalAlignment="Left" Height="68" VerticalAlignment="Top" Width="68" Source="/Images/SearchBar/icon_Search.jpg" Margin="0,8,0,0"/>
                     <Image x:Name="img_CloseClearIcon" HorizontalAlignment="Right" Height="69" VerticalAlignment="Top" Width="69" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearIcon_Tap" Margin="0,10,0,0"/>
                     <phone:LongListSelector x:Name="lls_DestinationAddress" HorizontalAlignment="Left" Height="687" Margin="0,81,0,0" VerticalAlignment="Top" Width="480" SelectionChanged="lls_DestinationAddress_SelectionChanged">
@@ -453,38 +453,38 @@
                     </Grid.Background>
                     <Rectangle x:Name="panel_name" Margin="-4,114,-3,422" Opacity="0.7" Fill="White" Stroke="#FFD1D1D1"/>
                     <Rectangle x:Name="panel_Pay" Margin="-3,359,-4,112" Opacity="0.7" Fill="White" Stroke="#FFC3C3C3"/>
-                    <TextBlock x:Name="txt_CT_DriverName" HorizontalAlignment="Left" Margin="84,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213" Height="39" FontSize="23">
+                    <TextBlock x:Name="txt_CT_DriverName" HorizontalAlignment="Left" Margin="84,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213" Height="39" FontSize="23" Text="Nguyen">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_CT_DriverMobile" HorizontalAlignment="Left" Margin="84,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213" Height="39" FontSize="23" Tap="txt_CT_DriverMobile_Tap">
+                    <TextBlock x:Name="txt_CT_DriverMobile" HorizontalAlignment="Left" Margin="84,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="213" Height="39" FontSize="23" Tap="txt_CT_DriverMobile_Tap" Text="Driver 2">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_CT_From" HorizontalAlignment="Left" Margin="84,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="380" Height="49" FontSize="17" Tap="txt_CT_DriverMobile_Tap">
+                    <TextBlock x:Name="txt_CT_From" HorizontalAlignment="Left" Margin="84,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="380" Height="49" FontSize="17" Tap="txt_CT_DriverMobile_Tap" Text="118 Nguyen Khanh Toan, Quan Hoa, Cau Giay, Ha Noi">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_CT_To" HorizontalAlignment="Left" Margin="84,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="380" Height="49" FontSize="17" Tap="txt_CT_DriverMobile_Tap">
+                    <TextBlock x:Name="txt_CT_To" HorizontalAlignment="Left" Margin="84,288,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="380" Height="49" FontSize="17" Tap="txt_CT_DriverMobile_Tap" Text="30 Kim Ma, Ba Dinh, Ha Noi">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_CT_Route" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405,374,0,0" FontSize="25" TextAlignment="Right">
+                    <TextBlock x:Name="txt_CT_Route" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="296,374,0,0" FontSize="25" TextAlignment="Right" Text="11.2" Width="171" Height="33">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_CT_Cost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="405,433,0,0" FontSize="25" TextAlignment="Right" Foreground="#FFE64900"/>
-                    <TextBlock x:Name="txt_CT_Discount" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="391,488,0,0" FontSize="25" TextAlignment="Right">
+                    <TextBlock x:Name="txt_CT_Cost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="296,433,0,0" FontSize="25" TextAlignment="Right" Foreground="#FFE64900" Text="125.000" Width="171" Height="33"/>
+                    <TextBlock x:Name="txt_CT_Discount" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="296,488,0,0" FontSize="25" TextAlignment="Right" Text="0.0" Width="171" Height="33">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Button_AcceptColor}"/>
                         </TextBlock.Foreground>
                     </TextBlock>
-                    <TextBlock x:Name="txt_CT_TotalCost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="382,546,0,0" FontSize="25" TextAlignment="Right">
+                    <TextBlock x:Name="txt_CT_TotalCost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="296,546,0,0" FontSize="25" TextAlignment="Right" Text="125.000" Width="171" Height="33">
                         <TextBlock.Foreground>
                             <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                         </TextBlock.Foreground>
@@ -572,6 +572,7 @@
                             <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                         </Rectangle.Fill>
                     </Rectangle>
+                    <Image HorizontalAlignment="Left" Height="48" Margin="256,608,0,0" VerticalAlignment="Top" Width="196" Source="/Images/Others/img_StarRating.png"/>
                 </Grid>
                 <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
                     <Rectangle x:Name="rt_processBar" Stroke="Black">

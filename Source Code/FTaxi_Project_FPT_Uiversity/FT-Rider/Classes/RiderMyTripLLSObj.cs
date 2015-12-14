@@ -92,9 +92,9 @@ namespace FT_Rider.Classes
             get { return _fare; }
             set { _fare = value; }
         }
-        private Double? _payment;
+        private string _payment;
 
-        public Double? Payment
+        public string Payment
         {
             get { return _payment; }
             set { _payment = value; }
@@ -150,7 +150,7 @@ namespace FT_Rider.Classes
             set { _favorite = value; }
         }
 
-        public RiderMyTripLLSObj(string tid, string did, string dName, string dMobile, string plate, string cLvl, string from, string to, string sTime, string eTime, Double? distance, Double? fare, Double? payment, string currency, string fNam, string lName, Double? rate, string interCode, bool favorite)
+        public RiderMyTripLLSObj(string tid, string did, string dName, string dMobile, string plate, string cLvl, string from, string to, string sTime, string eTime, Double? distance, Double? fare, string payment, string currency, string fNam, string lName, Double? rate, string interCode, bool favorite)
         {
             this.Tid = tid; 
             this.Did = did; 

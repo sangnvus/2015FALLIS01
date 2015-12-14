@@ -23,7 +23,7 @@ namespace FT_Rider.Classes
         public String lName { get; set; }
         public String interCode { get; set; }
         public String img { get; set; }
-        public String phone { get; set; }
+        public String mobile { get; set; }
         public String hAdd { get; set; }
         public String lan { get; set; }
         public String cntry { get; set; }

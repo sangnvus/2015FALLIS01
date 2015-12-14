@@ -142,8 +142,8 @@
                     <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
                 </Rectangle.Fill>
             </Rectangle>
-            <TextBlock x:Name="tbl_HomeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,34,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
-            <TextBlock x:Name="tbl_OfficeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,144,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
+            <TextBlock x:Name="tbl_HomeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,38,0,0" Grid.Row="2" Height="90" Width="338" Foreground="Black" FontSize="25"/>
+            <TextBlock x:Name="tbl_OfficeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,140,0,0" Grid.Row="2" Height="90" Width="338" Foreground="Black" FontSize="25"/>
             <Image x:Name="img_EditIcon_HomeAddress" HorizontalAlignment="Left" Height="100" Margin="425,29,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_HomeAddress_Tap"/>
             <Image x:Name="img_EditIcon_OfficeAddress" HorizontalAlignment="Left" Height="100" Margin="425,139,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_OfficeAddress_Tap"/>
             <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">

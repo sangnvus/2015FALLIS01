@@ -20,7 +20,7 @@ namespace FT_Rider.Classes
         public string eTime { get; set; }
         public Double? distance { get; set; }
         public Double? fare { get; set; }
-        public Double? payment { get; set; }
+        public string payment { get; set; }
         public string currency { get; set; }
         public string fName { get; set; }
         public string lName { get; set; }

@@ -26,6 +26,16 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
+        <Storyboard x:Key="showLostAssetGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_RiderLossAssets">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
 
         <Storyboard x:Key="showTripDetail">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_TripDetail">
@@ -226,20 +236,40 @@
                     </TextBlock.Foreground>
                 </TextBlock>
                 <TextBox x:Name="txt_CarLevel" Width="214" VerticalAlignment="Top" TextWrapping="Wrap" TextAlignment="Right" RenderTransformOrigin="0.803,0.667" Padding="2" Margin="266,267,0,0" Height="72" HorizontalAlignment="Left" FontSize="25" Background="{x:Null}" BorderBrush="{x:Null}"/>
-
-
-            </Grid>
-            <Grid x:Name="grv_ProcessScreen" Margin="0,0,0,-47" Visibility="Collapsed">
-                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
-                    <ProgressBar.Foreground>
-                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
-                    </ProgressBar.Foreground>
-                </ProgressBar>
-                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
             </Grid>
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
         <TextBlock x:Name="tbl_MyTrip" HorizontalAlignment="Center" Margin="0,10,0,0" TextWrapping="Wrap" Text="LỘ TRÌNH CỦA TÔI" VerticalAlignment="Top" FontSize="24" Width="204"/>
+        <Grid x:Name="grv_RiderLossAssets" Grid.RowSpan="2" Visibility="Collapsed">
+            <Grid.RenderTransform>
+                <TranslateTransform Y="0"/>
+            </Grid.RenderTransform>
+            <Grid.Background>
+                <SolidColorBrush Color="{StaticResource Color_BaseGridColor}"/>
+            </Grid.Background>
+            <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/Images/PromotionCode/img_PromotionCodeGridBG.jpg" Stretch="Fill" Margin="0"/>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="BÁO MẤT ĐỒ" VerticalAlignment="Top" Margin="0,28,0,0" FontSize="30">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <Image x:Name="img_CloseRiderLostAsset" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="11,10,0,0" Tap="img_CloseRiderLostAsset_Tap"/>
+            <TextBox x:Name="txt_Content" HorizontalAlignment="Center" Height="326" Margin="12,217,12,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" BorderBrush="#FFBAC6E6">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <TextBlock HorizontalAlignment="Center" Margin="25,113,26,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="429" Height="109" FontSize="20" TextAlignment="Center" Text="Nếu bạn để quên tư trang của mình trong quá trình thực hiện chuyến đi, vui lòng phản hồi về cho chúng tôi. Cảm ơn bạn đã hợp tác.">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <Button x:Name="btn_SendLostAsset" Content="GỬI" Margin="10,543,10,0" VerticalAlignment="Top" Height="90" Tap="btn_SendLostAsset_Tap">
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                </Button.Background>
+            </Button>
+        </Grid>
         <Grid x:Name="grv_FunctionMenu" Height="334" VerticalAlignment="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Background="#FFF0F0F0" Visibility="Collapsed">
             <Grid.RenderTransform>
                 <TranslateTransform Y="0"/>
@@ -278,6 +308,14 @@
                 </Rectangle>
                 <ProgressBar x:Name="pb_loading" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Foreground="White"/>
             </Grid>
+        </Grid>
+        <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed" Grid.RowSpan="2">
+            <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                <ProgressBar.Foreground>
+                    <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                </ProgressBar.Foreground>
+            </ProgressBar>
+            <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
         </Grid>
     </Grid>
 

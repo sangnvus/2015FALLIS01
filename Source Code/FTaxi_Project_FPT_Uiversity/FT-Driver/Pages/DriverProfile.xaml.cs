@@ -107,9 +107,9 @@ namespace FT_Driver.Pages
                 txt_Balance.Text = string.Empty;
             }
 
-            if (userData.content.driverInfo.phone != null)
+            if (userData.content.driverInfo.mobile != null)
             {
-                txt_Mobile.Text = userData.content.driverInfo.phone;
+                txt_Mobile.Text = userData.content.driverInfo.mobile;
             }
             else
             {
@@ -163,7 +163,7 @@ namespace FT_Driver.Pages
 
         private void tbl_Tap_ChangePassword(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/DriverChangePassword.xaml", UriKind.Relative));
         }
 
         private void tbl_OfficeAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)

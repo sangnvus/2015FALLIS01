@@ -277,7 +277,7 @@ namespace FT_Rider.Pages
 
         private void btn_AlertAssets_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            ShowLostAssetGrid();
         }
 
         private async void btn_AddFavorite_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -319,8 +319,27 @@ namespace FT_Rider.Pages
             }
 
         }
-        
+
+        private void img_CloseRiderLostAsset_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            HideLostAssetGrid();
+        }
+
+        private void btn_SendLostAsset_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
 
 
+        private void ShowLostAssetGrid()
+        {
+            (this.Resources["showLostAssetGrid"] as Storyboard).Begin();
+            grv_RiderLossAssets.Visibility = Visibility.Visible;
+        }
+
+        private void HideLostAssetGrid()
+        {
+            grv_RiderLossAssets.Visibility = Visibility.Collapsed;
+        }
     }
 }

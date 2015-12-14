@@ -99,7 +99,8 @@ namespace FT_Rider.Classes
         //Trip type
         public const string notiTypeNewTrip = "NT";
         public const string notiTypeUpdateTrip = "UT";
-        public const string notiTypePromotionTeip = "PT";
+        public const string notiTypePromotionTrip = "PT";
+        public const string notiTypeCompleteTrip = "CT";
 
         //Start trip status
         public const string tripStatusNewTrip = "NT";

@@ -189,7 +189,7 @@ namespace FT_Driver.Pages
                 // Register for this notification only if you need to receive the notifications while your application is running.
                 //pushChannel.ShellToastNotificationReceived += new EventHandler<NotificationEventArgs>(PushChannel_ShellToastNotificationReceived);
 
-                pushChannel.Open();
+                //pushChannel.Open();
 
                 // Bind this new channel for toast events.
                 //pushChannel.BindToShellToast();

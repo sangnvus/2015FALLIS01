@@ -267,7 +267,7 @@
                 </phone:LongListSelector.ItemTemplate>
             </phone:LongListSelector>
         </Grid>
-        <Grid x:Name="grv_OfficeAddress" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Visibility="Collapsed">
+        <Grid x:Name="grv_OfficeAddress" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480">
             <Grid.RenderTransform>
                 <TranslateTransform Y="0"/>
             </Grid.RenderTransform>
@@ -292,6 +292,8 @@
                 </Rectangle.Fill>
             </Rectangle>
             <maps:Map x:Name="map_OfficeAddress" HorizontalAlignment="Left" Margin="30,210,0,0" VerticalAlignment="Top" Height="534" Width="420"/>
+            <Image x:Name="img_PickerPin1" HorizontalAlignment="Center" Height="53" Margin="219,0,212,288" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
+            <Image x:Name="img_PickerLabel1" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="93,340,0,0" Source="/Images/Picker/img_PickerOfficeAddress.png" Stretch="None"/>
         </Grid>
         <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
             <Rectangle x:Name="rt_processBar" Stroke="Black">

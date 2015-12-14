@@ -125,6 +125,7 @@
     <Compile Include="Classes\RiderLogin.cs" />
     <Compile Include="Classes\ConstantVariable.cs" />
     <Compile Include="Classes\RiderGetMyTrip.cs" />
+    <Compile Include="Classes\RiderNotificationCompleteTrip.cs" />
     <Compile Include="Classes\RiderNotificationUpdateTrip.cs" />
     <Compile Include="Classes\RiderPaymentDTO.cs" />
     <Compile Include="Classes\RiderUpdateAddress.cs" />
@@ -346,6 +347,7 @@
     <Content Include="Images\Others\img_LockMap.png" />
     <Content Include="Images\Others\img_PageContentBreak.png" />
     <Content Include="Images\Others\img_PageContentBreak_dark.png" />
+    <Content Include="Images\Others\img_StarRating.png" />
     <Content Include="Images\Picker\img_PickerHomeAddress.png" />
     <Content Include="Images\Picker\img_PickerOfficeAddress.png" />
     <Content Include="Images\Picker\img_PickerPin.png" />

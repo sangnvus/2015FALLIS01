@@ -14,7 +14,7 @@ namespace FT_Driver.Classes
         public string lName { get; set; }
         public string interCode { get; set; }
         public string img { get; set; }
-        public string phone { get; set; }
+        public string mobile { get; set; }
         public string hAdd { get; set; }
         public string lan { get; set; }
         public string cntry { get; set; }

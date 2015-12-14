@@ -102,9 +102,9 @@ namespace FT_Rider.Pages
                 txt_LastName.Text = string.Empty;
             }
 
-            if (userData.content.phone != null)
+            if (userData.content.mobile != null)
             {
-                txt_Mobile.Text = userData.content.phone;
+                txt_Mobile.Text = userData.content.mobile;
             }
             else
             {
@@ -141,7 +141,7 @@ namespace FT_Rider.Pages
 
         private void tbl_Tap_ChangePassword(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/RiderChangePassword.xaml", UriKind.Relative));
         }
 
         private void img_EditIcon_HomeAddress_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -430,6 +430,7 @@ namespace FT_Rider.Pages
                                 HideLoadingScreen();
                                 MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //ok
                                 tbl_OfficeAddress.Text = txt_OfficeAddress.Text;
+                                HideAddOfficeAddressGrid();
                             }
 
                         }
@@ -522,6 +523,7 @@ namespace FT_Rider.Pages
                                 HideLoadingScreen();
                                 MessageBox.Show(ConstantVariable.strRiderUpdateSuccess); //ok
                                 tbl_HomeAddress.Text = txt_HomeAddress.Text;
+                                HideAddHomeAddressGrid();
                             }
 
                         }
@@ -751,11 +753,6 @@ namespace FT_Rider.Pages
             txt_HomeAddress.Text = address.results[0].address_components[0].long_name.ToString()
                                 + ", " + address.results[0].address_components[1].long_name.ToString()
                                 + ", " + address.results[0].address_components[2].long_name.ToString();
-            //txt_City.Text = address.results[0].address_components[address.results[0].address_components.Count - 2].long_name.ToString();
-
-            //Return Lat, Lng, some paramenter here
-            //Return Lat, Lng, some paramenter here
-            //Return Lat, Lng, some paramenter here
 
             setCursorAtFirst(txt_HomeAddress);
 
@@ -993,11 +990,6 @@ namespace FT_Rider.Pages
             txt_OfficeAddress.Text = address.results[0].address_components[0].long_name.ToString()
                                 + ", " + address.results[0].address_components[1].long_name.ToString()
                                 + ", " + address.results[0].address_components[2].long_name.ToString();
-            //txt_City.Text = address.results[0].address_components[address.results[0].address_components.Count - 2].long_name.ToString();
-
-            //Return Lat, Lng, some paramenter here
-            //Return Lat, Lng, some paramenter here
-            //Return Lat, Lng, some paramenter here
 
             setCursorAtFirst(txt_OfficeAddress);
 

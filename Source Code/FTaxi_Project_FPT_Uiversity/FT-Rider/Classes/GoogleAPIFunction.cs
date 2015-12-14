@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -13,15 +14,22 @@ namespace FT_Rider.Classes
 
         public static async Task<string> ConvertLatLngToAddress(double lat, double lng)
         {
-            string addressObjString;
+            string addressObjString = string.Empty;
 
             //GoogleAPIGeocoding URL
             string URL = ConstantVariable.googleAPIGeocodingLatLngBaseURI
                 + lat.ToString().Replace(',', '.') + ","
                 + lng.ToString().Replace(',', '.') + "&key="
                 + ConstantVariable.googleGeolocationAPIkey;
-
-            addressObjString = await ReqAndRes.GetJsonString(URL);
+            try
+            {
+                //Xem có lấy được dữ liệu về không
+                addressObjString = await ReqAndRes.GetJsonString(URL);
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("5522663355 Lỗi kết nối");
+            }
             return addressObjString;
         }
 

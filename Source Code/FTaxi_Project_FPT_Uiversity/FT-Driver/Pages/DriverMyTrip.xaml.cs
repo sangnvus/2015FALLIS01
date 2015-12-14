@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Windows.Media.Animation;
 
 namespace FT_Driver.Pages
 {
@@ -17,6 +18,15 @@ namespace FT_Driver.Pages
             InitializeComponent();
         }
 
+        private void ShowDriverLostAssets()
+        {
+            (this.Resources["showDriverLostAssets"] as Storyboard).Begin();
+            grv_DriverAssetsLost.Visibility = Visibility.Visible;
+        }
+        private void HideDriverLostAssets()
+        {
+            grv_DriverAssetsLost.Visibility = Visibility.Collapsed;
+        }
         private void btn_ViewTripDetail_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
 
@@ -45,6 +55,16 @@ namespace FT_Driver.Pages
         private void lls_MyTrip_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void img_CloseDriverLostAsset_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            HideDriverLostAssets();
+        }
+
+        private void btn_SendLostAsset_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ShowDriverLostAssets();
         }
     }
 }

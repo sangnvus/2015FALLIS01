@@ -20,6 +20,19 @@
         <Color x:Key="button_Cancel_Color_Gray">#FFB0B0B0</Color>
         <Thickness x:Key="TextBox_TextPadingLeft">60,2,2,2</Thickness>
         <Color x:Key="Button_Background_Color_Red">#FFDC1D51</Color>
+        <Color x:Key="Color_TextGridColor">#FF333333</Color>
+
+        <!--CÁI NÀY CHO HIỆU ỨNG MỞ LÊN CỦA MENU-->
+        <Storyboard x:Key="showDriverLostAssets">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_DriverAssetsLost">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </phone:PhoneApplicationPage.Resources>
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -219,6 +232,30 @@
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
         <TextBlock x:Name="tbl_MyTrip" HorizontalAlignment="Center" Margin="138,10,138,0" TextWrapping="Wrap" Text="LỘ TRÌNH CỦA TÔI" VerticalAlignment="Top" FontSize="24" Width="204"/>
+        <Grid x:Name="grv_DriverAssetsLost" Height="758" Grid.RowSpan="2" Width="480" Visibility="Collapsed">
+            <Grid.RenderTransform>
+                <TranslateTransform Y="0"/>
+            </Grid.RenderTransform>
+            <Grid.Background>
+                <SolidColorBrush Color="{StaticResource Color_GridPanelColor}"/>
+            </Grid.Background>
+            <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/Images/GridPanels/img_GridHeader.jpg" Stretch="Fill"/>
+            <TextBox x:Name="txt_Content" HorizontalAlignment="Center" Height="326" Margin="10,212,14,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" BorderBrush="#FFBAC6E6">
+                <TextBox.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBox.Foreground>
+            </TextBox>
+            <Button x:Name="btn_SendLostAsset" Content="GỬI" Margin="10,543,10,0" VerticalAlignment="Top" Height="90" Tap="btn_SendLostAsset_Tap">
+                <Button.Background>
+                    <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                </Button.Background>
+            </Button>
+            <TextBlock HorizontalAlignment="Center" Margin="25,113,26,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="429" Height="109" FontSize="20" TextAlignment="Center" Text="Nếu bạn phát hiện tư trang của hành khách để quên trên xe, vui lòng báo lại cho tổng đài. Cảm ơn bạn đã hợp tác.">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+        </Grid>
         <Grid x:Name="grv_FunctionMenu" Height="256" VerticalAlignment="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Background="#FFF0F0F0" Visibility="Collapsed">
             <Grid.RenderTransform>
                 <TranslateTransform Y="0"/>
@@ -253,6 +290,12 @@
                 <ProgressBar x:Name="pb_loading" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Foreground="White"/>
             </Grid>
         </Grid>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="BÁO ĐỒ THẤT LẠC" VerticalAlignment="Top" Margin="0,28,0,0" FontSize="30" Width="261">
+            <TextBlock.Foreground>
+                <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <Image x:Name="img_CloseDriverLostAsset" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="11,10,0,0" Tap="img_CloseDriverLostAsset_Tap"/>
     </Grid>
 
 </phone:PhoneApplicationPage>
