@@ -49,10 +49,10 @@ namespace FT_Rider.Pages
             var uid = userData.content.uid;
             var pw = pwmd5;
             var rid = userData.content.rid;
-            var subject = txt_Subject.Text;
+            var title = txt_Subject.Text;
             var content = txt_Content.Text;
 
-            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"rid\":\"{2}\",\"subject\":\"{3}\",\"content\":\"{4}\"}}", uid, pw, rid, subject, content);
+            var input = string.Format("{{\"uid\":\"{0}\",\"pw\":\"{1}\",\"rid\":\"{2}\",\"title\":\"{3}\",\"content\":\"{4}\"}}", uid, pw, rid, title, content);
 
             try
             {
@@ -72,7 +72,7 @@ namespace FT_Rider.Pages
             }
             catch (Exception)
             {
-
+                HideLoadingScreen();
                 MessageBox.Show("(Mã lỗi 11520) " + ConstantVariable.errConnectingError);
             }
         }

@@ -26,6 +26,17 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
 
+        <Storyboard x:Key="showDetail">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_TripDetail">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
         <Storyboard x:Key="showLostAssetGrid">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_RiderLossAssets">
                 <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
@@ -145,6 +156,9 @@
             </phone:LongListSelector>
             <TextBlock x:Name="txt_MyTripStatus" HorizontalAlignment="Center" Margin="0,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
             <Grid x:Name="grv_TripDetail" Visibility="Collapsed">
+                <Grid.RenderTransform>
+                    <TranslateTransform Y="0"/>
+                </Grid.RenderTransform>
                 <Grid.Background>
                     <SolidColorBrush Color="{StaticResource color_DetailPanelBackground}"/>
                 </Grid.Background>
@@ -254,7 +268,7 @@
                 </TextBlock.Foreground>
             </TextBlock>
             <Image x:Name="img_CloseRiderLostAsset" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="11,10,0,0" Tap="img_CloseRiderLostAsset_Tap"/>
-            <TextBox x:Name="txt_Content" HorizontalAlignment="Center" Height="326" Margin="12,217,12,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" BorderBrush="#FFBAC6E6">
+            <TextBox x:Name="txt_Content" HorizontalAlignment="Center" Height="209" Margin="12,217,12,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" BorderBrush="#FFBAC6E6">
                 <TextBox.Foreground>
                     <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                 </TextBox.Foreground>
@@ -264,7 +278,7 @@
                     <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-            <Button x:Name="btn_SendLostAsset" Content="GỬI" Margin="10,543,10,0" VerticalAlignment="Top" Height="90" Tap="btn_SendLostAsset_Tap">
+            <Button x:Name="btn_SendLostAsset" Content="GỬI" Margin="10,426,10,0" VerticalAlignment="Top" Height="90" Tap="btn_SendLostAsset_Tap">
                 <Button.Background>
                     <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
                 </Button.Background>

@@ -64,7 +64,7 @@ namespace FT_Rider.Classes
         public const string tNetWsParameterName = "json";
         public const string tNetRiderLoginAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/LoginRider";
         public const string tNetRiderGetNerDriverAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/GetNearDriver";
-        public const string tNetRiderRegisterAddress = "http://123.30.236.109:8088/TN/restServices/TestController/RegisterRider";
+        public const string tNetRiderRegisterAddress = "http://123.30.236.109:8088/TN/restServices/RiderController/RegisterRider";
         public const string tNetRiderGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
         public const string tNetRiderCreateTrip = "http://123.30.236.109:8088/TN/restServices/TripController/CreateTrip";
         public const string tNetRiderUpdateRegId = "http://123.30.236.109:8088/TN/restServices/CommonController/updateRegId";
@@ -78,7 +78,8 @@ namespace FT_Rider.Classes
         public const string tNetRiderChangePassword = "http://123.30.236.109:8088/TN/restServices/RiderController/ChangePassword";
         public const string tNetRiderAddMyFarvoriteDriver = "http://123.30.236.109:8088/TN/restServices/FavoriteController/addFavoriteDriver";
         public const string tNetRiderUpdateDriverStatus = "http://123.30.236.109:8088/TN/restServices/RiderController/updateDriverStatus";
-        public const string tNetRiderSendFeedback = "http://123.30.236.109:8088/TN/restServices/RiderController/Feedback";     
+        public const string tNetRiderLostAsset = "http://123.30.236.109:8088/TN/restServices/TripController/sendFeedback";
+        public const string tNetRiderSendFeedback = "http://123.30.236.109:8088/TN/restServices/CommonController/sendFeedback";  
 
         //Card type
         public const String DIRECT = "DI";

@@ -73,7 +73,7 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}" Opacity="0.2"/>
                 </TextBox.BorderBrush>
             </TextBox>
-            <Button x:Name="btn_Send" Content="GỬI PHẢN HỒI" HorizontalAlignment="Left" Margin="0,636,0,0" VerticalAlignment="Top" Width="480" Height="90" BorderBrush="{x:Null}">
+            <Button x:Name="btn_Send" Content="GỬI PHẢN HỒI" HorizontalAlignment="Left" Margin="0,636,0,0" VerticalAlignment="Top" Width="480" Height="90" BorderBrush="{x:Null}" Tap="btn_Send_Tap">
                 <Button.Background>
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>
@@ -98,6 +98,17 @@
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png" Grid.RowSpan="2"/>
         <TextBlock x:Name="tbl_Feedback" HorizontalAlignment="Center" Margin="154,10,154,0" TextWrapping="Wrap" Text="GỬI PHẢN HỒI" VerticalAlignment="Top" FontSize="24" Width="172" Height="32"/>
+        <Grid x:Name="grv_ProcessScreen" Grid.RowSpan="2" Visibility="Collapsed">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.5"/>
+            </Grid.Background>
+            <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                <ProgressBar.Foreground>
+                    <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                </ProgressBar.Foreground>
+            </ProgressBar>
+            <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+        </Grid>
     </Grid>
 
 </phone:PhoneApplicationPage>

@@ -61,7 +61,7 @@
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}" Opacity="0.2"/>
                 </TextBox.BorderBrush>
             </TextBox>
-            <Button x:Name="btn_Send" Content="GỬI PHẢN HỒI" HorizontalAlignment="Left" Margin="0,636,0,0" VerticalAlignment="Top" Width="480" Height="90" BorderBrush="{x:Null}" Tap="btn_Send_Tap">
+            <Button x:Name="btn_Send" Content="GỬI PHẢN HỒI" Margin="0" VerticalAlignment="Bottom" Height="90" BorderBrush="{x:Null}" Tap="btn_Send_Tap">
                 <Button.Background>
                     <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                 </Button.Background>

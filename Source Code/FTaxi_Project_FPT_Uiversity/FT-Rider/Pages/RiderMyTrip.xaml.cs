@@ -167,7 +167,7 @@ namespace FT_Rider.Pages
 
             //Show infor
             ShowInforOnDeteilPanel();
-            
+
         }
 
         private void ShowInforOnDeteilPanel()
@@ -208,7 +208,7 @@ namespace FT_Rider.Pages
                 MessageBox.Show("(Mã lỗi 1202) " + ConstantVariable.strNoDriverNumber);
                 Debug.WriteLine("Mã lỗi dfef444 ở btn_CallToDriver_Tap");
             }
-            
+
         }
 
 
@@ -260,6 +260,7 @@ namespace FT_Rider.Pages
 
         private void ShowTripDetailScreen()
         {
+            (this.Resources["showDetail"] as Storyboard).Begin();
             grv_TripDetail.Visibility = Visibility.Visible;
         }
 
@@ -278,6 +279,7 @@ namespace FT_Rider.Pages
         private void btn_AlertAssets_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             ShowLostAssetGrid();
+            HideBottomMenu();
         }
 
         private async void btn_AddFavorite_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -293,27 +295,24 @@ namespace FT_Rider.Pages
             try
             {
                 //Thử xem có lấy đc JSON về ko, nếu ko thì bắn ra Lối kết nối / lỗi server
-                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderAddMyFarvoriteDriver, input);                
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderAddMyFarvoriteDriver, input);
                 var addStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-
 
                 if (addStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                 {
                     //Nếu OK thi
                     HideLoadingScreen();
-
                     MessageBox.Show(ConstantVariable.strAddFavoriteSuccess); //Thêm lái xe thành công
-
                 }
                 else
                 {
-                    
+                    HideLoadingScreen();
                     Debug.WriteLine("Có lỗi 25696635ggg ở Add driver favorite");
                 }
             }
             catch (Exception)
             {
-
+                HideLoadingScreen();
                 MessageBox.Show("(Mã lỗi 1229) " + ConstantVariable.errConnectingError);
                 Debug.WriteLine("Có lỗi 65fgh2676 ở Add driver favorite");
             }
@@ -323,11 +322,52 @@ namespace FT_Rider.Pages
         private void img_CloseRiderLostAsset_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             HideLostAssetGrid();
+            HideBottomMenu();
         }
 
         private void btn_SendLostAsset_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            if (txt_Content.Text.Equals(string.Empty))
+            {
+                MessageBox.Show("Vui lòng cung cấp thêm một vài thông tin. Xin cảm ơn.");
+            }
+            SendFeedback();
+        }
 
+        private async void SendFeedback()
+        {
+            var rid = userData.content.rid;
+            var title = userData.content.fName + " " + userData.content.lName + " Báo mất đồ";
+            var content = txt_Content.Text;
+            var uid = userData.content.uid;
+            var pw = password;
+            var input = string.Format("{{\"rid\":\"{0}\",\"title\":\"{1}\",\"content\":\"{2}\",\"uid\":\"{3}\",\"pw\":\"{4}\"}}", rid, title, content, uid, pw);
+            try
+            {
+                //Thử xem có lấy đc JSON về ko, nếu ko thì bắn ra Lối kết nối / lỗi server
+                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderSendFeedback, input);
+                var lostStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+
+                if (lostStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
+                {
+                    //Nếu OK thi
+                    HideLoadingScreen();
+                    HideBottomMenu();
+                    MessageBox.Show("Thông báo của bạn đã được gửi lên thành công."); //Thêm lái xe thành công
+
+                }
+                else
+                {
+
+                    Debug.WriteLine("Có lỗi 26f86 ở Add driver favorite");
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("(Mã lỗi 1289) " + ConstantVariable.errConnectingError);
+                Debug.WriteLine("Có lỗi ff5726 ở Lost Asset");
+            }
         }
 
 

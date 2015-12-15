@@ -221,14 +221,6 @@
 
 
             </Grid>
-            <Grid x:Name="grv_ProcessScreen" Margin="0,0,0,-47" Visibility="Collapsed">
-                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
-                    <ProgressBar.Foreground>
-                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
-                    </ProgressBar.Foreground>
-                </ProgressBar>
-                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
-            </Grid>
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
         <TextBlock x:Name="tbl_MyTrip" HorizontalAlignment="Center" Margin="138,10,138,0" TextWrapping="Wrap" Text="LỘ TRÌNH CỦA TÔI" VerticalAlignment="Top" FontSize="24" Width="204"/>
@@ -239,6 +231,12 @@
             <Grid.Background>
                 <SolidColorBrush Color="{StaticResource Color_GridPanelColor}"/>
             </Grid.Background>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="BÁO ĐỒ THẤT LẠC" VerticalAlignment="Top" Margin="110,28,109,0" FontSize="30" Width="261">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <Image x:Name="img_CloseDriverLostAsset" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="11,10,0,0" Tap="img_CloseDriverLostAsset_Tap"/>
             <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/Images/GridPanels/img_GridHeader.jpg" Stretch="Fill"/>
             <TextBox x:Name="txt_Content" HorizontalAlignment="Center" Height="326" Margin="10,212,14,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="456" Padding="10,2,2,2" BorderBrush="#FFBAC6E6">
                 <TextBox.Foreground>
@@ -255,47 +253,18 @@
                     <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
                 </TextBlock.Foreground>
             </TextBlock>
-        </Grid>
-        <Grid x:Name="grv_FunctionMenu" Height="256" VerticalAlignment="Bottom" Grid.Row="1" RenderTransformOrigin="0.5,0.5" Background="#FFF0F0F0" Visibility="Collapsed">
-            <Grid.RenderTransform>
-                <TranslateTransform Y="0"/>
-            </Grid.RenderTransform>
-            <Grid.Clip>
-                <EllipseGeometry
-        			Center="240,167"
-        			RadiusX="315"
-        			RadiusY="245" />
-            </Grid.Clip>
-            <Button x:Name="btn_Cancel" Content="HỦY" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Bottom" Width="480" Height="90" BorderBrush="{x:Null}" Tap="btn_Cancel_Tap">
-                <Button.Background>
-                    <SolidColorBrush Color="{StaticResource button_Cancel_Color_Gray}"/>
-                </Button.Background>
-            </Button>
-            <Button x:Name="btn_AlertAssets" Content="BÁO MẤT ĐỒ" HorizontalAlignment="Left" Margin="0,0,0,95" VerticalAlignment="Bottom" Width="480" Height="90" BorderBrush="{x:Null}" Tap="btn_AlertAssets_Tap">
-                <Button.Background>
-                    <SolidColorBrush Color="{StaticResource Button_Background_Color_Red}"/>
-                </Button.Background>
-            </Button>
-            <Button x:Name="btn_ViewTripDetail" Content="XEM CHI TIẾT" HorizontalAlignment="Left" Margin="0,0,0,169" VerticalAlignment="Bottom" Width="480" Height="90" BorderBrush="{x:Null}" Tap="btn_ViewTripDetail_Tap">
-                <Button.Background>
-                    <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
-                </Button.Background>
-            </Button>
-            <Grid x:Name="grv_ButtonLoadingScreen" Visibility="Collapsed">
-                <Rectangle x:Name="rt_bg">
-                    <Rectangle.Fill>
-                        <SolidColorBrush Color="Black" Opacity="0.5"/>
-                    </Rectangle.Fill>
-                </Rectangle>
-                <ProgressBar x:Name="pb_loading" Height="10" VerticalAlignment="Bottom" IsIndeterminate="True" Foreground="White"/>
+
+            <Grid x:Name="grv_ProcessScreen" Grid.RowSpan="2">
+                <Grid.Background>
+                    <SolidColorBrush Color="Black" Opacity="0.5"/>
+                </Grid.Background>
+                <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                    <ProgressBar.Foreground>
+                        <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                    </ProgressBar.Foreground>
+                </ProgressBar>
+                <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
             </Grid>
         </Grid>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="BÁO ĐỒ THẤT LẠC" VerticalAlignment="Top" Margin="0,28,0,0" FontSize="30" Width="261">
-            <TextBlock.Foreground>
-                <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
-            </TextBlock.Foreground>
-        </TextBlock>
-        <Image x:Name="img_CloseDriverLostAsset" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="11,10,0,0" Tap="img_CloseDriverLostAsset_Tap"/>
     </Grid>
-
 </phone:PhoneApplicationPage>

@@ -158,6 +158,9 @@ namespace FT_Rider.Pages
         double fiveStepAfterLng = 0;
         double realDistance = 0;
 
+        //cho việc cập nhật vị tri tài xế
+        //DispatcherTimer driverTrackerTimer;
+
         public MainViewModel MainModel
         {
             get { return _mainModel; }
@@ -414,6 +417,9 @@ namespace FT_Rider.Pages
                     //Cái này sẽ âm thầm ính khoảng cách đã đi được
                     //Tránh trường hợp tính sai do tài xế đi hình vòng tròn
                     RealDistanceCalculate();
+
+                    //Và theo dõi vị trí Driver
+                    DriverTracker();
                     //Reset bộ đếm
                     costCount = 0;
                 }
@@ -875,7 +881,7 @@ namespace FT_Rider.Pages
         {
             EnableSearchLongList();
             //Khi nhấn vào ô search thì picker bị ẩn đi
-            HideGridPicker();
+            HidePickerGrid();
             //Hiện icon xóa trên thanh Search
             ShowSearchCloseIcon();
             //Enable Auto Complete
@@ -1705,7 +1711,7 @@ namespace FT_Rider.Pages
             MessageBox.Show(ConstantVariable.strCarAreStarting);
 
             //2. //Tránh trường hợp hiện lại step 02
-            isEffect == false;
+            isEffect = false;
             HideStep02Screen();
 
             // Khóa màn hình map lại, không cho tương tác
@@ -1713,6 +1719,9 @@ namespace FT_Rider.Pages
 
             //Xóa các router trên màn hình, chỉ hiện biểu tượng taxi
             RemoveMapRoute();
+
+            //Tắt picker
+            HidePickerGrid();
 
             //3.
             DriverTracker();
@@ -1747,8 +1756,8 @@ namespace FT_Rider.Pages
             //2. 
             DeleteTripData();
 
-            //4. Get near car
-            GetNearDriver();
+            //Lấy lại tọa độ
+            GetCurrentCoordinate();
         }
 
         private void SwitchToCanceledStatus()
@@ -1772,8 +1781,8 @@ namespace FT_Rider.Pages
             //2. 
             DeleteTripData();
 
-            //4. Get near car
-            GetNearDriver();
+            //Lấy lại tọa độ
+            GetCurrentCoordinate();
 
         }
 
@@ -1817,7 +1826,7 @@ namespace FT_Rider.Pages
                     riderMapLayer.Add(riderMapOverlay); //Phải khai báo 1 Layer vì không thể add trực tiếp Overlay vào Map, mà phải thông qua Layer của Map
                     map_RiderMap.Layers.Add(riderMapLayer);
 
-                    map_RiderMap.SetView(new GeoCoordinate(lat, lng), 15, MapAnimationKind.Linear);
+                    map_RiderMap.SetView(new GeoCoordinate(lat, lng), 16, MapAnimationKind.Linear);
                 }
             }
             catch (Exception)
@@ -2315,7 +2324,7 @@ namespace FT_Rider.Pages
                 ShowStartAndEndMarkersOnMap(pickupLat, pickupLng, lat, lng);
 
 
-                HideGridPicker();
+                HidePickerGrid();
 
                 //Và dời vị trí map về đó
                 //map_RiderMap.SetView(new GeoCoordinate(lat, lng), 16, MapAnimationKind.Linear);
@@ -2694,6 +2703,9 @@ namespace FT_Rider.Pages
 
             //xóa thông tin trip
             DeleteTripData();
+
+            //Lấy lại tọa độ
+            GetCurrentCoordinate();
         }
 
         private async void btn_CallOneTaxi_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -3042,7 +3054,7 @@ namespace FT_Rider.Pages
         /// <summary>
         /// CÁI NÀY ĐỂ ẨN CỤM PICKER
         /// </summary>
-        private void HideGridPicker()
+        private void HidePickerGrid()
         {
             grv_Picker.Visibility = Visibility.Collapsed;
         }

@@ -37,6 +37,7 @@ namespace FT_Driver.Classes
         public const string strChangePassSuccess = "Đổi mật khẩu thành công!";
         public const string strStatusNotAvaiable = "Trạng thái của bạn đã được chuyển qua 'Không Hoạt Động'!";
         public const string strRiderUpdateSuccess = "Cập nhật thông tin cá nhân thành công!";
+        public const string strSendFeedbackOK = "Bạn đã gửi phản hồi thành công. Cảm ơn bạn đã quan tâm đến chúng tôi.";
 
 
         public const string tNetWsParameterName = "json";
@@ -59,7 +60,8 @@ namespace FT_Driver.Classes
         public const string tNetDriverChangePassword = "http://123.30.236.109:8088/TN/restServices/DriverController/ChangePassword";
         public const string tNetDriverGetCityName = "http://123.30.236.109:8088/TN/restServices/TestController/getCityName";
         public const string tNetDriverUpdateAddress = "http://123.30.236.109:8088/TN/restServices/CommonController/UpdateAddress";
-
+        public const string tNetDriverLostAsset = "http://123.30.236.109:8088/TN/restServices/TripController/sendFeedback";
+        public const string tNetDriverSendFeedback = "http://123.30.236.109:8088/TN/restServices/CommonController/sendFeedback";
 
         //Confirmboz
         public const string cfbLogOut = "Bạn có chắc là bạn muốn thoát tài khoản không?";
