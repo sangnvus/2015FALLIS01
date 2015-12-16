@@ -283,7 +283,7 @@ namespace FT_Driver.Pages
             Debug.WriteLine("DriverMap_ResolveCompleted"); //DELETE AFTER FINISH
 
             if (new GeoCoordinate(Math.Round(map_DriverMap.Center.Latitude, 5), Math.Round(map_DriverMap.Center.Longitude, 5)).Equals(new GeoCoordinate(tmpLat, tmpLng)))
-            {                
+            {
                 HideLoadingScreen();
             }
         }
@@ -449,7 +449,7 @@ namespace FT_Driver.Pages
                 }
 
                 //Vẽ đường Tracking map trong trường hợp đã nhấn nút Start Trip
-                if (isTrackingRoute == true && countTracking > 5 && isFinishTrip == false)
+                if (isTrackingRoute == true && countTracking > 2 && isFinishTrip == false)
                 {
                     //Lấy điểm cuối
                     fiveStepAfterLat = geocoordinate.Latitude;
@@ -458,7 +458,7 @@ namespace FT_Driver.Pages
                     //Vẽ Map
                     TrackingRouteOnMap(new GeoCoordinate(fiveStepBeforeLat, fiveStepBeforeLng), new GeoCoordinate(fiveStepAfterLat, fiveStepAfterLng));
                     //Tính Khoảng cách và tính tiền
-                    CalculateRealDistanceAndCost(fiveStepBeforeLat, fiveStepBeforeLng, fiveStepAfterLat, fiveStepAfterLng);                    
+                    CalculateRealDistanceAndCost(fiveStepBeforeLat, fiveStepBeforeLng, fiveStepAfterLat, fiveStepAfterLng);
 
                     //Và đặt lại điểm đầu của route
                     fiveStepBeforeLat = fiveStepAfterLat;
@@ -467,6 +467,9 @@ namespace FT_Driver.Pages
                     //Reset bộ đếm
                     countTracking = 0;
                 }
+
+                //luôn hiện vị trí người dùng
+                map_DriverMap.SetView(realCoordinate, 16, MapAnimationKind.Linear);
 
                 //Cái này để giảm số lần chạy code khi thay đổi vị trí map
                 countForUpdateLocation++;
@@ -488,7 +491,7 @@ namespace FT_Driver.Pages
             realDistance += await GoogleAPIFunctions.GetDistance(fiveStepBeforeLat, fiveStepBeforeLng, fiveStepAfterLat, fiveStepAfterLng);
 
             //Và tính tiền
-            realFare = DriverFunctions.FareCalculate(mySelectedVehicle,realDistance);
+            realFare = DriverFunctions.FareCalculate(mySelectedVehicle, realDistance);
         }
 
 
@@ -856,13 +859,30 @@ namespace FT_Driver.Pages
                 //2. tắt Loading grid screen
                 HideLoadingGridScreen();
 
-                var myTempCoordinate = await GetCurrentPosition.GetGeoCoordinate();
                 //3. Hiển thị vị trí khách hàng có yêu cầu 
-                GetRouteOnMap(myTempCoordinate, new GeoCoordinate(newTrip.sLat, newTrip.sLng));
+                //(Nếu như có tọa độ điểm cuối)
+                if (newTrip.eLat != null && newTrip.eLng != null)
+                {
+                    var myTempCoordinate = await GetCurrentPosition.GetGeoCoordinate();
+                    GetRouteOnMap(myTempCoordinate, new GeoCoordinate(newTrip.sLat, newTrip.sLng));
+                    //4. Căn giữa hai điểm đầu cuối
+                    double distance = await GoogleAPIFunctions.GetDistance(myTempCoordinate.Latitude, myTempCoordinate.Longitude, newTrip.eLat, newTrip.eLng);
+                    //Cái này để fit maproute lên màn hình
+                    if ((float)distance < 5.0)
+                    {
+                        map_DriverMap.SetView(new GeoCoordinate((myTempCoordinate.Latitude + newTrip.sLat) / 2, (myTempCoordinate.Longitude + newTrip.sLng) / 2), 14, MapAnimationKind.Parabolic);
+                    }
+                    else if ((float)distance > 25.0)
+                    {
+                        map_DriverMap.SetView(new GeoCoordinate((myTempCoordinate.Latitude + newTrip.sLat) / 2, (myTempCoordinate.Longitude + newTrip.sLng) / 2), 10, MapAnimationKind.Parabolic);
+                    }
+                    else
+                    {
+                        map_DriverMap.SetView(new GeoCoordinate((myTempCoordinate.Latitude + newTrip.sLat) / 2, (myTempCoordinate.Longitude + newTrip.sLng) / 2), 12, MapAnimationKind.Parabolic);
+                    }
 
-                //4. Căn giữa hai điểm đầu cuối
-                map_DriverMap.SetView(new GeoCoordinate((myTempCoordinate.Latitude + newTrip.sLat) / 2, (myTempCoordinate.Longitude + newTrip.sLng) / 2), 14, MapAnimationKind.Parabolic);
 
+                }
 
             }
             catch (Exception)
@@ -939,7 +959,7 @@ namespace FT_Driver.Pages
 
         }
 
-    
+
 
         /// <summary>
         /// Nhận thông tin từ Notification
@@ -1109,6 +1129,17 @@ namespace FT_Driver.Pages
             }
         }
 
+        private void RemoveMapRouteOnly()
+        {
+            if (driverMapRoute != null)
+            {
+                map_DriverMap.RemoveRoute(driverMapRoute);
+                driverMapRoute = null;
+                driverQuery = null;
+            }
+        }
+
+
 
         /// <summary>
         /// Cái này để xóa route
@@ -1220,7 +1251,7 @@ namespace FT_Driver.Pages
         /// <param name="e"></param>
         private async void btn_RejectTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            
+
             //Show loading Sceen
             ShowLoadingGridScreen();
 
@@ -1242,36 +1273,18 @@ namespace FT_Driver.Pages
                     if (rejectStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
                         ///1. Update lmd
-                        ///2. Xóa toàn bộ thông tin Trip
-                        ///3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
-                        ///4. TRỞ VỀ MÀN HÌNH HOME
-                        ///note. Để lấy lại trạng thái sẵn sàng thì a. THoát và đăng nhập lại b. Lựa chọn (Hình F trong tài liệu)
-                        
-                        //1.  Update lmd
+                        ///2. Chuyển qua trạng thái ko hoạt động
+                        ///3. Xóa toàn bộ thông tin Trip  và về màn hình home
+
+                        //1. Update lmd
                         tlmd = (long)rejectStatus.lmd;
 
-                        /*
-                        //2. Xóa toàn bộ thông tin Trip
-                        //DeleteTrip();
-                        ResetFlag();
-
-                        //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
+                        //2. Chuyển qua trạng thái ko hoạt động
                         UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Để chuyển thành Not Available thì gửi lên "AC"
                         ShowChangeStatusButton(); // <=========== Cần kích hoạt nút này lên để chuyển qua chế độ off
 
-                        //Trước khi về màn hình home thì tắt loading screen
-                        HideLoadingGridScreen();
-                        // grv_AcceptReject.Visibility = Visibility.Collapsed;
-
-                        //Xóa toàn bộ route
-                        RemoveMapRoute();
-                        RemoveTrakingMapRoute();
-
-                        //4.TRỞ VỀ MÀN HÌNH HOME
-                        SetViewAtHomeState();
-                        */
+                        //3. Xóa toàn bộ thông tin Trip  và về màn hình home
                         ResetAllData();
-
                     }
                     else
                     {
@@ -1292,10 +1305,6 @@ namespace FT_Driver.Pages
             //DeleteTrip();
             ResetFlag();
 
-            //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
-            UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Để chuyển thành Not Available thì gửi lên "AC"
-            ShowChangeStatusButton(); // <=========== Cần kích hoạt nút này lên để chuyển qua chế độ off
-
             //Trước khi về màn hình home thì tắt loading screen
             HideLoadingGridScreen();
             // grv_AcceptReject.Visibility = Visibility.Collapsed;
@@ -1306,6 +1315,9 @@ namespace FT_Driver.Pages
 
             //4.TRỞ VỀ MÀN HÌNH HOME
             SetViewAtHomeState();
+
+            //Gọi lại vị trí hiện tại
+            GetCurrentCorrdinate();
         }
 
 
@@ -1318,7 +1330,7 @@ namespace FT_Driver.Pages
             isTrack = true;
 
             //Xóa đường đi hiện tại trên map
-            RemoveMapRoute();
+            RemoveMapRouteOnly();
 
             //Và khai báo tọa độ điểm đầu của chuyến đi (Chính là địa điểm hiện tại)
             SetStartCoordinateOfTrip(currentLat, currentLng);
@@ -1343,7 +1355,6 @@ namespace FT_Driver.Pages
                     var startStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
                     if (startStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
-
                         //Nếu thành công thì
                         ///1. Update lmd
                         ///2 Hiện Button "chạm để thanh toán"
@@ -1360,9 +1371,8 @@ namespace FT_Driver.Pages
                         if (newTrip.eLat != 0 && newTrip.eLng != 0)
                         {
                             GetRouteOnMap(new GeoCoordinate(newTrip.sLat, newTrip.sLng), new GeoCoordinate(newTrip.eLat, newTrip.eLng));
-                            
-                        }
 
+                        }
 
                         //Hiện button "Tap to pay"
                         ShowStartTripScreen();
@@ -1380,7 +1390,7 @@ namespace FT_Driver.Pages
                         fiveStepBeforeLat = currentLat;
                         fiveStepBeforeLng = currentLng;
 
-                        map_DriverMap.SetView(realCoordinate, 16, MapAnimationKind.Linear);
+                        //map_DriverMap.SetView(realCoordinate, 16, MapAnimationKind.Linear);
 
                     }
                     else
@@ -1394,7 +1404,7 @@ namespace FT_Driver.Pages
                 MessageBox.Show("(Mã lỗi 312) " + ConstantVariable.errServerError);
             }
         }
-        
+
 
         private async void btn_CancelTrip_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -1420,32 +1430,17 @@ namespace FT_Driver.Pages
                     if (cancelStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS)) //0000
                     {
                         ///1. Update lmd
-                        ///2. Xóa toàn bộ thông tin Trip
-                        ///3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
-                        ///4. TRỞ VỀ MÀN HÌNH HOME
+                        ///2. Chuyển qua trạng thái ko hoạt động
+                        ///3. Xóa toàn bộ thông tin Trip  và về màn hình home
 
                         //1. Update lmd
                         tlmd = (long)cancelStatus.lmd;
-                        /*
-                        //2. Xóa toàn bộ thông tin trip
-                        //DeleteTrip();
-                        ResetFlag();
 
-                        //3. CHUYỂN VỀ TRẠNG THÁI KHÔNG PHỤC VỤ
-                        UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Chuyển qua không phục vụ - gửi lên AC   
+                        //2. Chuyển qua trạng thái ko hoạt động
+                        UpdateDriverStatus(ConstantVariable.dStatusAvailable); //Để chuyển thành Not Available thì gửi lên "AC"
                         ShowChangeStatusButton(); // <=========== Cần kích hoạt nút này lên để chuyển qua chế độ off
 
-                        //Trước khi về màn hình home thì tắt loading screen
-                        HideLoadingGridScreen();
-
-                        //Xóa toàn bộ route
-                        RemoveMapRoute();
-                        RemoveTrakingMapRoute();
-
-                        //4.TRỞ VỀ MÀN HÌNH HOME
-                        SetViewAtHomeState();
-                        */
-
+                        //3. Xóa toàn bộ thông tin Trip  và về màn hình home
                         ResetAllData();
                     }
                     else
@@ -1609,7 +1604,8 @@ namespace FT_Driver.Pages
                     }
                     //Sau khi load xing thì đẩy vào isolate
                     tNetUserLoginData["CityNamesDB"] = cityNamesDB;
-                }else
+                }
+                else
                 {
                     Debug.WriteLine(ConstantVariable.errServerError);
                 }
@@ -1772,13 +1768,16 @@ namespace FT_Driver.Pages
 
                         //2.
                         //tNetTripData.Remove("CompleteTripBill");
-                        DeleteTrip();
-                        RemoveMapRoute();
+                        //DeleteTrip();
+                        //RemoveMapRoute();
+                        //RemoveTrakingMapRoute();
+                        //ResetFlag();
+
+                        ResetAllData();
                         RemoveTrakingMapRoute();
-                        ResetFlag();
 
                         //3.
-                        SetViewAtHomeState();
+                        //SetViewAtHomeState();
 
                     }
                 }
