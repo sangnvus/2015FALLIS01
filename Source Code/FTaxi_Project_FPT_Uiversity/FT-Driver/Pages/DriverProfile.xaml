@@ -1,0 +1,313 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
+    x:Class="FT_Driver.Pages.DriverProfile"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True">
+
+
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Name="lpkItemTemplate">
+            <TextBlock Text="{Binding Country}" />
+        </DataTemplate>
+        <DataTemplate x:Name="lpkFullItemTemplate">
+            <TextBlock Text="{Binding Country}" Style="{StaticResource PhoneTextTitle2Style}"/>
+        </DataTemplate>
+        <Color x:Key="Color_BaseGridColor">#FFF2F2F4</Color>
+        <Color x:Key="Color_TextGridColor">#FF333333</Color>
+        <Color x:Key="lls_ColorBackground">#FF060F27</Color>
+
+        <Storyboard x:Key="showAddHomeAddressGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_AddHomeAddress">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="showOfficeAddressGrid">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" Storyboard.TargetName="grv_OfficeAddress">
+                <DiscreteDoubleKeyFrame KeyTime="0" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.500" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+    </phone:PhoneApplicationPage.Resources>
+    <phone:PhoneApplicationPage.FontFamily>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+    </phone:PhoneApplicationPage.FontFamily>
+    <phone:PhoneApplicationPage.FontSize>
+        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+    </phone:PhoneApplicationPage.FontSize>
+    <phone:PhoneApplicationPage.Foreground>
+        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+    </phone:PhoneApplicationPage.Foreground>
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn" />
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn" />
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut" />
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut" />
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.Resources>
+            <DataTemplate x:Name="PickerItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="#FF2E9FFF" Width="34" Height="34">
+                        <TextBlock Text="{Binding Logo}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="{Binding Name}" Margin="35 0 0 0"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Name="PickerFullModeItemTemplate">
+                <StackPanel Orientation="Horizontal" Margin="16 21 0 20">
+                    <TextBlock Text="{Binding Name}" Margin="16 0 0 0" FontSize="43" FontFamily="{StaticResource PhoneFontFamilyLight}"/>
+                    <TextBlock Text="language: "/>
+                    <TextBlock Text="{Binding Logo}" Foreground="Green"/>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+        <!--TitlePanel contains the name of the application and page title-->
+
+
+        <Grid.Background>
+            <StaticResource ResourceKey="LayoutRootBackground"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="768"/>
+        </Grid.RowDefinitions>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="12*"/>
+                <RowDefinition Height="293"/>
+                <RowDefinition Height="83*"/>
+            </Grid.RowDefinitions>
+            <Rectangle x:Name="panel_name" Margin="-4,8,-3,165" Opacity="0.7" Grid.Row="1" Fill="White">
+                <Rectangle.Stroke>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Rectangle x:Name="panel_moreInfor" Margin="-4,142,-3,314" Grid.RowSpan="2" Opacity="0.7" Grid.Row="1" Fill="#FFF4F4F5">
+                <Rectangle.Stroke>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <Rectangle x:Name="panel_AddAddress" Margin="-4,116,-3,79" Opacity="0.7" Fill="#FFF4F4F5" Grid.Row="2">
+                <Rectangle.Stroke>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}"/>
+                </Rectangle.Stroke>
+            </Rectangle>
+            <TextBlock x:Name="tbl_ChangePassword" HorizontalAlignment="Center" Margin="157,374,186,0" TextWrapping="Wrap" Text="Đổi mật khẩu" VerticalAlignment="Top" FontSize="23" Tap="tbl_Tap_ChangePassword" Grid.Row="2" TextDecorations="Underline"/>
+            <TextBlock x:Name="tbl_HomeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="69,135,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22"/>
+            <TextBlock x:Name="tbl_OfficeAddress" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="69,248,0,0" Grid.Row="2" Height="90" Width="348" Foreground="Black" FontSize="22" Tap="tbl_OfficeAddress_Tap"/>
+            <Image x:Name="img_EditIcon_HomeAddress" HorizontalAlignment="Left" Height="100" Margin="422,126,0,0" VerticalAlignment="Top" Width="52" Grid.Row="2" Source="/Images/Icons/icon_Edit.jpg" Opacity="0.8" Tap="img_EditIcon_HomeAddress_Tap"/>
+            <StackPanel x:Name="StckUserDetailsUI" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Grid.RowSpan="3">
+                <Grid Height="430">
+                    <Image x:Name="img_Avatar" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="352,79,0,0" Source="/Images/Others/img_default_avatar_dark.png">
+                        <Image.Clip>
+                            <EllipseGeometry
+								Center="50,50"
+								RadiusX="45"
+								RadiusY="45" />
+                        </Image.Clip>
+                    </Image>
+                    <TextBlock x:Name="txt_LastName" HorizontalAlignment="Left" Margin="84,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="30" Width="232">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_FirstName" HorizontalAlignment="Left" Margin="84,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="30" Width="232">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_Email" HorizontalAlignment="Left" Margin="84,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="30" Width="381">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_Mobile" HorizontalAlignment="Left" Margin="84,272,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="30" Width="381">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                    <TextBlock x:Name="txt_Balance" HorizontalAlignment="Left" Margin="84,334,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="30" Width="381">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+            <Image x:Name="img_UserFName" HorizontalAlignment="Left" Height="50" Margin="9,16,0,0" Grid.Row="1" VerticalAlignment="Top" Width="46" Source="/Images/Icons/PNG/iconPNG_UserProfile.png"/>
+            <Image x:Name="img_UserFName_Copy" HorizontalAlignment="Left" Height="50" Margin="5,148,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Email.png"/>
+            <Image x:Name="img_UserFName_Copy1" HorizontalAlignment="Left" Height="50" Margin="5,203,0,0" Grid.Row="1" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_PhoneNumber.png"/>
+            <Image x:Name="img_UserFName_Copy2" HorizontalAlignment="Left" Height="50" Margin="0,126,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Address.png"/>
+            <Image x:Name="img_UserFName_Copy3" HorizontalAlignment="Left" Height="50" Margin="0,248,0,0" Grid.Row="2" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_AddressOffice.png"/>
+            <Image x:Name="icon_money" HorizontalAlignment="Left" Height="40" Margin="10,275,0,0" Grid.Row="1" VerticalAlignment="Top" Width="40" Source="/Images/Icons/PNG/iconPNG_Money.png" Grid.RowSpan="2"/>
+            <Rectangle x:Name="line1" HorizontalAlignment="Left" Height="1" Margin="82,68,0,0" VerticalAlignment="Top" Width="234" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy" HorizontalAlignment="Left" Height="1" Margin="82,201,-3,0" VerticalAlignment="Top" Width="401" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy1" HorizontalAlignment="Left" Height="1" Margin="82,263,-3,0" VerticalAlignment="Top" Width="401" Grid.Row="1">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy2" HorizontalAlignment="Left" Height="1" Margin="82,35,-3,0" VerticalAlignment="Top" Width="401" Grid.Row="2">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Rectangle x:Name="line1_Copy3" HorizontalAlignment="Left" Height="1" Margin="69,238,0,0" VerticalAlignment="Top" Width="247" Grid.Row="2">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource Rectang_StrokeColor}" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Image x:Name="img_UserFName_Copy4" HorizontalAlignment="Left" Height="50" Margin="5,40,0,0" VerticalAlignment="Top" Width="50" Source="/Images/Icons/PNG/iconPNG_Language.png" Grid.Row="2"/>
+
+
+        </Grid>
+        <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>
+        <TextBlock x:Name="tbl_Profile" HorizontalAlignment="Center" Margin="146,10,145,0" TextWrapping="Wrap" Text="HỒ SƠ CÁ NHÂN" VerticalAlignment="Top" FontSize="24" Width="189"/>
+        <TextBlock x:Name="tbl_Lang" HorizontalAlignment="Left" Margin="84,398,0,0" TextWrapping="Wrap" Text="Tiếng Việt" VerticalAlignment="Top" FontSize="30">
+            <TextBlock.Foreground>
+                <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+            </TextBlock.Foreground>
+        </TextBlock>
+        <Grid x:Name="grv_AddHomeAddress" Margin="0" Visibility="Collapsed">
+            <Grid.RenderTransform>
+                <TranslateTransform Y="0"/>
+            </Grid.RenderTransform>
+            <Grid.Background>
+                <SolidColorBrush Color="{StaticResource Color_BaseGridColor}"/>
+            </Grid.Background>
+            <Image x:Name="img_header" Height="94" VerticalAlignment="Top" Source="/Images/PromotionCode/img_PromotionCodeGridBG.jpg" Stretch="Fill" Margin="0"/>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="ĐỊA CHỈ NHÀ RIÊNG" VerticalAlignment="Top" Margin="0,26,0,0" FontSize="30">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <Image x:Name="img_CloseHome" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="10,10,0,0" Tap="img_CloseHome_Tap"/>
+            <TextBox x:Name="txt_HomeAddress" HorizontalAlignment="Center" Height="78" Margin="0,120,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="480" Padding="10,2,50,2" Foreground="Black" GotFocus="txt_HomeAddress_GotFocus" KeyUp="txt_HomeAddress_KeyUp" Tap="txt_HomeAddress_Tap" FontSize="25" LostFocus="txt_HomeAddress_LostFocus">
+                <TextBox.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBox.BorderBrush>
+            </TextBox>
+            <Button x:Name="btn_SaveHome" Content="Lưu" HorizontalAlignment="Left" Margin="382,0,0,0" VerticalAlignment="Top" Width="98" BorderBrush="{x:Null}" FontSize="25" Height="94" Tap="btn_SaveHome_Tap" Visibility="Collapsed">
+                <Button.Foreground>
+                    <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                </Button.Foreground>
+            </Button>
+            <TextBlock x:Name="tbl_Address" HorizontalAlignment="Left" Margin="10,99,0,0" TextWrapping="Wrap" Text="Nhập địa chỉ" VerticalAlignment="Top" Foreground="#FF595959"/>
+            <Image x:Name="img_CloseClearHomeAddress" HorizontalAlignment="Left" Height="48" Margin="417,135,0,0" VerticalAlignment="Top" Width="48" Source="/Images/SearchBar/icon_CloseClear.jpg" Tap="img_CloseClearHomeAddress_Tap" Visibility="Collapsed"/>
+            <Rectangle HorizontalAlignment="Left" Height="561" Margin="12,200,0,0" Stroke="Black" VerticalAlignment="Top" Width="456">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <maps:Map x:Name="map_HomeAddress" HorizontalAlignment="Left" Margin="15,203,0,0" VerticalAlignment="Top" Height="555" Width="450" KeyDown="map_HomeAddress_KeyDown" ResolveCompleted="map_HomeAddress_ResolveCompleted" MouseLeftButtonDown="map_HomeAddress_MouseLeftButtonDown" GotFocus="map_HomeAddress_GotFocus">
+                <maps:Map.BorderBrush>
+                    <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                </maps:Map.BorderBrush>
+            </maps:Map>
+            <Image x:Name="img_PickerPin" HorizontalAlignment="Center" Height="53" Margin="215,0,216,285" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
+            <Image x:Name="img_PickerLabel" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="89,343,0,0" Source="/Images/Picker/img_PickerHomeAddress.png" Stretch="None"/>
+            <phone:LongListSelector x:Name="lls_HomeAddress" HorizontalAlignment="Left" Height="242" VerticalAlignment="Top" Width="456" Margin="12,183,0,0" SelectionChanged="lls_HomeAddress_SelectionChanged" Visibility="Collapsed">
+                <phone:LongListSelector.Background>
+                    <SolidColorBrush Color="{StaticResource lls_ColorBackground}"/>
+                </phone:LongListSelector.Background>
+                <phone:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock HorizontalAlignment="Left" Text="{Binding Name}" Margin="15,8,15,0" FontSize="28"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </phone:LongListSelector.ItemTemplate>
+            </phone:LongListSelector>
+        </Grid>
+        <Grid x:Name="grv_OfficeAddress" HorizontalAlignment="Left" Height="768" VerticalAlignment="Top" Width="480" Visibility="Collapsed">
+            <Grid.RenderTransform>
+                <TranslateTransform Y="0"/>
+            </Grid.RenderTransform>
+            <Grid.Background>
+                <SolidColorBrush Color="{StaticResource Color_BaseGridColor}"/>
+            </Grid.Background>
+            <Image x:Name="img_header_Copy" Height="94" VerticalAlignment="Top" Source="/Images/PromotionCode/img_PromotionCodeGridBG.jpg" Stretch="Fill" Margin="0"/>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="ĐỊA CHỈ CÔNG TY" VerticalAlignment="Top" Margin="0,26,0,0" FontSize="30">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_TextGridColor}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <Image x:Name="img_CloseOffice" HorizontalAlignment="Left" Height="72" VerticalAlignment="Top" Width="72" Source="/Images/PromotionCode/img_PromotionCodeCLOSE.jpg" Margin="10,10,0,0" Tap="img_CloseOffice_Tap"/>
+            <TextBlock x:Name="tbl_OfficeAddress_Show" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Margin="30,105,30,0" Height="90" Width="420" FontSize="22" Tap="tbl_OfficeAddress_Tap">
+                <TextBlock.Foreground>
+                    <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                </TextBlock.Foreground>
+            </TextBlock>
+            <Rectangle HorizontalAlignment="Left" Height="545" Margin="24,205,0,0" Stroke="Black" VerticalAlignment="Top" Width="433">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="{StaticResource lls_BackgroundColor}"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <maps:Map x:Name="map_OfficeAddress" HorizontalAlignment="Left" Margin="30,210,0,0" VerticalAlignment="Top" Height="534" Width="420"/>
+            <Image x:Name="img_PickerPin1" HorizontalAlignment="Center" Height="53" Margin="219,0,212,288" VerticalAlignment="Bottom" Width="49" Source="/Images/Picker/img_PickerPin.png"/>
+            <Image x:Name="img_PickerLabel1" HorizontalAlignment="Left" Height="87" VerticalAlignment="Top" Width="296" Margin="93,340,0,0" Source="/Images/Picker/img_PickerOfficeAddress.png" Stretch="None"/>
+        </Grid>
+        <Grid x:Name="grv_ProcessScreen" Visibility="Collapsed">
+            <Rectangle x:Name="rt_processBar" Stroke="Black">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="Black" Opacity="0.5"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <ProgressBar x:Name="pb_ProcessBar" Height="10" VerticalAlignment="Center" Margin="25,0,23,-0.3" Background="{x:Null}" FontFamily="Segoe WP" FlowDirection="LeftToRight" IsIndeterminate="True" Maximum="100">
+                <ProgressBar.Foreground>
+                    <SolidColorBrush Color="{StaticResource processbar_Color}"/>
+                </ProgressBar.Foreground>
+            </ProgressBar>
+            <TextBlock x:Name="tbl_loading" HorizontalAlignment="Center" TextWrapping="Wrap" Text="Đang chạy..." VerticalAlignment="Center" FontSize="18" Margin="193,389,192,355"/>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>
