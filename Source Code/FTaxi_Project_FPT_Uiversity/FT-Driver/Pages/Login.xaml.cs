@@ -41,6 +41,16 @@ namespace FT_Driver.Pages
             // CreatePushChannel();
         }
 
+        /// <summary>
+        /// CÁI NÀY ĐỂ VÔ HIỆU HÓA NÚT BACK Ở HOME
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            //base.OnBackKeyPress(e);
+            //MessageBox.Show("You can not use Hardware back button");
+            e.Cancel = true;
+        }
 
         private void HideLoadingScreen()
         {

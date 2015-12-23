@@ -41,6 +41,17 @@ namespace FT_Rider.Pages
         }
 
 
+        /// <summary>
+        /// CÁI NÀY ĐỂ VÔ HIỆU HÓA NÚT BACK Ở HOME
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            //base.OnBackKeyPress(e);
+            //MessageBox.Show("You can not use Hardware back button");
+            e.Cancel = true;
+        }
+
         private async void tbn_Tap_Login(object sender, System.Windows.Input.GestureEventArgs e)
         {
             if (txt_UserId.Text != "" && txt_Password.ActionButtonCommandParameter.ToString() != "")
