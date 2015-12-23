@@ -58,6 +58,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Color x:Key="Color_GridTextColor">#FF333333</Color>
     </phone:PhoneApplicationPage.Resources>
 
 
@@ -148,14 +149,14 @@
                                 </TextBlock>
                                 <TextBlock HorizontalAlignment="Left" Margin="10,216,0,0" TextWrapping="Wrap" Text="{Binding ETime}" VerticalAlignment="Top"/>
                                 <TextBlock HorizontalAlignment="Left" Margin="412,216,0,0" TextWrapping="Wrap" Text="đ" VerticalAlignment="Top" TextAlignment="Right"/>
-                                <TextBlock HorizontalAlignment="Left" Margin="288,216,0,0" TextWrapping="Wrap" Text="{Binding Fare}" VerticalAlignment="Top" TextAlignment="Right" Width="119"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="288,216,0,0" TextWrapping="Wrap" Text="{Binding Fare, StringFormat=\{0:n0\}}" VerticalAlignment="Top" TextAlignment="Right" Width="119"/>
                             </Grid>
                         </StackPanel>
                     </DataTemplate>
                 </phone:LongListSelector.ItemTemplate>
             </phone:LongListSelector>
             <TextBlock x:Name="txt_MyTripStatus" HorizontalAlignment="Center" Margin="0,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-            <Grid x:Name="grv_TripDetail" Visibility="Collapsed">
+            <Grid x:Name="grv_TripDetail">
                 <Grid.RenderTransform>
                     <TranslateTransform Y="0"/>
                 </Grid.RenderTransform>
@@ -169,37 +170,26 @@
                 </Button>
                 <Rectangle x:Name="panel_name" Stroke="#FFD1D1D1" Opacity="0.7" Margin="-4,27,-3,462" Fill="White"/>
                 <Rectangle x:Name="panel_Pay" Stroke="#FFC3C3C3" Opacity="0.7" Margin="-3,272,-4,221" Fill="White"/>
-                <TextBox x:Name="txt_DriverName" Width="279" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.803,0.667" Padding="{StaticResource TextBox_TextPadingLeft}" Margin="5,19,0,0" Height="72" HorizontalAlignment="Left" Background="{x:Null}" BorderBrush="{x:Null}"/>
                 <Image x:Name="img_DriverAvatar" Width="100" VerticalAlignment="Top" Source="/Images/Others/img_default_avatar_dark.png" Margin="352,38,0,0" Height="100" HorizontalAlignment="Left">
                     <Image.Clip>
                         <EllipseGeometry Center="50,50" RadiusY="45" RadiusX="45"/>
                     </Image.Clip>
                 </Image>
-                <TextBox x:Name="txt_Mobile" Width="279" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.803,0.667" Padding="{StaticResource TextBox_TextPadingLeft}" Margin="5,77,0,0" Height="72" HorizontalAlignment="Left" Background="{x:Null}" BorderBrush="{x:Null}"/>
-                <TextBox x:Name="txt_From" Width="465" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.803,0.667" Padding="{StaticResource TextBox_TextPadingLeft}" Margin="5,134,0,0" Height="72" HorizontalAlignment="Left" FontSize="23" Background="{x:Null}" BorderBrush="{x:Null}"/>
-                <TextBox x:Name="txt_To" Width="465" VerticalAlignment="Top" TextWrapping="Wrap" RenderTransformOrigin="0.803,0.667" Padding="{StaticResource TextBox_TextPadingLeft}" Margin="5,193,0,0" Height="72" HorizontalAlignment="Left" FontSize="23" Background="{x:Null}" BorderBrush="{x:Null}"/>
                 <TextBlock x:Name="tbl_Distance" Width="201" VerticalAlignment="Top" Text="Quãng đường (km)" TextWrapping="Wrap" Margin="10,344,0,0" HorizontalAlignment="Left" FontSize="23">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="txt_Distance" Width="214" VerticalAlignment="Top" TextWrapping="Wrap" TextAlignment="Right" RenderTransformOrigin="0.803,0.667" Padding="2" Margin="266,323,0,0" Height="72" HorizontalAlignment="Left" FontSize="25" Background="{x:Null}" BorderBrush="{x:Null}"/>
                 <TextBlock x:Name="tbl_TotalCost" Width="201" VerticalAlignment="Top" Text="Thanh toán (đ)" TextWrapping="Wrap" Margin="10,404,0,0" HorizontalAlignment="Left" FontSize="23">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="txt_TotalCost" Width="214" VerticalAlignment="Top" TextWrapping="Wrap" TextAlignment="Right" RenderTransformOrigin="0.803,0.667" Padding="2" Margin="266,383,0,0" Height="72" HorizontalAlignment="Left" FontSize="25" Background="{x:Null}" BorderBrush="{x:Null}">
-                    <TextBox.Foreground>
-                        <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
-                    </TextBox.Foreground>
-                </TextBox>
                 <TextBlock x:Name="tbl_PaymentType" Width="222" VerticalAlignment="Top" Text="Hình thức Thanh toán" TextWrapping="Wrap" Margin="10,461,0,0" HorizontalAlignment="Left" FontSize="23">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="txt_PaymentType" Width="214" VerticalAlignment="Top" Text="Tiền mặt" TextWrapping="Wrap" TextAlignment="Right" RenderTransformOrigin="0.803,0.667" Padding="2" Margin="266,440,0,0" Height="72" HorizontalAlignment="Left" FontSize="25" Foreground="Black" Background="{x:Null}" BorderBrush="{x:Null}"/>
                 <PasswordBox x:Name="pwd_Password" d:IsHidden="True" VerticalAlignment="Top" Margin="211,557,4,0" BorderBrush="{x:Null}">
                     <PasswordBox.Background>
                         <SolidColorBrush Color="#BFD8D8D8" Opacity="0.3"/>
@@ -249,7 +239,46 @@
                         <SolidColorBrush Color="{StaticResource Button_BackgroundColor_Blue}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBox x:Name="txt_CarLevel" Width="214" VerticalAlignment="Top" TextWrapping="Wrap" TextAlignment="Right" RenderTransformOrigin="0.803,0.667" Padding="2" Margin="266,267,0,0" Height="72" HorizontalAlignment="Left" FontSize="25" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                <TextBlock x:Name="txt_DriverName" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,37,0,0" FontSize="26" Width="234" Height="39">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock x:Name="txt_Mobile" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,95,0,0" FontSize="26" Width="234" Height="39">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock x:Name="txt_From" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,145,0,0" FontSize="23" Width="370" Height="56">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock x:Name="txt_To" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,200,0,0" FontSize="23" Width="370" Height="59">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock x:Name="txt_Date" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="236,279,0,0" FontSize="26" Width="234" Height="39" TextAlignment="Right">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock x:Name="txt_Distance" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="236,336,0,0" FontSize="26" Width="234" Height="39" TextAlignment="Right">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock x:Name="txt_TotalCost" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="236,393,0,0" FontSize="26" Width="234" Height="39" TextAlignment="Right">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
+                <TextBlock x:Name="txt_PaymentType" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="262,453,0,0" FontSize="26" Width="204" Height="39" TextAlignment="Right" Text="Tiền mặt">
+                    <TextBlock.Foreground>
+                        <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
+                    </TextBlock.Foreground>
+                </TextBlock>
             </Grid>
         </Grid>
         <Image x:Name="img_Navbar" HorizontalAlignment="Left" Height="69" VerticalAlignment="Top" Width="480" Source="/Images/Others/img_AppNavbar.png"/>

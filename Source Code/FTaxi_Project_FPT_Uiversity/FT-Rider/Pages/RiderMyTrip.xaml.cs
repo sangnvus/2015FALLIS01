@@ -78,7 +78,7 @@ namespace FT_Rider.Pages
                         //2. Loop to list all item in object
                         foreach (var trip in myTrip.content.list)
                         {
-                            myTripDataSource.Add(new RiderMyTripLLSObj(trip.tid, trip.did, trip.dName, trip.dMobile, trip.plate, trip.cLvl, trip.from, trip.to, trip.sTime, trip.eTime, trip.distance, trip.fare, trip.payment, trip.currency, trip.fName, trip.lName, trip.rate, trip.interCode, trip.favorite));
+                            myTripDataSource.Add(new RiderMyTripLLSObj(trip.tid, trip.did, trip.dName, trip.dMobile, trip.plate, trip.cLvl, trip.from, trip.to, trip.sTime, trip.eTime, trip.distance, RiderFunctions.RoundMoney((double)trip.fare, -3), trip.payment, trip.currency, trip.fName, trip.lName, trip.rate, trip.interCode, trip.favorite));
                             myTripCollection[trip.tid.ToString()] = new RiderMyTripItemObj
                             {
                                 tid = trip.tid,
@@ -191,9 +191,9 @@ namespace FT_Rider.Pages
             txt_From.Text = myTripCollection[selectedTripId].from;
             txt_To.Text = myTripCollection[selectedTripId].to;
 
-            txt_CarLevel.Text = carLevel;
+            txt_Date.Text = carLevel;
             txt_Distance.Text = myTripCollection[selectedTripId].distance.ToString();
-            txt_TotalCost.Text = myTripCollection[selectedTripId].fare.ToString();
+            txt_TotalCost.Text = string.Format("{0:#,##0}", RiderFunctions.RoundMoney((double)myTripCollection[selectedTripId].fare, -3)); //làm tròn tiền
         }
 
         private void btn_CallToDriver_Tap(object sender, System.Windows.Input.GestureEventArgs e)

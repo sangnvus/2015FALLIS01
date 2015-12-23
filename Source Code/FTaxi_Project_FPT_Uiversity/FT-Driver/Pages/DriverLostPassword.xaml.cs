@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using FT_Driver.Classes;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace FT_Driver.Pages
 {
@@ -42,56 +43,63 @@ namespace FT_Driver.Pages
             //ValidateEmail();
         }
 // 
-        private void btn_ResetPassword_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private async void btn_ResetPassword_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            //Show 
-//             ShowLoadingSreen();
-// 
-//             var email = txt_Email.Text;
-//             var input = string.Format("{{\"email\":\"{0}\"}}", email);
-//             try
-//             {
-//                 ///xem xem có lấy đc dữ liệu về ko?
-//                 ///
-//                 var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderResetPassword, input);
-//                 var resetStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-//                 if (resetStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//Code 0000
-//                 {
-//                     //Nếu ok
-//                     ///2. dis screen
-//                     ///3. thong bao
-//                     ///4. quay ve man hinh login
-//                     //
-// 
-//                     //2.
-//                     HideLoadingSreen();
-// 
-//                     //3.
-//                     MessageBox.Show(ConstantVariable.strResetPasswordSuccess);
-// 
-//                     //4.
-//                     NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
-// 
-//                 }
-//             }
-//             catch (Exception)
-//             {
-// 
-//                 HideLoadingSreen();
-//                 MessageBox.Show("(Mã lỗi 3901) " + ConstantVariable.errServerError); //Co loi may chu
-//                 Debug.WriteLine("Có lỗi fghn76 ở reset pass");
-//             }
+            if (txt_Email.Text.Trim().Equals(String.Empty))
+            {
+                MessageBox.Show("Vui lòng nhập email hợp lệ!");
+                txt_Email.Focus();
+            }
+            else
+            {
+                ShowLoadingSreen();
+
+                var email = txt_Email.Text;
+                var input = string.Format("{{\"email\":\"{0}\"}}", email);
+                try
+                {
+                    ///xem xem có lấy đc dữ liệu về ko?
+                    ///
+                    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetDriverResetPassword, input);
+                    var resetStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (resetStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//Code 0000
+                    {
+                        //Nếu ok
+                        ///2. dis screen
+                        ///3. thong bao
+                        ///4. quay ve man hinh login
+                        //
+
+                        //2.
+                        HideLoadingSreen();
+
+                        //3.
+                        MessageBox.Show(ConstantVariable.strResetPasswordSuccess);
+
+                        //4.
+                        NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+
+                    }
+                }
+                catch (Exception)
+                {
+
+                    HideLoadingSreen();
+                    MessageBox.Show("(Mã lỗi 39101) " + ConstantVariable.errServerError); //Co loi may chu
+                    Debug.WriteLine("Có lỗi 2365236 ở reset pass");
+                }
+            }
         }
-// 
-//         private void HideLoadingSreen()
-//         {
-//             grv_ProcessScreen.Visibility = Visibility.Collapsed;
-//         }
-// 
-//         private void ShowLoadingSreen()
-//         {
-//             grv_ProcessScreen.Visibility = Visibility.Visible;
-//         }
+
+        private void HideLoadingSreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowLoadingSreen()
+        {
+            grv_ProcessScreen.Visibility = Visibility.Visible;
+        }
 
     }
 }

@@ -12,6 +12,14 @@ namespace FT_Rider.Classes
     class RiderFunctions
     {
 
+        public static double RoundMoney(double value, int digits)
+        {
+            if (digits >= 0) return System.Math.Round(value, digits);
+
+            double n = System.Math.Pow(10, -digits);
+            return System.Math.Round(value / n, 0) * n;
+        }
+
 
         //Fare Cal
         public static double EstimateCostCalculate(IDictionary<string, ListDriverDTO> taxiInput, string did, double kmInput)

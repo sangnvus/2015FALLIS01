@@ -49,9 +49,10 @@ namespace FT_Driver.Pages
             txt_From.Text = myTripCollection[selectedTripId].sAdd;
             txt_To.Text = myTripCollection[selectedTripId].eAdd;
 
-            txt_CarLevel.Text = myTripCollection[selectedTripId].eTime;
+            txt_Date.Text = myTripCollection[selectedTripId].eTime;
             txt_Distance.Text = myTripCollection[selectedTripId].distance.ToString();
-            txt_TotalCost.Text = myTripCollection[selectedTripId].fare.ToString();
+            txt_TotalCost.Text = string.Format("{0:#,##0}", DriverFunctions.RoundMoney((double)myTripCollection[selectedTripId].fare, -3)); //làm tròn tiền
+            
         }
 
         private async void GetMyTripData()

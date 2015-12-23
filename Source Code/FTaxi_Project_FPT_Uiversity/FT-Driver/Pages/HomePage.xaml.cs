@@ -1605,9 +1605,9 @@ namespace FT_Driver.Pages
             txt_BD_From.Text = startAddress.results[0].formatted_address.ToString();//Cái này để lấy địa chỉ từ tọa độ
             txt_BD_To.Text = endAddress.results[0].formatted_address.ToString();//Cái này để lấy địa chỉ từ tọa độ
             txt_BD_Route.Text = realDistance.ToString();
-            txt_BD_Cost.Text = string.Format("{0:#,##0}", realFare);
+            txt_BD_Cost.Text = string.Format("{0:#,##0}", DriverFunctions.RoundMoney(realFare, -3));
             txt_BD_Discount.Text = "0.0";
-            txt_BD_TotalCost.Text = string.Format("{0:#,##0}", realFare);
+            txt_BD_TotalCost.Text = string.Format("{0:#,##0}", DriverFunctions.RoundMoney(realFare, -3));
         }
 
         //This function to get City Code From City Name in City Dictionary
@@ -1631,9 +1631,9 @@ namespace FT_Driver.Pages
         private void ShowInforWhenStartTrip()
         {
             txt_DistanceKm.Text = realDistance.ToString() + " (km)";
-            txt_PricePerDistance.Text = string.Format("{0:#,##0}", realFare) + " (đ)";
+            txt_PricePerDistance.Text = string.Format("{0:#,##0}", DriverFunctions.RoundMoney(realFare, -3)) + " (đ)";
             txt_PromotionPrice.Text = "0.0";
-            txt_TotalPrice.Text = string.Format("{0:#,##0}", realFare) + " (đ)";
+            txt_TotalPrice.Text = string.Format("{0:#,##0}", DriverFunctions.RoundMoney(realFare, -3)) + " (đ)";
 
         }
 

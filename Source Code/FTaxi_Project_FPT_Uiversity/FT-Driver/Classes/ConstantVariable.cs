@@ -64,6 +64,7 @@ namespace FT_Driver.Classes
         public const string tNetDriverLostAsset = "http://123.30.236.109:8088/TN/restServices/TripController/sendFeedback";
         public const string tNetDriverSendFeedback = "http://123.30.236.109:8088/TN/restServices/CommonController/sendFeedback";
         public const string tNetDriverGetMyTrip = "http://123.30.236.109:8088/TN/restServices/TripController/getCompletedTripDriver";
+        public const string tNetDriverResetPassword = "http://123.30.236.109:8088/TN/restServices/CommonController/resetPassword";
 
         //Confirmboz
         public const string cfbLogOut = "Bạn có chắc là bạn muốn thoát tài khoản không?";

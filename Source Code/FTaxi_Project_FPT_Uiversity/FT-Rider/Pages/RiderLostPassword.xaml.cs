@@ -50,42 +50,50 @@ namespace FT_Rider.Pages
         private async void btn_ResetPassword_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
 
-            //Show 
-            ShowLoadingSreen();
-
-            var email = txt_Email.Text;
-            var input = string.Format("{{\"email\":\"{0}\"}}", email);
-            try
+            if (txt_Email.Text.Trim().Equals(String.Empty))
             {
-                ///xem xem có lấy đc dữ liệu về ko?
-                ///
-                var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderResetPassword, input);
-                var resetStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
-                if (resetStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//Code 0000
-                {
-                    //Nếu ok
-                    ///2. dis screen
-                    ///3. thong bao
-                    ///4. quay ve man hinh login
-                    //
-
-                    //2.
-                    HideLoadingSreen();
-
-                    //3.
-                    MessageBox.Show(ConstantVariable.strResetPasswordSuccess);
-
-                    //4.
-                    NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
-
-                }
+                MessageBox.Show("Vui lòng nhập địa chỉ email hợp lệ!");
+                txt_Email.Focus();
             }
-            catch (Exception)
+            else
             {
+                //Show 
+                ShowLoadingSreen();
 
-                HideLoadingSreen();
-                MessageBox.Show("(Mã lỗi 3301) " + ConstantVariable.errServerErr); //Co loi may chu
-                Debug.WriteLine("Có lỗi fghn76 ở reset pass");               
+                var email = txt_Email.Text;
+                var input = string.Format("{{\"email\":\"{0}\"}}", email);
+                try
+                {
+                    ///xem xem có lấy đc dữ liệu về ko?
+                    ///
+                    var output = await GetJsonFromPOSTMethod.GetJsonString(ConstantVariable.tNetRiderResetPassword, input);
+                    var resetStatus = JsonConvert.DeserializeObject<BaseResponse>(output);
+                    if (resetStatus.status.Equals(ConstantVariable.RESPONSECODE_SUCCESS))//Code 0000
+                    {
+                        //Nếu ok
+                        ///2. dis screen
+                        ///3. thong bao
+                        ///4. quay ve man hinh login
+                        //
+
+                        //2.
+                        HideLoadingSreen();
+
+                        //3.
+                        MessageBox.Show(ConstantVariable.strResetPasswordSuccess);
+
+                        //4.
+                        NavigationService.Navigate(new Uri("/Pages/Login.xaml", UriKind.Relative));
+
+                    }
+                }
+                catch (Exception)
+                {
+
+                    HideLoadingSreen();
+                    MessageBox.Show("(Mã lỗi 3301) " + ConstantVariable.errServerErr); //Co loi may chu
+                    Debug.WriteLine("Có lỗi fghn76 ở reset pass");
+                }
             }
         }
 

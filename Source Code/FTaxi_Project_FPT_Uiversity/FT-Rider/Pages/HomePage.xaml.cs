@@ -616,7 +616,8 @@ namespace FT_Rider.Pages
                                 riderGetNearDriverLayer = null;
                                 riderGetNearDriverOverlay = null;
                             }
-                            // Create a MapOverlay to contain the circle.                            
+                            // Create a MapOverlay to contain the circle.  
+                            ShowGridPiker();
                             riderGetNearDriverLayer = new MapLayer();
                             foreach (KeyValuePair<string, ListDriverDTO> tmpIter in nearDriverCollection)
                             {
@@ -634,6 +635,7 @@ namespace FT_Rider.Pages
                 catch (Exception)
                 {
                     Debug.WriteLine("87763355 Không lấy được chuỗi Json GetNearDriver");
+                    changeLabelRedTimer.Start();
                 }
             }
             else
@@ -1771,8 +1773,8 @@ namespace FT_Rider.Pages
                     //Trip Cost
                     if (completeTrip.fare != 0)
                     {
-                        txt_CT_Cost.Text = completeTrip.fare.ToString();
-                        txt_CT_TotalCost.Text = completeTrip.fare.ToString();
+                        txt_CT_Cost.Text = string.Format("{0:#,##0}", RiderFunctions.RoundMoney(completeTrip.fare, -3));
+                        txt_CT_TotalCost.Text = string.Format("{0:#,##0}", RiderFunctions.RoundMoney(completeTrip.fare, -3)); //làm tròn tiền
                     }
                     //Trip Distcount
                     txt_CT_Discount.Text = "0"; //Tạm thời chưa làm phần này
@@ -2923,27 +2925,42 @@ namespace FT_Rider.Pages
         //------ BEGIN Taxi type bar ------//
         private void img_CarBar_SavingCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            taxiType = TaxiTypes.Type.SAV.ToString();
+
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_Selected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
+            
 
-            taxiType = TaxiTypes.Type.SAV.ToString();
+            map_RiderMap.Layers.Clear();
+            ReLoadCurrentPositionIcon();
+            //ShowCallTaxiCenterPicker();
+            GetNearDriver();
         }
         private void img_CarBar_EconomyCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            taxiType = TaxiTypes.Type.ECO.ToString();
+
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_Selected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_NotSelected.png", UriKind.Relative));
-
-            taxiType = TaxiTypes.Type.ECO.ToString();
+            
+            map_RiderMap.Layers.Clear();
+            ReLoadCurrentPositionIcon();
+            GetNearDriver();
         }
         private void img_CarBar_LuxuryCar_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            taxiType = TaxiTypes.Type.LUX.ToString();
+
             img_CarBar_SavingCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Saving_NotSelected.png", UriKind.Relative));
             img_CarBar_EconomyCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Economy_NotSelected.png", UriKind.Relative));
             img_CarBar_LuxuryCar.Source = new BitmapImage(new Uri("/Images/CarsBar/img_Carbar_Luxury_Selected.png", UriKind.Relative));
-
-            taxiType = TaxiTypes.Type.LUX.ToString();
+            
+            map_RiderMap.Layers.Clear();
+            ReLoadCurrentPositionIcon();
+            //ShowCallTaxiCenterPicker();
+            GetNearDriver();
         }
         //------ END Taxi type bar ------//
 
