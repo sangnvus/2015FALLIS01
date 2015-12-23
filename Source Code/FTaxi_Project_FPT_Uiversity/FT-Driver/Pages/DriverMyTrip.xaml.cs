@@ -87,7 +87,7 @@ namespace FT_Driver.Pages
                         //2. Loop to list all item in object
                         foreach (var trip in myTrip.content.list)
                         {
-                            myTripDataSource.Add(new DriverMyTripLLSObj(trip.tid, trip.sAdd, trip.eAdd, trip.eTime, trip.rName, trip.mobile, trip.fare, trip.rate));
+                            myTripDataSource.Add(new DriverMyTripLLSObj(trip.tid, trip.sAdd, trip.eAdd, trip.eTime, trip.rName, trip.mobile, DriverFunctions.RoundMoney(trip.fare, -3), trip.rate));
                             myTripCollection[trip.tid.ToString()] = new DriverTripItemObj
                             {
                                 tid = trip.tid,

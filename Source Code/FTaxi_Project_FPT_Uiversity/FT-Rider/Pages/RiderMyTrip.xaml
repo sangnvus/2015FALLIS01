@@ -156,7 +156,7 @@
                 </phone:LongListSelector.ItemTemplate>
             </phone:LongListSelector>
             <TextBlock x:Name="txt_MyTripStatus" HorizontalAlignment="Center" Margin="0,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-            <Grid x:Name="grv_TripDetail">
+            <Grid x:Name="grv_TripDetail" Visibility="Collapsed">
                 <Grid.RenderTransform>
                     <TranslateTransform Y="0"/>
                 </Grid.RenderTransform>
@@ -249,12 +249,12 @@
                         <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock x:Name="txt_From" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,145,0,0" FontSize="23" Width="370" Height="56">
+                <TextBlock x:Name="txt_From" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,145,0,0" FontSize="20" Width="370" Height="56">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
                     </TextBlock.Foreground>
                 </TextBlock>
-                <TextBlock x:Name="txt_To" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,200,0,0" FontSize="23" Width="370" Height="59">
+                <TextBlock x:Name="txt_To" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="82,200,0,0" FontSize="20" Width="370" Height="59">
                     <TextBlock.Foreground>
                         <SolidColorBrush Color="{StaticResource Color_GridTextColor}"/>
                     </TextBlock.Foreground>

@@ -710,7 +710,7 @@ namespace FT_Rider.Pages
                 {
                     selectedDid = did; //Báo rằng em này đã được chọn, để truyền did
                     txt_OpenPrice.Text = openPrice.ToString();
-                    txt_EstimatedCost.Text = estimateCost.ToString();
+                    txt_EstimatedCost.Text = string.Format("{0:#,##0}", RiderFunctions.RoundMoney(estimateCost, -3));
                     txt_DriverNames.Text = driverName;
                     txt_PickupAddress.Text = address.results[0].formatted_address.ToString();
 
@@ -1891,6 +1891,7 @@ namespace FT_Rider.Pages
             TripUpdateAlert();
             map_RiderMap.Layers.Clear();
             ReLoadCurrentPositionIcon();
+            HidePickerGrid();
         }
 
 
